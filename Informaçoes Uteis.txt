@@ -1,0 +1,18 @@
+abrir emulador pelo terminal : 
+
+
+emulator -no-snapshot -avd {NOME DO EMULADOR}
+
+emulator -avd {NOME DO EMULADOR}
+
+emulator -no-snapshot -avd android_o
+//////////////////////////////////
+Rodar aplicaçao
+react-native run-android
+
+///////////////////////////////////
+precionar RR no android
+
+adb shell input text "RR"
+
+////////////////////////////////////
