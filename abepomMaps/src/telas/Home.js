@@ -6,18 +6,21 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  TextInput,
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import StatusBar from '../components/StatusBar';
 import Menu from '../components/MenuTop';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
-import {TextInput, Directions} from 'react-native-gesture-handler';
-import styles from '../constants/Style';
+import Modal from 'react-native-modal';
+
+import styles, {danger} from '../constants/Style';
 import api from '../api';
 import Mensagam from '../components/Mensagem';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const Home = ({navigation}) => {
+  const [modal, setModal] = useState(false);
   const [cartao, setCartao] = React.useState('');
   const [erro, setErro] = React.useState(false);
   const [convenio, setConvenio] = React.useState(false);
@@ -39,10 +42,10 @@ const Home = ({navigation}) => {
     }
   }, [erro]);
   const [associado, setAssociado] = React.useState(null);
+  const [valorUsado, setValorUsado] = useState(null);
   const [mensagens, setMensagens] = React.useState('');
   const [camera, setCamera] = useState(false);
   const _handlerConsultaCartao = async () => {
-    console.log(cartao);
     let req = await api({
       url: '/VerificarCartao',
       params: {cartao: cartao},
@@ -72,10 +75,43 @@ const Home = ({navigation}) => {
     setCartao('');
     setCamera(true);
   };
+  function handlerStoreValue() {
+    console.log(valorUsado, associado.Nr_Cartao_Abepom, new Date());
+    setModal(false);
+  }
 
   return (
     <>
       <StatusBar />
+      <Modal isVisible={modal}>
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <View style={{backgroundColor: '#fff', padding: 30, paddingTop: 50}}>
+            <TouchableOpacity
+              style={{position: 'absolute', right: 0}}
+              onPress={() => setModal(false)}>
+              <Icone name="close-circle" size={30} color={danger} />
+            </TouchableOpacity>
+            <Text>Informe a media consumida pelo associado</Text>
+            <Text style={{fontSize: 10, right: 0, position: 'relative'}}>
+              * essa informação sera usada para estatistica
+            </Text>
+            <View style={{flexDirection: 'row', marginTop: 30}}>
+              <TextInput
+                style={[styles.input, {width: 200}]}
+                keyboardType="numeric"
+                value={valorUsado}
+                onChangeText={setValorUsado}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  handlerStoreValue();
+                }}>
+                <Icone name="check-circle" size={50} color="#006600" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       <SafeAreaView>
         <Menu drawer title="ABEPOM Mobile" navigation={navigation}>
@@ -133,24 +169,31 @@ const Home = ({navigation}) => {
           {erro ? (
             <Mensagam tipo="E" mensagem={mensagens} />
           ) : associado ? (
-            <View
-              style={{
-                margin: 20,
-                padding: 20,
-                backgroundColor: '#008f46',
-                borderRadius: 5,
-                width: '75%',
-              }}>
-              <Text style={{color: 'white', margin: 5}}>
-                Nome: {associado.dep}
-              </Text>
-              <Text style={{color: 'white', margin: 5}}>
-                Tipo: {associado.descricao}
-              </Text>
-              <Text style={{color: 'white', margin: 5}}>
-                Cartão: {associado.Nr_Cartao_Abepom}
-              </Text>
-            </View>
+            <>
+              <View
+                style={{
+                  margin: 20,
+                  padding: 20,
+                  backgroundColor: '#008f46',
+                  borderRadius: 5,
+                  width: '75%',
+                }}>
+                <Text style={{color: 'white', margin: 5}}>
+                  Nome: {associado.dep}
+                </Text>
+                <Text style={{color: 'white', margin: 5}}>
+                  Tipo: {associado.descricao}
+                </Text>
+                <Text style={{color: 'white', margin: 5}}>
+                  Cartão: {associado.Nr_Cartao_Abepom}
+                </Text>
+              </View>
+              <TouchableOpacity
+                style={[styles.btnDefault, {width: '50%'}]}
+                onPress={() => setModal(true)}>
+                <Text style={styles.btnDefaultText}>INFORMAR UTILIZAÇÃO</Text>
+              </TouchableOpacity>
+            </>
           ) : null}
           {camera ? (
             <View

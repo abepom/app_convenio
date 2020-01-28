@@ -13,21 +13,29 @@ import bg from '../assets/img/background.png';
 import logo from '../assets/img/logo.png';
 import logo1 from '../assets/img/logo1.png';
 import logo2 from '../assets/img/logo2.png';
-import styles from '../constants/Style';
+import styles, {danger, danverBackground} from '../constants/Style';
 import TextInputMask from 'react-native-text-input-mask';
 
 import api from '../api';
 
 const Login = props => {
-  const [focus, setFocus] = useState({
-    senha: false,
+  const [state, setState] = useState({
+    erro: false,
+    mensagem: '',
   });
-  const [doc, setdoc] = useState('0625791495');
-  const [senha, setSenha] = useState('443163');
+  const [doc, setdoc] = useState('');
+  const [senha, setSenha] = useState('');
 
   useEffect(() => {
     AsyncStorage.removeItem('User');
   }, []);
+  useEffect(() => {
+    if (state.erro) {
+      setTimeout(() => {
+        setState({...state, erro: false});
+      }, 3000);
+    }
+  }, [state.erro]);
 
   const login = async () => {
     const data = await api({
@@ -35,12 +43,15 @@ const Login = props => {
       data: {usuario: doc, senha},
       method: 'post',
     });
-    const {nome_fantasia, ativo} = data.data[0];
-    console.log({parceiro: data.data[0]});
-
-    if (ativo) {
-      setUsuario(data.data[0]);
-      props.navigation.navigate('drawer');
+    const {convenio, erro, mensagem} = data.data;
+    console.log(convenio, erro, mensagem);
+    if (!erro) {
+      if (convenio.ativo) {
+        setUsuario(data.data);
+        props.navigation.navigate('drawer');
+      }
+    } else {
+      setState({...state, erro, mensagem});
     }
   };
   const setUsuario = async dados => {
@@ -71,13 +82,26 @@ const Login = props => {
             />
             <TextInput
               style={styles.input}
-              autoFocus={focus.senha}
               placeholder="Senha"
               secureTextEntry
               value={senha}
               onChangeText={setSenha}
             />
           </View>
+          {state.erro && (
+            <View
+              style={{
+                backgroundColor: danverBackground,
+                width: '80%',
+                borderRadius: 5,
+                alignItems: 'center',
+                margin: 5,
+                padding: 10,
+                borderColor: danger,
+              }}>
+              <Text style={{color: danger}}>{state.mensagem}</Text>
+            </View>
+          )}
           <TouchableOpacity
             onPress={() => {
               props.navigation.navigate('RestartPass');

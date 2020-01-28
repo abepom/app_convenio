@@ -6,8 +6,8 @@ import {StyleSheet, Dimensions} from 'react-native';
 // const alertBack
 // const sucess
 // const sucessBack
-// const error
-// const errorBack
+export const danger = '#b94a48';
+export const danverBackground = '#eed3d7';
 
 const styles = StyleSheet.create({
   conteiner: {

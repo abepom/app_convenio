@@ -10,7 +10,6 @@ module.exports = {
         WHERE (A_depend.Inativo = 0) AND (A_depend.Nr_Cartao_Abepom = '${cartao}')`
       )
       .then(([[results]]) => {
-        console.log({ socio: results, erro: false });
         return response.json({ socio: results, erro: false });
       })
       .catch(e => {
