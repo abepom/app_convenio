@@ -17,16 +17,19 @@ import api from '../api';
 import Mensagam from '../components/Mensagem';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const Home = ({navigation, user = navigation.state.params}) => {
+const Home = ({navigation}) => {
   const [cartao, setCartao] = React.useState('');
   const [erro, setErro] = React.useState(false);
   const [convenio, setConvenio] = React.useState(false);
 
   useEffect(() => {
-    AsyncStorage.getItem('User').then(usuario => {
+    getItens();
+  }, []);
+  async function getItens() {
+    await AsyncStorage.getItem('User').then(usuario => {
       setConvenio(JSON.parse(usuario));
     });
-  }, []);
+  }
 
   React.useEffect(() => {
     if (erro) {
@@ -39,19 +42,23 @@ const Home = ({navigation, user = navigation.state.params}) => {
   const [mensagens, setMensagens] = React.useState('');
   const [camera, setCamera] = useState(false);
   const _handlerConsultaCartao = async () => {
+    console.log(cartao);
     let req = await api({
-      url: 'consultarcartao.asp',
-      data: {cartao: cartao},
-      method: 'post',
+      url: '/VerificarCartao',
+      params: {cartao: cartao},
+      headers: {idConvenio: convenio.id_parceiro},
+      method: 'GET',
     });
-    const {erro = erro, associado, mensagem} = req.data;
+
+    const {erro, socio, mensagem} = req.data;
+
     if (cartao.length === 11) {
       if (erro) {
         setErro(true);
         setMensagens(mensagem);
         setAssociado('');
       } else {
-        setAssociado(associado);
+        setAssociado(socio);
       }
     } else {
       setErro(true);
@@ -61,6 +68,8 @@ const Home = ({navigation, user = navigation.state.params}) => {
     }
   };
   const _abrirCamera = () => {
+    setAssociado('');
+    setCartao('');
     setCamera(true);
   };
 
@@ -101,6 +110,7 @@ const Home = ({navigation, user = navigation.state.params}) => {
                 value={cartao}
                 style={{width: '85%'}}
                 onChangeText={setCartao}
+                onSubmitEditing={() => _handlerConsultaCartao()}
               />
               <TouchableOpacity
                 style={{width: '15%'}}
@@ -132,13 +142,13 @@ const Home = ({navigation, user = navigation.state.params}) => {
                 width: '75%',
               }}>
               <Text style={{color: 'white', margin: 5}}>
-                Nome: {associado.nome}
+                Nome: {associado.dep}
               </Text>
               <Text style={{color: 'white', margin: 5}}>
-                Tipo: {associado.tipo}
+                Tipo: {associado.descricao}
               </Text>
               <Text style={{color: 'white', margin: 5}}>
-                Cartão: {associado.cartao}
+                Cartão: {associado.Nr_Cartao_Abepom}
               </Text>
             </View>
           ) : null}
@@ -167,10 +177,10 @@ const Home = ({navigation, user = navigation.state.params}) => {
                   buttonPositive: 'Ok',
                   buttonNegative: 'Cancel',
                 }}
-                onGoogleVisionBarcodesDetected={({barcodes}) => {
+                onGoogleVisionBarcodesDetected={async ({barcodes}) => {
                   setCamera(false);
+
                   setCartao(barcodes[0].data);
-                  _handlerConsultaCartao();
                 }}
               />
             </View>

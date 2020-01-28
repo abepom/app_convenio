@@ -1,5 +1,14 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
+// const primary= '#'
+// const primaryBack
+// const alert
+// const alertBack
+// const sucess
+// const sucessBack
+// const error
+// const errorBack
+
 const styles = StyleSheet.create({
   conteiner: {
     flex: 1,

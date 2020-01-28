@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   ImageBackground,
@@ -17,21 +17,30 @@ import styles from '../constants/Style';
 import TextInputMask from 'react-native-text-input-mask';
 
 import api from '../api';
+
 const Login = props => {
-  const [doc, setdoc] = useState('');
-  const [senha, setSenha] = useState('');
+  const [focus, setFocus] = useState({
+    senha: false,
+  });
+  const [doc, setdoc] = useState('0625791495');
+  const [senha, setSenha] = useState('443163');
+
+  useEffect(() => {
+    AsyncStorage.removeItem('User');
+  }, []);
 
   const login = async () => {
     const data = await api({
-      url: 'VaidarLoginParceiro.asp',
+      url: '/Login',
       data: {usuario: doc, senha},
       method: 'post',
     });
-    const {parceiro, valido} = data.data;
+    const {nome_fantasia, ativo} = data.data[0];
+    console.log({parceiro: data.data[0]});
 
-    if (valido) {
-      setUsuario(parceiro);
-      props.navigation.navigate('drawer', parceiro);
+    if (ativo) {
+      setUsuario(data.data[0]);
+      props.navigation.navigate('drawer');
     }
   };
   const setUsuario = async dados => {
@@ -55,12 +64,14 @@ const Login = props => {
                   ? '[000].[000].[000]-[00]'
                   : '[00].[000].[000]/[0000]-[00]'
               }
+              onKeyPress={(key, a) => console.log(key, a)}
               keyboardType="numeric"
               value={doc}
               onChangeText={setdoc}
             />
             <TextInput
               style={styles.input}
+              autoFocus={focus.senha}
               placeholder="Senha"
               secureTextEntry
               value={senha}

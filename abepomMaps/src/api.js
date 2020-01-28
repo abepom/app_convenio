@@ -12,28 +12,6 @@ String.prototype.replaceAll = function(de, para) {
 };
 
 const api = Axios.create({
-  baseURL: 'http://192.168.1.238/APP_mobile/',
-  headers: {
-    //'content-type': 'text/html',
-    'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-  },
-
-  transformRequest: [
-    function(dados, headers) {
-      //   data = JSON.stringify(data)
-      //     .replace(/","/, '&')
-      //     .replace('{"', '')
-      //     .replace('"}', '')
-
-      //     .replace(/":"/g, '=');
-      console.log(dados);
-      return qs.stringify(dados);
-    },
-  ],
-  transformResponse: [
-    data => {
-      return JSON.parse(data.replaceAll(String.fromCharCode(10), ''));
-    },
-  ],
+  baseURL: 'http://192.168.1.61:3333',
 });
 export default api;
