@@ -76,7 +76,6 @@ const Home = ({navigation}) => {
     setCamera(true);
   };
   function handlerStoreValue() {
-    console.log(valorUsado, associado.Nr_Cartao_Abepom, new Date());
     setModal(false);
   }
 
