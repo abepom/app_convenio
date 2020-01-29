@@ -38,6 +38,7 @@ yarn-error.log
 # BUCK
 buck-out/
 \.buckd/
+api.js
 *.keystore
 !debug.keystore
 
@@ -57,3 +58,6 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+#consts
+

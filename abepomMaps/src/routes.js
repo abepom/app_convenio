@@ -12,6 +12,7 @@ import Load from './telas/Load';
 import Home from './telas/Home';
 import RestartPass from './telas/RestartPass';
 import Mapa from './telas/Mapa';
+import Sair from './telas/Sair';
 import teste from './telas/testes';
 import DadosGerais from './telas/DadosGerais';
 const drawer = createDrawerNavigator(
@@ -21,7 +22,7 @@ const drawer = createDrawerNavigator(
       screen: DadosGerais,
       navigationOptions: {title: 'Dados Gerais'},
     },
-    Sair: Login,
+    Sair: Sair,
   },
   {
     initialRouteName: 'Home',

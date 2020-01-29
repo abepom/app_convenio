@@ -27,9 +27,6 @@ const Login = props => {
   const [senha, setSenha] = useState('');
 
   useEffect(() => {
-    AsyncStorage.removeItem('User');
-  }, []);
-  useEffect(() => {
     if (state.erro) {
       setTimeout(() => {
         setState({...state, erro: false});
@@ -37,25 +34,37 @@ const Login = props => {
     }
   }, [state.erro]);
 
-  const login = async () => {
-    const data = await api({
-      url: '/Login',
-      data: {usuario: doc, senha},
-      method: 'post',
-    });
-    const {convenio, erro, mensagem} = data.data;
-    console.log(convenio, erro, mensagem);
-    if (!erro) {
-      if (convenio.ativo) {
-        setUsuario(data.data);
-        props.navigation.navigate('drawer');
+  const conectar = async () => {
+    alert('ok');
+    if (doc.length > 13 && senha) {
+      const data = await api({
+        url: '/Login',
+        data: {usuario: doc, senha},
+        method: 'post',
+      });
+      const {convenio, erro, mensagem} = data.data;
+      console.log(convenio, erro, mensagem);
+      alert(!erro);
+      if (!erro) {
+        if (convenio.ativo) {
+          alert(JSON.stringify(data.data));
+          setUsuario('Usuario', {doc, senha});
+          setUsuario('convenio', convenio);
+          console.log(props);
+          props.navigation.navigate('drawer');
+        }
+      } else {
+        setState({erro, mensagem});
       }
     } else {
-      setState({...state, erro, mensagem});
+      setState({erro: true, mensagem: 'Usuario ou Senha incorretos'});
+      console.log(state);
     }
   };
-  const setUsuario = async dados => {
-    await AsyncStorage.setItem('User', JSON.stringify(dados));
+  const setUsuario = async (local, dados) => {
+    await AsyncStorage.setItem(local, JSON.stringify(dados));
+    const user = await AsyncStorage.getItem('Usuario');
+    //alert(user);
   };
 
   return (
@@ -112,7 +121,7 @@ const Login = props => {
             ]}>
             <Text style={styles.btnDefaultText}>Esqueceu sua senha?</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnDefault} onPress={login}>
+          <TouchableOpacity style={styles.btnDefault} onPress={conectar}>
             <Text style={styles.btnDefaultText}>Entrar</Text>
           </TouchableOpacity>
           <View

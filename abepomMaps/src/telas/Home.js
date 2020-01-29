@@ -29,7 +29,7 @@ const Home = ({navigation}) => {
     getItens();
   }, []);
   async function getItens() {
-    await AsyncStorage.getItem('User').then(usuario => {
+    await AsyncStorage.getItem('convenio').then(usuario => {
       setConvenio(JSON.parse(usuario));
     });
   }
