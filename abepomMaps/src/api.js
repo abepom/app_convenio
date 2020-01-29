@@ -12,6 +12,6 @@ String.prototype.replaceAll = function(de, para) {
 };
 
 const api = Axios.create({
-  baseURL: 'http://192.168.1.61:3333',
+  baseURL: 'http://187.94.98.194:3333',
 });
 export default api;
