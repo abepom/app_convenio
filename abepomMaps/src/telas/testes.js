@@ -1,37 +1,20 @@
-import React from 'react';
-import {View, Text, CheckBox} from 'react-native';
-
+import React from 'react'
+import { View, Text } from 'react-native'
+import axios from axios
 const testes = () => {
-  const [areas, setAreas] = React.useState([
-    {cod: 1, permitido: true},
-    {cod: 2, permitido: true},
-    {cod: 3, permitido: false},
-    {cod: 4, permitido: true},
-  ]);
-  let a = {};
-  areas.map(area => {
-    a = [{[area.cod]: {...area}}];
-  });
-  console.log(a);
 
+  getuser = async() => {
+    const user = await axios.get('https://api.github.com/diego3g')
+    alert(JSON.stringify(user))
+  }
+  useEffect(() => {
+    getuser()
+  }, [])
   return (
-    <View style={{flex: 1}}>
-      {areas.map(area => {
-        console.log(this);
-        return (
-          <CheckBox
-            key={area.cod}
-            value={area.permitido}
-            onValueChange={a => {
-              console.log(a);
-              let trocar = {...area, permitido: a};
-              setAreas([...areas, trocar]);
-            }}
-          />
-        );
-      })}
+    <View>
+      <Text>teste</Text>
     </View>
-  );
-};
+  )
+}
 
-export default testes;
+export default testes
