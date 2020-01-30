@@ -6,5 +6,6 @@ const LoginController = require("./controller/LoginController");
 
 routes.get("/VerificarCartao", associadoController.show);
 routes.post("/Login", LoginController.show);
+routes.get("/", associadoController.teste);
 
 module.exports = routes;

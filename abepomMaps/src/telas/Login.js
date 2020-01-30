@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+import {PermissionsAndroid} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import StatusBar from '../components/StatusBar';
 import bg from '../assets/img/background.png';
@@ -15,7 +16,7 @@ import logo1 from '../assets/img/logo1.png';
 import logo2 from '../assets/img/logo2.png';
 import styles, {danger, danverBackground} from '../constants/Style';
 import TextInputMask from 'react-native-text-input-mask';
-
+import axios from 'axios';
 import api from '../api';
 
 const Login = props => {
@@ -26,6 +27,29 @@ const Login = props => {
   const [doc, setdoc] = useState('');
   const [senha, setSenha] = useState('');
 
+  async function permissao() {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.INTERNET,
+      {
+        title: 'Cool Photo App Camera Permission',
+        message:
+          'Cool Photo App needs access to your camera ' +
+          'so you can take awesome pictures.',
+        buttonNeutral: 'Ask Me Later',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK',
+      },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('You can use the camera');
+    } else {
+      console.log('Camera permission denied');
+    }
+  }
+
+  useEffect(() => {
+    PermissionsAndroid.PERMISSIONS.INTERNET;
+  }, []);
   useEffect(() => {
     if (state.erro) {
       setTimeout(() => {
@@ -68,7 +92,13 @@ const Login = props => {
         <ImageBackground
           source={bg}
           style={[styles.bgImage, {alignItems: 'center'}]}>
-          <Image style={[styles.logo, {margin: '10%'}]} source={logo} />
+          <TouchableOpacity
+            onPress={async () => {
+              const res = await axios.get('http://187.94.98.194:3333/');
+              alert(res.data.mensagem);
+            }}>
+            <Image style={[styles.logo, {margin: '10%'}]} source={logo} />
+          </TouchableOpacity>
           <View style={{marginTop: 20}}>
             <TextInputMask
               style={styles.input}
@@ -132,7 +162,15 @@ const Login = props => {
                 justifyContent: 'space-around',
                 width: '100%',
               }}>
-              <Image style={[styles.logoP]} source={logo1} />
+              <TouchableOpacity
+                onPress={async () => {
+                  const resultado = await axios.get(
+                    'https://api.github.com/users/diego3d',
+                  );
+                  alert(resultado.data.login);
+                }}>
+                <Image style={[styles.logoP]} source={logo1} />
+              </TouchableOpacity>
               <Image style={[styles.logoP]} source={logo2} />
             </View>
           </View>

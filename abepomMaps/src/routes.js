@@ -13,7 +13,6 @@ import Home from './telas/Home';
 import RestartPass from './telas/RestartPass';
 import Mapa from './telas/Mapa';
 import Sair from './telas/Sair';
-import teste from './telas/testes';
 import DadosGerais from './telas/DadosGerais';
 const drawer = createDrawerNavigator(
   {
@@ -36,7 +35,6 @@ const Routes = createAppContainer(
       Login,
       RestartPass,
       drawer,
-      teste,
     },
     {
       initialRouteName: 'Load',

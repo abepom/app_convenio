@@ -6,7 +6,7 @@ const app = express();
 const associacao = require("./database/associacao");
 const cartaoBeneficios = require("./database/cartaoBeneficios");
 
-app.use(cors());
+app.use(cors({ origin: true }));
 app.use(express.json());
 app.use(routes);
 app.listen(3333);

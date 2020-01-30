@@ -9,13 +9,13 @@
     "test": "jest",
     "lint": "eslint .",
     "apk": "react-native run-android --variant=release",
-    "build": "cd android && ./gradlew bundleRelease && cd ..",
+    "build": "cd android && ./gradlew assembleRelease && cd ..",
     "ao": "emulator -avd ao"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.7.1",
     "@react-native-community/masked-view": "^0.1.5",
-    "axios": "^0.19.0",
+    "axios": "^0.19.1",
     "qs": "^6.9.1",
     "react": "16.9.0",
     "react-native": "0.61.5",

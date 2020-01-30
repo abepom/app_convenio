@@ -16,5 +16,9 @@ module.exports = {
         console.log(e);
         return response.json(e);
       });
+  },
+  async teste(req, res) {
+    console.log({ mensagem: "ok" });
+    return res.json({ mensagem: "ok" });
   }
 };
