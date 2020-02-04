@@ -100,15 +100,9 @@ const Login = props => {
             <Image style={[styles.logo, {margin: '10%'}]} source={logo} />
           </TouchableOpacity>
           <View style={{marginTop: 20}}>
-            <TextInputMask
+            <TextInput
               style={styles.input}
               placeholder="CPF / CNPJ"
-              mask={
-                doc.length < 14
-                  ? '[000].[000].[000]-[00]'
-                  : '[00].[000].[000]/[0000]-[00]'
-              }
-              onKeyPress={(key, a) => console.log(key, a)}
               keyboardType="numeric"
               value={doc}
               onChangeText={setdoc}

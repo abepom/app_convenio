@@ -11,7 +11,7 @@ import Login from './telas/Login';
 import Load from './telas/Load';
 import Home from './telas/Home';
 import RestartPass from './telas/RestartPass';
-import Mapa from './telas/Mapa';
+
 import Sair from './telas/Sair';
 import DadosGerais from './telas/DadosGerais';
 const drawer = createDrawerNavigator(

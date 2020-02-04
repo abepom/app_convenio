@@ -2,7 +2,7 @@ module.exports = {
   async show(req, res) {
     console.log(req.body, "teste");
     const { usuario, senha } = req.body;
-    //console.log
+
     global.cartaoBeneficios
       .query(
         `SELECT  id_cpc as id_parceiro, razao_social, nome_fantasia, caminho_logomarca, email, telefone_comercial, telefone_contato, cnpj, cpf, ativo, inscricao_estadual_municipal, representante, cargo_representante, facebook, instagram, linkedin, twitter, site, whatsapp, desconto, replace(descricao_desconto,char(13),' ') as descricao_desconto, email_validado, senha, primeiro_acesso, analise_status, Tipo_convenio, data_cadastro, Cd_convênio, cod_parceiro 
