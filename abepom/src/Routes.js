@@ -1,20 +1,31 @@
-import { createAppContainer, createSwitchNavigator } from "react-navigation";
-import { createDrawerNavigator } from "react-navigation-drawer";
+import React from 'react';
 
-import Load from "./pages/Load";
-import Login from "./pages/Login";
-import Main from "./pages/Main";
+import {
+  createAppContainer,
+  createSwitchNavigator,
+  naviga,
+} from 'react-navigation';
 
+import {createDrawerNavigator} from 'react-navigation-drawer';
+import Login from './telas/Login';
+import Load from './telas/Load';
+import Home from './telas/Home';
+import RestartPass from './telas/RestartPass';
+
+import Sair from './telas/Sair';
+import DadosGerais from './telas/DadosGerais';
 const drawer = createDrawerNavigator(
   {
-    Main: {
-      screen: Main,
-      params: { teste: "sim" }
-    }
+    Home,
+    DadosGerais: {
+      screen: DadosGerais,
+      navigationOptions: {title: 'Dados Gerais'},
+    },
+    Sair: Sair,
   },
   {
-    initialRouteName: "Main"
-  }
+    initialRouteName: 'Home',
+  },
 );
 
 const Routes = createAppContainer(
@@ -22,12 +33,13 @@ const Routes = createAppContainer(
     {
       Load,
       Login,
-      drawer
+      RestartPass,
+      drawer,
     },
     {
-      initialRouteName: "Load"
-    }
-  )
+      initialRouteName: 'Load',
+    },
+  ),
 );
 
 export default Routes;

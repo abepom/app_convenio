@@ -45,10 +45,13 @@ const Home = ({navigation}) => {
   const [valorUsado, setValorUsado] = useState(null);
   const [mensagens, setMensagens] = React.useState('');
   const [camera, setCamera] = useState(false);
-  const _handlerConsultaCartao = async () => {
+  const _handlerConsultaCartao = async card => {
+    let cartaoDigitado;
+    card ? (cartaoDigitado = card) : (cartaoDigitado = cartao);
+
     let req = await api({
       url: '/VerificarCartao',
-      params: {cartao: cartao},
+      params: {cartao: cartaoDigitado},
       headers: {idConvenio: convenio.id_parceiro},
       method: 'GET',
     });
@@ -213,16 +216,11 @@ const Home = ({navigation}) => {
                   buttonPositive: 'Ok',
                   buttonNegative: 'Cancel',
                 }}
-                androidRecordAudioPermissionOptions={{
-                  title: 'Permission to use audio recording',
-                  message: 'We need your permission to use your audio',
-                  buttonPositive: 'Ok',
-                  buttonNegative: 'Cancel',
-                }}
                 onGoogleVisionBarcodesDetected={async ({barcodes}) => {
                   setCamera(false);
 
                   setCartao(barcodes[0].data);
+                  _handlerConsultaCartao(barcodes[0].data);
                 }}
               />
             </View>

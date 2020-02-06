@@ -95,14 +95,20 @@ const Login = props => {
           <TouchableOpacity
             onPress={async () => {
               const res = await axios.get('http://187.94.98.194:3333/');
-              alert(res.data.mensagem);
+              alert(`${res.data.mensagem} teste`);
             }}>
             <Image style={[styles.logo, {margin: '10%'}]} source={logo} />
           </TouchableOpacity>
           <View style={{marginTop: 20}}>
-            <TextInput
+            <TextInputMask
               style={styles.input}
               placeholder="CPF / CNPJ"
+              mask={
+                doc.length < 14
+                  ? '[000].[000].[000]-[00]'
+                  : '[00].[000].[000]/[0000]-[00]'
+              }
+              onKeyPress={(key, a) => console.log(key, a)}
               keyboardType="numeric"
               value={doc}
               onChangeText={setdoc}
@@ -133,11 +139,10 @@ const Login = props => {
             onPress={() => {
               props.navigation.navigate('RestartPass');
             }}
-            style={[
-              styles.link,
-              {position: 'relative', right: -100, marginBottom: 10},
-            ]}>
-            <Text style={styles.btnDefaultText}>Esqueceu sua senha?</Text>
+            style={[styles.link, {width: '80%', alignItems: 'flex-end'}]}>
+            <Text style={[styles.btnDefaultText, {textAlign: 'right'}]}>
+              Esqueceu sua senha?
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.btnDefault} onPress={conectar}>
             <Text style={styles.btnDefaultText}>Entrar</Text>
