@@ -1,27 +1,30 @@
 import React, {useEffect} from 'react';
-import {StatusBar, ImageBackground} from 'react-native';
-
+import {View, Image} from 'react-native';
+import logo from '../assets/img/logo_guia_online.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import bg from '../assets/img/drawable-port-hdpi-screen.png';
+import {primaryBack} from '../utils/Style';
 
 const Load = ({navigation}) => {
   useEffect(() => {
     _retrieveData();
   }, []);
 
-  const _retrieveData = () => {
-    AsyncStorage.getItem('User').then(user => {
-      navigation.navigate(
-        !user ? 'Login' : 'drawer',
-        !user ? null : JSON.parse(user),
-      );
-    });
+  const _retrieveData = async () => {
+    const user = await AsyncStorage.getItem('Usuario');
+    const conv = await AsyncStorage.getItem('convenio');
+    console.log(conv);
+    navigation.navigate(!user ? 'Login' : 'Home', JSON.parse(conv));
   };
   return (
-    <>
-      <StatusBar backgroundColor="#1f4ba4" barStyle="light-content" />
-      <ImageBackground source={bg} style={{width: '100%', height: '100%'}} />
-    </>
+    <View
+      style={{
+        backgroundColor: primaryBack,
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+      <Image source={logo} />
+    </View>
   );
 };
 

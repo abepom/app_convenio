@@ -8,7 +8,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "apk": "react-native run-android --variant=release",
+    "apk": " react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "build": "cd android && ./gradlew assembleRelease && cd ..",
     "ao": "emulator -avd ao"
   },
@@ -21,16 +21,18 @@
     "react-native": "0.61.5",
     "react-native-camera": "^3.15.1",
     "react-native-gesture-handler": "^1.5.3",
-    "react-native-maps": "0.26.1",
+    "react-native-masked-text": "^1.13.0",
     "react-native-modal": "^11.5.3",
+    "react-native-paper": "^3.6.0",
     "react-native-reanimated": "^1.4.0",
     "react-native-safe-area-context": "^0.6.2",
     "react-native-screens": "^2.0.0-alpha.22",
-    "react-native-text-input-mask": "^1.0.6",
+    "react-native-text-input-mask": "^2.0.0",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^4.0.10",
     "react-navigation-drawer": "^2.3.3",
-    "react-navigation-stack": "^2.0.3"
+    "react-navigation-stack": "^2.0.3",
+    "react-via-cep": "^2.0.8"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
