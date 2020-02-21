@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {View, Image} from 'react-native';
-import logo from '../assets/img/logo_guia_online.png';
+import logo from '../assets/img/logo_abepom_branca.png';
+
 import AsyncStorage from '@react-native-community/async-storage';
 import {primaryBack} from '../utils/Style';
 
@@ -23,7 +24,7 @@ const Load = ({navigation}) => {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-      <Image source={logo} />
+      <Image source={logo} style={{width: 150, height: 150}} />
     </View>
   );
 };

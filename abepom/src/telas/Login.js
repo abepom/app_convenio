@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Image, Text, TouchableOpacity} from 'react-native';
+import {View, Image, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {PermissionsAndroid} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import StatusBar from '../components/StatusBar';
@@ -12,8 +12,8 @@ import styles, {
   primaryBack,
   primary,
 } from '../utils/Style';
-import TextInputMask from 'react-native-text-input-mask';
 
+import mask from '../utils/maskUsuario';
 import api from '../api';
 import theme from '../utils/theme';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -28,18 +28,8 @@ const Login = props => {
   //const [doc, setdoc] = useState('');
   //const [senha, setSenha] = useState('casaludica2019');
   const [senha, setSenha] = useState('normal123');
-  const [mascara, setMascara] = useState('');
+  const [teclado, setTeclado] = useState('default');
 
-  useEffect(() => {
-    if (isNaN(doc.substr(0, 3)) || doc == '') {
-      setMascara('');
-    } else {
-      console.log('teste');
-      doc.length > 13
-        ? setMascara('[00].[000].[000]/[0000]-[00]')
-        : setMascara('[000].[000].[000]-[009]');
-    }
-  }, [doc]);
   useEffect(() => {
     PermissionsAndroid.PERMISSIONS.INTERNET;
   }, []);
@@ -59,7 +49,7 @@ const Login = props => {
         data: {usuario: doc, senha},
         method: 'post',
       });
-      console.log(data);
+      console.log(data.erro);
       let convenio;
       if (!data.erro) {
         setUsuario('Usuario', {doc, senha});
@@ -72,6 +62,8 @@ const Login = props => {
         setUsuario('convenio', convenio);
 
         props.navigation.navigate('Home', convenio);
+      } else {
+        setState({erro: true, mensagem: 'Usuario ou Senha incorretos'});
       }
     } else {
       setState({erro: true, mensagem: 'Usuario ou Senha incorretos'});
@@ -84,12 +76,7 @@ const Login = props => {
   return (
     <>
       <StatusBar />
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: primary,
-          alignItems: 'center',
-        }}>
+      <View style={estilos.conteiner}>
         <ScrollView style={{width: '100%'}}>
           <Image
             style={[styles.logo, {margin: '10%', alignSelf: 'center'}]}
@@ -97,73 +84,36 @@ const Login = props => {
           />
 
           <View style={{marginTop: 20, width: '100%'}}>
-            {!mascara ? (
-              <TextInput
-                autoFocus="true"
-                label="CNPJ / CPF / Usuário"
-                dense
-                mode="outlined"
-                theme={theme}
-                value={doc}
-                onChangeText={setdoc}
-                keyboardType="default"
-                style={[styles.imput]}
-              />
-            ) : (
-              <TextInput
-                autoFocus="false"
-                label="CNPJ / CPF / Usuário"
-                dense
-                mode="outlined"
-                theme={theme}
-                value={doc}
-                onChangeText={setdoc}
-                keyboardType="numeric"
-                style={[styles.imput]}
-                mask={mascara}
-                render={props => {
-                  return <TextInputMask {...props} />;
-                }}
-              />
-            )}
+            <TextInput
+              label="CNPJ / CPF / Usuário"
+              dense
+              mode="outlined"
+              theme={theme}
+              value={doc}
+              onChangeText={text => mask(text, setdoc, setTeclado)}
+              keyboardType={teclado}
+              style={[styles.imput]}
+            />
+
             <TextInput
               label="senha"
               dense
               mode="outlined"
               theme={theme}
               value={senha}
-              selectedValue={setSenha}
-              keyboardType="numeric"
+              onChangeText={setSenha}
+              keyboardType="default"
               style={[styles.imput]}
               secureTextEntry
             />
           </View>
           {state.erro && (
-            <View
-              style={{
-                backgroundColor: danverBackground,
-                width: '80%',
-                borderRadius: 5,
-                alignItems: 'center',
-                margin: 5,
-                padding: 10,
-                borderColor: danger,
-              }}>
+            <View style={estilos.retornoBackend}>
               <Text style={{color: danger}}>{state.mensagem}</Text>
             </View>
           )}
 
-          <View
-            style={{
-              position: 'relative',
-              width: '100%',
-              justifyContent: 'space-around',
-              // alignSelf: 'flex-end',
-              marginHorizontal: '10%',
-              marginVertical: 10,
-              flexDirection: 'row',
-              alignSelf: 'center',
-            }}>
+          <View style={estilos.buttonView}>
             <TouchableOpacity
               onPress={() => {
                 props.navigation.navigate('RestartPass', {noLogin: true});
@@ -187,5 +137,36 @@ const Login = props => {
     </>
   );
 };
+const estilos = StyleSheet.create({
+  buttonView: {
+    position: 'relative',
+    flex: 1,
+    justifyContent: 'space-around',
+
+    marginHorizontal: '10%',
+    marginVertical: 10,
+    flexDirection: 'row',
+  },
+  retornoBackend: {
+    backgroundColor: danverBackground,
+    width: '80%',
+    borderRadius: 5,
+    alignItems: 'center',
+    margin: 5,
+    padding: 10,
+    borderColor: danger,
+  },
+  cabecalho: {
+    color: 'white',
+    width: '80%',
+    marginTop: 20,
+    textAlign: 'justify',
+  },
+  conteiner: {
+    flex: 1,
+    backgroundColor: primary,
+    alignItems: 'center',
+  },
+});
 
 export default Login;

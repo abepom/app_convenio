@@ -1,6 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
-import styles, {primary, primaryBack, white} from '../utils/Style';
+import styles, {
+  primary,
+  primaryBack,
+  white,
+  sucessBack,
+  sucess,
+} from '../utils/Style';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import FA from 'react-native-vector-icons/FontAwesome';
@@ -10,19 +16,19 @@ export default props => {
   const [state, setstate] = useState({});
   const [convenio, seConvenio] = useState(props.navigation.state.params);
 
-  console.log(convenio);
-  //return <View></View>;
   return (
     <MenuTop drawer title="Home" {...props}>
       <View style={{width: '100%', backgroundColor: primary}}>
         <View style={[styles.row, styles.center, {marginVertical: 20}]}>
           {convenio.caminho_logomarca ? (
-            <Image
-              source={{uri: convenio.caminho_logomarca}}
-              style={[styles.logoPP]}
-            />
+            <>
+              <Image
+                source={{uri: convenio.caminho_logomarca}}
+                style={[styles.logoPP]}
+              />
+            </>
           ) : (
-            <EvilIcons name="user" size={70} />
+            <EvilIcons name="user" size={70} color="white" />
           )}
 
           <Text style={{width: 150, marginHorizontal: 20, color: white}}>
@@ -41,6 +47,21 @@ export default props => {
             />
             <Text style={styles.textMenu}>Consultar Cartao</Text>
           </TouchableOpacity>
+          {convenio.efetuarVenda && (
+            <TouchableOpacity
+              style={[styles.itemMenu, {backgroundColor: sucessBack}]}
+              onPress={() => alert('foi para efetuar vendas')}>
+              <FA
+                name="dollar"
+                size={30}
+                style={{alignSelf: 'center'}}
+                color={sucess}
+              />
+              <Text style={[styles.textMenu, {color: sucess}]}>
+                Efetuar Venda
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
         <View style={[styles.linhaMenu, {justifyContent: 'center'}]}></View>
         <View style={styles.linhaMenu}>

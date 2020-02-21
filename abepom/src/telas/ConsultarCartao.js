@@ -18,7 +18,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Retorno from '../components/Retorno';
 
 const Home = props => {
-  const {navigation} = props;
   const [modal, setModal] = useState(false);
   const [cartao, setCartao] = React.useState('');
   const [erro, setErro] = React.useState(false);
@@ -81,7 +80,7 @@ const Home = props => {
 
   return (
     <>
-      <Modal isVisible={modal}>
+      <Modal isVisible={modal} {...props}>
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <View style={{backgroundColor: '#fff', padding: 30, paddingTop: 50}}>
             <TouchableOpacity

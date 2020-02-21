@@ -11,6 +11,7 @@ const EnderecoController = require("./controller/EnderecoController");
 const enviarEmail = require("./functions/EnviarEmail");
 
 //Associado
+
 routes.get("/VerificarCartao", associadoController.show);
 //Autenticação e dados do usuario
 routes.post("/Login", LoginController.showConvenios);
@@ -32,6 +33,24 @@ routes.post("/user/resetPass", LoginController.ResetParceiros);
 routes.get("/cidades", CidadesController.index);
 
 //teste
-routes.get("/teste/email", (req, res) => enviarEmail);
+routes.get("/", (req, res, next) => {
+  //console.log("req", req);
+  //console.log("res", res);
+  //console.log("next", next);
+  req.dados = { ...req.body, add: "sim" };
+
+  next();
+});
+routes.get("/teste", (req, res, next) => {
+  return res.send("ok");
+});
+routes.use((req, res, next) => {
+  console.log(req.log);
+  next();
+});
+routes.get("/", (req, res) => {
+  console.log("req", req.dados);
+  return res.json(req.dados);
+});
 
 module.exports = routes;

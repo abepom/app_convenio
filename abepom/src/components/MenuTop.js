@@ -11,6 +11,7 @@ import {primaryBack, primary} from '../utils/Style';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/logo_guia_online.png';
 const MenuTop = props => {
+  console.log(props);
   //React.useEffect(() => {}, itensconfig);
   const [itensconfig, setitensconfig] = React.useState(false);
   const {children, iconeConfig, drawer, noIcons} = props;
@@ -26,10 +27,15 @@ const MenuTop = props => {
       _press = () => props.navigation.toggleDrawer();
     } else {
       iconemenu = 'chevron-left';
-      if (props.navigation.state.params.noLogin) {
-        _press = () => props.navigation.navigate('Login');
+
+      if (props.irpara) {
+        _press = () => {
+          props.navigation.navigate(`${props.irpara}`);
+        };
       } else {
-        _press = () => props.navigation.goBack();
+        _press = () => {
+          props.navigation.goBack();
+        };
       }
     }
   }
