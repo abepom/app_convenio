@@ -6,22 +6,29 @@ import {
   Dimensions,
   TextInput,
 } from 'react-native';
+import {TextInput as Imput} from 'react-native-paper';
 import {RNCamera} from 'react-native-camera';
 import Menu from '../components/MenuTop';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
+import {TextInputMask} from 'react-native-masked-text';
 
 import styles, {danger, primary, primaryBack, white} from '../utils/Style';
 import api from '../api';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import Retorno from '../components/Retorno';
+import maskReal from '../utils/maskReal';
 
 const Home = props => {
   const [modal, setModal] = useState(false);
-  const [cartao, setCartao] = React.useState('');
+  const [cartao, setCartao] = React.useState('47820100001');
   const [erro, setErro] = React.useState(false);
   const [convenio, setConvenio] = React.useState(false);
+  const [associado, setAssociado] = React.useState(null);
+  const [valorUsado, setValorUsado] = useState(null);
+  const [mensagens, setMensagens] = React.useState('');
+  const [camera, setCamera] = useState(false);
 
   useEffect(() => {
     getItens();
@@ -39,21 +46,21 @@ const Home = props => {
       }, 4000);
     }
   }, [erro]);
-  const [associado, setAssociado] = React.useState(null);
-  const [valorUsado, setValorUsado] = useState(null);
-  const [mensagens, setMensagens] = React.useState('');
-  const [camera, setCamera] = useState(false);
-  const _handlerConsultaCartao = async () => {
+  const _handlerConsultaCartao = async card => {
+    if (!card) {
+      card = cartao;
+    }
+
     let req = await api({
       url: '/VerificarCartao',
-      params: {cartao: cartao},
-      headers: {idConvenio: convenio.id_parceiro},
+      params: {cartao: card, id_gds: convenio.id_gds},
+
       method: 'GET',
     });
 
     const {erro, socio, mensagem} = req.data;
 
-    if (cartao.length === 11) {
+    if (card.length === 11) {
       if (erro) {
         setErro(true);
         setMensagens(mensagem);
@@ -66,7 +73,6 @@ const Home = props => {
       setErro(true);
       setMensagens('Cartão invalido. Digite novamente.');
       setAssociado('');
-      //setCartao('');
     }
   };
   const _abrirCamera = () => {
@@ -74,8 +80,24 @@ const Home = props => {
     setCartao('');
     setCamera(true);
   };
-  function handlerStoreValue() {
-    setModal(false);
+  async function handlerStoreValue() {
+    if (valorUsado && valorUsado != 'R$0,00') {
+      let req = await api({
+        url: '/Informe',
+        data: {cartao, id_gds: convenio.id_gds, valor: valorUsado},
+        method: 'POST',
+      });
+      console.log(req);
+      if (!req.data.erro) {
+        setModal(false);
+        alert('Consumo realizado com sucesso');
+        setValorUsado('');
+      } else {
+        alert('Erro ao informar Consumo');
+      }
+    } else {
+      alert('Informe o valor consumido');
+    }
   }
 
   return (
@@ -93,17 +115,52 @@ const Home = props => {
               * essa informação sera usada para estatistica
             </Text>
             <View style={{flexDirection: 'row', marginTop: 30}}>
-              <TextInput
-                style={[styles.input, {width: 200}]}
-                keyboardType="numeric"
+              <Imput
+                label="Valor consumido"
+                dense
+                mode="outlined"
+                direction="rtl"
+                theme={{
+                  colors: {
+                    primary: primary,
+
+                    background: '#fff',
+
+                    text: primary,
+                    placeholder: primary,
+                  },
+                }}
+                keyboardType={'numeric'}
+                style={[
+                  styles.imput,
+                  {width: '75%', marginLeft: 0, textAlign: 'right'},
+                ]}
                 value={valorUsado}
                 onChangeText={setValorUsado}
+                render={props => (
+                  <TextInputMask
+                    type={'money'}
+                    options={{
+                      precision: 2,
+                      separator: ',',
+                      delimiter: '.',
+                      unit: 'R$',
+                      suffixUnit: '',
+                    }}
+                    {...props}
+                  />
+                )}
               />
               <TouchableOpacity
                 onPress={() => {
                   handlerStoreValue();
                 }}>
-                <Icone name="check-circle" size={50} color="#006600" />
+                <Icone
+                  name="check-circle"
+                  size={40}
+                  color="#006600"
+                  style={{margin: 15}}
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -207,9 +264,13 @@ const Home = props => {
                   buttonNegative: 'Cancel',
                 }}
                 onGoogleVisionBarcodesDetected={async ({barcodes}) => {
+                  let [codigo] = barcodes;
+                  console.log(codigo.data);
                   setCamera(false);
-
-                  setCartao(barcodes[0].data);
+                  await setCartao(codigo.data);
+                  setTimeout(() => {
+                    _handlerConsultaCartao(codigo.data);
+                  }, 500);
                 }}
               />
               <View

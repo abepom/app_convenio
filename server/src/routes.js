@@ -13,6 +13,10 @@ const enviarEmail = require("./functions/EnviarEmail");
 //Associado
 
 routes.get("/VerificarCartao", associadoController.show);
+routes.get("/VerificarCartao", associadoController.log);
+
+routes.post("/Informe", associadoController.Informe);
+
 //Autenticação e dados do usuario
 routes.post("/Login", LoginController.showConvenios);
 routes.post("/Login", LoginController.showParceiros);

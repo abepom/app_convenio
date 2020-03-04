@@ -11,8 +11,6 @@ import {primaryBack, primary} from '../utils/Style';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/logo_guia_online.png';
 const MenuTop = props => {
-  console.log(props);
-  //React.useEffect(() => {}, itensconfig);
   const [itensconfig, setitensconfig] = React.useState(false);
   const {children, iconeConfig, drawer, noIcons} = props;
 

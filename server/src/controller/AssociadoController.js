@@ -1,5 +1,6 @@
+require("../functions/replaceAll");
 module.exports = {
-  async show(request, response) {
+  async show(request, response, next) {
     const { cartao } = request.query;
     global.associacao
       .query(
@@ -10,15 +11,39 @@ module.exports = {
         WHERE (A_depend.Nr_Cartao_Abepom = '${cartao}')`
       )
       .then(([[results]]) => {
-        return response.json({ socio: results, erro: false });
+        response.json({ socio: results, erro: false });
+        next();
       })
       .catch(e => {
         console.log(e);
         return response.json(e);
       });
   },
-  async teste(req, res) {
-    console.log({ mensagem: "ok" });
-    return res.json({ mensagem: "ok" });
+
+  async log(req, res) {
+    let { cartao, id_gds } = req.query;
+    global.cartaoBeneficios.query(
+      `INSERT INTO conveniados_log_consultas
+            (id_gds, Nr_Cartao_Abepom, CIU_data)
+        VALUES (${id_gds},'${cartao}',getdate())`
+    );
+  },
+  async Informe(req, res, next) {
+    let { cartao, id_gds, valor } = req.body;
+    valor = valor
+      .replace("R$", "")
+      .replaceAll(".", "")
+      .replace(",", ".");
+
+    global.cartaoBeneficios
+      .query(
+        `iNSERT INTO conveniados_informe_utilizacao( id_gds, Nr_Cartao_Abepom, CUI_Valor, CIU_data)
+     
+        VALUES (${id_gds},'${cartao}',${valor},getdate())`
+      )
+      .then(dados => {
+        res.json({ erro: false });
+      })
+      .catch(() => res.json({ erro: true }));
   }
 };
