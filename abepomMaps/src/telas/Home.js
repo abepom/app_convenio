@@ -6,27 +6,33 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  TextInput,
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import StatusBar from '../components/StatusBar';
 import Menu from '../components/MenuTop';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
-import {TextInput, Directions} from 'react-native-gesture-handler';
-import styles from '../constants/Style';
+import Modal from 'react-native-modal';
+
+import styles, {danger} from '../constants/Style';
 import api from '../api';
 import Mensagam from '../components/Mensagem';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const Home = ({navigation, user = navigation.state.params}) => {
+const Home = ({navigation}) => {
+  const [modal, setModal] = useState(false);
   const [cartao, setCartao] = React.useState('');
   const [erro, setErro] = React.useState(false);
   const [convenio, setConvenio] = React.useState(false);
 
   useEffect(() => {
-    AsyncStorage.getItem('User').then(usuario => {
+    getItens();
+  }, []);
+  async function getItens() {
+    await AsyncStorage.getItem('convenio').then(usuario => {
       setConvenio(JSON.parse(usuario));
     });
-  }, []);
+  }
 
   React.useEffect(() => {
     if (erro) {
@@ -36,22 +42,29 @@ const Home = ({navigation, user = navigation.state.params}) => {
     }
   }, [erro]);
   const [associado, setAssociado] = React.useState(null);
+  const [valorUsado, setValorUsado] = useState(null);
   const [mensagens, setMensagens] = React.useState('');
   const [camera, setCamera] = useState(false);
-  const _handlerConsultaCartao = async () => {
+  const _handlerConsultaCartao = async card => {
+    let cartaoDigitado;
+    card ? (cartaoDigitado = card) : (cartaoDigitado = cartao);
+
     let req = await api({
-      url: 'consultarcartao.asp',
-      data: {cartao: cartao},
-      method: 'post',
+      url: '/VerificarCartao',
+      params: {cartao: cartaoDigitado},
+      headers: {idConvenio: convenio.id_parceiro},
+      method: 'GET',
     });
-    const {erro = erro, associado, mensagem} = req.data;
+
+    const {erro, socio, mensagem} = req.data;
+
     if (cartao.length === 11) {
       if (erro) {
         setErro(true);
         setMensagens(mensagem);
         setAssociado('');
       } else {
-        setAssociado(associado);
+        setAssociado(socio);
       }
     } else {
       setErro(true);
@@ -61,12 +74,46 @@ const Home = ({navigation, user = navigation.state.params}) => {
     }
   };
   const _abrirCamera = () => {
+    setAssociado('');
+    setCartao('');
     setCamera(true);
   };
+  function handlerStoreValue() {
+    setModal(false);
+  }
 
   return (
     <>
       <StatusBar />
+      <Modal isVisible={modal}>
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <View style={{backgroundColor: '#fff', padding: 30, paddingTop: 50}}>
+            <TouchableOpacity
+              style={{position: 'absolute', right: 0}}
+              onPress={() => setModal(false)}>
+              <Icone name="close-circle" size={30} color={danger} />
+            </TouchableOpacity>
+            <Text>Informe a media consumida pelo associado</Text>
+            <Text style={{fontSize: 10, right: 0, position: 'relative'}}>
+              * essa informação sera usada para estatistica
+            </Text>
+            <View style={{flexDirection: 'row', marginTop: 30}}>
+              <TextInput
+                style={[styles.input, {width: 200}]}
+                keyboardType="numeric"
+                value={valorUsado}
+                onChangeText={setValorUsado}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  handlerStoreValue();
+                }}>
+                <Icone name="check-circle" size={50} color="#006600" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       <SafeAreaView>
         <Menu drawer title="ABEPOM Mobile" navigation={navigation}>
@@ -101,6 +148,7 @@ const Home = ({navigation, user = navigation.state.params}) => {
                 value={cartao}
                 style={{width: '85%'}}
                 onChangeText={setCartao}
+                onSubmitEditing={() => _handlerConsultaCartao()}
               />
               <TouchableOpacity
                 style={{width: '15%'}}
@@ -123,24 +171,31 @@ const Home = ({navigation, user = navigation.state.params}) => {
           {erro ? (
             <Mensagam tipo="E" mensagem={mensagens} />
           ) : associado ? (
-            <View
-              style={{
-                margin: 20,
-                padding: 20,
-                backgroundColor: '#008f46',
-                borderRadius: 5,
-                width: '75%',
-              }}>
-              <Text style={{color: 'white', margin: 5}}>
-                Nome: {associado.nome}
-              </Text>
-              <Text style={{color: 'white', margin: 5}}>
-                Tipo: {associado.tipo}
-              </Text>
-              <Text style={{color: 'white', margin: 5}}>
-                Cartão: {associado.cartao}
-              </Text>
-            </View>
+            <>
+              <View
+                style={{
+                  margin: 20,
+                  padding: 20,
+                  backgroundColor: '#008f46',
+                  borderRadius: 5,
+                  width: '75%',
+                }}>
+                <Text style={{color: 'white', margin: 5}}>
+                  Nome: {associado.dep}
+                </Text>
+                <Text style={{color: 'white', margin: 5}}>
+                  Tipo: {associado.descricao}
+                </Text>
+                <Text style={{color: 'white', margin: 5}}>
+                  Cartão: {associado.Nr_Cartao_Abepom}
+                </Text>
+              </View>
+              <TouchableOpacity
+                style={[styles.btnDefault, {width: '50%'}]}
+                onPress={() => setModal(true)}>
+                <Text style={styles.btnDefaultText}>INFORMAR UTILIZAÇÃO</Text>
+              </TouchableOpacity>
+            </>
           ) : null}
           {camera ? (
             <View
@@ -161,16 +216,11 @@ const Home = ({navigation, user = navigation.state.params}) => {
                   buttonPositive: 'Ok',
                   buttonNegative: 'Cancel',
                 }}
-                androidRecordAudioPermissionOptions={{
-                  title: 'Permission to use audio recording',
-                  message: 'We need your permission to use your audio',
-                  buttonPositive: 'Ok',
-                  buttonNegative: 'Cancel',
-                }}
-                onGoogleVisionBarcodesDetected={({barcodes}) => {
+                onGoogleVisionBarcodesDetected={async ({barcodes}) => {
                   setCamera(false);
+
                   setCartao(barcodes[0].data);
-                  _handlerConsultaCartao();
+                  _handlerConsultaCartao(barcodes[0].data);
                 }}
               />
             </View>

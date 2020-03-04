@@ -10,16 +10,14 @@ import {
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/icon.png';
 const MenuTop = props => {
-  console.log(props);
   //React.useEffect(() => {}, itensconfig);
   const [itensconfig, setitensconfig] = React.useState(false);
   const {children, iconeConfig, drawer, noIcons} = props;
-  console.log(drawer);
+
   let iconemenu;
   let _press;
   const _handlerOpemConfig = () => {
     itensconfig ? setitensconfig(false) : setitensconfig(true);
-    console.log(itensconfig);
   };
   if (!noIcons) {
     if (drawer) {

@@ -10,15 +10,18 @@ import {createDrawerNavigator} from 'react-navigation-drawer';
 import Login from './telas/Login';
 import Load from './telas/Load';
 import Home from './telas/Home';
-import ConveniosProximos from './telas/ConveniosProximos';
 import RestartPass from './telas/RestartPass';
-import Mapa from './telas/Mapa';
 
+import Sair from './telas/Sair';
+import DadosGerais from './telas/DadosGerais';
 const drawer = createDrawerNavigator(
   {
     Home,
-    RestartPass,
-    Sair: Login,
+    DadosGerais: {
+      screen: DadosGerais,
+      navigationOptions: {title: 'Dados Gerais'},
+    },
+    Sair: Sair,
   },
   {
     initialRouteName: 'Home',
@@ -28,15 +31,13 @@ const drawer = createDrawerNavigator(
 const Routes = createAppContainer(
   createSwitchNavigator(
     {
-      Mapa,
       Load,
       Login,
       RestartPass,
       drawer,
-      ConveniosProximos,
     },
     {
-      initialRouteName: 'Mapa',
+      initialRouteName: 'Load',
     },
   ),
 );

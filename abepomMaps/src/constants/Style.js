@@ -1,5 +1,14 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
+// const primary= '#'
+// const primaryBack
+// const alert
+// const alertBack
+// const sucess
+// const sucessBack
+export const danger = '#b94a48';
+export const danverBackground = '#eed3d7';
+
 const styles = StyleSheet.create({
   conteiner: {
     flex: 1,
