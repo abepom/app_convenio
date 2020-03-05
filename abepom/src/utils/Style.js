@@ -29,10 +29,10 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   logoPP: {
-    width: 50,
-    height: 50,
+    width: 75,
+    height: 75,
     resizeMode: 'cover',
-    borderRadius: 25,
+    borderRadius: 50,
   },
   bgImage: {
     width: Dimensions.get('screen').width,
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   textMenu: {textAlign: 'center', marginTop: 10, color: primary},
+  itemDrawer: {textAlign: 'center', width: 50},
 });
 
 export default styles;

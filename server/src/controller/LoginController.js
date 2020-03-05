@@ -17,7 +17,7 @@ module.exports = {
 
     global.cartaoBeneficios
       .query(
-        `SELECT  guia_de_servico.id_gds ,guia_de_servico.nome_parceiro, guia_de_servico.caminho_logomarca
+        `SELECT  guia_de_servico.id_gds ,guia_de_servico.nome_parceiro, guia_de_servico.caminho_logomarca, cnpj+cpf
         FROM conveniados_pre_cadastro INNER JOIN guia_de_servico ON conveniados_pre_cadastro.cod_parceiro = guia_de_servico.cod_parceiro
         WHERE (conveniados_pre_cadastro.ativo = '1') 
         ${
