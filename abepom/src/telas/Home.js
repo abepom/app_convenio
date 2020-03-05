@@ -8,33 +8,16 @@ import styles, {
   sucess,
 } from '../utils/Style';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import FA from 'react-native-vector-icons/FontAwesome';
+import FA5 from 'react-native-vector-icons/FontAwesome5';
 import MenuTop from '../components/MenuTop';
 
 export default props => {
-  const [state, setstate] = useState({});
-  const [convenio, seConvenio] = useState(props.navigation.state.params);
+  const [convenio, setConvenio] = useState(props.navigation.state.params);
 
   return (
-    <MenuTop drawer title="Home" {...props}>
+    <MenuTop drawer title="ABEPOM" {...props}>
       <View style={{width: '100%', backgroundColor: primary}}>
-        <View style={[styles.row, styles.center, {marginVertical: 20}]}>
-          {convenio.caminho_logomarca ? (
-            <>
-              <Image
-                source={{uri: convenio.caminho_logomarca}}
-                style={[styles.logoPP]}
-              />
-            </>
-          ) : (
-            <EvilIcons name="user" size={70} color="white" />
-          )}
-
-          <Text style={{width: 150, marginHorizontal: 20, color: white}}>
-            {[convenio.nome_parceiro]}
-          </Text>
-        </View>
         <View style={styles.linhaMenu}>
           <TouchableOpacity
             style={styles.itemMenu}
@@ -47,7 +30,23 @@ export default props => {
             />
             <Text style={styles.textMenu}>Consultar Cartao</Text>
           </TouchableOpacity>
-          {convenio.efetuarVenda && (
+          <TouchableOpacity
+            style={styles.itemMenu}
+            onPress={() => {
+              alert('listar usuarios atendidos');
+            }}>
+            <FA
+              name="list-ul"
+              size={30}
+              style={{alignSelf: 'center'}}
+              color={primaryBack}
+            />
+            <Text style={styles.textMenu}>Listar Atendimentos</Text>
+          </TouchableOpacity>
+        </View>
+
+        {convenio.efetuarVenda && (
+          <View style={styles.linhaMenu}>
             <TouchableOpacity
               style={[styles.itemMenu, {backgroundColor: sucessBack}]}
               onPress={() => alert('foi para efetuar vendas')}>
@@ -61,15 +60,26 @@ export default props => {
                 Efetuar Venda
               </Text>
             </TouchableOpacity>
-          )}
-        </View>
-        <View style={[styles.linhaMenu, {justifyContent: 'center'}]}></View>
+            <TouchableOpacity
+              style={[styles.itemMenu, {backgroundColor: sucessBack}]}
+              onPress={() => alert('consultar Vendas')}>
+              <FA5
+                name="cash-register"
+                size={30}
+                style={{alignSelf: 'center'}}
+                color={sucess}
+              />
+              <Text style={[styles.textMenu, {color: sucess}]}>
+                Consultar Vendas
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
         <View style={styles.linhaMenu}>
           <TouchableOpacity
             style={styles.itemMenu}
             onPress={() => {
-              console.log(convenio);
-              props.navigation.navigate('DadosGerais', convenio);
+              alert('Perfil');
             }}>
             <FA
               name="id-card"
@@ -81,7 +91,7 @@ export default props => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.itemMenu}
-            onPress={() => props.navigation.navigate('Endereco', convenio)}>
+            onPress={() => alert('endereço')}>
             <FA
               name="map-marker"
               size={30}
