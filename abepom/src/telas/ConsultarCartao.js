@@ -13,12 +13,13 @@ import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
 import {TextInputMask} from 'react-native-masked-text';
 
-import styles, {danger, primary, primaryBack, white} from '../utils/Style';
+import styles, {danger, primary, white} from '../utils/Style';
 import api from '../api';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import Retorno from '../components/Retorno';
 import maskReal from '../utils/maskReal';
+import Mensagem from '../components/Mensagem';
 
 const Home = props => {
   const [modal, setModal] = useState(false);
@@ -54,7 +55,6 @@ const Home = props => {
     let req = await api({
       url: '/VerificarCartao',
       params: {cartao: card, id_gds: convenio.id_gds},
-
       method: 'GET',
     });
 
@@ -63,7 +63,7 @@ const Home = props => {
     if (card.length === 11) {
       if (erro) {
         setErro(true);
-        setMensagens(mensagem);
+        setMensagens({descricao: mensagem, tipo: 'danger'});
         setAssociado('');
       } else {
         setAssociado(socio);
@@ -71,7 +71,10 @@ const Home = props => {
       console.log(socio);
     } else {
       setErro(true);
-      setMensagens('Cartão invalido. Digite novamente.');
+      setMensagens({
+        descricao: 'Cartão invalido. Digite novamente.',
+        tipo: 'danger',
+      });
       setAssociado('');
     }
   };
@@ -90,7 +93,7 @@ const Home = props => {
       console.log(req);
       if (!req.data.erro) {
         setModal(false);
-        alert('Consumo realizado com sucesso');
+
         setValorUsado('');
       } else {
         alert('Erro ao informar Consumo');
@@ -98,6 +101,10 @@ const Home = props => {
     } else {
       alert('Informe o valor consumido');
     }
+    setCartao('');
+    setAssociado(null);
+    setErro(true);
+    setMensagens({descricao: `Consumo informado com sucesso`, tipo: 'sucess'});
   }
 
   return (
@@ -110,7 +117,9 @@ const Home = props => {
               onPress={() => setModal(false)}>
               <Icone name="close-circle" size={30} color={danger} />
             </TouchableOpacity>
-            <Text>Informe a media consumida pelo associado</Text>
+            <Text style={{color: primary}}>
+              Informe a media consumida pelo associado
+            </Text>
             <Text style={{fontSize: 10, right: 0, position: 'relative'}}>
               * essa informação sera usada para estatistica
             </Text>
@@ -169,7 +178,7 @@ const Home = props => {
 
       <Menu {...props} title="Consulta de Cartões">
         <View style={{alignItems: 'center'}}>
-          <Text style={{fontSize: 16, marginVertical: 20, color: '#fff'}}>
+          <Text style={{fontSize: 16, marginVertical: 20, color: primary}}>
             Informe o numero do cartão do associado
           </Text>
           <View style={[styles.input, {flexDirection: 'row'}]}>
@@ -202,7 +211,7 @@ const Home = props => {
         </View>
         {erro ? (
           <View style={{width: '80%'}}>
-            <Retorno type="danger" mensagem={mensagens} />
+            <Retorno type={mensagens.tipo} mensagem={mensagens.descricao} />
           </View>
         ) : associado ? (
           <>
@@ -210,7 +219,7 @@ const Home = props => {
               style={{
                 margin: 20,
                 padding: 20,
-                backgroundColor: primaryBack,
+                backgroundColor: primary,
 
                 elevation: 5,
                 borderRadius: 5,
@@ -263,14 +272,13 @@ const Home = props => {
                   buttonPositive: 'Ok',
                   buttonNegative: 'Cancel',
                 }}
-                onGoogleVisionBarcodesDetected={async ({barcodes}) => {
+                onGoogleVisionBarcodesDetected={({barcodes}) => {
                   let [codigo] = barcodes;
                   console.log(codigo.data);
                   setCamera(false);
-                  await setCartao(codigo.data);
-                  setTimeout(() => {
-                    _handlerConsultaCartao(codigo.data);
-                  }, 500);
+                  setCartao(codigo.data);
+
+                  _handlerConsultaCartao(codigo.data);
                 }}
               />
               <View

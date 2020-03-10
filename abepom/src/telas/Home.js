@@ -1,15 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
-import styles, {
-  primary,
-  primaryBack,
-  white,
-  sucessBack,
-  sucess,
-} from '../utils/Style';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import FA from 'react-native-vector-icons/FontAwesome';
-import FA5 from 'react-native-vector-icons/FontAwesome5';
+import React, {useState} from 'react';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
+import styles, {primary, sucessBack, sucess, background} from '../utils/Style';
+
 import MenuTop from '../components/MenuTop';
 
 export default props => {
@@ -17,29 +9,27 @@ export default props => {
 
   return (
     <MenuTop drawer title="ABEPOM" {...props}>
-      <View style={{width: '100%', backgroundColor: primary}}>
+      <View style={{width: '100%', backgroundColor: background}}>
         <View style={styles.linhaMenu}>
           <TouchableOpacity
             style={styles.itemMenu}
             onPress={() => props.navigation.navigate('ConsultarCartao')}>
-            <EvilIcons
-              name="credit-card"
-              size={30}
-              style={{alignSelf: 'center'}}
-              color={primaryBack}
+            <Image
+              source={require('../assets/img/pay.png')}
+              style={{width: 40, height: 40}}
+              tintColor={primary}
             />
             <Text style={styles.textMenu}>Consultar Cartao</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.itemMenu}
             onPress={() => {
-              alert('listar usuarios atendidos');
+              props.navigation.navigate('ListarAtendimento', convenio);
             }}>
-            <FA
-              name="list-ul"
-              size={30}
-              style={{alignSelf: 'center'}}
-              color={primaryBack}
+            <Image
+              source={require('../assets/img/list.png')}
+              style={{width: 40, height: 40}}
+              tintColor={primary}
             />
             <Text style={styles.textMenu}>Listar Atendimentos</Text>
           </TouchableOpacity>
@@ -49,12 +39,13 @@ export default props => {
           <View style={styles.linhaMenu}>
             <TouchableOpacity
               style={[styles.itemMenu, {backgroundColor: sucessBack}]}
-              onPress={() => alert('foi para efetuar vendas')}>
-              <FA
-                name="dollar"
-                size={30}
-                style={{alignSelf: 'center'}}
-                color={sucess}
+              onPress={() =>
+                props.navigation.navigate('EfetuarVenda', convenio)
+              }>
+              <Image
+                source={require('../assets/img/money.png')}
+                style={{width: 40, height: 40}}
+                tintColor={primary}
               />
               <Text style={[styles.textMenu, {color: sucess}]}>
                 Efetuar Venda
@@ -63,11 +54,10 @@ export default props => {
             <TouchableOpacity
               style={[styles.itemMenu, {backgroundColor: sucessBack}]}
               onPress={() => alert('consultar Vendas')}>
-              <FA5
-                name="cash-register"
-                size={30}
-                style={{alignSelf: 'center'}}
-                color={sucess}
+              <Image
+                source={require('../assets/img/bill.png')}
+                style={{width: 40, height: 40}}
+                tintColor={primary}
               />
               <Text style={[styles.textMenu, {color: sucess}]}>
                 Consultar Vendas
@@ -81,22 +71,20 @@ export default props => {
             onPress={() => {
               alert('Perfil');
             }}>
-            <FA
-              name="id-card"
-              size={30}
-              style={{alignSelf: 'center'}}
-              color={primaryBack}
+            <Image
+              source={require('../assets/img/portfolio.png')}
+              style={{width: 40, height: 40}}
+              tintColor={primary}
             />
             <Text style={styles.textMenu}>Perfil</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.itemMenu}
             onPress={() => alert('endereço')}>
-            <FA
-              name="map-marker"
-              size={30}
-              style={{alignSelf: 'center'}}
-              color={primaryBack}
+            <Image
+              source={require('../assets/img/gps.png')}
+              style={{width: 40, height: 40}}
+              tintColor={primary}
             />
             <Text style={styles.textMenu}>Endereço</Text>
           </TouchableOpacity>

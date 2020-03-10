@@ -7,10 +7,11 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import {primaryBack, primary} from '../utils/Style';
+import {primary, background} from '../utils/Style';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
-import icone from '../assets/img/logo_guia_online.png';
+import icone from '../assets/img/abepom.png';
 const MenuTop = props => {
+  console.log(props);
   const [itensconfig, setitensconfig] = React.useState(false);
   const {children, iconeConfig, drawer, noIcons} = props;
 
@@ -57,12 +58,22 @@ const MenuTop = props => {
           </TouchableOpacity>
         ) : null}
       </View>
+      {props.header && (
+        <View style={{alignItems: 'center', paddingBottom: 20}}>
+          {props.header}
+        </View>
+      )}
 
-      <ScrollView style={{backgroundColor: primary}}>
+      <ScrollView style={{backgroundColor: background}}>
         <View style={{alignItems: 'center', paddingBottom: 20}}>
           {children}
         </View>
       </ScrollView>
+      {props.footer && (
+        <View style={{alignItems: 'center', paddingBottom: 20}}>
+          {props.footer}
+        </View>
+      )}
     </>
   );
 };
@@ -70,7 +81,7 @@ const MenuTop = props => {
 const styles = StyleSheet.create({
   container: {
     height: 50,
-    backgroundColor: primaryBack,
+    backgroundColor: primary,
     flexDirection: 'row',
     paddingHorizontal: 10,
     justifyContent: 'center',

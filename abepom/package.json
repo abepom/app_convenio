@@ -8,8 +8,11 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "apk": " react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
-    "build": "cd android && ./gradlew assembleRelease && cd ..",
+    "apkAS": " react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "assemble": "cd android && ./gradlew assembleRelease && cd ..",
+    "apk": "react-native run-android --variant=release",
+    "bundle": "cd android && ./gradlew bundleRelease && cd ..",
+
     "ao": "emulator -avd ao"
   },
   "dependencies": {

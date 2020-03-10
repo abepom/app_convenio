@@ -9,12 +9,7 @@ import {
 } from 'react-native';
 import mask from '../utils/maskUsuario';
 import {TextInput} from 'react-native-paper';
-import styles, {
-  danger,
-  danverBackground,
-  primaryBack,
-  primary,
-} from '../utils/Style';
+import styles, {danger, danverBackground, primary} from '../utils/Style';
 
 import api from '../api';
 import theme from '../utils/theme';

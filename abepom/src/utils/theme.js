@@ -1,10 +1,10 @@
-import {primary, primaryBack} from './Style';
+import {primary} from './Style';
 
 export default {
   colors: {
     primary: '#fff',
 
-    background: primaryBack,
+    background: primary,
 
     text: '#fff',
     placeholder: '#fff',

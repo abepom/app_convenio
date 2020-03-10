@@ -3,7 +3,7 @@ import {View, Image} from 'react-native';
 import logo from '../assets/img/logo_abepom_branca.png';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import {primaryBack} from '../utils/Style';
+import {primary} from '../utils/Style';
 import api from '../api';
 
 const Load = ({navigation}) => {
@@ -14,7 +14,6 @@ const Load = ({navigation}) => {
     _retrieveData();
   }, []);
   const conectar = async () => {
-    
     if (doc.length > 13 && senha) {
       const {data} = await api({
         url: '/Login',
@@ -34,23 +33,27 @@ const Load = ({navigation}) => {
         navigation.navigate('Home', convenio);
       }
     } else {
-      navigation.navigate('login');
+      navigation.navigate('Login');
     }
   };
 
   const _retrieveData = async () => {
     let user = await AsyncStorage.getItem('Usuario');
-    user = JSON.parse(user);
-    doc = user.doc;
-    senha = user.senha;
-    console.log(doc, senha);
-    await conectar();
-    console.log('teste');
+
+    if (user) {
+      user = JSON.parse(user);
+      doc = user.doc;
+      senha = user.senha;
+
+      await conectar();
+    } else {
+      navigation.navigate('Login');
+    }
   };
   return (
     <View
       style={{
-        backgroundColor: primaryBack,
+        backgroundColor: primary,
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',

@@ -13,20 +13,54 @@ import Endereco from './telas/Enderecos';
 import Drawer from './components/Drawer';
 import {primary, primaryBack, white} from './utils/Style';
 import ItemDrawer from './components/ItemDrawer';
+import ListarAtendimento from './telas/ListarAtendimento';
+import imagem from './utils/imagens';
+import EfetuarVenda from './telas/EfetuarVenda';
+import getConvenio from './utils/getConvenio';
+let convenio;
+getConvenio('convenio').then(a => (convenio = a));
 
 const App = createDrawerNavigator(
   {
     Home: {
       screen: Home,
+
       navigationOptions: {
-        drawerIcon: props => <ItemDrawer {...props} name="home" />,
+        drawerIcon: props => <ItemDrawer {...props} icone={imagem.abepom} />,
         drawerLabel: 'ABEPOM',
       },
     },
     ConsultarCartao: {
       screen: ConsultarCartao,
       navigationOptions: {
-        drawerIcon: props => <ItemDrawer {...props} name="credit-card" />,
+        drawerIcon: props => <ItemDrawer {...props} icone={imagem.pay} />,
+      },
+    },
+    ListarAtendimento: {
+      screen: ListarAtendimento,
+      params: convenio,
+      navigationOptions: {
+        drawerIcon: props => <ItemDrawer {...props} icone={imagem.list} />,
+      },
+    },
+    EfetuarVenda: {
+      screen: EfetuarVenda,
+
+      navigationOptions: {
+        drawerIcon: props => {
+          if (convenio.efetuarVenda) {
+            return <ItemDrawer {...props} icone={imagem.money} />;
+          } else {
+            return null;
+          }
+        },
+        drawerLabel: () => {
+          if (convenio.efetuarVenda) {
+            return 'Efetuar Vendas';
+          } else {
+            return null;
+          }
+        },
       },
     },
     Endereco: {
@@ -49,7 +83,7 @@ const App = createDrawerNavigator(
     Sair: {
       screen: Sair,
       navigationOptions: {
-        drawerIcon: props => <ItemDrawer {...props} name="exit-to-app" />,
+        drawerIcon: props => <ItemDrawer {...props} icone={imagem.off} />,
       },
     },
   },
@@ -63,7 +97,7 @@ const App = createDrawerNavigator(
     edgeWidth: 200,
     contentOptions: {
       activeTintColor: white,
-      activeBackgroundColor: primaryBack,
+      activeBackgroundColor: primary,
       inactiveTintColor: primary,
     },
     defaultNavigationOption: {
