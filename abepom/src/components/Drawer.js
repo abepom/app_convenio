@@ -9,10 +9,10 @@ import {
 } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {DrawerNavigatorItems} from 'react-navigation-drawer';
-import styles, {white, primaryBack} from '../utils/Style';
+import styles, {primaryBack} from '../utils/Style';
 const Drawer = props => {
   let convenio = props.descriptors.Home.state.params;
-  console.log(convenio.nome_parceiro);
+
   return (
     <ScrollView style={styles.flex}>
       <SafeAreaView style={styles.flex}>

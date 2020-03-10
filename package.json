@@ -1,0 +1,11 @@
+{
+  "name": "apps",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Thiagodenirramos/abepom.git",
+  "author": "Thiago-ABEPOM <thiago.denir.ramos@hotmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "android": "cd abepom && react-native run-android"
+  }
+}

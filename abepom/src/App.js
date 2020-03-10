@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
-import {StatusBar, SafeAreaView} from 'react-native';
+import React from 'react';
+import {StatusBar} from 'react-native';
 import Routes from './Routes';
-import {primaryBack} from './utils/Style';
+import {primary} from './utils/Style';
 
 const App = () => {
   console.disableYellowBox = true;
   return (
     <>
-      <StatusBar backgroundColor={primaryBack} barStyle="light-content" />
-      <Routes />
+      <StatusBar backgroundColor={primary} barStyle="light-content" />
+      <Routes teste={'teste'} />
     </>
   );
 };

@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import {View, Image} from 'react-native';
 import logo from '../assets/img/logo_guia_online.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import {primaryBack} from '../utils/Style';
+import {primary} from '../utils/Style';
 
 const Load = ({navigation}) => {
   useEffect(() => {
@@ -18,7 +18,7 @@ const Load = ({navigation}) => {
   return (
     <View
       style={{
-        backgroundColor: primaryBack,
+        backgroundColor: primary,
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',

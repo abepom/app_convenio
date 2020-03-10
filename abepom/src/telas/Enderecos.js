@@ -9,7 +9,7 @@ import {
 import Menu from '../components/MenuTop';
 import {TextInput} from 'react-native-paper';
 import TextInputMask from 'react-native-text-input-mask';
-import styles, {white, primaryBack, primary} from '../utils/Style';
+import styles, {white, primary} from '../utils/Style';
 import theme from '../utils/theme';
 import Icone from 'react-native-vector-icons/AntDesign';
 import MC from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -99,7 +99,7 @@ const Enderecos = props => {
           <View
             style={{
               flexDirection: 'row',
-              backgroundColor: primaryBack,
+              backgroundColor: primary,
               width: '80%',
               borderRadius: 5,
               padding: 5,
@@ -109,7 +109,7 @@ const Enderecos = props => {
             <View style={{width: '90%'}}>
               <Text
                 style={{
-                  backgroundColor: primaryBack,
+                  backgroundColor: primary,
                   color: white,
                   fontSize: 11,
                 }}>
@@ -117,7 +117,7 @@ const Enderecos = props => {
               </Text>
               <Text
                 style={{
-                  backgroundColor: primaryBack,
+                  backgroundColor: primary,
                   color: white,
                   fontSize: 11,
                 }}>
@@ -131,7 +131,7 @@ const Enderecos = props => {
 
               <Text
                 style={{
-                  backgroundColor: primaryBack,
+                  backgroundColor: primary,
                   color: white,
                   fontSize: 11,
                 }}>

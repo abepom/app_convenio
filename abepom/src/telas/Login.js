@@ -6,17 +6,13 @@ import StatusBar from '../components/StatusBar';
 import bg from '../assets/img/background.png';
 import logo from '../assets/img/logo_abepom_branca.png';
 import {TextInput} from 'react-native-paper';
-import styles, {
-  danger,
-  danverBackground,
-  primaryBack,
-  primary,
-} from '../utils/Style';
+import styles, {danger, danverBackground, primary} from '../utils/Style';
 
 import mask from '../utils/maskUsuario';
 import api from '../api';
 import theme from '../utils/theme';
 import {ScrollView} from 'react-native-gesture-handler';
+import setConvenio from '../utils/setConvenio';
 
 const Login = props => {
   const [state, setState] = useState({
@@ -42,24 +38,23 @@ const Login = props => {
   }, [state.erro]);
 
   const conectar = async () => {
-    console.log(doc.length > 13, senha);
     if (doc.length > 13 && senha) {
       const {data} = await api({
         url: '/Login',
         data: {usuario: doc, senha},
         method: 'post',
       });
-      console.log(data.erro);
+
       let convenio;
       if (!data.erro) {
-        setUsuario('Usuario', {doc, senha});
+        setConvenio('Usuario', {doc, senha});
         convenio = {
           id_gds: data.id_gds,
           nome_parceiro: data.nome_parceiro,
           caminho_logomarca: data.caminho_logomarca,
           efetuarVenda: data.efetuarVenda,
         };
-        setUsuario('convenio', convenio);
+        setConvenio('convenio', convenio);
 
         props.navigation.navigate('Home', convenio);
       } else {
@@ -68,9 +63,6 @@ const Login = props => {
     } else {
       setState({erro: true, mensagem: 'Usuario ou Senha incorretos'});
     }
-  };
-  const setUsuario = async (local, dados) => {
-    await AsyncStorage.setItem(local, JSON.stringify(dados));
   };
 
   return (

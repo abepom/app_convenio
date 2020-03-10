@@ -15,7 +15,10 @@ const enviarEmail = require("./functions/EnviarEmail");
 routes.get("/VerificarCartao", associadoController.show);
 routes.get("/VerificarCartao", associadoController.log);
 
+//Informe de utilização
+
 routes.post("/Informe", associadoController.Informe);
+routes.get("/ListaAtendimentos", ParceirosController.CarregarVendas);
 
 //Autenticação e dados do usuario
 routes.post("/Login", LoginController.showConvenios);
@@ -35,6 +38,8 @@ routes.post("/user/resetPass", LoginController.ResetParceiros);
 
 //mostrar cidades
 routes.get("/cidades", CidadesController.index);
+
+//
 
 //teste
 routes.get("/", (req, res, next) => {

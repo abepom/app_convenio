@@ -1,7 +1,8 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
-export const primary = '#04254e';
-export const primaryBack = '#124268';
+//export const primary = '#f00';
+export const primary = '#03254e';
+export const background = '#f0eeef';
 export const alert = '#7f6937';
 export const alertBack = '#fff3cd';
 export const sucess = '#284c26';
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width * 0.8,
   },
   btnDefault: {
-    backgroundColor: '#6c757c',
+    backgroundColor: primary,
     height: 45,
     justifyContent: 'center',
     alignItems: 'center',
@@ -78,8 +79,8 @@ const styles = StyleSheet.create({
   },
   itemMenu: {
     padding: 10,
-    borderWidth: 2,
-    borderColor: primaryBack,
+    borderWidth: 1,
+    borderColor: primary,
     backgroundColor: white,
     flex: 1,
     marginHorizontal: 10,

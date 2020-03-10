@@ -2,7 +2,6 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import {
   sucess,
-  sucessBack,
   danger,
   danverBackground,
   alert,
@@ -17,18 +16,18 @@ export default props => {
   switch (type) {
     case 'sucess':
       console.log('sucess');
-      backgroundColor = sucessBack;
-      color = sucess;
+      backgroundColor = '#42834f';
+      color = 'white';
       break;
     case 'danger':
       console.log('danger');
-      backgroundColor = danverBackground;
-      color = danger;
+      backgroundColor = '#b43938';
+      color = 'white';
       break;
     case 'warning':
       console.log('warning');
       backgroundColor = alertBack;
-      color = alert;
+      color = 'white';
       break;
     case 'info':
       break;

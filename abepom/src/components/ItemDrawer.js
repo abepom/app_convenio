@@ -1,14 +1,12 @@
 import React from 'react';
-import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
-import styles from '../utils/Style';
+import {Image} from 'react-native';
 
 const ItemDrawer = props => {
   return (
-    <Icone
-      name={props.name}
-      color={props.focused ? 'white' : props.tintColor}
-      size={28}
-      style={styles.itemDrawer}
+    <Image
+      source={props.icone}
+      style={{width: 30, height: 30}}
+      tintColor={props.focused ? 'white' : props.tintColor}
     />
   );
 };
