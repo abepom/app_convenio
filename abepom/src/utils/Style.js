@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   btnDefaultText: {
-    color: white,
+    color: '#fff',
   },
   link: {
     //backgroundColor: 'green',

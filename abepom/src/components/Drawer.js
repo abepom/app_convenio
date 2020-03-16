@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -10,8 +10,18 @@ import {
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {DrawerNavigatorItems} from 'react-navigation-drawer';
 import styles, {primaryBack} from '../utils/Style';
+import getUsuario from '../utils/getUsuario';
+
 const Drawer = props => {
-  let convenio = props.descriptors.Home.state.params;
+  const [convenio, setConvenio] = useState({
+    caminho_logomarca: null,
+    nome_parceiro: 'nome_parceiro',
+    efetuarVenda: false,
+  });
+  // getUsuario('convenio').then(a => {
+  //   console.log(a);
+  //   setConvenio(a);
+  // });
 
   return (
     <ScrollView style={styles.flex}>

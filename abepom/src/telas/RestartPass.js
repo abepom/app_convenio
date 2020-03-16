@@ -6,10 +6,16 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
+  Dimensions,
 } from 'react-native';
 import mask from '../utils/maskUsuario';
 import {TextInput} from 'react-native-paper';
-import styles, {danger, danverBackground, primary} from '../utils/Style';
+import styles, {
+  danger,
+  danverBackground,
+  primary,
+  background,
+} from '../utils/Style';
 
 import api from '../api';
 import theme from '../utils/theme';
@@ -24,7 +30,8 @@ const Login = props => {
 
   //const [doc, setdoc] = useState('33.734.844/0001-15');
   //const [doc, setdoc] = useState('92.665.611/0001-77');
-  const [doc, setdoc] = useState('92.665.611/0001-77');
+  //const [doc, setdoc] = useState('92.665.611/0001-77');
+  const [doc, setdoc] = useState('03.383.807/0002-20');
   const [teclado, setTeclado] = useState('default');
 
   useEffect(() => {
@@ -56,50 +63,66 @@ const Login = props => {
           erro: data.erro,
           mensagem: 'Verifique o Usuário.',
         })
-      : props.navigation.navigate('Login');
+      : props.navigation.navigate('Login', {resetSenha: true});
     setLoad(false);
   };
 
   return (
     <>
-      <MenuTop title="Redefinir Senha" {...props} irpara="Login">
-        <View style={estilos.conteiner}>
-          <Text style={estilos.cabecalho}>
-            Informe o seu usuário e recebe um email com instruções para alterar
-            sua senha.
-          </Text>
+      <View
+        style={{
+          height: 100000,
+          backgroundColor: 'red',
+        }}>
+        <MenuTop
+          title="Redefinir Senha"
+          {...props}
+          irpara="Login"
+          backgroundColor={primary}>
+          <View style={[estilos.conteiner]}>
+            <Text style={estilos.cabecalho}>
+              Informe o seu usuário e recebe um email com instruções para
+              alterar sua senha.
+            </Text>
 
-          <View style={{marginTop: 20, width: '100%'}}>
-            <TextInput
-              label="CNPJ / CPF / Usuário"
-              dense
-              mode="outlined"
-              theme={theme}
-              value={doc}
-              onChangeText={text => mask(text, setdoc, setTeclado)}
-              keyboardType={teclado}
-              style={[styles.imput]}
-            />
-          </View>
-          {state.erro && (
-            <View style={estilos.retornoBackend}>
-              <Text style={{color: danger}}>{state.mensagem}</Text>
+            <View style={{marginTop: 20, width: '100%'}}>
+              <TextInput
+                label="CNPJ / CPF / Usuário"
+                dense
+                mode="outlined"
+                theme={theme}
+                value={doc}
+                onChangeText={text => mask(text, setdoc, setTeclado)}
+                keyboardType={teclado}
+                style={[styles.imput]}
+              />
             </View>
-          )}
-
-          <View style={estilos.buttonView}>
-            {load ? (
-              <ActivityIndicator size={30} color="white" />
-            ) : (
-              <TouchableOpacity
-                style={[styles.btnDefault, {paddingHorizontal: 10}]}
-                onPress={resetSenha}>
-                <Text style={styles.btnDefaultText}>REDEFINIR SENHA</Text>
-              </TouchableOpacity>
+            {state.erro && (
+              <View style={estilos.retornoBackend}>
+                <Text style={{color: danger}}>{state.mensagem}</Text>
+              </View>
             )}
+
+            <View
+              style={[estilos.buttonView, {justifyContent: 'space-between'}]}>
+              {load ? (
+                <ActivityIndicator size={30} color="white" />
+              ) : (
+                <TouchableOpacity
+                  style={[
+                    styles.btnDefault,
+                    {paddingHorizontal: 10, backgroundColor: background},
+                  ]}
+                  onPress={resetSenha}>
+                  <Text style={[{fontWeight: 'bold', color: primary}]}>
+                    REDEFINIR SENHA
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
-        </View>
-      </MenuTop>
+        </MenuTop>
+      </View>
     </>
   );
 };
@@ -131,6 +154,7 @@ const estilos = StyleSheet.create({
   },
   conteiner: {
     width: '100%',
+
     backgroundColor: primary,
     alignItems: 'center',
   },

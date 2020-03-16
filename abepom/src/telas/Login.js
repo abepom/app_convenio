@@ -1,34 +1,48 @@
 import React, {useState, useEffect} from 'react';
-import {View, Image, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {PermissionsAndroid} from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  PermissionsAndroid,
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import StatusBar from '../components/StatusBar';
 import bg from '../assets/img/background.png';
 import logo from '../assets/img/logo_abepom_branca.png';
 import {TextInput} from 'react-native-paper';
-import styles, {danger, danverBackground, primary} from '../utils/Style';
-
+import styles, {
+  danger,
+  danverBackground,
+  primary,
+  sucess,
+  background,
+} from '../utils/Style';
 import mask from '../utils/maskUsuario';
 import api from '../api';
 import theme from '../utils/theme';
 import {ScrollView} from 'react-native-gesture-handler';
-import setConvenio from '../utils/setConvenio';
+import setConvenio from '../utils/setUsuario';
 
 const Login = props => {
+  const [reset, setReset] = useState(
+    props.navigation.state.params
+      ? props.navigation.state.params.resetSenha
+      : false,
+  );
+
   const [state, setState] = useState({
     erro: false,
     mensagem: '',
   });
-  //const [doc, setdoc] = useState('33.734.844/0001-15');
-  const [doc, setdoc] = useState('03.383.807/0002-20');
+  const [doc, setdoc] = useState('33.734.844/0001-15');
+  //const [doc, setdoc] = useState('03.383.807/0002-20');
   //const [doc, setdoc] = useState('');
-  //const [senha, setSenha] = useState('casaludica2019');
-  const [senha, setSenha] = useState('normal123');
+  const [senha, setSenha] = useState('casaludica2019');
+  //const [senha, setSenha] = useState('normal123');
   const [teclado, setTeclado] = useState('default');
 
-  useEffect(() => {
-    PermissionsAndroid.PERMISSIONS.INTERNET;
-  }, []);
   useEffect(() => {
     if (state.erro) {
       setTimeout(() => {
@@ -47,13 +61,14 @@ const Login = props => {
 
       let convenio;
       if (!data.erro) {
-        setConvenio('Usuario', {doc, senha});
+        setConvenio('usuario', {doc, senha});
         convenio = {
           id_gds: data.id_gds,
           nome_parceiro: data.nome_parceiro,
           caminho_logomarca: data.caminho_logomarca,
           efetuarVenda: data.efetuarVenda,
         };
+
         setConvenio('convenio', convenio);
 
         props.navigation.navigate('Home', convenio);
@@ -100,8 +115,21 @@ const Login = props => {
             />
           </View>
           {state.erro && (
-            <View style={estilos.retornoBackend}>
+            <View style={[estilos.retornoBackend, estilos.mensagemErro]}>
               <Text style={{color: danger}}>{state.mensagem}</Text>
+            </View>
+          )}
+          {reset && (
+            <View
+              style={[estilos.retornoBackend, estilos.mensagemSucesso]}
+              onLayout={() =>
+                setTimeout(() => {
+                  setReset(false);
+                }, 3000)
+              }>
+              <Text style={{color: 'white'}}>
+                Você recebera um email com sua senha
+              </Text>
             </View>
           )}
 
@@ -119,9 +147,16 @@ const Login = props => {
               <Text style={styles.btnDefaultText}>Esqueceu sua senha?</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.btnDefault, {paddingHorizontal: 10}]}
+              style={[
+                styles.btnDefault,
+                {
+                  padding: 10,
+                  paddingHorizontal: 20,
+                  backgroundColor: background,
+                },
+              ]}
               onPress={conectar}>
-              <Text style={styles.btnDefaultText}>ENTRAR</Text>
+              <Text style={{color: primary}}>ENTRAR</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -140,14 +175,22 @@ const estilos = StyleSheet.create({
     flexDirection: 'row',
   },
   retornoBackend: {
-    backgroundColor: danverBackground,
     width: '80%',
     borderRadius: 5,
     alignItems: 'center',
     margin: 5,
     padding: 10,
+    alignSelf: 'center',
+  },
+  mensagemErro: {
+    backgroundColor: danverBackground,
     borderColor: danger,
   },
+  mensagemSucesso: {
+    backgroundColor: sucess,
+    borderColor: sucess,
+  },
+
   cabecalho: {
     color: 'white',
     width: '80%',

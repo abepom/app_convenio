@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
 import MenuTop from '../components/MenuTop';
-import getUsuario from '../utils/getConvenio';
+import getUsuario from '../utils/getUsuario';
 
 const ListarAtendimento = props => {
   console.log(props);

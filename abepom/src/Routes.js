@@ -16,9 +16,16 @@ import ItemDrawer from './components/ItemDrawer';
 import ListarAtendimento from './telas/ListarAtendimento';
 import imagem from './utils/imagens';
 import EfetuarVenda from './telas/EfetuarVenda';
-import getConvenio from './utils/getConvenio';
-let convenio;
-getConvenio('convenio').then(a => (convenio = a));
+import getUsuario from './utils/getUsuario';
+let convenio = {
+  id_gds: null,
+  nome_parceiro: '',
+  caminho_logomarca: null,
+  efetuarVenda: false,
+};
+getUsuario('convenio').then(a => {
+  return (convenio = {...convenio, a});
+});
 
 const App = createDrawerNavigator(
   {
@@ -38,7 +45,7 @@ const App = createDrawerNavigator(
     },
     ListarAtendimento: {
       screen: ListarAtendimento,
-      params: convenio,
+
       navigationOptions: {
         drawerIcon: props => <ItemDrawer {...props} icone={imagem.list} />,
       },
