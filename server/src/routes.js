@@ -6,7 +6,7 @@ const LoginController = require("./controller/LoginController");
 const ParceirosController = require("./controller/ParceirosController");
 const CidadesController = require("./controller/CidadesController");
 const EnderecoController = require("./controller/EnderecoController");
-
+const VendaController = require("./controller/VendaController");
 //teste
 const enviarEmail = require("./functions/EnviarEmail");
 
@@ -14,6 +14,7 @@ const enviarEmail = require("./functions/EnviarEmail");
 
 routes.get("/VerificarCartao", associadoController.show);
 routes.get("/VerificarCartao", associadoController.log);
+routes.get("/Dependentes", associadoController.getDependentes);
 
 //Informe de utilização
 
@@ -39,7 +40,13 @@ routes.post("/user/resetPass", LoginController.ResetParceiros);
 //mostrar cidades
 routes.get("/cidades", CidadesController.index);
 
-//
+//validar Cartao
+routes.post("/ConsultarCartao", VendaController.ConsultarCartao);
+
+//EFETUAR VENDAS
+routes.post("/efetuarVendas", VendaController.ConsultarPermissao);
+//routes.post("/efetuarVendas", VendaController.ConsultarLimite);
+routes.post("/efetuarVendas", VendaController.Venda);
 
 //teste
 routes.get("/", (req, res, next) => {

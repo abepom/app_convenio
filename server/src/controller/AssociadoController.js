@@ -1,6 +1,6 @@
 require("../functions/replaceAll");
 module.exports = {
-  async show(request, response, next) {
+  show(request, response, next) {
     const { cartao } = request.query;
     global.associacao
       .query(
@@ -20,7 +20,7 @@ module.exports = {
       });
   },
 
-  async log(req, res) {
+  log(req, res) {
     let { cartao, id_gds } = req.query;
     global.cartaoBeneficios.query(
       `INSERT INTO conveniados_log_consultas
@@ -28,7 +28,7 @@ module.exports = {
         VALUES (${id_gds},'${cartao}',getdate())`
     );
   },
-  async Informe(req, res, next) {
+  Informe(req, res, next) {
     let { cartao, id_gds, valor } = req.body;
     valor = valor
       .replace("R$", "")
@@ -45,5 +45,44 @@ module.exports = {
         res.json({ erro: false });
       })
       .catch(() => res.json({ erro: true }));
+  },
+  getDependentes(req, res) {
+    const { matricula } = req.query;
+    global.associacao
+      .query(
+        `
+    SELECT A_depend.Cont_dependente, A_depend.[Nome do dependente], A_associa.Cd_dependente, A_depend.Cartao_Recebido, A_depend.cartao_enviado
+    FROM A_depend INNER JOIN A_associa ON A_depend.Matricula = A_associa.Matricula AND A_depend.Cont_dependente = A_associa.Cd_dependente
+    WHERE (A_depend.Matricula = ${matricula}) AND (A_depend.Inativo = 0) AND (A_associa.Ativo = 1) AND (A_depend.Cartao_Recebido <> 1) AND (A_depend.cartao_enviado <> 1)`
+      )
+      .then(([results]) => {
+        if (results.lenght >= 1) {
+          global.associacao
+            .query(
+              `SELECT A_depend.Cont_dependente, A_depend.[Nome do dependente], A_tabela_de_dependentes.Descrição
+        FROM A_depend INNER JOIN A_associa ON A_depend.Matricula = A_associa.Matricula INNER JOIN
+        A_tabela_de_dependentes ON A_depend.Cd_dependente = A_tabela_de_dependentes.Cd_dependente
+        WHERE (A_depend.Matricula = ${matricula}) AND (A_depend.Inativo = 0) AND (A_associa.Ativo = 1)`
+            )
+            .then(([results]) => {
+              if (results) {
+                return res.json({ dependentes: results, erro: false });
+              } else {
+                return res.json({
+                  mensagem: "Associado não esta ativo ou não existe",
+                  erro: true
+                });
+              }
+            })
+            .catch(e => {
+              console.log(e);
+              return res.json(e);
+            });
+        } else {
+          return res.json({ erro: true, mensagem: "Associado possui cartão" });
+        }
+      });
+
+    //return res.json({ matricula });
   }
 };

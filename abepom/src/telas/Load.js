@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {View, Image} from 'react-native';
+import {View, Image, Text} from 'react-native';
 import logo from '../assets/img/logo_abepom_branca.png';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import {primary} from '../utils/Style';
 import api from '../api';
 
-const Load = ({navigation}) => {
+const Load = props => {
+  const {navigation} = props;
   let doc;
   let senha;
 
@@ -22,6 +23,7 @@ const Load = ({navigation}) => {
       });
 
       let convenio;
+
       if (!data.erro) {
         convenio = {
           id_gds: data.id_gds,
@@ -38,9 +40,9 @@ const Load = ({navigation}) => {
   };
 
   const _retrieveData = async () => {
-    let user = await AsyncStorage.getItem('Usuario');
+    let user = await AsyncStorage.getItem('usuario');
 
-    if (user) {
+    if (!!user) {
       user = JSON.parse(user);
       doc = user.doc;
       senha = user.senha;

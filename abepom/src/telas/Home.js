@@ -5,7 +5,7 @@ import styles, {primary, sucessBack, sucess, background} from '../utils/Style';
 import MenuTop from '../components/MenuTop';
 
 export default props => {
-  const [convenio, setConvenio] = useState(props.navigation.state.params);
+  const [convenio, setConvenio] = useState({efetuarVenda: false});
 
   return (
     <MenuTop drawer title="ABEPOM" {...props}>

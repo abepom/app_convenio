@@ -11,7 +11,6 @@ import {primary, background} from '../utils/Style';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/abepom.png';
 const MenuTop = props => {
-  console.log(props);
   const [itensconfig, setitensconfig] = React.useState(false);
   const {children, iconeConfig, drawer, noIcons} = props;
 
@@ -64,7 +63,12 @@ const MenuTop = props => {
         </View>
       )}
 
-      <ScrollView style={{backgroundColor: background}}>
+      <ScrollView
+        style={{
+          backgroundColor: props.backgroundColor
+            ? props.backgroundColor
+            : background,
+        }}>
         <View style={{alignItems: 'center', paddingBottom: 20}}>
           {children}
         </View>

@@ -1,14 +1,13 @@
 import api from '../api';
 
 export default conectar = async (documento, pass) => {
-  console.log(documento.length > 13, pass);
   if (documento.length > 13 && pass) {
     const {data} = await api({
       url: '/Login',
       data: {usuario: documento, pass},
       method: 'post',
     });
-    console.log(data);
+
     let convenio;
     if (!data.erro) {
       setUsuario('Usuario', {documento, pass});
