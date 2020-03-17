@@ -133,7 +133,7 @@ const Home = props => {
                   colors: {
                     primary: primary,
 
-                    background: '#fff',
+                    background: 'white',
 
                     text: primary,
                     placeholder: primary,
