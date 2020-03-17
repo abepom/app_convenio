@@ -1,0 +1,42 @@
+{
+	"expo": {
+		"name": "ABEPOM Mobile",
+		"slug": "abepom_mobile",
+		"privacy": "public",
+		"sdkVersion": "36.0.0",
+		"platforms": ["ios", "android"],
+		"version": "0.1.0",
+		"orientation": "portrait",
+		"icon": "./assets/img/icon.png",
+		"splash": {
+			"image": "./assets/img/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#03254E"
+		},
+		"updates": {
+			"fallbackToCacheTimeout": 0
+		},
+		"assetBundlePatterns": ["**/*"],
+		"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "br.com.abepom.mobile",
+			"buildNumber": "1.0.0",
+			"config": {
+				"googleMapsApiKey": "AIzaSyAFJAN-VLK1beeMZ8HZKAHLmtxrfraaPeU"
+			}
+		},
+		"android": {
+			"package": "br.com.abepom.mobile",
+			"versionCode": 1,
+			"config": {
+				"googleMaps": {
+					"apiKey": "AIzaSyAFJAN-VLK1beeMZ8HZKAHLmtxrfraaPeU"
+				}
+			}
+		},
+		"androidStatusBar": {
+			"backgroundColor": "#114267"
+		},
+		"description": "O melhor app para os associados."
+	}
+}
