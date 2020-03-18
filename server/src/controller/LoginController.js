@@ -17,7 +17,7 @@ module.exports = {
 
     global.cartaoBeneficios
       .query(
-        `SELECT  guia_de_servico.id_gds ,guia_de_servico.nome_parceiro, guia_de_servico.caminho_logomarca, cnpj+cpf
+        `SELECT  guia_de_servico.id_gds ,guia_de_servico.nome_parceiro, guia_de_servico.caminho_logomarca, guia_de_servico.cnpj+guia_de_servico.cpf as doc
         FROM conveniados_pre_cadastro INNER JOIN guia_de_servico ON conveniados_pre_cadastro.cod_parceiro = guia_de_servico.cod_parceiro
         WHERE (conveniados_pre_cadastro.ativo = '1') 
         ${
@@ -28,6 +28,7 @@ module.exports = {
       )
       .then(([[results]]) => {
         if (results) {
+          console.log(results);
           return res.json({ ...results, erro: false, efetuarVenda: false });
         } else {
           return res.json({
@@ -65,8 +66,12 @@ module.exports = {
       )
       .then(([[results]]) => {
         if (results) {
+          console.log(results);
+
           return res.json({ ...results, erro: false, efetuarVenda: true });
         } else {
+          console.log("results");
+
           return next();
         }
       })

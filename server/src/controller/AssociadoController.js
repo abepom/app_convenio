@@ -66,11 +66,16 @@ module.exports = {
             )
             .then(([results]) => {
               if (results) {
-                return res.json({ dependentes: results, erro: false });
+                return res.json({
+                  dependentes: results,
+                  erro: false,
+                  avancar: false
+                });
               } else {
                 return res.json({
                   mensagem: "Associado não esta ativo ou não existe",
-                  erro: true
+                  erro: true,
+                  avancar: fals
                 });
               }
             })
@@ -79,7 +84,11 @@ module.exports = {
               return res.json(e);
             });
         } else {
-          return res.json({ erro: true, mensagem: "Associado possui cartão" });
+          return res.json({
+            erro: true,
+            mensagem: "Associado possui cartão",
+            avancar: false
+          });
         }
       });
 

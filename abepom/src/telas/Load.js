@@ -23,6 +23,7 @@ const Load = props => {
       });
 
       let convenio;
+      console.log(data);
 
       if (!data.erro) {
         convenio = {

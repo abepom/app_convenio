@@ -18,8 +18,6 @@ import api from '../api';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import Retorno from '../components/Retorno';
-import maskReal from '../utils/maskReal';
-import Mensagem from '../components/Mensagem';
 
 const Home = props => {
   const [modal, setModal] = useState(false);
@@ -181,6 +179,7 @@ const Home = props => {
           <Text style={{fontSize: 16, marginVertical: 20, color: primary}}>
             Informe o numero do cartão do associado
           </Text>
+
           <View style={[styles.input, {flexDirection: 'row'}]}>
             <TextInput
               placeholder="Cartão"

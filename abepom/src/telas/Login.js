@@ -23,7 +23,7 @@ import mask from '../utils/maskUsuario';
 import api from '../api';
 import theme from '../utils/theme';
 import {ScrollView} from 'react-native-gesture-handler';
-import setConvenio from '../utils/setUsuario';
+import setUsuario from '../utils/setUsuario';
 
 const Login = props => {
   const [reset, setReset] = useState(
@@ -36,11 +36,11 @@ const Login = props => {
     erro: false,
     mensagem: '',
   });
-  const [doc, setdoc] = useState('33.734.844/0001-15');
-  //const [doc, setdoc] = useState('03.383.807/0002-20');
+  //const [doc, setdoc] = useState('33.734.844/0001-15');
+  const [doc, setdoc] = useState('03.383.807/0002-20');
   //const [doc, setdoc] = useState('');
-  const [senha, setSenha] = useState('casaludica2019');
-  //const [senha, setSenha] = useState('normal123');
+  // const [senha, setSenha] = useState('casaludica2019');
+  const [senha, setSenha] = useState('normal123');
   const [teclado, setTeclado] = useState('default');
 
   useEffect(() => {
@@ -61,15 +61,15 @@ const Login = props => {
 
       let convenio;
       if (!data.erro) {
-        setConvenio('usuario', {doc, senha});
+        setUsuario('usuario', {doc, senha});
         convenio = {
           id_gds: data.id_gds,
           nome_parceiro: data.nome_parceiro,
           caminho_logomarca: data.caminho_logomarca,
           efetuarVenda: data.efetuarVenda,
+          doc: data.doc,
         };
-
-        setConvenio('convenio', convenio);
+        setUsuario('convenio', convenio);
 
         props.navigation.navigate('Home', convenio);
       } else {

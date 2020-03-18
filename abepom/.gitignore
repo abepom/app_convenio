@@ -38,8 +38,7 @@ yarn-error.log
 # BUCK
 buck-out/
 \.buckd/
-api.js
-*.keystore
+
 !debug.keystore
 
 # fastlane

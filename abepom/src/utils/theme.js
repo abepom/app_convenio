@@ -1,6 +1,6 @@
 import {primary} from './Style';
 
-export default {
+const themeDark = {
   colors: {
     primary: '#fff',
 
@@ -10,3 +10,16 @@ export default {
     placeholder: '#fff',
   },
 };
+
+export const themeLight = {
+  colors: {
+    primary: primary,
+
+    background: '#fff',
+
+    text: primary,
+    placeholder: primary,
+  },
+};
+
+export default themeDark;
