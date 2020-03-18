@@ -13,6 +13,8 @@ import styles, {primary} from '../utils/Style';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import imagens from '../utils/imagens';
 import api from '../api';
+import getUsuario from '../utils/getUsuario';
+import Retorno from '../components/Retorno';
 
 export default props => {
   const vaziu = {
@@ -22,12 +24,12 @@ export default props => {
   };
   const [state, setstate] = useState({});
   const [associado, setassociado] = useState(vaziu);
-  const [imput, setImput] = useState('');
+  const [imput, setImput] = useState('47820100001');
   const [dependentes, setDependentes] = useState([]);
   const [mensagem, setMensagem] = useState('');
   const [avancar, setAvancar] = useState(false);
   useEffect(() => {
-    console.log(associado);
+    console.log(props, 'efetuarvenda');
     switch (imput.length) {
       case 0:
       case 1:
@@ -36,15 +38,14 @@ export default props => {
       case 4:
       case 5:
       case 6:
-        setassociado({
-          cartao: '',
-          matricula: imput,
-          dep: '',
-        });
+        setassociado(vaziu);
         setMensagem('');
         if (imput.length == 6) {
           consultarDependentes();
         }
+        break;
+      case 10:
+        setAvancar(false);
         break;
       case 11:
         setassociado({
@@ -70,12 +71,16 @@ export default props => {
       params: {matricula: associado.matricula},
     });
     if (dependentes.data.erro) {
-      await setMensagem(dependentes.data.mensagem);
+      // setMensagem(dependentes.data.mensagem);
     } else {
-      await setDependentes(dependentes.data.dependentes);
+      setDependentes(dependentes.data.dependentes);
     }
   };
   const consultarCartao = async cartao => {
+    if (cartao == 'undefined') {
+      cartao = '47820100001';
+    }
+    console.log(cartao, 'cartao');
     const validado = await api({
       url: '/ConsultarCartao',
       method: 'post',
@@ -83,11 +88,19 @@ export default props => {
         cartao,
       },
     });
-    console.log(validado);
-    if (validado.data) {
-      setAvancar(false);
-    } else {
+
+    if (validado.data.avancar == 1) {
       setAvancar(true);
+      setMensagem(validado.data.mensagem);
+
+      setassociado({
+        cartao: imput,
+        matricula: imput.substring(0, 6),
+        dep: imput.substring(7, 9),
+        nome: validado.data.Nome,
+      });
+    } else {
+      setAvancar(false);
     }
   };
 
@@ -122,7 +135,7 @@ export default props => {
           },
         }}
         maxLength={11}
-        keyboardType="default"
+        keyboardType="numeric"
         style={[styles.imput, {}]}
         render={props => (
           <>
@@ -157,9 +170,36 @@ export default props => {
           />
         )
       ) : (
-        <Text>{mensagem}</Text>
+        <View
+          style={{
+            marginTop: 20,
+            backgroundColor: 'white',
+            padding: 15,
+            elevation: 2,
+            borderRadius: 3,
+          }}>
+          <Text>
+            Associado:{' '}
+            <Text style={{fontWeight: 'bold'}}>{associado.nome}</Text>
+          </Text>
+          <Text>Cartao: {mensagem}</Text>
+        </View>
       )}
-      {avancar && <TouchableOpacity></TouchableOpacity>}
+      {avancar && (
+        <TouchableOpacity
+          onPress={() => {
+            setImput('');
+            props.navigation.navigate('CadastrarVenda', {
+              ...associado,
+              id_gds: state.id_gds,
+            });
+            setassociado(vaziu);
+            setAvancar(false);
+          }}
+          style={[{marginTop: 30}, styles.btnDefault, {paddingHorizontal: 30}]}>
+          <Text style={styles.btnDefaultText}>EFETUAR VENDA</Text>
+        </TouchableOpacity>
+      )}
     </MenuTop>
   );
 };

@@ -1,11 +1,18 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import styles, {primary, sucessBack, sucess, background} from '../utils/Style';
 
 import MenuTop from '../components/MenuTop';
+import getUsuario from './../utils/getUsuario';
 
 export default props => {
   const [convenio, setConvenio] = useState({efetuarVenda: false});
+
+  useEffect(() => {
+    getUsuario('convenio').then(user => {
+      setConvenio(user);
+    });
+  }, []);
 
   return (
     <MenuTop drawer title="ABEPOM" {...props}>
@@ -13,7 +20,9 @@ export default props => {
         <View style={styles.linhaMenu}>
           <TouchableOpacity
             style={styles.itemMenu}
-            onPress={() => props.navigation.navigate('ConsultarCartao')}>
+            onPress={() =>
+              props.navigation.navigate('ConsultarCartao', convenio)
+            }>
             <Image
               source={require('../assets/img/pay.png')}
               style={{width: 40, height: 40}}

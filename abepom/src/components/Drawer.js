@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -13,15 +13,35 @@ import styles, {primaryBack} from '../utils/Style';
 import getUsuario from '../utils/getUsuario';
 
 const Drawer = props => {
+  const [menu, setMenu] = useState({...props});
+  let itens = props.items;
   const [convenio, setConvenio] = useState({
     caminho_logomarca: null,
     nome_parceiro: 'nome_parceiro',
     efetuarVenda: false,
   });
-  // getUsuario('convenio').then(a => {
-  //   console.log(a);
-  //   setConvenio(a);
-  // });
+  useEffect(() => {
+    getUsuario('convenio').then(conv => {
+      setConvenio(conv);
+      if (!conv.efetuarVenda) {
+        menu.items.map(item => {
+          switch (item.key) {
+            case 'EfetuarVenda':
+              break;
+            case 'Endereco':
+              break;
+            default:
+              itens.push({...item, params: conv});
+              break;
+          }
+        });
+      }
+    });
+
+    setMenu({...props, items: itens});
+  }, []);
+
+  console.log(menu, 'menu', convenio);
 
   return (
     <ScrollView style={styles.flex}>
@@ -37,13 +57,20 @@ const Drawer = props => {
           ) : (
             <EvilIcons name="user" size={70} />
           )}
-
-          <Text style={{width: 150, marginHorizontal: 20, color: primaryBack}}>
-            {[convenio.nome_parceiro]}
-          </Text>
+          <View>
+            <Text
+              style={{width: 150, marginHorizontal: 20, color: primaryBack}}>
+              {[convenio.nome_parceiro]}
+            </Text>
+            <Text style={{fontSize: 10, paddingLeft: 20}}>
+              {convenio.doc && convenio.doc.length > 15
+                ? `CNPF: ${convenio.doc}`
+                : `CPF: ${convenio.doc}`}
+            </Text>
+          </View>
         </View>
         <DrawerNavigatorItems
-          {...props}
+          {...menu}
           itensConteinerStyles={{width: '100%', backgroundColor: 'blue'}}
         />
       </SafeAreaView>
