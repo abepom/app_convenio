@@ -1,21 +1,29 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, Text, ActivityIndicator, TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modal';
 import styles, {primary} from '../utils/Style';
 import {TextInputMask} from 'react-native-masked-text';
 import {themeLight as theme} from '../utils/theme';
-import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 import api from '../api';
 
 const CadastrarVenda = props => {
+  const formatter = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    minimumFractionDigits: 2,
+  });
   const {matricula, dep, nome, id_gds} = props.navigation.state.params;
   const [valor, setValor] = useState('');
   const [cupom, setCupom] = useState('');
   const [carregando, setCarregando] = useState(false);
   const [modal, setModal] = useState(false);
-  const [msnModal, setMsnModal] = useState({mensagem: ''});
+  const [msnModal, setMsnModal] = useState({
+    erro: true,
+    mensagem: '',
+  });
 
   const InformarVenda = async () => {
     setCarregando(true);
@@ -28,22 +36,26 @@ const CadastrarVenda = props => {
 
       setModal(true);
       setMsnModal(dados.data);
+      console.log(dados.data);
     } else {
       alert('valor em branco');
       setCarregando(false);
     }
   };
   useEffect(() => {
-    console.log(msnModal);
-    if (modal) {
-      setTimeout(() => {
-        setModal(false);
-        if (!msnModal.erro) {
-          props.navigation.goBack();
-        }
-      }, 2000);
-    }
-  }, [modal]);
+    console.log(formatter.format(10000));
+  }, []);
+  // useEffect(() => {
+  //   console.log(msnModal);
+  //   if (modal) {
+  //     setTimeout(() => {
+  //       setModal(false);
+  //       if (!msnModal.erro) {
+  //         props.navigation.goBack();
+  //       }
+  //     }, 2000);
+  //   }
+  // }, [modal]);
 
   return (
     <>
@@ -52,8 +64,48 @@ const CadastrarVenda = props => {
           <View
             style={{
               backgroundColor: '#fff',
+              width: '80%',
+              height: 200,
+              alignItems: 'center',
+
+              borderRadius: 5,
+              elevation: 2,
             }}>
-            <Text>{msnModal.mensagem}</Text>
+            <Text
+              style={{
+                fontSize: 20,
+                color: primary,
+                padding: 20,
+                marginTop: 20,
+                textAlign: 'center',
+              }}>
+              {msnModal.mensagem}.{'\n'}
+              {msnModal.limite && ` Limite atual e de ${msnModal.limite}`}
+            </Text>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                height: 45,
+                width: '100%',
+                backgroundColor: primary,
+                elevation: 3,
+                borderBottomLeftRadius: 5,
+                borderBottomRightRadius: 5,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onPress={() => {
+                setModal(false);
+                console.log(msnModal);
+                if (msnModal.retorno) {
+                  props.navigation.goBack();
+                } else {
+                  setCarregando(false);
+                }
+              }}>
+              <Text style={{color: 'white'}}>FECHAR</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>

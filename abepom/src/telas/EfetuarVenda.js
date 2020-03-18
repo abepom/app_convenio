@@ -24,7 +24,7 @@ export default props => {
   };
   const [state, setstate] = useState({});
   const [associado, setassociado] = useState(vaziu);
-  const [imput, setImput] = useState('47820100001');
+  const [imput, setImput] = useState('');
   const [dependentes, setDependentes] = useState([]);
   const [mensagem, setMensagem] = useState('');
   const [avancar, setAvancar] = useState(false);
@@ -77,9 +77,6 @@ export default props => {
     }
   };
   const consultarCartao = async cartao => {
-    if (cartao == 'undefined') {
-      cartao = '47820100001';
-    }
     console.log(cartao, 'cartao');
     const validado = await api({
       url: '/ConsultarCartao',
@@ -116,6 +113,16 @@ export default props => {
           marginVertical: 30,
         }}>
         Informe o Cartão do associado para iniciar a venda.
+      </Text>
+      <Text
+        style={{
+          fontSize: 14,
+          width: '80%',
+          alignSelf: 'center',
+          color: primary,
+        }}>
+        É obrigatório o preenchimento dos 11 digitos do cartão. Caso o associado
+        NUNCA recebeu um cartão da ABEPOM digite sua matrícula.
       </Text>
 
       <TextInput
