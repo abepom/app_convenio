@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,10 +7,10 @@ import {
   TextInput as TextInputrn,
 } from 'react-native';
 import MenuTop from '../components/MenuTop';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 
-import styles, {primary} from '../utils/Style';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import styles, { primary } from '../utils/Style';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import imagens from '../utils/imagens';
 import api from '../api';
 import getUsuario from '../utils/getUsuario';
@@ -29,7 +29,7 @@ export default props => {
   const [mensagem, setMensagem] = useState('');
   const [avancar, setAvancar] = useState(false);
   useEffect(() => {
-    console.log(props, 'efetuarvenda');
+
     switch (imput.length) {
       case 0:
       case 1:
@@ -41,7 +41,7 @@ export default props => {
         setassociado(vaziu);
         setMensagem('');
         if (imput.length == 6) {
-          consultarDependentes();
+          consultarCartao(imput);
         }
         break;
       case 10:
@@ -66,18 +66,10 @@ export default props => {
     getUsuario('convenio').then(convenio => setstate(convenio));
   }, []);
 
-  const consultarDependentes = async () => {
-    const dependentes = await api.get('/Dependentes', {
-      params: {matricula: associado.matricula},
-    });
-    if (dependentes.data.erro) {
-      // setMensagem(dependentes.data.mensagem);
-    } else {
-      setDependentes(dependentes.data.dependentes);
-    }
-  };
+  useEffect(() => {
+
+  }, [mensagem]);
   const consultarCartao = async cartao => {
-    console.log(cartao, 'cartao');
     const validado = await api({
       url: '/ConsultarCartao',
       method: 'post',
@@ -86,18 +78,30 @@ export default props => {
       },
     });
 
-    if (validado.data.avancar == 1) {
-      setAvancar(true);
-      setMensagem(validado.data.mensagem);
+    if (validado.data.length) {
+      if (validado.data.retorno == 1) {
 
-      setassociado({
-        cartao: imput,
-        matricula: imput.substring(0, 6),
-        dep: imput.substring(7, 9),
-        nome: validado.data.Nome,
-      });
+
+        setMensagem(validado.data.mensagem);
+      }
+
+
+      setDependentes(validado.data)
     } else {
-      setAvancar(false);
+
+      if (validado.data.avancar == 1) {
+        setAvancar(true);
+        setMensagem(validado.data.mensagem);
+
+        setassociado({
+          cartao: imput,
+          matricula: imput.substring(0, 6),
+          dep: imput.substring(7, 9),
+          nome: validado.data.Nome,
+        });
+      } else {
+        setAvancar(false);
+      }
     }
   };
 
@@ -154,10 +158,10 @@ export default props => {
                 justifyContent: 'center',
               }}>
               <TextInputrn {...props} />
-              <TouchableOpacity style={{margin: 5}}>
+              <TouchableOpacity style={{ margin: 5 }}>
                 <Image
                   source={imagens.search}
-                  style={{width: 30, height: 30}}
+                  style={{ width: 30, height: 30 }}
                   tintColor={primary}
                 />
               </TouchableOpacity>
@@ -168,30 +172,54 @@ export default props => {
 
       {!mensagem ? (
         dependentes && (
-          <FlatList
-            data={dependentes}
-            renderItem={({item}) => {
-              console.log(item);
-              return <Text>{item.nome}</Text>;
-            }}
-          />
+          <>
+            {dependentes.length > 0 && <Text style={{ marginTop: 30, fontSize: 20, fontWeight: "bold" }}>Selecione um Associado</Text>}
+
+            <FlatList
+
+              data={dependentes}
+              renderItem={({ item }) => {
+                console.log(item, 'flatlist');
+                return (<TouchableOpacity onPress={() => {
+                  setImput('');
+                  props.navigation.navigate('CadastrarVenda', {
+
+                    cartao: imput,
+                    matricula: item.Matricula,
+                    dep: item.Cd_dependente,
+                    nome: item.NOME,
+
+                    id_gds: state.id_gds,
+                  });
+                  setDependentes([])
+                  setassociado(vaziu);
+                  setAvancar(false);
+                }}
+                  style={{ marginTop: 20, padding: 10, width: '100%', backgroundColor: 'white', elevation: 2, borderRadius: 5 }}>
+
+                  <Text style={{ fontWeight: "bold", color: primary }}> Nome: <Text style={{ fontWeight: "100", color: primary }}>{item.NOME}</Text> </Text>
+                  <Text style={{ fontWeight: "bold", color: primary }}> Dep: <Text style={{ fontWeight: "100", color: primary }}>{item.Cd_dependente}</Text></Text>
+
+                </TouchableOpacity>);
+              }}
+            /></>
         )
       ) : (
-        <View
-          style={{
-            marginTop: 20,
-            backgroundColor: 'white',
-            padding: 15,
-            elevation: 2,
-            borderRadius: 3,
-          }}>
-          <Text>
-            Associado:{' '}
-            <Text style={{fontWeight: 'bold'}}>{associado.nome}</Text>
-          </Text>
-          <Text>Cartao: {mensagem}</Text>
-        </View>
-      )}
+          <View
+            style={{
+              marginTop: 20,
+              backgroundColor: 'white',
+              padding: 15,
+              elevation: 2,
+              borderRadius: 3,
+            }}>
+            <Text>
+              Associado:{' '}
+              <Text style={{ fontWeight: 'bold' }}>{associado.nome}</Text>
+            </Text>
+            <Text>Cartao: {mensagem}</Text>
+          </View>
+        )}
       {avancar && (
         <TouchableOpacity
           onPress={() => {
@@ -203,7 +231,7 @@ export default props => {
             setassociado(vaziu);
             setAvancar(false);
           }}
-          style={[{marginTop: 30}, styles.btnDefault, {paddingHorizontal: 30}]}>
+          style={[{ marginTop: 30 }, styles.btnDefault, { paddingHorizontal: 30 }]}>
           <Text style={styles.btnDefaultText}>EFETUAR VENDA</Text>
         </TouchableOpacity>
       )}

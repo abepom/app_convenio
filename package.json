@@ -6,6 +6,6 @@
   "author": "Thiago-ABEPOM <thiago.denir.ramos@hotmail.com>",
   "license": "MIT",
   "scripts": {
-    "android": "cd abepom && react-native run-android"
+    "android": "cd Mobile && react-native run-android"
   }
 }
