@@ -9,7 +9,7 @@ import {
 import MenuTop from '../components/MenuTop';
 import { TextInput } from 'react-native-paper';
 
-import styles, { primary } from '../utils/Style';
+import styles, { primary, danger } from '../utils/Style';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import imagens from '../utils/imagens';
 import api from '../api';
@@ -22,12 +22,14 @@ export default props => {
     matricula: '',
     dep: '',
   };
+  const retornopadrao = { retorno: false, mensagem: '' }
   const [state, setstate] = useState({});
   const [associado, setassociado] = useState(vaziu);
   const [imput, setImput] = useState('');
   const [dependentes, setDependentes] = useState([]);
   const [mensagem, setMensagem] = useState('');
   const [avancar, setAvancar] = useState(false);
+  const [retorno, setRetorno] = useState(retornopadrao)
   useEffect(() => {
 
     switch (imput.length) {
@@ -37,6 +39,9 @@ export default props => {
       case 3:
       case 4:
       case 5:
+        setRetorno(retornopadrao)
+        setDependentes([])
+        setMensagem('')
       case 6:
         setassociado(vaziu);
         setMensagem('');
@@ -44,6 +49,9 @@ export default props => {
           consultarCartao(imput);
         }
         break;
+      case 7:
+        setDependentes([])
+        setMensagem('')
       case 10:
         setAvancar(false);
         break;
@@ -77,7 +85,7 @@ export default props => {
         cartao,
       },
     });
-
+    console.log(validado.data)
     if (validado.data.length) {
       if (validado.data.retorno == 1) {
 
@@ -92,18 +100,21 @@ export default props => {
       if (validado.data.avancar == 1) {
         setAvancar(true);
         setMensagem(validado.data.mensagem);
-
+        setRetorno(retornopadrao)
         setassociado({
           cartao: imput,
           matricula: imput.substring(0, 6),
           dep: imput.substring(7, 9),
           nome: validado.data.Nome,
         });
+      } else if (validado.data.retorno) {
+        setRetorno(validado.data)
       } else {
         setAvancar(false);
       }
     }
   };
+
 
   return (
     <MenuTop {...props} drawer title="Efetuar Vendas">
@@ -158,51 +169,66 @@ export default props => {
                 justifyContent: 'center',
               }}>
               <TextInputrn {...props} />
-              <TouchableOpacity style={{ margin: 5 }}>
-                <Image
-                  source={imagens.search}
-                  style={{ width: 30, height: 30 }}
-                  tintColor={primary}
-                />
-              </TouchableOpacity>
+
+              <Image
+                source={imagens.pay}
+                style={{ width: 30, height: 30, margin: 5 }}
+                tintColor={primary}
+              />
+
             </View>
           </>
         )}
       />
 
+      {retorno.retorno && (
+        <View style={{ width: '80%' }}>
+          <Text style={{ fontSize: 11, color: danger }}>{retorno.mensagem}</Text>
+
+        </View>
+      )}
+
+
       {!mensagem ? (
         dependentes && (
           <>
             {dependentes.length > 0 && <Text style={{ marginTop: 30, fontSize: 20, fontWeight: "bold" }}>Selecione um Associado</Text>}
+            <View style={{ width: '80%' }}>
 
-            <FlatList
+              <FlatList
 
-              data={dependentes}
-              renderItem={({ item }) => {
-                console.log(item, 'flatlist');
-                return (<TouchableOpacity onPress={() => {
-                  setImput('');
-                  props.navigation.navigate('CadastrarVenda', {
+                data={dependentes}
+                renderItem={({ item }) => {
 
-                    cartao: imput,
-                    matricula: item.Matricula,
-                    dep: item.Cd_dependente,
-                    nome: item.NOME,
+                  return (<TouchableOpacity onPress={() => {
+                    setImput('');
+                    props.navigation.navigate('CadastrarVenda', {
 
-                    id_gds: state.id_gds,
-                  });
-                  setDependentes([])
-                  setassociado(vaziu);
-                  setAvancar(false);
+                      cartao: imput,
+                      matricula: item.Matricula,
+                      dep: item.Cd_dependente,
+                      nome: item.NOME,
+
+                      id_gds: state.id_gds,
+                    });
+                    setRetorno(retornopadrao)
+                    setDependentes([])
+                    setassociado(vaziu);
+                    setAvancar(false);
+                  }}
+                    style={{ marginTop: 20, padding: 10, width: '100%', backgroundColor: 'white', elevation: 2, borderRadius: 5 }}>
+
+                    <Text style={{ fontWeight: "bold", color: primary }}> Nome: <Text style={{ fontWeight: "100", color: primary }}>{item.NOME}</Text> </Text>
+                    <Text style={{ fontWeight: "bold", color: primary }}>
+                      Dependencia: <Text style={{ fontWeight: "100", color: primary }}>{item.descri}</Text>
+                      {/* Dep: <Text style={{ fontWeight: "100", color: primary }}>{item.Cd_dependente}</Text> */}
+                    </Text>
+
+                  </TouchableOpacity>);
                 }}
-                  style={{ marginTop: 20, padding: 10, width: '100%', backgroundColor: 'white', elevation: 2, borderRadius: 5 }}>
-
-                  <Text style={{ fontWeight: "bold", color: primary }}> Nome: <Text style={{ fontWeight: "100", color: primary }}>{item.NOME}</Text> </Text>
-                  <Text style={{ fontWeight: "bold", color: primary }}> Dep: <Text style={{ fontWeight: "100", color: primary }}>{item.Cd_dependente}</Text></Text>
-
-                </TouchableOpacity>);
-              }}
-            /></>
+              />
+            </View>
+          </>
         )
       ) : (
           <View
@@ -228,6 +254,7 @@ export default props => {
               ...associado,
               id_gds: state.id_gds,
             });
+            setRetorno(retornopadrao)
             setassociado(vaziu);
             setAvancar(false);
           }}
