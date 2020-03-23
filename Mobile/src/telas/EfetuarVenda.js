@@ -14,7 +14,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import imagens from '../utils/imagens';
 import api from '../api';
 import getUsuario from '../utils/getUsuario';
-import Retorno from '../components/Retorno';
+
 
 export default props => {
   const vaziu = {
@@ -61,10 +61,8 @@ export default props => {
           matricula: imput.substring(0, 6),
           dep: imput.substring(7, 9),
         });
-
         consultarCartao(imput);
         break;
-
       default:
         break;
     }
@@ -74,9 +72,6 @@ export default props => {
     getUsuario('convenio').then(convenio => setstate(convenio));
   }, []);
 
-  useEffect(() => {
-
-  }, [mensagem]);
   const consultarCartao = async cartao => {
     const validado = await api({
       url: '/ConsultarCartao',
@@ -88,15 +83,10 @@ export default props => {
     console.log(validado.data)
     if (validado.data.length) {
       if (validado.data.retorno == 1) {
-
-
         setMensagem(validado.data.mensagem);
       }
-
-
       setDependentes(validado.data)
     } else {
-
       if (validado.data.avancar == 1) {
         setAvancar(true);
         setMensagem(validado.data.mensagem);
@@ -196,19 +186,15 @@ export default props => {
             <View style={{ width: '80%' }}>
 
               <FlatList
-
                 data={dependentes}
                 renderItem={({ item }) => {
-
                   return (<TouchableOpacity onPress={() => {
                     setImput('');
                     props.navigation.navigate('CadastrarVenda', {
-
                       cartao: imput,
                       matricula: item.Matricula,
                       dep: item.Cd_dependente,
                       nome: item.NOME,
-
                       id_gds: state.id_gds,
                     });
                     setRetorno(retornopadrao)

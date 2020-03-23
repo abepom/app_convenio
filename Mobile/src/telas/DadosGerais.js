@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   ScrollView,
@@ -7,7 +7,7 @@ import {
   TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import styles, {sucess, sucessBack, white} from '../utils/Style';
+import styles, { sucess, sucessBack, white } from '../utils/Style';
 import StatusBar from '../components/StatusBar';
 import Menu from '../components/MenuTop';
 import ImputText from '../components/imputText';
@@ -17,16 +17,16 @@ import MenuTop from '../components/MenuTop';
 import Retorno from '../components/Retorno';
 export default function componentName(props) {
   const [nome, setNome] = useState();
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
-  const {navigation} = props;
+  const { navigation } = props;
   const [state, setState] = useState({
     ...navigation.state.params,
     retorno: false,
   });
   const [focar, setFocar] = useState({
-    nome: {erro: false, mensagem: 'Informe o Nome da Fachada'},
-    email: {erro: false, mensagem: 'Campo é obrigatório'},
+    nome: { erro: false, mensagem: 'Informe o Nome da Fachada' },
+    email: { erro: false, mensagem: 'Campo é obrigatório' },
   });
   const refNome = useRef();
   const refEmail = useRef();
@@ -35,7 +35,7 @@ export default function componentName(props) {
   }, [state.nome_de_exibicao, state.email]);
   useEffect(() => {
     setTimeout(() => {
-      setState({...state, retorno: false});
+      setState({ ...state, retorno: false });
     }, 2000);
   }, [state.retorno]);
 
@@ -43,16 +43,16 @@ export default function componentName(props) {
     let retornoNome;
     let retornoEmail;
     if (!!nome_de_exibicao) {
-      retornoNome = {erro: false, mensagem: 'Informe o Nome da Fachada'};
+      retornoNome = { erro: false, mensagem: 'Informe o Nome da Fachada' };
     } else {
       refNome.current.focus();
-      retornoNome = {erro: true, mensagem: 'Informe o Nome da Fachada'};
+      retornoNome = { erro: true, mensagem: 'Informe o Nome da Fachada' };
     }
     if (email.indexOf('@') > 0 && email.indexOf('.') > 0) {
-      retornoEmail = {erro: false, mensagem: 'Campo é obrigatório'};
+      retornoEmail = { erro: false, mensagem: 'Campo é obrigatório' };
     } else {
       refEmail.current.focus();
-      retornoEmail = {erro: true, mensagem: 'Informe um email valido'};
+      retornoEmail = { erro: true, mensagem: 'Informe um email valido' };
     }
     let estado = {
       nome: retornoNome,
@@ -62,14 +62,14 @@ export default function componentName(props) {
     return setFocar(estado);
   };
   const salvar = async () => {
-    const {nome_de_exibicao, email} = state;
+    const { nome_de_exibicao, email } = state;
     if (
       !!nome_de_exibicao &&
       email.indexOf('@') > 0 &&
       email.indexOf('.') > 0
     ) {
       const resp = await api.post('/user/edit', state);
-      return setState({...resp.data.convenio, retorno: true});
+      return setState({ ...resp.data.convenio, retorno: true });
     } else {
       return retorno(nome_de_exibicao, email);
     }
@@ -78,7 +78,7 @@ export default function componentName(props) {
   return (
     <>
       <MenuTop title="Dados Gerais" drawer={true} {...props}>
-        <View style={{width: '100%'}}>
+        <View style={{ width: '100%' }}>
           <View>
             <Text
               style={{
@@ -99,12 +99,12 @@ export default function componentName(props) {
                 },
 
                 !state.nome_de_exibicao || focar.nome.erro
-                  ? {borderColor: '#f00', borderWidth: 1}
-                  : {borderWidth: 0},
+                  ? { borderColor: '#f00', borderWidth: 1 }
+                  : { borderWidth: 0 },
               ]}
               value={state.nome_de_exibicao}
               onChangeText={text =>
-                setState({...state, nome_de_exibicao: text})
+                setState({ ...state, nome_de_exibicao: text })
               }
               placeholder={'Nome da Fachada'}
             />
@@ -119,18 +119,18 @@ export default function componentName(props) {
                 {focar.nome.mensagem}
               </Text>
             ) : (
-              focar.nome.erro && (
-                <Text
-                  style={{
-                    marginHorizontal: '7%',
-                    marginBottom: 5,
-                    color: '#f00',
-                    fontSize: 10,
-                  }}>
-                  {focar.nome.mensagem}
-                </Text>
-              )
-            )}
+                focar.nome.erro && (
+                  <Text
+                    style={{
+                      marginHorizontal: '7%',
+                      marginBottom: 5,
+                      color: '#f00',
+                      fontSize: 10,
+                    }}>
+                    {focar.nome.mensagem}
+                  </Text>
+                )
+              )}
           </View>
           <View>
             <Text
@@ -151,11 +151,11 @@ export default function componentName(props) {
                   marginHorizontal: '5%',
                 },
 
-                !state.email && {borderColor: '#f00', borderWidth: 1},
-                focar.email.erro && {borderColor: '#f00', borderWidth: 1},
+                !state.email && { borderColor: '#f00', borderWidth: 1 },
+                focar.email.erro && { borderColor: '#f00', borderWidth: 1 },
               ]}
               value={state.email}
-              onChangeText={text => setState({...state, email: text})}
+              onChangeText={text => setState({ ...state, email: text })}
               placeholder={'E-mail'}
             />
             {!state.email ||
@@ -175,13 +175,13 @@ export default function componentName(props) {
           <ImputText
             value={state.telefone_comercial}
             onChangeText={text =>
-              setState({...state, telefone_comercial: text})
+              setState({ ...state, telefone_comercial: text })
             }
             placeholder="Telefone Comercial"
           />
           <ImputText
             value={state.telefone_contato}
-            onChangeText={text => setState({...state, telefone_contato: text})}
+            onChangeText={text => setState({ ...state, telefone_contato: text })}
             placeholder="Telefone Contato"
           />
 
@@ -194,24 +194,24 @@ export default function componentName(props) {
           />
           <ImputText
             value={state.representante}
-            onChangeText={text => setState({...state, representante: text})}
+            onChangeText={text => setState({ ...state, representante: text })}
             placeholder="Representante"
           />
           <ImputText
             value={state.cargo_representante}
             onChangeText={text =>
-              setState({...state, cargo_representante: text})
+              setState({ ...state, cargo_representante: text })
             }
             placeholder="Cargo do representante"
           />
           <ImputText
             value={state.site}
-            onChangeText={text => setState({...state, site: text})}
+            onChangeText={text => setState({ ...state, site: text })}
             placeholder="Site"
           />
           <ImputText
             value={state.whatsapp}
-            onChangeText={text => setState({...state, whatsapp: text})}
+            onChangeText={text => setState({ ...state, whatsapp: text })}
             placeholder="Whatsapp"
           />
         </View>
@@ -237,7 +237,7 @@ export default function componentName(props) {
               borderWidth: 1,
               borderRadius: 5,
             }}>
-            <Text style={{color: sucess}}>Salvo com sucesso</Text>
+            <Text style={{ color: sucess }}>Salvo com sucesso</Text>
           </View>
         ) : null}
 

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Image,
@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 import mask from '../utils/maskUsuario';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import styles, {
   danger,
   danverBackground,
@@ -37,7 +37,7 @@ const Login = props => {
   useEffect(() => {
     if (state.erro) {
       setTimeout(() => {
-        setState({...state, erro: false});
+        setState({ ...state, erro: false });
       }, 3000);
     }
   }, [state.erro]);
@@ -52,18 +52,18 @@ const Login = props => {
       docu = doc;
     }
 
-    const {data} = await api({
+    const { data } = await api({
       url: '/user/resetPass',
-      data: {usuario: docu},
+      data: { usuario: docu },
       method: 'post',
     });
     data.erro
       ? setState({
-          ...state,
-          erro: data.erro,
-          mensagem: 'Verifique o Usuário.',
-        })
-      : props.navigation.navigate('Login', {resetSenha: true});
+        ...state,
+        erro: data.erro,
+        mensagem: 'Verifique o Usuário.',
+      })
+      : props.navigation.navigate('Login', { resetSenha: true });
     setLoad(false);
   };
 
@@ -85,7 +85,7 @@ const Login = props => {
               alterar sua senha.
             </Text>
 
-            <View style={{marginTop: 20, width: '100%'}}>
+            <View style={{ marginTop: 20, width: '100%' }}>
               <TextInput
                 label="CNPJ / CPF / Usuário"
                 dense
@@ -99,26 +99,26 @@ const Login = props => {
             </View>
             {state.erro && (
               <View style={estilos.retornoBackend}>
-                <Text style={{color: danger}}>{state.mensagem}</Text>
+                <Text style={{ color: danger }}>{state.mensagem}</Text>
               </View>
             )}
 
             <View
-              style={[estilos.buttonView, {justifyContent: 'space-between'}]}>
+              style={[estilos.buttonView, { justifyContent: 'space-between' }]}>
               {load ? (
                 <ActivityIndicator size={30} color="white" />
               ) : (
-                <TouchableOpacity
-                  style={[
-                    styles.btnDefault,
-                    {paddingHorizontal: 10, backgroundColor: background},
-                  ]}
-                  onPress={resetSenha}>
-                  <Text style={[{fontWeight: 'bold', color: primary}]}>
-                    REDEFINIR SENHA
+                  <TouchableOpacity
+                    style={[
+                      styles.btnDefault,
+                      { paddingHorizontal: 10, backgroundColor: background },
+                    ]}
+                    onPress={resetSenha}>
+                    <Text style={[{ fontWeight: 'bold', color: primary }]}>
+                      REDEFINIR SENHA
                   </Text>
-                </TouchableOpacity>
-              )}
+                  </TouchableOpacity>
+                )}
             </View>
           </View>
         </MenuTop>
