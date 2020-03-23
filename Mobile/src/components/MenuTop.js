@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import {primary, background} from '../utils/Style';
+import { primary, background } from '../utils/Style';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/abepom.png';
 const MenuTop = props => {
   const [itensconfig, setitensconfig] = React.useState(false);
-  const {children, iconeConfig, drawer, noIcons} = props;
+  const { children, iconeConfig, drawer, noIcons } = props;
 
   let iconemenu;
   let _press;
@@ -46,7 +46,7 @@ const MenuTop = props => {
         </TouchableOpacity>
         <Image
           source={icone}
-          style={{width: 40, height: 40, marginHorizontal: 10}}
+          style={{ width: 40, height: 40, marginHorizontal: 10 }}
         />
         <Text style={styles.titulo}>{props.title}</Text>
         {!noIcons ? (
@@ -58,7 +58,7 @@ const MenuTop = props => {
         ) : null}
       </View>
       {props.header && (
-        <View style={{alignItems: 'center', paddingBottom: 20}}>
+        <View style={{ alignItems: 'center', paddingBottom: 20, backgroundColor: background }}>
           {props.header}
         </View>
       )}
@@ -69,12 +69,12 @@ const MenuTop = props => {
             ? props.backgroundColor
             : background,
         }}>
-        <View style={{alignItems: 'center', paddingBottom: 20}}>
+        <View style={{ alignItems: 'center', paddingBottom: 20 }}>
           {children}
         </View>
       </ScrollView>
       {props.footer && (
-        <View style={{alignItems: 'center', paddingBottom: 20}}>
+        <View style={{ alignItems: 'center', paddingBottom: 20 }}>
           {props.footer}
         </View>
       )}

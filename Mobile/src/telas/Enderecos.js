@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Picker,
   Text,
@@ -7,9 +7,9 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Menu from '../components/MenuTop';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import TextInputMask from 'react-native-text-input-mask';
-import styles, {white, primary} from '../utils/Style';
+import styles, { white, primary } from '../utils/Style';
 import theme from '../utils/theme';
 import Icone from 'react-native-vector-icons/AntDesign';
 import MC from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -42,7 +42,7 @@ const Enderecos = props => {
     );
     console.log(dados);
     let cdCidade;
-    const {logradouro, bairro, localidade, uf} = dados.data;
+    const { logradouro, bairro, localidade, uf } = dados.data;
     cidades.find(cidade => {
       if (
         removerAcentos(cidade.Nm_cidade).toUpperCase() ==
@@ -69,7 +69,7 @@ const Enderecos = props => {
     const conv = await AsyncStorage.getItem('convenio');
     let id_parceiro = JSON.parse(conv).id_parceiro;
 
-    const {data} = await api.get(`/enderecos?id_parceiro=${id_parceiro}`);
+    const { data } = await api.get(`/enderecos?id_parceiro=${id_parceiro}`);
     setEnderecosCadastrados(data);
     console.log(data);
   };
@@ -88,10 +88,10 @@ const Enderecos = props => {
     gerEnderecosCadastrados();
   }, []);
 
-  const {logradouro, numero, cidade, fone, bairro, uf, complemento} = endereco;
+  const { logradouro, numero, cidade, fone, bairro, uf, complemento } = endereco;
   return (
     <Menu title="ENDEREÇOS" drawer {...props}>
-      <Text style={{color: 'white', marginVertical: 20}}>
+      <Text style={{ color: 'white', marginVertical: 20 }}>
         Lista de endereços cadastrados
       </Text>
       {enderecosCadastrados ? (
@@ -106,14 +106,14 @@ const Enderecos = props => {
               borderWidth: 1,
               borderColor: '#fff',
             }}>
-            <View style={{width: '90%'}}>
+            <View style={{ width: '90%' }}>
               <Text
                 style={{
                   backgroundColor: primary,
                   color: white,
                   fontSize: 11,
                 }}>
-                <Text style={{fontWeight: 'bold'}}>CEP:</Text> {end.cep}
+                <Text style={{ fontWeight: 'bold' }}>CEP:</Text> {end.cep}
               </Text>
               <Text
                 style={{
@@ -121,12 +121,12 @@ const Enderecos = props => {
                   color: white,
                   fontSize: 11,
                 }}>
-                <Text style={{fontWeight: 'bold'}}>Endereço:</Text>{' '}
+                <Text style={{ fontWeight: 'bold' }}>Endereço:</Text>{' '}
                 {end.logradouro} {end.endereco} - {end.numero}
               </Text>
 
-              <Text style={{color: '#fff', fontSize: 11}}>
-                <Text style={{fontWeight: 'bold'}}>Bairro:</Text> {end.bairro}
+              <Text style={{ color: '#fff', fontSize: 11 }}>
+                <Text style={{ fontWeight: 'bold' }}>Bairro:</Text> {end.bairro}
               </Text>
 
               <Text
@@ -135,13 +135,13 @@ const Enderecos = props => {
                   color: white,
                   fontSize: 11,
                 }}>
-                <Text style={{fontWeight: 'bold'}}>Telefone:</Text>{' '}
+                <Text style={{ fontWeight: 'bold' }}>Telefone:</Text>{' '}
                 {end.telefone}
               </Text>
             </View>
             <View>
               <TouchableOpacity
-                style={{flex: 1}}
+                style={{ flex: 1 }}
                 onPress={() => {
                   setMostrar(true);
                   setEdit(true);
@@ -161,7 +161,7 @@ const Enderecos = props => {
                 <MC name="circle-edit-outline" size={25} color={white} />
               </TouchableOpacity>
               <TouchableOpacity
-                style={{flex: 1}}
+                style={{ flex: 1 }}
                 onPress={() => {
                   RemoverEndereco(end.id_cpc_endereco);
                 }}>
@@ -171,8 +171,8 @@ const Enderecos = props => {
           </View>
         ))
       ) : (
-        <ActivityIndicator size={20} color={'white'} />
-      )}
+          <ActivityIndicator size={20} color={'white'} />
+        )}
       <View
         style={{
           borderBottomColor: 1,
@@ -183,7 +183,7 @@ const Enderecos = props => {
       />
       {mostrar ? (
         <>
-          <View style={{flexDirection: 'row', width: '100%'}}>
+          <View style={{ flexDirection: 'row', width: '100%' }}>
             <TextInput
               mode="outlined"
               label="CEP"
@@ -195,7 +195,7 @@ const Enderecos = props => {
               }}
               onBlur={getEndereco}
               keyboardType="numeric"
-              style={[styles.imput, {width: 150}]}
+              style={[styles.imput, { width: 150 }]}
               render={props => (
                 <TextInputMask mask={'[00].[000]-[000]'} {...props} />
               )}
@@ -206,7 +206,7 @@ const Enderecos = props => {
                 setcep('');
                 setEndereco(info);
               }}
-              style={{position: 'absolute', right: '12%', alignSelf: 'center'}}>
+              style={{ position: 'absolute', right: '12%', alignSelf: 'center' }}>
               <Icone name={'closecircleo'} size={20} color={white} />
             </TouchableOpacity>
           </View>
@@ -217,21 +217,21 @@ const Enderecos = props => {
             theme={theme}
             value={logradouro}
             onChangeText={text =>
-              setEndereco({...endereco, logradouro: text.toUpperCase()})
+              setEndereco({ ...endereco, logradouro: text.toUpperCase() })
             }
             keyboardType="default"
             style={[styles.imput]}
           />
-          <View style={{flexDirection: 'row', width: '100%'}}>
+          <View style={{ flexDirection: 'row', width: '100%' }}>
             <TextInput
               label="Numero"
               dense
               mode="outlined"
               theme={theme}
               value={numero}
-              onChangeText={text => setEndereco({...endereco, numero: text})}
+              onChangeText={text => setEndereco({ ...endereco, numero: text })}
               keyboardType="numeric"
-              style={[styles.imput, {width: '30%'}]}
+              style={[styles.imput, { width: '30%' }]}
             />
             <TextInput
               label="complemento"
@@ -240,10 +240,10 @@ const Enderecos = props => {
               theme={theme}
               value={complemento}
               onChangeText={text =>
-                setEndereco({...endereco, complemento: text.toUpperCase()})
+                setEndereco({ ...endereco, complemento: text.toUpperCase() })
               }
               keyboardType="default"
-              style={[styles.imput, {width: '40%'}]}
+              style={[styles.imput, { width: '40%' }]}
             />
           </View>
 
@@ -255,7 +255,7 @@ const Enderecos = props => {
             value={cidade}
             selectedValue={cidade}
             onValueChange={text => {
-              setEndereco({...endereco, cidade: text});
+              setEndereco({ ...endereco, cidade: text });
               console.log(endereco);
             }}
             keyboardType="default"
@@ -282,7 +282,7 @@ const Enderecos = props => {
             value={uf}
             maxLength={2}
             onChangeText={text =>
-              setEndereco({...endereco, uf: text.toUpperCase()})
+              setEndereco({ ...endereco, uf: text.toUpperCase() })
             }
             keyboardType="default"
             style={[styles.imput]}
@@ -294,7 +294,7 @@ const Enderecos = props => {
             theme={theme}
             value={bairro}
             onChangeText={text =>
-              setEndereco({...endereco, bairro: text.toUpperCase()})
+              setEndereco({ ...endereco, bairro: text.toUpperCase() })
             }
             keyboardType="default"
             style={[styles.imput]}
@@ -305,7 +305,7 @@ const Enderecos = props => {
             mode="outlined"
             theme={theme}
             value={fone}
-            onChangeText={text => setEndereco({...endereco, fone: text})}
+            onChangeText={text => setEndereco({ ...endereco, fone: text })}
             keyboardType="numeric"
             style={[styles.imput]}
             render={props => (
@@ -323,32 +323,32 @@ const Enderecos = props => {
             <TouchableOpacity
               style={[
                 styles.btnDefault,
-                {marginTop: 20, paddingHorizontal: 10},
+                { marginTop: 20, paddingHorizontal: 10 },
               ]}
               onPress={CadastrarEndereco}>
               <Text style={styles.btnDefaultText}>ATUALIZAR ENDEREÇOS</Text>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity
-              style={[
-                styles.btnDefault,
-                {marginTop: 20, paddingHorizontal: 10},
-              ]}
-              onPress={CadastrarEndereco}>
-              <Text style={styles.btnDefaultText}>CADASTRAR ENDEREÇOS</Text>
-            </TouchableOpacity>
-          )}
+              <TouchableOpacity
+                style={[
+                  styles.btnDefault,
+                  { marginTop: 20, paddingHorizontal: 10 },
+                ]}
+                onPress={CadastrarEndereco}>
+                <Text style={styles.btnDefaultText}>CADASTRAR ENDEREÇOS</Text>
+              </TouchableOpacity>
+            )}
         </>
       ) : (
-        <TouchableOpacity
-          onPress={() => {
-            setEdit(false);
-            setMostrar(true);
-          }}
-          style={styles.btnDefault}>
-          <Text style={styles.btnDefaultText}>Cadastrar novo endereço</Text>
-        </TouchableOpacity>
-      )}
+          <TouchableOpacity
+            onPress={() => {
+              setEdit(false);
+              setMostrar(true);
+            }}
+            style={styles.btnDefault}>
+            <Text style={styles.btnDefaultText}>Cadastrar novo endereço</Text>
+          </TouchableOpacity>
+        )}
     </Menu>
   );
 };

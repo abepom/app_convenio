@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
-import styles, {primary, sucessBack, sucess, background} from '../utils/Style';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import styles, { primary, sucessBack, sucess, background } from '../utils/Style';
 
 import MenuTop from '../components/MenuTop';
 import getUsuario from './../utils/getUsuario';
 
 export default props => {
-  const [convenio, setConvenio] = useState({efetuarVenda: false});
+  const [convenio, setConvenio] = useState({ efetuarVenda: false });
 
   useEffect(() => {
     getUsuario('convenio').then(user => {
@@ -16,7 +16,7 @@ export default props => {
 
   return (
     <MenuTop drawer title="ABEPOM" {...props}>
-      <View style={{width: '100%', backgroundColor: background}}>
+      <View style={{ width: '100%', backgroundColor: background }}>
         <View style={styles.linhaMenu}>
           <TouchableOpacity
             style={styles.itemMenu}
@@ -25,7 +25,7 @@ export default props => {
             }>
             <Image
               source={require('../assets/img/pay.png')}
-              style={{width: 40, height: 40}}
+              style={{ width: 40, height: 40 }}
               tintColor={primary}
             />
             <Text style={styles.textMenu}>Consultar Cartao</Text>
@@ -37,7 +37,7 @@ export default props => {
             }}>
             <Image
               source={require('../assets/img/list.png')}
-              style={{width: 40, height: 40}}
+              style={{ width: 40, height: 40 }}
               tintColor={primary}
             />
             <Text style={styles.textMenu}>Listar Atendimentos</Text>
@@ -47,28 +47,28 @@ export default props => {
         {convenio.efetuarVenda && (
           <View style={styles.linhaMenu}>
             <TouchableOpacity
-              style={[styles.itemMenu, {backgroundColor: sucessBack}]}
+              style={[styles.itemMenu, { backgroundColor: sucessBack }]}
               onPress={() =>
                 props.navigation.navigate('EfetuarVenda', convenio)
               }>
               <Image
                 source={require('../assets/img/money.png')}
-                style={{width: 40, height: 40}}
+                style={{ width: 40, height: 40 }}
                 tintColor={primary}
               />
-              <Text style={[styles.textMenu, {color: sucess}]}>
+              <Text style={[styles.textMenu, { color: sucess }]}>
                 Efetuar Venda
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.itemMenu, {backgroundColor: sucessBack}]}
-              onPress={() => alert('consultar Vendas')}>
+              style={[styles.itemMenu, { backgroundColor: sucessBack }]}
+              onPress={() => props.navigation.navigate('ConsultarVendas', { id_gds: convenio.id_gds })}>
               <Image
                 source={require('../assets/img/bill.png')}
-                style={{width: 40, height: 40}}
+                style={{ width: 40, height: 40 }}
                 tintColor={primary}
               />
-              <Text style={[styles.textMenu, {color: sucess}]}>
+              <Text style={[styles.textMenu, { color: sucess }]}>
                 Consultar Vendas
               </Text>
             </TouchableOpacity>
@@ -82,7 +82,7 @@ export default props => {
             }}>
             <Image
               source={require('../assets/img/portfolio.png')}
-              style={{width: 40, height: 40}}
+              style={{ width: 40, height: 40 }}
               tintColor={primary}
             />
             <Text style={styles.textMenu}>Perfil</Text>
@@ -92,7 +92,7 @@ export default props => {
             onPress={() => alert('endereço')}>
             <Image
               source={require('../assets/img/gps.png')}
-              style={{width: 40, height: 40}}
+              style={{ width: 40, height: 40 }}
               tintColor={primary}
             />
             <Text style={styles.textMenu}>Endereço</Text>

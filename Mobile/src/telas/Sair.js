@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 
-import {View, Image} from 'react-native';
+import { View, Image } from 'react-native';
 import logo from '../assets/img/logo_guia_online.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import {primary} from '../utils/Style';
+import { primary } from '../utils/Style';
 
-const Load = ({navigation}) => {
+const Load = ({ navigation }) => {
   useEffect(() => {
     _retrieveData();
   }, []);

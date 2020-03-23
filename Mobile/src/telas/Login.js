@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Image,
@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import StatusBar from '../components/StatusBar';
 import bg from '../assets/img/background.png';
 import logo from '../assets/img/logo_abepom_branca.png';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import styles, {
   danger,
   danverBackground,
@@ -22,7 +22,7 @@ import styles, {
 import mask from '../utils/maskUsuario';
 import api from '../api';
 import theme from '../utils/theme';
-import {ScrollView} from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import setUsuario from '../utils/setUsuario';
 
 const Login = props => {
@@ -46,22 +46,23 @@ const Login = props => {
   useEffect(() => {
     if (state.erro) {
       setTimeout(() => {
-        setState({...state, erro: false});
+        setState({ ...state, erro: false });
       }, 3000);
     }
   }, [state.erro]);
 
   const conectar = async () => {
+
     if (doc.length > 13 && senha) {
-      const {data} = await api({
-        url: '/Login',
-        data: {usuario: doc, senha},
-        method: 'post',
-      });
+      const { data } = await api.post('/Login',
+
+        { usuario: doc, senha }
+
+      );
 
       let convenio;
       if (!data.erro) {
-        setUsuario('usuario', {doc, senha});
+        setUsuario('usuario', { doc, senha });
         convenio = {
           id_gds: data.id_gds,
           nome_parceiro: data.nome_parceiro,
@@ -73,10 +74,10 @@ const Login = props => {
 
         props.navigation.navigate('Home', convenio);
       } else {
-        setState({erro: true, mensagem: 'Usuario ou Senha incorretos'});
+        setState({ erro: true, mensagem: 'Usuario ou Senha incorretos' });
       }
     } else {
-      setState({erro: true, mensagem: 'Usuario ou Senha incorretos'});
+      setState({ erro: true, mensagem: 'Usuario ou Senha incorretos' });
     }
   };
 
@@ -84,13 +85,13 @@ const Login = props => {
     <>
       <StatusBar />
       <View style={estilos.conteiner}>
-        <ScrollView style={{width: '100%'}}>
+        <ScrollView style={{ width: '100%' }}>
           <Image
-            style={[styles.logo, {margin: '10%', alignSelf: 'center'}]}
+            style={[styles.logo, { margin: '10%', alignSelf: 'center' }]}
             source={logo}
           />
 
-          <View style={{marginTop: 20, width: '100%'}}>
+          <View style={{ marginTop: 20, width: '100%' }}>
             <TextInput
               label="CNPJ / CPF / Usuário"
               dense
@@ -116,7 +117,7 @@ const Login = props => {
           </View>
           {state.erro && (
             <View style={[estilos.retornoBackend, estilos.mensagemErro]}>
-              <Text style={{color: danger}}>{state.mensagem}</Text>
+              <Text style={{ color: danger }}>{state.mensagem}</Text>
             </View>
           )}
           {reset && (
@@ -127,7 +128,7 @@ const Login = props => {
                   setReset(false);
                 }, 3000)
               }>
-              <Text style={{color: 'white'}}>
+              <Text style={{ color: 'white' }}>
                 Você recebera um email com sua senha
               </Text>
             </View>
@@ -136,7 +137,7 @@ const Login = props => {
           <View style={estilos.buttonView}>
             <TouchableOpacity
               onPress={() => {
-                props.navigation.navigate('RestartPass', {noLogin: true});
+                props.navigation.navigate('RestartPass', { noLogin: true });
               }}
               style={[
                 styles.link,
@@ -156,7 +157,7 @@ const Login = props => {
                 },
               ]}
               onPress={conectar}>
-              <Text style={{color: primary}}>ENTRAR</Text>
+              <Text style={{ color: primary }}>ENTRAR</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {View, Image, Text} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Image, Text } from 'react-native';
 import logo from '../assets/img/logo_abepom_branca.png';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import {primary} from '../utils/Style';
+import { primary } from '../utils/Style';
 import api from '../api';
 
 const Load = props => {
-  const {navigation} = props;
+  const { navigation } = props;
   let doc;
   let senha;
 
@@ -16,9 +16,9 @@ const Load = props => {
   }, []);
   const conectar = async () => {
     if (doc.length > 13 && senha) {
-      const {data} = await api({
+      const { data } = await api({
         url: '/Login',
-        data: {usuario: doc, senha},
+        data: { usuario: doc, senha },
         method: 'post',
       });
 
@@ -61,7 +61,7 @@ const Load = props => {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-      <Image source={logo} style={{width: 150, height: 150}} />
+      <Image source={logo} style={{ width: 150, height: 150 }} />
     </View>
   );
 };

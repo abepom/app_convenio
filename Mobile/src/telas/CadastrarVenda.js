@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, ActivityIndicator, TouchableOpacity} from 'react-native';
-import {TextInput} from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modal';
-import styles, {primary} from '../utils/Style';
-import {TextInputMask} from 'react-native-masked-text';
-import {themeLight as theme} from '../utils/theme';
-import {ScrollView} from 'react-native-gesture-handler';
+import styles, { primary } from '../utils/Style';
+import { TextInputMask } from 'react-native-masked-text';
+import { themeLight as theme } from '../utils/theme';
+import { ScrollView } from 'react-native-gesture-handler';
 import api from '../api';
 
 const CadastrarVenda = props => {
@@ -15,7 +15,7 @@ const CadastrarVenda = props => {
     currency: 'BRL',
     minimumFractionDigits: 2,
   });
-  const {matricula, dep, nome, id_gds} = props.navigation.state.params;
+  const { matricula, dep, nome, id_gds } = props.navigation.state.params;
   const [valor, setValor] = useState('');
   const [cupom, setCupom] = useState('');
   const [carregando, setCarregando] = useState(false);
@@ -31,7 +31,7 @@ const CadastrarVenda = props => {
       const dados = await api({
         url: '/efetuarVendas',
         method: 'POST',
-        data: {matricula, dep, id_gds, valor, cupom},
+        data: { matricula, dep, id_gds, valor, cupom },
       });
 
       setModal(true);
@@ -60,7 +60,7 @@ const CadastrarVenda = props => {
   return (
     <>
       <Modal isVisible={modal} {...props}>
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <View
             style={{
               backgroundColor: '#fff',
@@ -104,13 +104,13 @@ const CadastrarVenda = props => {
                   setCarregando(false);
                 }
               }}>
-              <Text style={{color: 'white'}}>FECHAR</Text>
+              <Text style={{ color: 'white' }}>FECHAR</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
       <ScrollView>
-        <View style={{flex: 1, alignItems: 'center'}}>
+        <View style={{ flex: 1, alignItems: 'center' }}>
           <View
             style={{
               marginTop: 20,
@@ -122,9 +122,9 @@ const CadastrarVenda = props => {
               borderColor: primary,
               borderWidth: 1,
             }}>
-            <Text style={{color: primary}}>Associado {nome}</Text>
-            <Text style={{color: primary}}>Matricula: {matricula}</Text>
-            <Text style={{color: primary}}>Dependencia: {dep}</Text>
+            <Text style={{ color: primary }}>Associado {nome}</Text>
+            <Text style={{ color: primary }}>Matricula: {matricula}</Text>
+            <Text style={{ color: primary }}>Dependencia: {dep}</Text>
           </View>
           <TextInput
             label="Valor"
@@ -160,16 +160,16 @@ const CadastrarVenda = props => {
             onChangeText={setCupom}
           />
 
-          <View style={{width: '80%'}}>
+          <View style={{ width: '80%' }}>
             {!carregando ? (
               <TouchableOpacity
-                style={[styles.btnDefault, {marginTop: 30}]}
+                style={[styles.btnDefault, { marginTop: 30 }]}
                 onPress={() => InformarVenda()}>
-                <Text style={{color: 'white'}}>INFORMAR VENDA</Text>
+                <Text style={{ color: 'white' }}>INFORMAR VENDA</Text>
               </TouchableOpacity>
             ) : (
-              <ActivityIndicator style={{marginTop: 30}} />
-            )}
+                <ActivityIndicator style={{ marginTop: 30 }} />
+              )}
           </View>
         </View>
       </ScrollView>
