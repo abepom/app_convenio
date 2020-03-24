@@ -1,0 +1,1 @@
+java -jar "D:\Projetos\Consertando\abepom\APK\bundletool-all-0.13.3.jar" build-apks --bundle="D:\Projetos\Consertando\abepom\APK\app.aab" --output="D:\Projetos\Consertando\abepom\APK\app.apks" --ks="D:\Projetos\Consertando\abepom\Mobile\android\app\abepom.keystore" --ks-key-alias=abepom
