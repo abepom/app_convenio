@@ -11,6 +11,7 @@ import Sair from './telas/Sair';
 
 import ConsultarCartao from './telas/ConsultarCartao';
 import Endereco from './telas/Enderecos';
+import DadosGerais from './telas/DadosGerais';
 import Drawer from './components/Drawer';
 import { primary, primaryBack, white } from './utils/Style';
 import ItemDrawer from './components/ItemDrawer';
@@ -98,14 +99,14 @@ const App = createDrawerNavigator(
       },
     },
     DadosGerais: {
-      screen: Endereco,
+      screen: DadosGerais,
 
       navigationOptions: {
-        drawerLabel: () => null,
-        // drawerIcon: props => (
-        //   <ItemDrawer {...props} name="account-card-details-outline" />
-        // ),
-        // drawerLabel: 'Perfil',
+        drawerLabel: () => 'Perfil',
+        drawerIcon: props => (
+          <ItemDrawer {...props} icone={imagem.portfolio} />
+        ),
+        drawerLabel: 'Perfil',
       },
     },
     Sair: {

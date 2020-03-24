@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import StatusBar from '../components/StatusBar';
-import bg from '../assets/img/background.png';
+
 import logo from '../assets/img/logo_abepom_branca.png';
 import { TextInput } from 'react-native-paper';
 import styles, {
