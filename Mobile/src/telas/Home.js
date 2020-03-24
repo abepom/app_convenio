@@ -78,7 +78,7 @@ export default props => {
           <TouchableOpacity
             style={styles.itemMenu}
             onPress={() => {
-              alert('Perfil');
+              props.navigation.navigate('DadosGerais', { id_gds: convenio.id_gds })
             }}>
             <Image
               source={require('../assets/img/portfolio.png')}

@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.7.1",
+    "@react-native-community/datetimepicker": "^2.3.0",
     "@react-native-community/masked-view": "^0.1.5",
     "axios": "^0.19.1",
     "currency-formatter": "^1.5.5",

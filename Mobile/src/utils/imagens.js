@@ -7,5 +7,9 @@ import gps from '../assets/img/gps.png';
 import bill from '../assets/img/bill.png';
 import list from '../assets/img/list.png';
 import search from '../assets/img/search.png';
+import save from '../assets/img/save.png'
+//import save from '../assets/img/save.png'
+//import save from '../assets/img/save.png'
+//import save from '../assets/img/save.png'
 
-export default {pay, off, portfolio, money, abepom, gps, bill, list, search};
+export default { pay, off, portfolio, money, abepom, gps, bill, list, search, save };
