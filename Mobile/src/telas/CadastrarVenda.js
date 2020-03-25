@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modal';
 import styles, { primary } from '../utils/Style';
 import { TextInputMask } from 'react-native-masked-text';
@@ -10,11 +9,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import api from '../api';
 
 const CadastrarVenda = props => {
-  const formatter = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-    minimumFractionDigits: 2,
-  });
+
   const { matricula, dep, nome, id_gds } = props.navigation.state.params;
   const [valor, setValor] = useState('');
   const [cupom, setCupom] = useState('');
@@ -36,15 +31,13 @@ const CadastrarVenda = props => {
 
       setModal(true);
       setMsnModal(dados.data);
-      console.log(dados.data);
+
     } else {
       alert('valor em branco');
       setCarregando(false);
     }
   };
-  useEffect(() => {
-    console.log(formatter.format(10000));
-  }, []);
+
   // useEffect(() => {
   //   console.log(msnModal);
   //   if (modal) {
@@ -76,11 +69,12 @@ const CadastrarVenda = props => {
                 fontSize: 20,
                 color: primary,
                 padding: 20,
-                marginTop: 20,
+                marginTop: 10,
+                marginBottom: 25,
                 textAlign: 'center',
               }}>
               {msnModal.mensagem}.{'\n'}
-              {msnModal.limite && ` Limite atual e de ${msnModal.limite}`}
+              {msnModal.limite && ` Limite atual é de R$ ${msnModal.limite.toString().split('.')[0]},${(msnModal.limite.toString().split('.')[1] + '0').substr(0, 2)}`}
             </Text>
             <TouchableOpacity
               style={{
@@ -123,8 +117,8 @@ const CadastrarVenda = props => {
               borderWidth: 1,
             }}>
             <Text style={{ color: primary }}>Associado {nome}</Text>
-            <Text style={{ color: primary }}>Matricula: {matricula}</Text>
-            <Text style={{ color: primary }}>Dependencia: {dep}</Text>
+            <Text style={{ color: primary }}>Matrícula: {matricula}</Text>
+            <Text style={{ color: primary }}>Dependência: {dep}</Text>
           </View>
           <TextInput
             label="Valor"

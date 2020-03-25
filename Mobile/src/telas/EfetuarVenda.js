@@ -73,39 +73,41 @@ export default props => {
   }, []);
 
   const consultarCartao = async cartao => {
-    const validado = await api({
-      url: '/ConsultarCartao',
-      method: 'post',
-      data: {
-        cartao,
-      },
-    });
-    console.log(validado.data)
-    if (validado.data.length) {
-      if (validado.data.retorno == 1) {
-        setMensagem(validado.data.mensagem);
-      }
-      setDependentes(validado.data)
-    } else {
-      if (validado.data.avancar == 1) {
-        setAvancar(true);
-        setMensagem(validado.data.mensagem);
-        setRetorno(retornopadrao)
-        setassociado({
-          cartao: imput,
-          matricula: imput.substring(0, 6),
-          dep: imput.substring(7, 9),
-          nome: validado.data.Nome,
-        });
-      } else if (validado.data.retorno) {
-        setRetorno(validado.data)
+    try {
+      const validado = await api({
+        url: '/ConsultarCartao',
+        method: 'post',
+        data: {
+          cartao,
+        },
+      });
+
+      if (validado.data.length) {
+        if (validado.data.retorno == 1) {
+          setMensagem(validado.data.mensagem);
+        }
+        setDependentes(validado.data)
       } else {
-        setAvancar(false);
+        if (validado.data.avancar == 1) {
+          setAvancar(true);
+          setMensagem(validado.data.mensagem);
+          setRetorno(retornopadrao)
+          setassociado({
+            cartao: imput,
+            matricula: imput.substring(0, 6),
+            dep: imput.substring(7, 9),
+            nome: validado.data.Nome,
+          });
+        } else if (validado.data.retorno) {
+          setRetorno(validado.data)
+        } else {
+          setAvancar(false);
+        }
       }
+    } catch (error) {
+      console.log(error)
     }
   };
-
-
   return (
     <MenuTop {...props} drawer title="Efetuar Vendas">
       <Text
@@ -139,9 +141,7 @@ export default props => {
         theme={{
           colors: {
             primary: primary,
-
             background: 'white',
-
             text: primary,
             placeholder: primary,
           },
@@ -184,35 +184,32 @@ export default props => {
           <>
             {dependentes.length > 0 && <Text style={{ marginTop: 30, fontSize: 20, fontWeight: "bold" }}>Selecione um Associado</Text>}
             <View style={{ width: '80%' }}>
-
-              <FlatList
-                data={dependentes}
-                renderItem={({ item }) => {
-                  return (<TouchableOpacity onPress={() => {
-                    setImput('');
-                    props.navigation.navigate('CadastrarVenda', {
-                      cartao: imput,
-                      matricula: item.Matricula,
-                      dep: item.Cd_dependente,
-                      nome: item.NOME,
-                      id_gds: state.id_gds,
-                    });
-                    setRetorno(retornopadrao)
-                    setDependentes([])
-                    setassociado(vaziu);
-                    setAvancar(false);
-                  }}
-                    style={{ marginTop: 20, padding: 10, width: '100%', backgroundColor: 'white', elevation: 2, borderRadius: 5 }}>
-
-                    <Text style={{ fontWeight: "bold", color: primary }}> Nome: <Text style={{ fontWeight: "100", color: primary }}>{item.NOME}</Text> </Text>
-                    <Text style={{ fontWeight: "bold", color: primary }}>
-                      Dependencia: <Text style={{ fontWeight: "100", color: primary }}>{item.descri}</Text>
-                      {/* Dep: <Text style={{ fontWeight: "100", color: primary }}>{item.Cd_dependente}</Text> */}
-                    </Text>
-
-                  </TouchableOpacity>);
+              {dependentes.map(item =>
+                (<TouchableOpacity onPress={() => {
+                  setImput('');
+                  props.navigation.navigate('CadastrarVenda', {
+                    cartao: imput,
+                    matricula: item.Matricula,
+                    dep: item.Cd_dependente,
+                    nome: item.NOME,
+                    id_gds: state.id_gds,
+                  });
+                  setRetorno(retornopadrao)
+                  setDependentes([])
+                  setassociado(vaziu);
+                  setAvancar(false);
                 }}
-              />
+                  style={{ marginTop: 20, padding: 10, width: '100%', backgroundColor: 'white', elevation: 2, borderRadius: 5 }}>
+
+                  <Text style={{ fontWeight: "bold", color: primary }}> Nome: <Text style={{ fontWeight: "100", color: primary }}>{item.NOME}</Text> </Text>
+                  <Text style={{ fontWeight: "bold", color: primary }}>
+                    Dependencia: <Text style={{ fontWeight: "100", color: primary }}>{item.descri}</Text>
+                    {/* Dep: <Text style={{ fontWeight: "100", color: primary }}>{item.Cd_dependente}</Text> */}
+                  </Text>
+
+                </TouchableOpacity>)
+              )}
+
             </View>
           </>
         )

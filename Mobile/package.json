@@ -3,15 +3,16 @@
   "version": "0.3.0",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "clear": "cd android && gradlew clean  && cd ..",
+    "android": "cd android && gradlew clean  && cd .. && react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
     "apkAS": " react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
-    "assemble": "cd android && ./gradlew assembleRelease && cd ..",
+    "assemble": "cd android && gradlew clean && gradlew assembleRelease && cd ..",
     "apk": "react-native run-android --variant=release",
-    "bundle": "cd android && ./gradlew bundleRelease && cd ..",
+    "bundle": "cd android && gradlew clean && gradlew bundleRelease && cd ..",
     "ao": "emulator -avd ao"
   },
   "dependencies": {
@@ -20,7 +21,6 @@
     "@react-native-community/masked-view": "^0.1.5",
     "axios": "^0.19.1",
     "currency-formatter": "^1.5.5",
-    "qs": "^6.9.1",
     "react": "16.9.0",
     "react-native": "0.61.5",
     "react-native-camera": "^3.15.1",

@@ -13,7 +13,7 @@ import icone from '../assets/img/abepom.png';
 const MenuTop = props => {
   const [itensconfig, setitensconfig] = React.useState(false);
   const { children, iconeConfig, drawer, noIcons } = props;
-
+  console.log(props, "testeeeeee")
   let iconemenu;
   let _press;
   const _handlerOpemConfig = () => {

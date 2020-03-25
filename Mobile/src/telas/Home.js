@@ -28,7 +28,7 @@ export default props => {
               style={{ width: 40, height: 40 }}
               tintColor={primary}
             />
-            <Text style={styles.textMenu}>Consultar Cartao</Text>
+            <Text style={styles.textMenu}>Consultar Cartão</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.itemMenu}
