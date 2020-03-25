@@ -15,7 +15,7 @@ import getUsuario from '../utils/getUsuario';
 const Drawer = props => {
   const [menu, setMenu] = useState({ ...props });
   let itens = props.items;
-  console.log()
+
   const [convenio, setConvenio] = useState({
     caminho_logomarca: null,
     nome_parceiro: '',
@@ -43,7 +43,7 @@ const Drawer = props => {
     setMenu({ ...props, items: itens });
   }, []);
 
-  console.log(menu, 'menu', convenio);
+
 
   return (
     <ScrollView style={styles.flex}>

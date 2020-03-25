@@ -5,9 +5,9 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  PermissionsAndroid,
+
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+
 import StatusBar from '../components/StatusBar';
 
 import logo from '../assets/img/logo_abepom_branca.png';
@@ -52,29 +52,29 @@ const Login = props => {
   }, [state.erro]);
 
   const conectar = async () => {
-
     if (doc.length > 13 && senha) {
-      const { data } = await api.post('/Login',
-
-        { usuario: doc, senha }
-
-      );
-
-      let convenio;
-      if (!data.erro) {
-        setUsuario('usuario', { doc, senha });
-        convenio = {
-          id_gds: data.id_gds,
-          nome_parceiro: data.nome_parceiro,
-          caminho_logomarca: data.caminho_logomarca,
-          efetuarVenda: data.efetuarVenda,
-          doc: data.doc,
-        };
-        setUsuario('convenio', convenio);
-
-        props.navigation.navigate('Home', convenio);
-      } else {
-        setState({ erro: true, mensagem: 'Usuario ou Senha incorretos' });
+      try {
+        const { data } = await api.post('/Login',
+          { usuario: doc, senha }
+        );
+        let convenio;
+        if (!data.erro) {
+          setUsuario('usuario', { doc, senha });
+          convenio = {
+            id_gds: data.id_gds,
+            nome_parceiro: data.nome_parceiro,
+            caminho_logomarca: data.caminho_logomarca,
+            efetuarVenda: data.efetuarVenda,
+            doc: data.usuario,
+          };
+          console.log(convenio, data, `convenio`)
+          setUsuario('convenio', convenio);
+          props.navigation.navigate('App', convenio);
+        } else {
+          setState({ erro: true, mensagem: 'Usuario ou Senha incorretos' });
+        }
+      } catch (error) {
+        alert(`${error}  	`)
       }
     } else {
       setState({ erro: true, mensagem: 'Usuario ou Senha incorretos' });
@@ -156,7 +156,7 @@ const Login = props => {
                   backgroundColor: background,
                 },
               ]}
-              onPress={conectar}>
+              onPress={() => conectar()}>
               <Text style={{ color: primary }}>ENTRAR</Text>
             </TouchableOpacity>
           </View>

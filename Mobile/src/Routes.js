@@ -60,6 +60,9 @@ const App = createDrawerNavigator(
       screen: ConsultarCartao,
       navigationOptions: {
         drawerIcon: props => <ItemDrawer {...props} icone={imagem.pay} />,
+        drawerLabel: () => {
+          return 'Consultar Cartao';
+        },
       },
     },
     ListarAtendimento: {
@@ -67,6 +70,9 @@ const App = createDrawerNavigator(
 
       navigationOptions: {
         drawerIcon: props => <ItemDrawer {...props} icone={imagem.list} />,
+        drawerLabel: () => {
+          return 'Listar Atendimento';
+        },
       },
     },
     EfetuarVenda: {

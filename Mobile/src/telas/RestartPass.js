@@ -104,7 +104,7 @@ const Login = props => {
             )}
 
             <View
-              style={[estilos.buttonView, { justifyContent: 'space-between' }]}>
+              style={[estilos.buttonView,]}>
               {load ? (
                 <ActivityIndicator size={30} color="white" />
               ) : (

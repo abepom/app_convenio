@@ -33,7 +33,7 @@ const Load = props => {
           efetuarVenda: data.efetuarVenda,
         };
 
-        navigation.navigate('Home', convenio);
+        navigation.navigate('App', convenio);
       }
     } else {
       navigation.navigate('Login');

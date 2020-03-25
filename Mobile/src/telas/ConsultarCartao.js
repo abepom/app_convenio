@@ -116,10 +116,10 @@ const Home = props => {
               <Icone name="close-circle" size={30} color={danger} />
             </TouchableOpacity>
             <Text style={{ color: primary }}>
-              Informe a media consumida pelo associado
+              Informe a média consumida pelo associado
             </Text>
             <Text style={{ fontSize: 10, right: 0, position: 'relative' }}>
-              * essa informação sera usada para estatistica
+              * essa informação será usada para estatística
             </Text>
             <View style={{ flexDirection: 'row', marginTop: 30 }}>
               <Imput
@@ -177,7 +177,7 @@ const Home = props => {
       <Menu {...props} title="Consulta de Cartões">
         <View style={{ alignItems: 'center' }}>
           <Text style={{ fontSize: 16, marginVertical: 20, color: primary }}>
-            Informe o numero do cartão do associado
+            Informe o número do cartão do associado
           </Text>
 
           <View style={[styles.input, { flexDirection: 'row' }]}>
@@ -222,24 +222,24 @@ const Home = props => {
 
                 elevation: 5,
                 borderRadius: 5,
-                width: '75%',
+                width: '90%',
                 alignSelf: 'center',
                 bordercolor: '#fff',
               }}>
-              <Text style={{ color: 'white', margin: 5 }}>
-                <Text style={{ fontWeight: 'bold' }}>Nome: </Text> {associado.dep}
+              <Text style={{ color: 'white', margin: 5, fontSize: 12 }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 12 }}>Nome: </Text> {associado.dep}
               </Text>
-              <Text style={{ color: 'white', margin: 5 }}>
-                <Text style={{ fontWeight: 'bold' }}>Status: </Text>
+              <Text style={{ color: 'white', margin: 5, fontSize: 12 }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 12 }}>Status: </Text>
                 {associado.Inativo ? 'Inativo' : 'Ativo'}
               </Text>
-              <Text style={{ color: 'white', margin: 5 }}>
-                <Text style={{ fontWeight: 'bold' }}>Cartão: </Text>{' '}
+              <Text style={{ color: 'white', margin: 5, fontSize: 12 }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 12 }}>Cartão: </Text>{' '}
                 {associado.Nr_Cartao_Abepom}
               </Text>
             </View>
             <TouchableOpacity
-              style={[styles.btnDefault, { width: '50%', alignSelf: 'center' }]}
+              style={[styles.btnDefault, { alignSelf: 'center' }]}
               onPress={() => setModal(true)}>
               <Text style={styles.btnDefaultText}>INFORMAR UTILIZAÇÃO</Text>
             </TouchableOpacity>
