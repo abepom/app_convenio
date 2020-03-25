@@ -69,7 +69,8 @@ const CadastrarVenda = props => {
                 fontSize: 20,
                 color: primary,
                 padding: 20,
-                marginTop: 20,
+                marginTop: 10,
+                marginBottom: 25,
                 textAlign: 'center',
               }}>
               {msnModal.mensagem}.{'\n'}
