@@ -8,10 +8,13 @@ import { TextInputMask } from 'react-native-masked-text';
 import { themeLight as theme } from '../utils/theme';
 import { ScrollView } from 'react-native-gesture-handler';
 import api from '../api';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const CadastrarVenda = props => {
 
   const { matricula, dep, nome, id_gds } = props.navigation.state.params;
+  const [data, setData] = useState(new Date())
+  const [show, setShow] = useState(false)
   const [valor, setValor] = useState('');
   const [cupom, setCupom] = useState('');
   const [carregando, setCarregando] = useState(false);
@@ -20,6 +23,12 @@ const CadastrarVenda = props => {
     erro: true,
     mensagem: '',
   });
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || data;
+    setShow(Platform.OS === 'ios');
+    setData(currentDate);
+
+  };
 
   const InformarVenda = async () => {
     setCarregando(true);
@@ -27,9 +36,9 @@ const CadastrarVenda = props => {
       const dados = await api({
         url: '/efetuarVendas',
         method: 'POST',
-        data: { matricula, dep, id_gds, valor, cupom },
+        data: { matricula, dep, id_gds, valor, cupom, data },
       });
-      console.log(dados.data)
+      console.log(matricula, dep, id_gds, valor, cupom, data)
       setModal(true);
       setMsnModal(dados.data);
 
@@ -122,6 +131,29 @@ const CadastrarVenda = props => {
             <Text style={{ color: primary }}>Matrícula: {matricula}</Text>
             <Text style={{ color: primary }}>Dependência: {dep}</Text>
           </View>
+          <TextInput
+            label="Data"
+            dense
+            value={data}
+            mode="outlined"
+            onChange={onChange}
+            theme={theme}
+            style={[styles.imput]}
+            onFocus={() => alert(teste)}
+            render={(props) => {
+              if (show) {
+                return (<DateTimePicker
+                  {...props}
+                  mode={'date'}
+                />)
+              } else {
+                return (<Text onPress={() => setShow(true)} style={{ textAlignVertical: "center", flex: 1, marginLeft: 10 }}>
+                  {`${data.getDate()}`}/{data.getMonth() < 9 ? `0${data.getMonth() + 1}` : `${data.getMonth() + 1}`}/{`${data.getFullYear()}`}
+                </Text>)
+              }
+            }
+            }
+          />
           <TextInput
             label="Valor"
             dense

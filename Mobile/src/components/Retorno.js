@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import {
   sucess,
   danger,
@@ -7,6 +7,8 @@ import {
   alert,
   alertBack,
 } from '../utils/Style';
+import imagens from '../utils/imagens';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default props => {
   const { type } = props;
@@ -52,7 +54,14 @@ export default props => {
         margin: 10,
         padding: 10,
       }}>
-      <Text style={{ color: color }}>{props.mensagem}</Text>
-    </View>
+      {props.fechar && <View style={{ width: '100%', alignItems: 'flex-end' }}>
+        <TouchableOpacity onPress={() => props.fechar()}>
+
+          <Image source={imagens.close} style={{ width: 20, height: 20, }} />
+        </TouchableOpacity>
+
+      </View>}
+      <Text style={{ color: color, fontSize: 12 }}>{props.mensagem}</Text>
+    </View >
   );
 };

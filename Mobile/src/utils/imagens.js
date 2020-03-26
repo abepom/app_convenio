@@ -8,8 +8,8 @@ import bill from '../assets/img/bill.png';
 import list from '../assets/img/list.png';
 import search from '../assets/img/search.png';
 import save from '../assets/img/save.png'
-//import save from '../assets/img/save.png'
+import close from '../assets/img/close.png'
 //import save from '../assets/img/save.png'
 //import save from '../assets/img/save.png'
 
-export default { pay, off, portfolio, money, abepom, gps, bill, list, search, save };
+export default { pay, off, portfolio, money, abepom, gps, bill, list, search, save, close };
