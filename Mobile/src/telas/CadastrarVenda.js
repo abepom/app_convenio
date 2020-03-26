@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-paper';
+import formatCurrency from 'currency-formatter'
 import Modal from 'react-native-modal';
 import styles, { primary } from '../utils/Style';
 import { TextInputMask } from 'react-native-masked-text';
@@ -28,7 +29,7 @@ const CadastrarVenda = props => {
         method: 'POST',
         data: { matricula, dep, id_gds, valor, cupom },
       });
-
+      console.log(dados.data)
       setModal(true);
       setMsnModal(dados.data);
 
@@ -74,7 +75,8 @@ const CadastrarVenda = props => {
                 textAlign: 'center',
               }}>
               {msnModal.mensagem}.{'\n'}
-              {msnModal.limite && ` Limite atual é de R$ ${msnModal.limite.toString().split('.')[0]},${(msnModal.limite.toString().split('.')[1] + '0').substr(0, 2)}`}
+              {msnModal.limite && ` Limite atual é de ${formatCurrency.format(msnModal.limite, { code: 'BRL' })}`}
+
             </Text>
             <TouchableOpacity
               style={{

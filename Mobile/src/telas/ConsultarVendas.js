@@ -12,6 +12,7 @@ import formatCurrency from 'currency-formatter'
 
 import { formatData } from '../utils/FormatData';
 import Retorno from '../components/Retorno';
+import getUsuario from '../utils/getUsuario';
 
 const meses = []
 
@@ -28,8 +29,7 @@ for (let i = new Date().getFullYear(); i >= new Date().getFullYear() - 5; i--) {
 
 const ConsultarVendas = (props) => {
 
-    // const data = new Date().getMonth() + 1
-    // const [mes, setMes] = useState(data < 10 ? `02` : `${data}`)
+    const [id_gds, setId_gds] = useState('')
     const [ano, setAno] = useState(`${new Date().getFullYear()} `)
     const [data, setData] = useState(new Date())
     const [show, setShow] = useState(false)
@@ -39,16 +39,26 @@ const ConsultarVendas = (props) => {
     const [conteudoModal, setConteudoModal] = useState(null)
     const [retornoExclusao, setRetornoExclusao] = useState('')
     useEffect(() => {
-        getConsulta()
+        getUsuario('convenio').then(async conv => {
+            try {
+                await setId_gds(conv.id_gds)
+                await onChange()
+            } catch (error) {
+                console.log(error, 'error')
+            }
+
+        }).catch((e) => console.log(e))
+
     }, [])
 
 
     const getConsulta = async (dataSelecionada) => {
         let Data = dataSelecionada ? dataSelecionada : data
         setLoad(true)
-        const dados = await api.get('/ConsultarVendas', { params: { id_gds: props.navigation.state.params.id_gds, data: Data } })
+        const dados = await api.get('/ConsultarVendas', { params: { id_gds, data: Data } })
         setvendas(dados.data)
         setLoad(false)
+
     }
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || data;
@@ -57,7 +67,6 @@ const ConsultarVendas = (props) => {
         let dia = currentDate.getDate() < 10 ? `0${currentDate.getDate()}` : `${currentDate.getDate()}`
         let mes = currentDate.getMonth() < 9 ? `0${currentDate.getMonth() + 1}` : `${currentDate.getMonth() + 1}`
         let ano = `${currentDate.getFullYear()}`
-        console.log(dia, mes, ano)
         getConsulta(`${dia}/${mes}/${ano}`)
     };
     const excluirVenda = async (Nr_lancamento) => {
