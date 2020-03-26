@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   titulo: {
-    fontSize: 20,
+    fontSize: 18,
     color: 'white',
   },
 });

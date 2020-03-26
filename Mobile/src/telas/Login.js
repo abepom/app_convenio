@@ -71,13 +71,13 @@ const Login = props => {
           setUsuario('convenio', convenio);
           props.navigation.navigate('App', convenio);
         } else {
-          setState({ erro: true, mensagem: 'Usuario ou Senha incorretos' });
+          setState({ erro: true, mensagem: 'Usuário ou Senha incorretos' });
         }
       } catch (error) {
         alert(`${error}  	`)
       }
     } else {
-      setState({ erro: true, mensagem: 'Usuario ou Senha incorretos' });
+      setState({ erro: true, mensagem: 'Usuário ou Senha incorretos' });
     }
   };
 

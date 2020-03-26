@@ -4,7 +4,7 @@ import Routes from './Routes';
 import { primary } from './utils/Style';
 
 const App = () => {
-  //console.disableYellowBox = true;
+  console.disableYellowBox = true;
   return (
     <>
       <View style={{ flex: 1 }}>

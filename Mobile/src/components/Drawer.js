@@ -14,7 +14,8 @@ import getUsuario from '../utils/getUsuario';
 
 const Drawer = props => {
   const [menu, setMenu] = useState({ ...props });
-  let itens = props.items;
+  let itens = []
+
 
   const [convenio, setConvenio] = useState({
     caminho_logomarca: null,
@@ -22,25 +23,43 @@ const Drawer = props => {
     efetuarVenda: false,
   });
   useEffect(() => {
-    getUsuario('convenio').then(conv => {
-      setConvenio(conv);
-      console.log(conv)
-      if (!conv.efetuarVenda) {
-        menu.items.map(item => {
-          switch (item.key) {
-            case 'EfetuarVenda':
-            case 'ConsultarVendas':
-            case 'Endereco':
-              break;
-            default:
-              itens.push({ ...item, params: conv });
-              break;
-          }
-        });
-      }
-    });
+    getUsuario('convenio').then(async conv => {
 
-    setMenu({ ...props, items: itens });
+      try {
+        await setConvenio(conv);
+
+        if (!conv.efetuarVenda) {
+
+          menu.items.map(item => {
+            switch (item.key) {
+              case 'EfetuarVenda':
+              case 'ConsultarVendas':
+              case 'Endereco':
+                break;
+              default:
+                itens.push({ ...item, params: props.navigation.state.params });
+                break;
+            }
+            console.log(itens)
+          });
+        } else {
+
+          menu.items.map(item => {
+
+            itens.push({ ...item, params: props.navigation.state.params });
+
+          })
+          console.log(itens)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+
+      console.log(itens, "itens")
+
+      setMenu({ ...props, items: itens });
+
+    });
   }, []);
 
 
