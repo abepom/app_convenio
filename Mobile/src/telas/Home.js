@@ -15,90 +15,90 @@ export default props => {
   }, []);
 
   return (
-    <MenuTop drawer title="ABEPOM" {...props}>
-      <View style={{ width: '100%', backgroundColor: background }}>
+
+    <View style={{ width: '100%', backgroundColor: background }}>
+      <View style={styles.linhaMenu}>
+        <TouchableOpacity
+          style={styles.itemMenu}
+          onPress={() =>
+            props.navigation.navigate('ConsultarCartao', convenio)
+          }>
+          <Image
+            source={require('../assets/img/pay.png')}
+            style={{ width: 40, height: 40 }}
+            tintColor={primary}
+          />
+          <Text style={styles.textMenu}>Consultar Cartão</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.itemMenu}
+          onPress={() => {
+            props.navigation.navigate('ListarAtendimento', convenio);
+          }}>
+          <Image
+            source={require('../assets/img/list.png')}
+            style={{ width: 40, height: 40 }}
+            tintColor={primary}
+          />
+          <Text style={styles.textMenu}>Listar Atendimentos</Text>
+        </TouchableOpacity>
+      </View>
+
+      {convenio.efetuarVenda && (
         <View style={styles.linhaMenu}>
           <TouchableOpacity
-            style={styles.itemMenu}
+            style={[styles.itemMenu, { backgroundColor: sucessBack }]}
             onPress={() =>
-              props.navigation.navigate('ConsultarCartao', convenio)
+              props.navigation.navigate('EfetuarVenda', convenio)
             }>
             <Image
-              source={require('../assets/img/pay.png')}
+              source={require('../assets/img/money.png')}
               style={{ width: 40, height: 40 }}
               tintColor={primary}
             />
-            <Text style={styles.textMenu}>Consultar Cartão</Text>
+            <Text style={[styles.textMenu, { color: sucess }]}>
+              Efetuar Venda
+              </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.itemMenu}
-            onPress={() => {
-              props.navigation.navigate('ListarAtendimento', convenio);
-            }}>
+            style={[styles.itemMenu, { backgroundColor: sucessBack }]}
+            onPress={() => props.navigation.navigate('ConsultarVendas', { id_gds: convenio.id_gds })}>
             <Image
-              source={require('../assets/img/list.png')}
+              source={require('../assets/img/bill.png')}
               style={{ width: 40, height: 40 }}
               tintColor={primary}
             />
-            <Text style={styles.textMenu}>Listar Atendimentos</Text>
+            <Text style={[styles.textMenu, { color: sucess }]}>
+              Consultar Vendas
+              </Text>
           </TouchableOpacity>
         </View>
-
-        {convenio.efetuarVenda && (
-          <View style={styles.linhaMenu}>
-            <TouchableOpacity
-              style={[styles.itemMenu, { backgroundColor: sucessBack }]}
-              onPress={() =>
-                props.navigation.navigate('EfetuarVenda', convenio)
-              }>
-              <Image
-                source={require('../assets/img/money.png')}
-                style={{ width: 40, height: 40 }}
-                tintColor={primary}
-              />
-              <Text style={[styles.textMenu, { color: sucess }]}>
-                Efetuar Venda
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.itemMenu, { backgroundColor: sucessBack }]}
-              onPress={() => props.navigation.navigate('ConsultarVendas', { id_gds: convenio.id_gds })}>
-              <Image
-                source={require('../assets/img/bill.png')}
-                style={{ width: 40, height: 40 }}
-                tintColor={primary}
-              />
-              <Text style={[styles.textMenu, { color: sucess }]}>
-                Consultar Vendas
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        <View style={styles.linhaMenu}>
-          <TouchableOpacity
-            style={styles.itemMenu}
-            onPress={() => {
-              props.navigation.navigate('DadosGerais', { id_gds: convenio.id_gds })
-            }}>
-            <Image
-              source={require('../assets/img/portfolio.png')}
-              style={{ width: 40, height: 40 }}
-              tintColor={primary}
-            />
-            <Text style={styles.textMenu}>Perfil</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.itemMenu}
-            onPress={() => alert('endereço')}>
-            <Image
-              source={require('../assets/img/gps.png')}
-              style={{ width: 40, height: 40 }}
-              tintColor={primary}
-            />
-            <Text style={styles.textMenu}>Endereço</Text>
-          </TouchableOpacity>
-        </View>
+      )}
+      <View style={styles.linhaMenu}>
+        <TouchableOpacity
+          style={styles.itemMenu}
+          onPress={() => {
+            props.navigation.navigate('Perfil', { id_gds: convenio.id_gds })
+          }}>
+          <Image
+            source={require('../assets/img/portfolio.png')}
+            style={{ width: 40, height: 40 }}
+            tintColor={primary}
+          />
+          <Text style={styles.textMenu}>Perfil</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.itemMenu}
+          onPress={() => alert('endereço')}>
+          <Image
+            source={require('../assets/img/gps.png')}
+            style={{ width: 40, height: 40 }}
+            tintColor={primary}
+          />
+          <Text style={styles.textMenu}>Endereço</Text>
+        </TouchableOpacity>
       </View>
-    </MenuTop>
+    </View>
+
   );
 };
