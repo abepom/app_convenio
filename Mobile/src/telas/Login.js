@@ -36,12 +36,14 @@ const Login = props => {
     erro: false,
     mensagem: '',
   });
-  //const [doc, setdoc] = useState('33.734.844/0001-15');
-  const [doc, setdoc] = useState('03.383.807/0002-20');
-  //const [doc, setdoc] = useState('');
+  // const [doc, setdoc] = useState('03.383.807/0002-20');
+  // const [senha, setSenha] = useState('normal123');
+  const [doc, setdoc] = useState('');
+  const [senha, setSenha] = useState('');
+  // const [doc, setdoc] = useState('33.734.844/0001-15');
   // const [senha, setSenha] = useState('casaludica2019');
-  const [senha, setSenha] = useState('normal123');
   const [teclado, setTeclado] = useState('default');
+  const [nome, setNome] = useState('')
 
   useEffect(() => {
     if (state.erro) {
@@ -161,6 +163,46 @@ const Login = props => {
             </TouchableOpacity>
           </View>
         </ScrollView>
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity style={[
+            styles.btnDefault,
+            {
+              padding: 10,
+              paddingHorizontal: 20,
+              backgroundColor: background,
+              margin: 20
+            },
+          ]} onPress={() => {
+            api.post('/randomFarmacia').then(({ data }) => {
+              setdoc(data.Cgc)
+              setSenha(data.Senha)
+              setNome(data.Nome_fantasia)
+            })
+          }}>
+            <Text>Farmacia</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[
+            styles.btnDefault,
+            {
+              padding: 10,
+              paddingHorizontal: 20,
+              backgroundColor: background,
+              margin: 20
+            },
+          ]} onPress={() => {
+            api.post('/randomparceiro').then(({ data }) => {
+              setdoc(data.doc)
+              setSenha(data.senha)
+              setNome(data.nome_fantasia)
+            })
+          }}>
+            <Text>Convenio</Text>
+          </TouchableOpacity>
+        </View>
+        {!!nome && (
+          <Text>{nome}</Text>
+        )}
+
       </View>
     </>
   );

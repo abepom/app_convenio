@@ -11,7 +11,7 @@ import Sair from './telas/Sair';
 
 import ConsultarCartao from './telas/ConsultarCartao';
 import Endereco from './telas/Enderecos';
-import DadosGerais from './telas/DadosGerais';
+import Perfil from './telas/Perfil';
 import Drawer from './components/Drawer';
 import { primary, primaryBack, white } from './utils/Style';
 import ItemDrawer from './components/ItemDrawer';
@@ -104,8 +104,8 @@ const App = createDrawerNavigator(
         drawerLabel: () => null,
       },
     },
-    DadosGerais: {
-      screen: DadosGerais,
+    Perfil: {
+      screen: Perfil,
 
       navigationOptions: {
         drawerLabel: () => 'Perfil',
