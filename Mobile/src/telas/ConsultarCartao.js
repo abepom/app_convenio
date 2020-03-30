@@ -15,9 +15,10 @@ import { TextInputMask } from 'react-native-masked-text';
 
 import styles, { danger, primary, white } from '../utils/Style';
 import api from '../api';
-
+import { TextInput as TextInputformat } from 'react-native-paper';
 import AsyncStorage from '@react-native-community/async-storage';
 import Retorno from '../components/Retorno';
+import { themeLight } from '../utils/theme';
 
 const Home = props => {
   const [modal, setModal] = useState(false);
@@ -180,7 +181,22 @@ const Home = props => {
             Informe o número do cartão do associado
           </Text>
 
-          <View style={[styles.input, { flexDirection: 'row' }]}>
+          <View style={[styles.input, { borderWidth: 0, backgroundColor: null }]}>
+
+            <TextInputformat
+              label="Cartão"
+              dense
+              mode="outlined"
+              theme={themeLight}
+              onChangeText={setCartao}
+              value={cartao}
+              keyboardType="numeric"
+              style={[{ width: '100%', flex: 1 }]}
+              onSubmitEditing={() => _handlerConsultaCartao()}
+            />
+          </View>
+
+          {/* <View style={[styles.input, { flexDirection: 'row' }]}>
             <TextInput
               placeholder="Cartão"
               keyboardType="numeric"
@@ -190,6 +206,7 @@ const Home = props => {
               onChangeText={setCartao}
               onSubmitEditing={() => _handlerConsultaCartao()}
             />
+
             <TouchableOpacity
               style={{ width: '15%' }}
               onPress={() => {
@@ -201,7 +218,7 @@ const Home = props => {
                 size={40}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
           <TouchableOpacity
             style={[styles.btnDefault, { marginTop: 10 }]}
             onPress={() => _handlerConsultaCartao(cartao)}>
@@ -238,11 +255,14 @@ const Home = props => {
                 {associado.Nr_Cartao_Abepom}
               </Text>
             </View>
-            <TouchableOpacity
-              style={[styles.btnDefault, { alignSelf: 'center' }]}
-              onPress={() => setModal(true)}>
-              <Text style={styles.btnDefaultText}>INFORMAR UTILIZAÇÃO</Text>
-            </TouchableOpacity>
+            {!convenio.efetuarVenda && (
+
+              <TouchableOpacity
+                style={[styles.btnDefault, { alignSelf: 'center' }]}
+                onPress={() => setModal(true)}>
+                <Text style={styles.btnDefaultText}>INFORMAR UTILIZAÇÃO</Text>
+              </TouchableOpacity>
+            )}
           </>
         ) : null}
         {camera ? (

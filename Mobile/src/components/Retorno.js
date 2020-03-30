@@ -27,8 +27,8 @@ export default props => {
       color = 'white';
       break;
     case 'warning':
+      backgroundColor = '#660';
 
-      backgroundColor = alertBack;
       color = 'white';
       break;
     case 'info':
