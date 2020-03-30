@@ -202,7 +202,7 @@ const ConsultarVendas = (props) => {
                     </View>
                   </TouchableOpacity>
                 )
-              }} />) : (<Retorno type='sucess' mensagem='Nenhuma venda encontrada' />)
+              }} />) : (<Text style={{ alignSelf: "center" }}>Nenhuma venda encontrada</Text>)
           }
         </View>
       </MenuTop ></>

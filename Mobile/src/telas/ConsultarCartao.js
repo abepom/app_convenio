@@ -116,7 +116,7 @@ const Home = props => {
               <Icone name="close-circle" size={30} color={danger} />
             </TouchableOpacity>
             <Text style={{ color: primary }}>
-              Informe a média consumida pelo associado
+              Por favor, informe o valor consumido.
             </Text>
             <Text style={{ fontSize: 10, right: 0, position: 'relative' }}>
               * essa informação será usada para estatística

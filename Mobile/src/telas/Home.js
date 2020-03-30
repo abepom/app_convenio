@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import styles, { primary, sucessBack, sucess, background } from '../utils/Style';
 
-import MenuTop from '../components/MenuTop';
+
+import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
+import icone from '../assets/img/abepom.png';
+
 import getUsuario from './../utils/getUsuario';
 
 export default props => {
@@ -17,6 +20,17 @@ export default props => {
   return (
 
     <View style={{ width: '100%', backgroundColor: background }}>
+      <View style={styless.container}>
+        <TouchableOpacity style={styless.menu} onPress={() => props.navigation.toggleDrawer()}>
+          <Icone style={styless.configItem} name={'menu'} size={28} />
+        </TouchableOpacity>
+        <Image
+          source={icone}
+          style={{ width: 40, height: 40, marginHorizontal: 10 }}
+        />
+        <Text style={styless.titulo}>ABEPOM</Text>
+
+      </View>
       <View style={styles.linhaMenu}>
         <TouchableOpacity
           style={styles.itemMenu}
@@ -102,3 +116,27 @@ export default props => {
 
   );
 };
+
+const styless = StyleSheet.create({
+  container: {
+    height: 50,
+    backgroundColor: primary,
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menu: {
+    position: 'absolute',
+    left: 20,
+  },
+
+  configItem: {
+    color: 'white',
+  },
+  titulo: {
+    fontSize: 18,
+    color: 'white',
+  },
+});
+

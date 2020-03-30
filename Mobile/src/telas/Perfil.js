@@ -6,7 +6,7 @@ import Enderecos from './Enderecos'
 import AlterarSenha from './AlterarSenha'
 import styles, { primary } from '../utils/Style'
 import imagens from '../utils/imagens';
-
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/abepom.png';
 
@@ -14,7 +14,6 @@ const initialLayout = { width: Dimensions.get('window').width };
 
 export default function TabViewExample(props) {
 
-    const iconemenu = 'menu';
     const _press = () => props.navigation.toggleDrawer();
     const [index, setIndex] = useState(0);
     const [routes] = useState([
@@ -42,8 +41,8 @@ export default function TabViewExample(props) {
     return (
         <>
             <View style={styless.container}>
-                <TouchableOpacity style={styless.menu} onPress={() => _press()}>
-                    <Icone style={styless.configItem} name={iconemenu} size={28} />
+                <TouchableOpacity style={styless.menu} onPress={() => props.navigation.toggleDrawer()}>
+                    <Icone style={styless.configItem} name={'menu'} size={28} />
                 </TouchableOpacity>
                 <Image
                     source={icone}
@@ -61,7 +60,7 @@ export default function TabViewExample(props) {
                         />
                     </>
                 ) : (
-                        <Text>teste</Text>
+                        <EvilIcons name="user" size={70} />
                     )}
                 <View>
                     <Text
