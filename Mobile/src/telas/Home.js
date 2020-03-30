@@ -44,18 +44,21 @@ export default props => {
           />
           <Text style={styles.textMenu}>Consultar Cartão</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.itemMenu}
-          onPress={() => {
-            props.navigation.navigate('ListarAtendimento', convenio);
-          }}>
-          <Image
-            source={require('../assets/img/list.png')}
-            style={{ width: 40, height: 40 }}
-            tintColor={primary}
-          />
-          <Text style={styles.textMenu}>Listar Atendimentos</Text>
-        </TouchableOpacity>
+        {!convenio.efetuarVenda && (
+
+          <TouchableOpacity
+            style={styles.itemMenu}
+            onPress={() => {
+              props.navigation.navigate('ListarAtendimento', convenio);
+            }}>
+            <Image
+              source={require('../assets/img/list.png')}
+              style={{ width: 40, height: 40 }}
+              tintColor={primary}
+            />
+            <Text style={styles.textMenu}>Listar Atendimentos</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       {convenio.efetuarVenda && (
@@ -101,16 +104,7 @@ export default props => {
           />
           <Text style={styles.textMenu}>Perfil</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.itemMenu}
-          onPress={() => alert('endereço')}>
-          <Image
-            source={require('../assets/img/gps.png')}
-            style={{ width: 40, height: 40 }}
-            tintColor={primary}
-          />
-          <Text style={styles.textMenu}>Endereço</Text>
-        </TouchableOpacity>
+
       </View>
     </View>
 

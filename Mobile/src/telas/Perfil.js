@@ -62,6 +62,7 @@ export default function TabViewExample(props) {
                 ) : (
                         <EvilIcons name="user" size={70} />
                     )}
+                {console.log(convenio, 'convenioconvenio')}
                 <View>
                     <Text
                         style={{ width: 150, marginHorizontal: 20, color: primary }}>

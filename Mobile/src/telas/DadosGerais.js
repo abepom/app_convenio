@@ -250,7 +250,7 @@ const Perfil = (props) => {
           theme={themeLight}
           value={state.representante.value}
           onChangeText={texto => alterarStado(texto.toUpperCase(), 'representante')}
-          keyboardType="numeric"
+          keyboardType="default"
           style={[styles.imput]}
         />
         {state.cargo.value != '' && (
@@ -313,7 +313,7 @@ const Perfil = (props) => {
             />)
           }}
         />
-
+        <View style={{ height: 100 }} />
 
       </ScrollView>
       <View style={{ position: "absolute", right: '10%', bottom: '5%' }}>

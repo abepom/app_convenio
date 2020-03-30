@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, Picker, FlatList, ActivityIndicator, TextInput as Input, TouchableOpacity } from 'react-native'
-import DateTimePicker from '@react-native-community/datetimepicker';
+
 import MenuTop from '../components/MenuTop'
-import styles, { primary, background, danger, danverBackground, sucess, sucessBack } from '../utils/Style'
+import styles, { primary, danger, danverBackground, sucess, sucessBack } from '../utils/Style'
 import { TextInput } from 'react-native-paper'
 import Modal from 'react-native-modal';
 
@@ -14,12 +14,71 @@ import formatCurrency from 'currency-formatter'
 import Retorno from '../components/Retorno';
 import getUsuario from '../utils/getUsuario';
 
+let meses = [
+  {
+    mes: 'JAN',
+    value: '01'
+  },
+  {
+    mes: 'FEV',
+    value: '02'
+  },
+  {
+    mes: 'MAR',
+    value: '03'
+  },
+  {
+    mes: 'ABR',
+    value: '04'
+  },
+  {
+    mes: 'MAI',
+    value: '05'
+  },
+  {
+    mes: 'JUM',
+    value: '06'
+  },
+  {
+    mes: 'JUL',
+    value: '07'
+  },
+  {
+    mes: 'AGO',
+    value: '08'
+  },
+  {
+    mes: 'SET',
+    value: '09'
+  },
+  {
+    mes: 'OUT',
+    value: '10'
+  },
+  {
+    mes: 'NOV',
+    value: '11'
+  },
+  {
+    mes: 'DEZ',
+    value: '12'
+  },
+
+]
+let anos = []
+
+for (let index = new Date().getFullYear(); index > 2010; index--) {
+  console.log(index)
+  anos.push(`${index}`)
+
+}
 
 const ConsultarVendas = (props) => {
+  const mesAtual = new Date().getMonth() + 1
 
   const [id_gds, setId_gds] = useState('')
-  const [data, setData] = useState(new Date())
-  const [show, setShow] = useState(false)
+  const [mes, setMes] = useState(mesAtual.toString().length < 2 ? `0${mesAtual}` : `${mesAtual}`)
+  const [ano, setAno] = useState(new Date().getFullYear())
   const [vendas, setvendas] = useState([])
   const [load, setLoad] = useState(false)
   const [modal, setModal] = useState(false)
@@ -27,36 +86,38 @@ const ConsultarVendas = (props) => {
   const [retornoExclusao, setRetornoExclusao] = useState('')
 
   useEffect(() => {
-    onChange()
+    getUsuario('convenio').then(async conv => {
+      setId_gds(conv.id_gds)
+      getConsulta(mes, ano, conv.id_gds)
+    }).catch((e) => console.log(e))
   }, [])
-  const getConsulta = async (dataSelecionada, id_gdss) => {
-    id_gdss = id_gdss ? id_gdss : id_gds
+  const getConsulta = async (mesSelecionado, anoSelecionado, id_gdss) => {
+
     try {
-      let Data = dataSelecionada ? dataSelecionada : data
       setLoad(true)
-      const dados = await api.get('/consultarAtendimentos', { params: { id_gds: id_gdss, data: Data } })
+      const dados = await api.get('/consultarAtendimentos', { params: { id_gds: id_gdss ? id_gdss : id_gds, mes: mesSelecionado, ano: anoSelecionado } })
       setvendas(dados.data)
       setLoad(false)
     } catch (error) {
       console.log(error)
     }
   }
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || data;
-    setShow(Platform.OS === 'ios');
-    setData(currentDate);
-    let dia = currentDate.getDate() < 10 ? `0${currentDate.getDate()}` : `${currentDate.getDate()}`
-    let mes = currentDate.getMonth() < 9 ? `0${currentDate.getMonth() + 1}` : `${currentDate.getMonth() + 1}`
-    let ano = `${currentDate.getFullYear()}`
-    if (!id_gds) {
-      getUsuario('convenio').then(async conv => {
-        setId_gds(conv.id_gds)
-        getConsulta(`${dia}/${mes}/${ano}`, conv.id_gds)
-      }).catch((e) => console.log(e))
-    } else {
-      getConsulta(`${dia}/${mes}/${ano}`, id_gds)
-    }
-  };
+  // const onChange = (event, selectedDate) => {
+  //   const currentDate = selectedDate || data;
+  //   setShow(Platform.OS === 'ios');
+  //   setData(currentDate);
+  //   let dia = currentDate.getDate() < 10 ? `0${currentDate.getDate()}` : `${currentDate.getDate()}`
+  //   let mes = currentDate.getMonth() < 9 ? `0${currentDate.getMonth() + 1}` : `${currentDate.getMonth() + 1}`
+  //   let ano = `${currentDate.getFullYear()}`
+  //   if (!id_gds) {
+  //     getUsuario('convenio').then(async conv => {
+  //       setId_gds(conv.id_gds)
+  //       getConsulta(`${dia}/${mes}/${ano}`, conv.id_gds)
+  //     }).catch((e) => console.log(e))
+  //   } else {
+  //     getConsulta(`${dia}/${mes}/${ano}`, id_gds)
+  //   }
+  // };
   const excluirVenda = async (id) => {
     const dados = await api.delete('/removerAtendimento', { data: { id } })
     setRetornoExclusao(dados.data.mensagem)
@@ -85,7 +146,7 @@ const ConsultarVendas = (props) => {
                 onPress={() => {
                   setConteudoModal(null)
                   excluirVenda(conteudoModal.CIU_id_informe).then((a) => console.log(a))
-                  getConsulta(conteudoModal.CIU_data, id_gds)
+                  getConsulta(mes, ano, id_gds)
                 }}
                 style={{
                   borderBottomLeftRadius: 4,
@@ -142,35 +203,56 @@ const ConsultarVendas = (props) => {
         header={(
           <View style={{ width: '80%', alignItems: "center" }}>
             <Text style={{ marginTop: 10 }}>Visualização dos atendimentos com base nas informações fornecidas na consulta do cartão.</Text>
-            <View style={{ width: '70%', flexDirection: "row", justifyContent: 'space-between', marginTop: 10 }}>
+            <View style={{ width: '100%', flexDirection: "row", justifyContent: 'space-between', marginTop: 10 }}>
               <TextInput
-                label="Selecione uma Data"
+                label="Mês"
                 dense
-                value={data}
+                value={mes}
                 mode="outlined"
-                onChange={onChange}
+
                 theme={themeLight}
-                style={{ width: "100%", }}
-                onFocus={() => alert(teste)}
-                render={(props) => {
-                  if (show) {
-                    return (<DateTimePicker
-                      {...props}
-                      mode={'date'}
-                    />)
-                  } else {
-                    return (<Text onPress={() => setShow(true)} style={{ textAlignVertical: "center", flex: 1, marginLeft: 10 }}>
-                      {`${data.getDate()}`}/{data.getMonth() < 9 ? `0${data.getMonth() + 1}` : `${data.getMonth() + 1}`}/{`${data.getFullYear()}`}
-                    </Text>)
-                  }
-                }
+                style={{ width: "35%", }}
+
+                render={(props) => (<Picker
+                  selectedValue={mes}
+                  mode='dropdown'
+                  onValueChange={(itemValue, itemIndex) => setMes(itemValue)}
+                >
+                  {meses.map(listMes => (
+                    <Picker.Item key={listMes.value} value={listMes.value} label={listMes.mes} />
+                  )
+                  )}
+                </Picker>)
                 }
               />
+              <TextInput
+                label="Ano"
+                dense
+                value={ano}
+                mode="outlined"
+                theme={themeLight}
+                style={{ width: "35%", }}
+                onFocus={() => alert(teste)}
+                render={(props) => (<Picker
+
+                  selectedValue={ano}
+                  mode='dropdown'
+                  onValueChange={(itemValue, itemIndex) => setAno(itemValue)}
+                >
+                  {anos.map(listAno => (
+                    <Picker.Item key={listAno} value={listAno} label={listAno} />
+                  ))}
+                </Picker>)
+                }
+              />
+              <TouchableOpacity onPress={() => getConsulta(mes, ano)} style={[styles.btnDefault, { marginTop: 10 }]}>
+                <Text style={{ color: 'white' }}>BUSCAR</Text>
+              </TouchableOpacity>
             </View >
           </View>
         )}  >
         <View style={{ width: '80%' }}>
-          {console.log(vendas.length)}
+
           {load ? <ActivityIndicator size={'large'} color={primary} /> :
             vendas && vendas.length > 0 ? (<FlatList data={vendas}
               renderItem={({ item }) => {

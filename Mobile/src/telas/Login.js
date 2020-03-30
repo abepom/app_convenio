@@ -69,7 +69,7 @@ const Login = props => {
             efetuarVenda: data.efetuarVenda,
             doc: data.usuario,
           };
-          console.log(convenio, data, `convenio`)
+
           setUsuario('convenio', convenio);
           props.navigation.navigate('App', convenio);
         } else {
@@ -200,7 +200,7 @@ const Login = props => {
           </TouchableOpacity>
         </View>
         {!!nome && (
-          <Text>{nome}</Text>
+          <Text style={{ color: 'white' }}>{nome}</Text>
         )}
 
       </View>
