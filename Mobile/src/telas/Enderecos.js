@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
+  Image,
 } from 'react-native';
 import Modal from 'react-native-modal';
 
@@ -21,17 +22,18 @@ import removerAcentos from '../utils/RemoverAcentos';
 import AsyncStorage from '@react-native-community/async-storage';
 import getUsuario from '../utils/getUsuario';
 import Retorno from '../components/Retorno';
+import imagens from '../utils/imagens';
 const Enderecos = props => {
   const info = {
     logradouro: '',
     numero: '',
     complemento: '',
-    cidade: '0001',
+    cidade: '',
     bairro: '',
     uf: '',
     fone: '',
   };
-  const [cep, setcep] = useState('88061385');
+  const [cep, setcep] = useState('');
   const [edit, setEdit] = useState(false);
   const [remove, setRemove] = useState(false);
   const [endereco, setEndereco] = useState(info);
@@ -40,6 +42,7 @@ const Enderecos = props => {
   const [cidades, setCidades] = useState([]);
   const [convenio, setConvenio] = useState({ efetuarVenda: false })
   const [retorno, setRetorno] = useState('')
+  const [carregando, setCarregando] = useState(false)
   const getEndereco = async () => {
     const dados = await axios.get(
       `http://www.viacep.com.br/ws/${cep
@@ -80,6 +83,7 @@ const Enderecos = props => {
     ;
   };
   const CadastrarEndereco = async () => {
+    setCarregando(true)
     setEdit(false);
     const conv = await AsyncStorage.getItem('convenio');
     let id_gds = JSON.parse(conv).id_gds;
@@ -98,21 +102,26 @@ const Enderecos = props => {
     setRetorno(req.data)
     setMostrar(false)
     getEnderecosCadastrados();
+    setCarregando(false)
   };
 
   const RemoverEndereco = async id_end => {
+    setCarregando(true)
+
     const conv = await AsyncStorage.getItem('convenio');
     let id_gds = JSON.parse(conv).id_gds;
-    console.log(id_gds, id_end);
+
     const req = await api.delete(`/enderecos/${id_gds}`, {
       data: {
         id_end
       }
     })
+    console.log(req.data)
     setRetorno(req.data)
     getEnderecosCadastrados();
 
     setMostrar(false)
+    setCarregando(false)
   };
   useEffect(() => {
     getCidades();
@@ -128,16 +137,9 @@ const Enderecos = props => {
   }, [retorno])
 
   const editarEndereço = async (id_end) => {
-    console.log({
-      id_end, logradouro,
-      numero,
-      cidade,
-      bairro,
-      uf,
-      fone,
-      cep,
-      complemento
-    })
+    setCarregando(true)
+
+
     const conv = await AsyncStorage.getItem('convenio');
     let id_gds = JSON.parse(conv).id_gds;
 
@@ -157,6 +159,7 @@ const Enderecos = props => {
     getEnderecosCadastrados();
 
     setMostrar(false)
+    setCarregando(false)
 
   }
 
@@ -293,6 +296,8 @@ const Enderecos = props => {
           {mostrar ? (
             <>
               {remove && <Text style={{ fontSize: 18, color: primary }}>Deseja remover esse endereço?</Text>}
+              {edit && <Text style={{ fontSize: 18, color: primary }}>ALTERAR ENDEREÇO</Text>}
+              {(!remove && !edit) && <Text style={{ fontSize: 18, color: primary }}>CADASTARAR ENDEREÇO</Text>}
               <View style={{ flexDirection: 'row', width: '100%' }}>
                 <TextInput
                   mode="outlined"
@@ -304,28 +309,28 @@ const Enderecos = props => {
                   onChangeText={text => {
                     setcep(text);
                   }}
-                  onBlur={getEndereco}
+
                   keyboardType="numeric"
                   style={[styles.imput, { width: 150 }]}
                   render={props => (
                     <TextInputMask mask={'[00].[000]-[000]'} {...props} />
                   )}
                 />
-                <TouchableOpacity
-                  onPress={() => {
-                    setMostrar(false);
-                    setcep('');
-                    setEndereco(info);
-                  }}
-                  style={{ position: 'absolute', right: '12%', alignSelf: 'center' }}>
-                  <Icone name={'closecircleo'} size={20} color={primary} />
-                </TouchableOpacity>
+                {!remove && (
+
+                  <TouchableOpacity onPress={getEndereco} style={[styles.btnDefault, {
+                    margin: 15, opacity: cep.length == 10 ? 1 : 0.5
+                  }]} disabled={cep.length == 10 ? false : true}>
+                    <Image source={imagens.search} style={{ width: 30, height: 30 }} tintColor={'white'} />
+                  </TouchableOpacity>
+                )}
+
               </View>
               <TextInput
                 label="Enderecos"
                 dense
                 mode="outlined"
-                disabled={remove}
+                disabled={remove ? remove : cep.length == 10 ? false : true}
 
                 theme={themeLight}
                 value={logradouro}
@@ -339,7 +344,7 @@ const Enderecos = props => {
                 <TextInput
                   label="Numero"
                   dense
-                  disabled={remove}
+                  disabled={remove ? remove : cep.length == 10 ? false : true}
 
                   mode="outlined"
                   theme={themeLight}
@@ -351,7 +356,7 @@ const Enderecos = props => {
                 <TextInput
                   label="complemento"
                   dense
-                  disabled={remove}
+                  disabled={remove ? remove : cep.length == 10 ? false : true}
 
                   mode="outlined"
                   theme={themeLight}
@@ -367,7 +372,7 @@ const Enderecos = props => {
               <TextInput
                 label="Cidade"
                 dense
-                disabled={remove}
+                disabled={remove ? remove : cep.length == 10 ? false : true}
 
                 mode="outlined"
                 theme={themeLight}
@@ -375,13 +380,18 @@ const Enderecos = props => {
                 selectedValue={cidade}
                 onValueChange={text => {
                   setEndereco({ ...endereco, cidade: text });
-                  console.log(endereco);
+
                 }}
                 keyboardType="default"
                 style={[styles.imput]}
                 render={props => {
                   return (
                     <Picker {...props} mode="dropdown">
+                      <Picker.Item
+                        key={' '}
+                        value={''}
+                        label=''
+                      />
                       {cidades.map(localidade => (
                         <Picker.Item
                           key={localidade.Cd_cidade}
@@ -396,7 +406,7 @@ const Enderecos = props => {
               <TextInput
                 label="Estado"
                 dense
-                disabled={remove}
+                disabled={remove ? remove : cep.length == 10 ? false : true}
 
                 mode="outlined"
                 theme={themeLight}
@@ -411,7 +421,7 @@ const Enderecos = props => {
               <TextInput
                 label="Bairro"
                 dense
-                disabled={remove}
+                disabled={remove ? remove : cep.length == 10 ? false : true}
 
                 mode="outlined"
                 theme={themeLight}
@@ -425,7 +435,7 @@ const Enderecos = props => {
               <TextInput
                 label="Telefone"
                 dense
-                disabled={remove}
+                disabled={remove ? remove : cep.length == 10 ? false : true}
 
                 mode="outlined"
                 theme={themeLight}
@@ -444,30 +454,53 @@ const Enderecos = props => {
                   />
                 )}
               />
-              {edit ? (
-                <View style={{ flexDirection: "row" }}>
-                  <TouchableOpacity
-                    style={[
-                      styles.btnDefault,
-                      { margin: 20, paddingHorizontal: 10, backgroundColor: danger },
-                    ]}
-                    onPress={() => {
-                      setMostrar(false)
-                      setRemove(false);
-                    }}>
-                    <Text style={styles.btnDefaultText}>CENCELAR</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[
-                      styles.btnDefault,
-                      { marginVertical: 20, paddingHorizontal: 10 },
-                    ]}
-                    onPress={() => editarEndereço(endereco.id_end)}>
-                    <Text style={styles.btnDefaultText}>ATUALIZAR ENDEREÇOS</Text>
-                  </TouchableOpacity>
-                </View>
-              ) : !remove ? (
-                <View style={{ flexDirection: "row" }}>
+              {carregando ? (<ActivityIndicator style={{ marginTop: 20, }} size={32} />) : (
+
+                edit ? (
+                  <View style={{ flexDirection: "row" }}>
+                    <TouchableOpacity
+                      style={[
+                        styles.btnDefault,
+                        { margin: 20, paddingHorizontal: 10, backgroundColor: danger },
+                      ]}
+                      onPress={() => {
+                        setMostrar(false)
+                        setRemove(false);
+                      }}>
+                      <Text style={styles.btnDefaultText}>CENCELAR</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      disabled={logradouro != '' ? false : true}
+                      style={[
+                        styles.btnDefault,
+                        { marginVertical: 20, paddingHorizontal: 10, opacity: logradouro.length > 2 ? 1 : 0.5 },
+                      ]}
+                      onPress={() => editarEndereço(endereco.id_end)}>
+                      <Text style={styles.btnDefaultText}>ATUALIZAR ENDEREÇOS</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : !remove ? (
+                  <View style={{ flexDirection: "row" }}>
+                    <TouchableOpacity
+                      style={[
+                        styles.btnDefault,
+                        { margin: 20, paddingHorizontal: 10, backgroundColor: danger },
+                      ]}
+                      onPress={() => setMostrar(false)}>
+                      <Text style={styles.btnDefaultText}>CENCELAR</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      disabled={logradouro != '' ? false : true}
+
+                      style={[
+                        styles.btnDefault,
+                        { margin: 20, paddingHorizontal: 10, opacity: logradouro.length > 2 ? 1 : 0.5 },
+                      ]}
+                      onPress={CadastrarEndereco}>
+                      <Text style={styles.btnDefaultText}>CADASTRAR ENDEREÇOS</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : (<View style={{ flexDirection: "row" }}>
                   <TouchableOpacity
                     style={[
                       styles.btnDefault,
@@ -481,28 +514,10 @@ const Enderecos = props => {
                       styles.btnDefault,
                       { margin: 20, paddingHorizontal: 10 },
                     ]}
-                    onPress={CadastrarEndereco}>
-                    <Text style={styles.btnDefaultText}>CADASTRAR ENDEREÇOS</Text>
+                    onPress={() => RemoverEndereco(endereco.id_end)}>
+                    <Text style={styles.btnDefaultText}>REMOVER</Text>
                   </TouchableOpacity>
-                </View>
-              ) : (<View style={{ flexDirection: "row" }}>
-                <TouchableOpacity
-                  style={[
-                    styles.btnDefault,
-                    { margin: 20, paddingHorizontal: 10, backgroundColor: danger },
-                  ]}
-                  onPress={() => setMostrar(false)}>
-                  <Text style={styles.btnDefaultText}>CENCELAR</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.btnDefault,
-                    { margin: 20, paddingHorizontal: 10 },
-                  ]}
-                  onPress={() => RemoverEndereco(endereco.id_end)}>
-                  <Text style={styles.btnDefaultText}>Remover</Text>
-                </TouchableOpacity>
-              </View>)}
+                </View>))}
             </>
           ) : !convenio.efetuarVenda && (
             <TouchableOpacity
@@ -512,7 +527,7 @@ const Enderecos = props => {
                 setEndereco(info)
               }}
               style={styles.btnDefault}>
-              <Text style={styles.btnDefaultText}>Cadastrar novo endereço</Text>
+              <Text style={styles.btnDefaultText}>CADASTRAR NOVO ENDEREÇO</Text>
             </TouchableOpacity>
           )}
         </View>

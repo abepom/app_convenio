@@ -75,13 +75,13 @@ export default function TabViewExample(props) {
                     </Text>
                 </View>
                 <View >
-                    <Text style={{ fontSize: 10 }}>HATING</Text>
+                    <Text style={{ fontSize: 10 }}>AVALIAÇÕES</Text>
                     <View style={{ flexDirection: "row" }}>
-                        <Image source={imagens.heart_true} style={{ width: 10, height: 10 }} tintColor={'red'} />
-                        <Image source={imagens.heart_true} style={{ width: 10, height: 10 }} tintColor={'red'} />
-                        <Image source={imagens.heart_true} style={{ width: 10, height: 10 }} tintColor={'red'} />
-                        <Image source={imagens.heart_true} style={{ width: 10, height: 10 }} tintColor={'red'} />
-                        <Image source={imagens.heart_false} style={{ width: 10, height: 10 }} tintColor={'red'} />
+                        <Image source={imagens.heart_true} style={{ width: 13, height: 13 }} tintColor={'red'} />
+                        <Image source={imagens.heart_true} style={{ width: 13, height: 13 }} tintColor={'red'} />
+                        <Image source={imagens.heart_true} style={{ width: 13, height: 13 }} tintColor={'red'} />
+                        <Image source={imagens.heart_true} style={{ width: 13, height: 13 }} tintColor={'red'} />
+                        <Image source={imagens.heart_false} style={{ width: 13, height: 13 }} tintColor={'red'} />
                     </View>
                 </View>
             </View>

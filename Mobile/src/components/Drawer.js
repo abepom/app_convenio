@@ -45,8 +45,15 @@ const Drawer = props => {
         } else {
 
           menu.items.map(item => {
+            switch (item.key) {
+              case 'ListarAtendimento':
 
-            itens.push({ ...item, params: props.navigation.state.params });
+                break;
+              default:
+                itens.push({ ...item, params: props.navigation.state.params });
+                break;
+            }
+
 
           })
           console.log(itens)
