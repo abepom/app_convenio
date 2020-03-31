@@ -26,7 +26,7 @@ export default props => {
   const retornopadrao = { retorno: false, mensagem: '' }
   const [state, setstate] = useState({});
   const [associado, setassociado] = useState(vaziu);
-  const [imput, setImput] = useState('478201');
+  const [imput, setImput] = useState('');
   const [dependentes, setDependentes] = useState([]);
   const [mensagem, setMensagem] = useState('');
   const [avancar, setAvancar] = useState(false);
@@ -72,7 +72,10 @@ export default props => {
   // }, [imput]);
 
   useEffect(() => {
+
     getUsuario('convenio').then(convenio => setstate(convenio));
+
+
   }, []);
 
 

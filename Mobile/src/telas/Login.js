@@ -31,7 +31,7 @@ const Login = props => {
       ? props.navigation.state.params.resetSenha
       : false,
   );
-
+  console.log(props, 'props Login')
   const [state, setState] = useState({
     erro: false,
     mensagem: '',
@@ -49,9 +49,17 @@ const Login = props => {
     if (state.erro) {
       setTimeout(() => {
         setState({ ...state, erro: false });
-      }, 3000);
+      }, 4000);
     }
   }, [state.erro]);
+
+  useEffect(() => {
+    if (props.navigation.state.params) {
+      setdoc(props.navigation.state.params.doc)
+      setState(props.navigation.state.params)
+    }
+  }, [])
+
 
   const conectar = async () => {
     if (doc.length > 13 && senha) {
@@ -61,7 +69,7 @@ const Login = props => {
         );
         let convenio;
         if (!data.erro) {
-          setUsuario('usuario', { doc, senha });
+          setUsuario('usuario', { usuario: doc, senha });
           convenio = {
             id_gds: data.id_gds,
             nome_parceiro: data.nome_parceiro,

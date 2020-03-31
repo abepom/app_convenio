@@ -8,22 +8,22 @@ import api from '../api';
 
 const Load = props => {
   const { navigation } = props;
-  let doc;
+  let usuario;
   let senha;
 
   useEffect(() => {
     _retrieveData();
   }, []);
   const conectar = async () => {
-    if (doc.length > 13 && senha) {
+
+    if (!!usuario && senha) {
       const { data } = await api({
         url: '/Login',
-        data: { usuario: doc, senha },
+        data: { usuario, senha },
         method: 'post',
       });
 
       let convenio;
-      console.log(data);
 
       if (!data.erro) {
         convenio = {
@@ -31,10 +31,11 @@ const Load = props => {
           nome_parceiro: data.nome_parceiro,
           caminho_logomarca: data.caminho_logomarca,
           efetuarVenda: data.efetuarVenda,
+          doc: data.usuario,
         };
 
         navigation.navigate('App', convenio);
-      }
+      } else { navigation.navigate('Login', { ...data, doc, mensagem: 'Senha não confere, digite novamene a sua senha' }) };
     } else {
       navigation.navigate('Login');
     }
@@ -45,7 +46,7 @@ const Load = props => {
 
     if (!!user) {
       user = JSON.parse(user);
-      doc = user.doc;
+      usuario = user.usuario;
       senha = user.senha;
 
       await conectar();

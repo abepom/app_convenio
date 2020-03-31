@@ -19,6 +19,7 @@ const CadastrarVenda = props => {
   const [cupom, setCupom] = useState('');
   const [carregando, setCarregando] = useState(false);
   const [modal, setModal] = useState(false);
+  const [limiteAtual, setLimiteAtual] = useState('')
   const [msnModal, setMsnModal] = useState({
     erro: true,
     mensagem: '',
@@ -59,6 +60,9 @@ const CadastrarVenda = props => {
   //     }, 2000);
   //   }
   // }, [modal]);
+  useEffect(() => {
+    api.post(`/limite/${matricula}`).then(({ data }) => setLimiteAtual(121.2))
+  }, [])
 
   return (
     <>
@@ -130,6 +134,8 @@ const CadastrarVenda = props => {
             <Text style={{ color: primary }}>Associado {nome}</Text>
             <Text style={{ color: primary }}>Matrícula: {matricula}</Text>
             <Text style={{ color: primary }}>Dependência: {dep}</Text>
+            <Text style={{ color: primary }}>Limite: {limiteAtual > 150 ? 'R$ +150,00' : formatCurrency.format(limiteAtual, { code: 'BRL' })}</Text>
+            {/* <Text style={{ color: primary }}>real para teste: {formatCurrency.format(limiteAtual, { code: 'BRL' })}</Text> */}
           </View>
           <TextInput
             label="Data"

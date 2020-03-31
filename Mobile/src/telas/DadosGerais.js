@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Image, TouchableOpacity, Picker, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Picker, ScrollView, ActivityIndicator } from 'react-native'
 import MenuTop from '../components/MenuTop'
 import { TextInput, HelperText } from 'react-native-paper';
 import { themeLight } from '../utils/theme';
@@ -39,12 +39,13 @@ const Perfil = (props) => {
     whatsapp: input
 
   }
+  const [carregando, setCarregando] = useState(false)
   const [state, setState] = useState(initialState)
   const [retorno, setRetorno] = useState(false)
   useEffect(() => {
-    console.log('ops', retorno)
+
     if (!!retorno) {
-      console.log('333')
+
 
       setTimeout(() => {
         setRetorno(false)
@@ -72,8 +73,10 @@ const Perfil = (props) => {
     })
   }
   const atualizarDados = async () => {
+    setCarregando(true)
     if (state.nome_fachada.value == '') {
-      console.log(1)
+      setCarregando(false)
+
       setState({
         ...state, nome_fachada: {
           value: state.nome_fachada.value,
@@ -81,7 +84,8 @@ const Perfil = (props) => {
         }
       })
     } else if (state.email.value.indexOf('@') <= 0) {
-      console.log(2)
+      setCarregando(false)
+
       setState({
         ...state, email: {
           value: state.email.value,
@@ -89,7 +93,8 @@ const Perfil = (props) => {
         }
       })
     } else if (state.email.value.indexOf('.') <= 0) {
-      console.log(3)
+      setCarregando(false)
+
       setState({
         ...state, email: {
           value: state.email.value,
@@ -122,7 +127,8 @@ const Perfil = (props) => {
         id_gds
       }).then(({ data }) => {
         setRetorno({ erro: !data.retorno, mensagem: data.mensagem })
-        console.log(data, 'teste')
+        setCarregando(false)
+
         if (data.retorno) {
           setState({
             ...state,
@@ -137,7 +143,8 @@ const Perfil = (props) => {
           })
         }
       }
-      ).catch((error) => console.log(error))
+      ).catch((error) => setCarregando(false)
+      )
 
     }
   }
@@ -313,12 +320,17 @@ const Perfil = (props) => {
             />)
           }}
         />
-        <View style={{ height: 100 }} />
+        {carregando ? (<ActivityIndicator style={{ marginTop: 20, }} size={32} />) : (
 
+          <TouchableOpacity
+            onPress={() => atualizarDados()}
+            style={[styles.btnDefault, { marginTop: 12, width: '40%', alignSelf: "center" }]} >
+            <Text style={{ color: `white` }}>SALVAR</Text>
+          </TouchableOpacity>
+        )}
+        <View style={{ height: 100 }} />
       </ScrollView>
-      <View style={{ position: "absolute", right: '10%', bottom: '5%' }}>
-        <TouchableOpacity onPress={() => atualizarDados()} style={{ backgroundColor: primary, padding: 15, borderRadius: 50 }} ><Image source={imagens.save} style={{ width: 30, height: 30, tintColor: 'white' }} /></TouchableOpacity>
-      </View>
+
     </>
   )
 }

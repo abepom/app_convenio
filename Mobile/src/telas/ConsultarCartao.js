@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Dimensions,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import { TextInput as Imput } from 'react-native-paper';
 import { RNCamera } from 'react-native-camera';
@@ -22,13 +23,15 @@ import { themeLight } from '../utils/theme';
 
 const Home = props => {
   const [modal, setModal] = useState(false);
-  const [cartao, setCartao] = React.useState('47820100001');
+  const [cartao, setCartao] = React.useState('');
   const [erro, setErro] = React.useState(false);
   const [convenio, setConvenio] = React.useState(false);
   const [associado, setAssociado] = React.useState(null);
   const [valorUsado, setValorUsado] = useState(null);
   const [mensagens, setMensagens] = React.useState('');
   const [camera, setCamera] = useState(false);
+
+  const [carregando, setCarregando] = useState(false)
 
   useEffect(() => {
     getItens();
@@ -47,10 +50,10 @@ const Home = props => {
     }
   }, [erro]);
   const _handlerConsultaCartao = async card => {
+    setCarregando(true)
     if (!card) {
       card = cartao;
     }
-
     let req = await api({
       url: '/VerificarCartao',
       params: { cartao: card, id_gds: convenio.id_gds },
@@ -61,15 +64,19 @@ const Home = props => {
 
     if (card.length === 11) {
       if (erro) {
+        setCarregando(false)
+
         setErro(true);
         setMensagens({ descricao: mensagem, tipo: 'danger' });
         setAssociado('');
       } else {
         setAssociado(socio);
+        setCarregando(false)
       }
       console.log(socio);
     } else {
       setErro(true);
+      setCarregando(false)
       setMensagens({
         descricao: 'Cartão invalido. Digite novamente.',
         tipo: 'danger',
@@ -219,11 +226,14 @@ const Home = props => {
               />
             </TouchableOpacity>
           </View> */}
-          <TouchableOpacity
-            style={[styles.btnDefault, { marginTop: 10 }]}
-            onPress={() => _handlerConsultaCartao(cartao)}>
-            <Text style={styles.btnDefaultText}> BUSCAR</Text>
-          </TouchableOpacity>
+          {carregando ? (<ActivityIndicator style={{ marginTop: 20, }} size={32} />) : (
+
+            <TouchableOpacity
+              style={[styles.btnDefault, { marginTop: 10 }]}
+              onPress={() => _handlerConsultaCartao(cartao)}>
+              <Text style={styles.btnDefaultText}> BUSCAR</Text>
+            </TouchableOpacity>
+          )}
         </View>
         {erro ? (
           <View style={{ width: '80%' }}>
