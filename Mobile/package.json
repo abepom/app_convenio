@@ -1,6 +1,6 @@
 {
   "name": "abepom",
-  "version": "0.4.1",
+  "version": "0.7.1",
   "private": true,
   "scripts": {
     "clear": "cd android && gradlew clean  && cd ..",

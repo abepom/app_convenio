@@ -84,9 +84,10 @@ const ConsultarVendas = (props) => {
   const [modal, setModal] = useState(false)
   const [conteudoModal, setConteudoModal] = useState(null)
   const [retornoExclusao, setRetornoExclusao] = useState('')
+  const [totais, setTotais] = useState({ qtd: 0, total: 0 })
 
   useEffect(() => {
-    getUsuario('convenio').then(async conv => {
+    getUsuario('convenio').then(conv => {
       setId_gds(conv.id_gds)
       getConsulta(mes, ano, conv.id_gds)
     }).catch((e) => console.log(e))
@@ -256,7 +257,7 @@ const ConsultarVendas = (props) => {
           {load ? <ActivityIndicator size={'large'} color={primary} /> :
             vendas && vendas.length > 0 ? (<FlatList data={vendas}
               renderItem={({ item }) => {
-                console.log(item)
+
                 return (
                   <TouchableOpacity onPress={() => {
                     if (item.Processado_desconto) {
@@ -287,7 +288,18 @@ const ConsultarVendas = (props) => {
               }} />) : (<Text style={{ alignSelf: "center" }}>Nenhuma venda encontrada</Text>)
           }
         </View>
-      </MenuTop ></>
+      </MenuTop >
+      <View style={{ flexDirection: "row", alignContent: "space-between", width: '100%' }} >
+        <View style={{ width: '50%', alignItems: "center" }}>
+          <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>ATENDIMENTOS</Text>
+          <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>{vendas.length}</Text>
+        </View>
+        <View style={{ width: '50%', alignItems: "center" }}>
+          <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>TOTAL</Text>
+          <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>{formatCurrency.format((vendas.reduce((total, valor) => total + Number(valor.CUI_Valor), 0)), { code: 'BRL' })}</Text>
+        </View>
+      </View>
+    </>
   )
 }
 

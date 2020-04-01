@@ -55,8 +55,9 @@ const ConsultarVendas = (props) => {
     const getConsulta = async (dataSelecionada) => {
         let Data = dataSelecionada ? dataSelecionada : data
         setLoad(true)
-        const dados = await api.get('/ConsultarVendas', { params: { id_gds, data: Data } })
-        setvendas(dados.data)
+        const { data } = await api.get('/ConsultarVendas', { params: { id_gds, data: Data } })
+        console.log(data)
+        setvendas(data)
         setLoad(false)
 
     }
@@ -67,6 +68,7 @@ const ConsultarVendas = (props) => {
         let dia = currentDate.getDate() < 10 ? `0${currentDate.getDate()}` : `${currentDate.getDate()}`
         let mes = currentDate.getMonth() < 9 ? `0${currentDate.getMonth() + 1}` : `${currentDate.getMonth() + 1}`
         let ano = `${currentDate.getFullYear()}`
+        console.log(`${dia}/${mes}/${ano}`)
         getConsulta(`${dia}/${mes}/${ano}`)
     };
     const excluirVenda = async (Nr_lancamento) => {
@@ -233,7 +235,17 @@ const ConsultarVendas = (props) => {
                     }
                 </View>
 
-            </MenuTop ></>
+            </MenuTop >
+            <View style={{ flexDirection: "row", alignContent: "space-between", width: '100%' }} >
+                <View style={{ width: '50%', alignItems: "center" }}>
+                    <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>ATENDIMENTOS</Text>
+                    <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>{vendas.length}</Text>
+                </View>
+                <View style={{ width: '50%', alignItems: "center" }}>
+                    <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>TOTAL</Text>
+                    <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>{formatCurrency.format((vendas.reduce((total, valor) => total + Number(valor.Valor), 0)), { code: 'BRL' })}</Text>
+                </View>
+            </View></>
     )
 }
 

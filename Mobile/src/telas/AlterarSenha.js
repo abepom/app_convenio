@@ -44,6 +44,9 @@ const AlterarSenha = () => {
 
                         setstate({ ...state, senha: true })
                     } else {
+                        setSenhaNova('')
+                        setSenhaConfirmada('')
+                        setSenha('')
                         setRetorno(data)
                         setSenha1(senhaNova)
                         setDados('usuario', { usuario, senha: senhaNova })

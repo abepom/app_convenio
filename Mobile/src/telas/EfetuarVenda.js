@@ -5,6 +5,7 @@ import {
   Image,
   FlatList,
   TextInput as TextInputrn,
+  ActivityIndicator,
 } from 'react-native';
 import MenuTop from '../components/MenuTop';
 import { TextInput } from 'react-native-paper';
@@ -32,7 +33,7 @@ export default props => {
   const [avancar, setAvancar] = useState(false);
   const [retorno, setRetorno] = useState(retornopadrao)
   const [erro, setErro] = useState("")
-
+  const [carregando, setcarregando] = useState(false)
   // useEffect(() => {
 
   //   switch (imput.length) {
@@ -80,6 +81,7 @@ export default props => {
 
 
   const consultarCartao = async cartao => {
+    setcarregando(true)
     setDependentes([])
     setMensagem('')
 
@@ -101,6 +103,8 @@ export default props => {
           setErro('')
           setDependentes(validado.data)
           console.log(validado.data)
+          setcarregando(false)
+
         } else {
           console.log(validado.data)
 
@@ -116,16 +120,23 @@ export default props => {
               dep: imput.substring(7, 9),
               nome: validado.data.Nome,
             });
+            setcarregando(false)
           } else if (validado.data.retorno == 1) {
             setErro(validado.data.mensagem)
+            setcarregando(false)
           } else {
             setAvancar(false);
+            setcarregando(false)
           }
+          setcarregando(false)
+
         }
       } catch (error) {
         console.log(error)
       }
     } else { setErro('Informe um cartão') }
+    setcarregando(false)
+
   };
   return (
     <MenuTop {...props} drawer title="Efetuar Vendas">
@@ -181,7 +192,7 @@ export default props => {
             </>
           )}
         />
-        <TouchableOpacity
+        {!carregando ? (<TouchableOpacity
           style={{
             backgroundColor: primary,
             height: 45,
@@ -201,7 +212,7 @@ export default props => {
             style={{ width: 30, height: 30, margin: 5 }}
             tintColor={'white'}
           />
-        </TouchableOpacity>
+        </TouchableOpacity>) : <ActivityIndicator style={{ margin: 20 }} size={30} />}
       </View>
       {
         retorno.retorno && (
