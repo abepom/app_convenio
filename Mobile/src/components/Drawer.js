@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
   ScrollView,
   SafeAreaView,
-  StyleSheet,
   Image,
 } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -13,23 +12,21 @@ import styles, { primaryBack } from '../utils/Style';
 import getUsuario from '../utils/getUsuario';
 
 const Drawer = props => {
-  const [menu, setMenu] = useState({ ...props });
-  let itens = []
+  const [menu, setMenu] = useState(useMemo(() => props, menu));
 
+  let itens = []
 
   const [convenio, setConvenio] = useState({
     caminho_logomarca: null,
     nome_parceiro: '',
     efetuarVenda: false,
   });
+
   useEffect(() => {
     getUsuario('convenio').then(async conv => {
-
       try {
         await setConvenio(conv);
-
         if (!conv.efetuarVenda) {
-
           menu.items.map(item => {
             switch (item.key) {
               case 'EfetuarVenda':
@@ -40,37 +37,23 @@ const Drawer = props => {
                 itens.push({ ...item, params: props.navigation.state.params });
                 break;
             }
-            console.log(itens)
           });
         } else {
-
           menu.items.map(item => {
             switch (item.key) {
               case 'ListarAtendimento':
-
                 break;
               default:
                 itens.push({ ...item, params: props.navigation.state.params });
                 break;
             }
-
-
           })
-          console.log(itens)
         }
-      } catch (error) {
-        console.log(error)
-      }
-
+      } catch (error) { console.log(error) }
       console.log(itens, "itens")
-
       setMenu({ ...props, items: itens });
-
     });
-  }, []);
-
-
-
+  }, [menu]);
   return (
     <ScrollView style={styles.flex}>
       <SafeAreaView style={styles.flex}>

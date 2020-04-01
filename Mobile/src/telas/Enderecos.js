@@ -43,30 +43,43 @@ const Enderecos = props => {
   const [convenio, setConvenio] = useState({ efetuarVenda: false })
   const [retorno, setRetorno] = useState('')
   const [carregando, setCarregando] = useState(false)
+  const [carregandoCep, setCarregandoCep] = useState(false)
+  const [erroCep, setErroCep] = useState({ erro: false, mensagem: '' })
   const getEndereco = async () => {
+    setCarregandoCep(true)
     const dados = await axios.get(
       `http://www.viacep.com.br/ws/${cep
         .replace('.', '')
         .replace('-', '')}/json/`,
     );
-
+    console.log(dados)
     let cdCidade;
-    const { logradouro, bairro, localidade, uf } = dados.data;
-    cidades.find(cidade => {
-      if (
-        removerAcentos(cidade.Nm_cidade).toUpperCase() ==
-        removerAcentos(localidade).toUpperCase()
-      ) {
-        cdCidade = cidade.Cd_cidade;
-      }
-    });
-    setEndereco({
-      ...endereco,
-      logradouro: logradouro.toUpperCase(),
-      bairro: bairro.toUpperCase(),
-      uf: uf.toUpperCase(),
-      cidade: cdCidade,
-    });
+    if (!dados.data.erro) {
+      setErroCep({ erro: dados.data.erro, mensagem: '' })
+
+      const { logradouro, bairro, localidade, uf } = dados.data;
+      cidades.find(cidade => {
+        if (
+          removerAcentos(cidade.Nm_cidade).toUpperCase() ==
+          removerAcentos(localidade).toUpperCase()
+        ) {
+          cdCidade = cidade.Cd_cidade;
+        }
+      });
+      setEndereco({
+        ...endereco,
+        logradouro: logradouro.toUpperCase(),
+        bairro: bairro.toUpperCase(),
+        uf: uf.toUpperCase(),
+        cidade: cdCidade,
+      });
+      setCarregandoCep(false)
+
+    } else {
+      setErroCep({ erro: dados.data.erro, mensagem: 'Endereço não encontado' })
+      setCarregandoCep(false)
+
+    }
   };
   const getCidades = async () => {
     const dados = await api.get('/cidades');
@@ -316,16 +329,20 @@ const Enderecos = props => {
                     <TextInputMask mask={'[00].[000]-[000]'} {...props} />
                   )}
                 />
-                {!remove && (
+                {!remove ? !carregandoCep ? (
 
                   <TouchableOpacity onPress={getEndereco} style={[styles.btnDefault, {
                     margin: 15, opacity: cep.length == 10 ? 1 : 0.5
                   }]} disabled={cep.length == 10 ? false : true}>
                     <Image source={imagens.search} style={{ width: 30, height: 30 }} tintColor={'white'} />
                   </TouchableOpacity>
-                )}
+                ) : (<ActivityIndicator style={{ marginTop: 20, marginLeft: 20 }} size={32} />) : null}
+
 
               </View>
+              {erroCep.erro && (
+                <Text>{erroCep.mensagem}</Text>
+              )}
               <TextInput
                 label="Enderecos"
                 dense
