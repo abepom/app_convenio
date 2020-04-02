@@ -7,5 +7,8 @@
   "license": "MIT",
   "scripts": {
     "android": "cd Mobile && react-native run-android"
+  },
+  "dependencies": {
+    "react-native-image-picker": "^2.3.1"
   }
 }
