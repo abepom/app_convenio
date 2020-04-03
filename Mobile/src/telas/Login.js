@@ -97,9 +97,14 @@ const Login = props => {
       <View style={estilos.conteiner}>
         <ScrollView style={{ width: '100%' }}>
           <Image
-            style={[styles.logo, { margin: '10%', alignSelf: 'center' }]}
+            style={[styles.logo, { marginTop: '10%', alignSelf: 'center' }]}
             source={logo}
           />
+          <View style={{ alignItems: "center" }}>
+            <Text style={{ fontWeight: "bold", fontSize: 36, color: 'white' }}>ABEPOM</Text>
+            <Text style={{ fontSize: 20, color: 'white' }}>CONVENIADOS</Text>
+
+          </View>
 
           <View style={{ marginTop: 20, width: '100%' }}>
             <TextInput
@@ -204,7 +209,7 @@ const Login = props => {
               setNome(data.nome_fantasia)
             })
           }}>
-            <Text>Convenio</Text>
+            <Text>Parceiro</Text>
           </TouchableOpacity>
         </View>
         {!!nome && (

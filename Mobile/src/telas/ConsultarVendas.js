@@ -141,21 +141,19 @@ const ConsultarVendas = (props) => {
                             <Text style={{ color: sucess }}>FECHAR</Text>
                         </TouchableOpacity></>) : (<><View style={{ borderTopRightRadius: 4, borderTopLeftRadius: 4, backgroundColor: `white`, paddingVertical: 10, paddingHorizontal: 5, width: '90%' }}>
                             <Text style={{ fontSize: 20, textAlign: "justify" }}>{retornoExclusao}</Text>
-                        </View><TouchableOpacity
-                            onPress={() => setModal(false)}
-                            style={{
-                                borderBottomRightRadius: 4,
-                                borderBottomLeftRadius: 4,
-                                backgroundColor: sucessBack,
-                                padding: 10,
-                                width: '90%',
-                                alignItems: "center"
-                            }}>
+                        </View>
+                            <TouchableOpacity
+                                onPress={() => setModal(false)}
+                                style={{
+                                    borderBottomRightRadius: 4,
+                                    borderBottomLeftRadius: 4,
+                                    backgroundColor: sucessBack,
+                                    padding: 10,
+                                    width: '90%',
+                                    alignItems: "center"
+                                }}>
                                 <Text style={{ color: sucess }}>FECHAR</Text>
                             </TouchableOpacity></>)}
-
-
-
                 </View>
             </Modal>
             <MenuTop
@@ -177,8 +175,6 @@ const ConsultarVendas = (props) => {
                                     return (<DateTimePicker
                                         {...props}
                                         mode={'date'}
-
-
                                     />)
                                 } else {
                                     return (<Text onPress={() => setShow(true)} style={{ textAlignVertical: "center", flex: 1, marginLeft: 10 }}>
@@ -188,7 +184,6 @@ const ConsultarVendas = (props) => {
                             }
                             }
                         />
-
                     </View >
                 )}  >
                 <View style={{ width: '80%' }}>
@@ -204,11 +199,8 @@ const ConsultarVendas = (props) => {
                                             setRetornoExclusao('Essa cobrança ja foi efetuada pela abepom entre em contato com nosso setor de Convenior para saber mais informações')
                                         } else {
                                             setConteudoModal(item)
-
                                         }
                                         setModal(true)
-
-
                                     }}>
                                         <View style={{ elevation: 2, borderRadius: 4, marginBottom: 10, backgroundColor: `white`, paddingVertical: 10, paddingHorizontal: 5 }}>
                                             <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
@@ -229,12 +221,10 @@ const ConsultarVendas = (props) => {
                                             </View>
                                         </View>
                                     </TouchableOpacity>
-
                                 )
                             }} />) : (<Retorno type='sucess' mensagem='Nenhuma venda encontrada' />)
                     }
                 </View>
-
             </MenuTop >
             <View style={{ flexDirection: "row", alignContent: "space-between", width: '100%' }} >
                 <View style={{ width: '50%', alignItems: "center" }}>

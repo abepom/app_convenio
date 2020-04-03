@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  StatusBar,
 } from 'react-native';
 import { primary, background } from '../utils/Style';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -40,6 +41,7 @@ const MenuTop = props => {
 
   return (
     <>
+      <StatusBar backgroundColor={primary} barStyle="light-content" />
       <View style={styles.container}>
         <TouchableOpacity style={styles.menu} onPress={() => _press()}>
           <Icone style={styles.configItem} name={iconemenu} size={28} />

@@ -4,12 +4,12 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import DadosGerais from './DadosGerais'
 import Enderecos from './Enderecos'
 import AlterarSenha from './AlterarSenha'
-import styles, { primary } from '../utils/Style'
+import styles, { primary, background } from '../utils/Style'
 import imagens from '../utils/imagens';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import setUsuario from '../utils/setUsuario';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/abepom.png';
-import axios from 'axios'
+
 import ImagePicker from 'react-native-image-picker';
 import api from '../api';
 
@@ -54,18 +54,27 @@ export default function TabViewExample(props) {
             },
         };
         ImagePicker.showImagePicker(options, (resp) => {
-            let nome = { name: `logomarca-${convenio.id_gds}.${resp.fileName.split('.')[resp.fileName.split('.').length - 1]}` }
-            const { uri, type } = resp
+            if (!resp.didCancel) {
 
-            const data = new FormData();
-            data.append('id_gds', `${convenio.id_gds}`)
-            data.append("file", { uri, type, ...nome })
 
-            api.post('/user/upload', data, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
-            }).then(a => console.log(a)).catch((e) => console.log(e))
+                let nome = { name: `logomarca-${convenio.id_gds}.${resp.fileName.split('.')[resp.fileName.split('.').length - 1]}` }
+                const { uri, type } = resp
+
+                const data = new FormData();
+                data.append('id_gds', `${convenio.id_gds}`)
+                data.append("file", { uri, type, ...nome })
+
+                api.post('/user/upload', data, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                }).then(a => {
+
+                    setConvenio({ ...convenio, caminho_logomarca: a.data.caminho_logomarca })
+                    setUsuario('convenio', { ...convenio, caminho_logomarca: a.data.caminho_logomarca })
+                }).catch((e) => console.log(e))
+
+            }
         }
         )
     }
@@ -90,11 +99,47 @@ export default function TabViewExample(props) {
                             <Image
                                 source={{ uri: convenio.caminho_logomarca }}
                                 style={[styles.logoPP]}
+                            >
+                            </Image>
+                            <Image
+                                source={imagens.plus}
+                                style={{
+                                    width: 20,
+                                    height: 20,
+                                    resizeMode: 'cover',
+
+                                    bottom: 20,
+                                    right: -50
+
+
+
+                                }}
+
                             />
                         </TouchableOpacity>
                     </>
-                ) : (
-                        <EvilIcons name="user" size={70} />
+                ) : (<TouchableOpacity onPress={enviarImagem} style={{ borderWidth: 2, borderColor: primary, borderRadius: 50, padding: 10 }}>
+                    <Image
+                        source={imagens.camera}
+                        style={[styles.logoPP, { resizeMode: 'contain', height: 45, width: 45, }]}
+                        tintColor={primary}
+                    />
+                    {/* <Image
+                        source={imagens.camera}
+                        style={{
+                            width: 20,
+                            height: 20,
+                            resizeMode: 'cover',
+                            position: "absolute",
+                            left: 2,
+                            top: 5,
+
+
+
+                        }}
+                        tintColor={primary}
+                    /> */}
+                </TouchableOpacity>
                     )}
                 {console.log(convenio, 'convenioconvenio')}
                 <View>
