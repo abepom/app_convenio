@@ -5,11 +5,15 @@ import {
   ScrollView,
   SafeAreaView,
   Image,
+  TouchableOpacity,
 } from 'react-native';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { DrawerNavigatorItems } from 'react-navigation-drawer';
-import styles, { primaryBack } from '../utils/Style';
+import styles, { primaryBack, primary } from '../utils/Style';
 import getUsuario from '../utils/getUsuario';
+import imagens from '../utils/imagens';
+import ImagePicker from 'react-native-image-picker';
+import api from '../api';
+import setUsuario from '../utils/setUsuario';
 
 const Drawer = props => {
   const [menu, setMenu] = useState(useMemo(() => props, menu));
@@ -54,19 +58,46 @@ const Drawer = props => {
       setMenu({ ...props, items: itens });
     });
   }, [menu]);
+
   return (
     <ScrollView style={styles.flex}>
       <SafeAreaView style={styles.flex}>
         <View style={[styles.row, styles.center, { marginVertical: 20 }]}>
           {convenio.caminho_logomarca ? (
             <>
-              <Image
-                source={{ uri: convenio.caminho_logomarca }}
-                style={[styles.logoPP]}
-              />
+
+              <View>
+
+                <Image
+                  source={{ uri: convenio.caminho_logomarca }}
+                  style={[styles.logoPP]}
+                >
+                </Image>
+
+              </View>
             </>
-          ) : (
-              <EvilIcons name="user" size={70} />
+          ) : (<View style={{ borderWidth: 2, borderColor: primary, borderRadius: 50, padding: 10 }}>
+            <Image
+              source={imagens.camera}
+              style={[styles.logoPP, { resizeMode: 'contain', height: 45, width: 45, }]}
+              tintColor={primary}
+            />
+            {/* <Image
+                        source={imagens.camera}
+                        style={{
+                            width: 20,
+                            height: 20,
+                            resizeMode: 'cover',
+                            position: "absolute",
+                            left: 2,
+                            top: 5,
+
+
+
+                        }}
+                        tintColor={primary}
+                    /> */}
+          </View>
             )}
           <View>
             <Text

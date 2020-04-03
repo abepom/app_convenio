@@ -11,7 +11,9 @@ import save from '../assets/img/save.png'
 import close from '../assets/img/close.png'
 import heart_true from '../assets/img/heart_true.png'
 import heart_false from '../assets/img/heart_false.png'
-//import save from '../assets/img/save.png'
+import company from '../assets/img/company.png'
+import camera from '../assets/img/camera.png'
+import plus from '../assets/img/plus.png'
 //import save from '../assets/img/save.png'
 
-export default { pay, off, portfolio, money, abepom, gps, bill, list, search, save, close, heart_false, heart_true };
+export default { plus, camera, pay, off, portfolio, money, abepom, gps, bill, list, search, save, close, heart_false, heart_true, company };
