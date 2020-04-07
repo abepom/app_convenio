@@ -9,6 +9,11 @@ import imagens from '../utils/imagens';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/abepom.png';
+import axios from 'axios'
+import ImagePicker from 'react-native-image-picker';
+import api from '../api';
+
+
 
 const initialLayout = { width: Dimensions.get('window').width };
 
@@ -29,6 +34,7 @@ export default function TabViewExample(props) {
     useEffect(() => {
         getUsuario('convenio').then(conv => {
             setConvenio(conv);
+            console.log(conv)
         })
     }, [])
 
@@ -38,6 +44,31 @@ export default function TabViewExample(props) {
         '3': AlterarSenha,
     });
 
+    const enviarImagem = async () => {
+        const options = {
+            title: 'Selecione uma foto para enviar',
+            customButtons: [],
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+        ImagePicker.showImagePicker(options, (resp) => {
+            let nome = { name: `logomarca-${convenio.id_gds}.${resp.fileName.split('.')[resp.fileName.split('.').length - 1]}` }
+            const { uri, type } = resp
+
+            const data = new FormData();
+            data.append('id_gds', `${convenio.id_gds}`)
+            data.append("file", { uri, type, ...nome })
+
+            api.post('/user/upload', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            }).then(a => console.log(a)).catch((e) => console.log(e))
+        }
+        )
+    }
     return (
         <>
             <View style={styless.container}>
@@ -54,10 +85,13 @@ export default function TabViewExample(props) {
             <View style={[styles.row, styles.center, { marginVertical: 20 }]}>
                 {convenio.caminho_logomarca ? (
                     <>
-                        <Image
-                            source={{ uri: convenio.caminho_logomarca }}
-                            style={[styles.logoPP]}
-                        />
+                        <TouchableOpacity onPress={enviarImagem}>
+
+                            <Image
+                                source={{ uri: convenio.caminho_logomarca }}
+                                style={[styles.logoPP]}
+                            />
+                        </TouchableOpacity>
                     </>
                 ) : (
                         <EvilIcons name="user" size={70} />

@@ -50,7 +50,7 @@ const Drawer = props => {
           })
         }
       } catch (error) { console.log(error) }
-      console.log(itens, "itens")
+
       setMenu({ ...props, items: itens });
     });
   }, [menu]);
