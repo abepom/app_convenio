@@ -86,18 +86,12 @@ export default function TabViewExample(props) {
                 const data = new FormData();
                 data.append('id_gds', `${convenio.id_gds}`)
                 data.append("file", { uri, type, ...nome })
-                console.log({ uri, type, ...nome })
-                Axios.post(`http://187.94.98.194:3917/enviarImagem/`, data, {
+
+                api.post('/user/upload', data, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     }
                 }).then(a => {
-
-                    // api.post('/user/upload', data, {
-                    //     headers: {
-                    //         'Content-Type': 'multipart/form-data',
-                    //     }
-                    // }).then(a => {
                     console.log(a)
                     setConvenio({ ...convenio, caminho_logomarca: a.data.caminho_logomarca })
                     setUsuario('convenio', { ...convenio, caminho_logomarca: a.data.caminho_logomarca })
