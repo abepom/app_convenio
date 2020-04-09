@@ -56,7 +56,7 @@ const ConsultarVendas = (props) => {
         let Data = dataSelecionada ? dataSelecionada : data
         setLoad(true)
         const { data } = await api.get('/ConsultarVendas', { params: { id_gds, data: Data } })
-        console.log(data)
+
         setvendas(data)
         setLoad(false)
 

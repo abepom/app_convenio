@@ -11,9 +11,7 @@ import { DrawerNavigatorItems } from 'react-navigation-drawer';
 import styles, { primaryBack, primary } from '../utils/Style';
 import getUsuario from '../utils/getUsuario';
 import imagens from '../utils/imagens';
-import ImagePicker from 'react-native-image-picker';
-import api from '../api';
-import setUsuario from '../utils/setUsuario';
+
 
 const Drawer = props => {
   const [menu, setMenu] = useState(useMemo(() => props, menu));

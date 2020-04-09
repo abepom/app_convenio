@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,10 +11,11 @@ import {
 import { primary, background } from '../utils/Style';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/abepom.png';
+import getUsuario from '../utils/getUsuario';
 const MenuTop = props => {
   const [itensconfig, setitensconfig] = React.useState(false);
   const { children, iconeConfig, drawer, noIcons } = props;
-  console.log(props, "testeeeeee")
+
   let iconemenu;
   let _press;
   const _handlerOpemConfig = () => {
@@ -38,6 +39,10 @@ const MenuTop = props => {
       }
     }
   }
+
+  useEffect(() => {
+    getUsuario("notificacao").then(dados => console.log(dados, "itens "))
+  }, [])
 
   return (
     <>

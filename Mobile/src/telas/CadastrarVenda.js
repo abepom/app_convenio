@@ -61,7 +61,7 @@ const CadastrarVenda = props => {
   //   }
   // }, [modal]);
   useEffect(() => {
-    api.post(`/limite/${matricula}`).then(({ data }) => setLimiteAtual(121.2))
+    api.post(`/limite/${matricula}`).then(({ data }) => setLimiteAtual(data.limite))
   }, [])
 
   return (

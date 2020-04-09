@@ -1,80 +1,35 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, Picker, FlatList, ActivityIndicator, TextInput as Input, TouchableOpacity } from 'react-native'
-
 import MenuTop from '../components/MenuTop'
 import styles, { primary, danger, danverBackground, sucess, sucessBack } from '../utils/Style'
 import { TextInput } from 'react-native-paper'
 import Modal from 'react-native-modal';
-
 import api from '../api'
 import { themeLight, themeDark } from '../utils/theme'
 import formatCurrency from 'currency-formatter'
-
-
-import Retorno from '../components/Retorno';
 import getUsuario from '../utils/getUsuario';
 
-let meses = [
-  {
-    mes: 'JAN',
-    value: '01'
-  },
-  {
-    mes: 'FEV',
-    value: '02'
-  },
-  {
-    mes: 'MAR',
-    value: '03'
-  },
-  {
-    mes: 'ABR',
-    value: '04'
-  },
-  {
-    mes: 'MAI',
-    value: '05'
-  },
-  {
-    mes: 'JUM',
-    value: '06'
-  },
-  {
-    mes: 'JUL',
-    value: '07'
-  },
-  {
-    mes: 'AGO',
-    value: '08'
-  },
-  {
-    mes: 'SET',
-    value: '09'
-  },
-  {
-    mes: 'OUT',
-    value: '10'
-  },
-  {
-    mes: 'NOV',
-    value: '11'
-  },
-  {
-    mes: 'DEZ',
-    value: '12'
-  },
-
-]
-let anos = []
-
-for (let index = new Date().getFullYear(); index > 2010; index--) {
-  console.log(index)
-  anos.push(`${index}`)
-
-}
-
 const ConsultarVendas = (props) => {
+  let anos = []
   const mesAtual = new Date().getMonth() + 1
+  for (let index = new Date().getFullYear(); index > 2010; index--) {
+    anos.push(`${index}`)
+  }
+
+  let meses = [
+    { mes: 'JAN', value: '01' },
+    { mes: 'FEV', value: '02' },
+    { mes: 'MAR', value: '03' },
+    { mes: 'ABR', value: '04' },
+    { mes: 'MAI', value: '05' },
+    { mes: 'JUM', value: '06' },
+    { mes: 'JUL', value: '07' },
+    { mes: 'AGO', value: '08' },
+    { mes: 'SET', value: '09' },
+    { mes: 'OUT', value: '10' },
+    { mes: 'NOV', value: '11' },
+    { mes: 'DEZ', value: '12' }
+  ]
 
   const [id_gds, setId_gds] = useState('')
   const [mes, setMes] = useState(mesAtual.toString().length < 2 ? `0${mesAtual}` : `${mesAtual}`)
@@ -93,7 +48,6 @@ const ConsultarVendas = (props) => {
     }).catch((e) => console.log(e))
   }, [])
   const getConsulta = async (mesSelecionado, anoSelecionado, id_gdss) => {
-
     try {
       setLoad(true)
       const dados = await api.get('/consultarAtendimentos', { params: { id_gds: id_gdss ? id_gdss : id_gds, mes: mesSelecionado, ano: anoSelecionado } })

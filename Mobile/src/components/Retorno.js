@@ -1,12 +1,6 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
-import {
-  sucess,
-  danger,
-  danverBackground,
-  alert,
-  alertBack,
-} from '../utils/Style';
+
 import imagens from '../utils/imagens';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 

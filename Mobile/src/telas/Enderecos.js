@@ -52,7 +52,7 @@ const Enderecos = props => {
         .replace('.', '')
         .replace('-', '')}/json/`,
     );
-    console.log(dados)
+
     let cdCidade;
     if (!dados.data.erro) {
       setErroCep({ erro: dados.data.erro, mensagem: '' })
@@ -89,7 +89,7 @@ const Enderecos = props => {
     const conv = await AsyncStorage.getItem('convenio');
     let id_gds = JSON.parse(conv).id_gds
     const { data } = await api.get(`/user/enderecos`, { params: { id_gds } });
-    console.log(data)
+
 
     setEnderecosCadastrados(data);
 
@@ -111,7 +111,7 @@ const Enderecos = props => {
       cep,
       complemento
     })
-    console.log(req.data)
+
     setRetorno(req.data)
     setMostrar(false)
     getEnderecosCadastrados();
@@ -129,7 +129,7 @@ const Enderecos = props => {
         id_end
       }
     })
-    console.log(req.data)
+
     setRetorno(req.data)
     getEnderecosCadastrados();
 

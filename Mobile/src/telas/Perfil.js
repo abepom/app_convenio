@@ -9,9 +9,11 @@ import imagens from '../utils/imagens';
 import setUsuario from '../utils/setUsuario';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/abepom.png';
-
+import { Rating } from 'react-native-ratings';
 import ImagePicker from 'react-native-image-picker';
 import api from '../api';
+import { ActivityIndicator } from 'react-native-paper';
+import Axios from 'axios';
 
 
 
@@ -26,6 +28,7 @@ export default function TabViewExample(props) {
         { key: '2', title: 'Endereços' },
         { key: '3', title: 'Alterar Senha' },
     ]);
+    const [avaliacao, setAvaliacao] = useState({ carregando: true, qtd: 0, nota: 5, coracoes: [true, true, true, true, true] })
     const [convenio, setConvenio] = useState({
         caminho_logomarca: null,
         nome_parceiro: '',
@@ -34,10 +37,33 @@ export default function TabViewExample(props) {
     useEffect(() => {
         getUsuario('convenio').then(conv => {
             setConvenio(conv);
-            console.log(conv)
+            consultarAvaliacoes(conv.id_gds)
         })
     }, [])
 
+    const consultarAvaliacoes = (id_gds) => {
+        setAvaliacao({ ...avaliacao, carregando: true })
+        api.get(`/user/avaliacoes`, { params: { id_gds } }).then(({ data }) => {
+            data.map((dados) => {
+                console.log(dados)
+                if (dados.media) {
+                    let coracoes = []
+                    for (let i = 0; i < Math.round(dados.media); i++) {
+                        coracoes.push(true)
+                    }
+                    for (let i = 0; i < 5 - Math.round(dados.media); i++) {
+                        coracoes.push(false)
+                    }
+                    setAvaliacao({ carregando: false, qtd: dados.votos, nota: dados.media, coracoes: coracoes })
+
+                } else (
+                    setAvaliacao({ ...avaliacao, carregando: false })
+
+
+                )
+            })
+        })
+    }
     const renderScene = SceneMap({
         '1': DadosGerais,
         '2': Enderecos,
@@ -55,21 +81,24 @@ export default function TabViewExample(props) {
         };
         ImagePicker.showImagePicker(options, (resp) => {
             if (!resp.didCancel) {
-
-
                 let nome = { name: `logomarca-${convenio.id_gds}.${resp.fileName.split('.')[resp.fileName.split('.').length - 1]}` }
                 const { uri, type } = resp
-
                 const data = new FormData();
                 data.append('id_gds', `${convenio.id_gds}`)
                 data.append("file", { uri, type, ...nome })
-
-                api.post('/user/upload', data, {
+                console.log({ uri, type, ...nome })
+                Axios.post(`http://187.94.98.194:3917/enviarImagem/`, data, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     }
                 }).then(a => {
 
+                    // api.post('/user/upload', data, {
+                    //     headers: {
+                    //         'Content-Type': 'multipart/form-data',
+                    //     }
+                    // }).then(a => {
+                    console.log(a)
                     setConvenio({ ...convenio, caminho_logomarca: a.data.caminho_logomarca })
                     setUsuario('convenio', { ...convenio, caminho_logomarca: a.data.caminho_logomarca })
                 }).catch((e) => console.log(e))
@@ -141,7 +170,7 @@ export default function TabViewExample(props) {
                     /> */}
                 </TouchableOpacity>
                     )}
-                {console.log(convenio, 'convenioconvenio')}
+
                 <View>
                     <Text
                         style={{ width: 150, marginHorizontal: 20, color: primary }}>
@@ -149,20 +178,41 @@ export default function TabViewExample(props) {
                     </Text>
                     <Text style={{ fontSize: 10, paddingLeft: 20 }}>
                         {convenio.doc && convenio.doc.length > 15
-                            ? `CNPF: ${convenio.doc}`
+                            ? `CNPJ: ${convenio.doc}`
                             : `CPF: ${convenio.doc}`}
                     </Text>
                 </View>
-                <View >
-                    <Text style={{ fontSize: 10 }}>AVALIAÇÕES</Text>
-                    <View style={{ flexDirection: "row" }}>
-                        <Image source={imagens.heart_true} style={{ width: 13, height: 13 }} tintColor={'red'} />
-                        <Image source={imagens.heart_true} style={{ width: 13, height: 13 }} tintColor={'red'} />
-                        <Image source={imagens.heart_true} style={{ width: 13, height: 13 }} tintColor={'red'} />
-                        <Image source={imagens.heart_true} style={{ width: 13, height: 13 }} tintColor={'red'} />
-                        <Image source={imagens.heart_false} style={{ width: 13, height: 13 }} tintColor={'red'} />
-                    </View>
-                </View>
+                {
+                    avaliacao.carregando ? (
+                        <ActivityIndicator />
+                    ) : (
+                            <TouchableOpacity onPress={() => consultarAvaliacoes(convenio.id_gds)} style={{ color: primary }} >
+
+                                <View >
+                                    <>
+                                        <View style={{ flexDirection: "row", paddingVertical: 4 }}>
+                                            <Rating
+                                                type='custom'
+                                                ratingImage={imagens.heart}
+                                                ratingColor='#f00'
+                                                ratingCount={5}
+                                                imageSize={14}
+                                                readonly={true}
+                                                startingValue={avaliacao.nota}
+
+                                            />
+                                        </View>
+                                        {avaliacao.qtd > 1 ? (
+                                            <Text style={{ fontSize: 10 }}>{avaliacao.qtd} AVALIAÇÕES</Text>
+                                        ) : (
+                                                <Text style={{ fontSize: 10 }}>{avaliacao.qtd} AVALIAÇÃO</Text>
+                                            )
+
+                                        }
+                                    </>
+                                </View>
+                            </TouchableOpacity>
+                        )}
             </View>
             <TabView
                 navigationState={{ index, routes }}

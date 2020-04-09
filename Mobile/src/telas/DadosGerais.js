@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Image, TouchableOpacity, Picker, ScrollView, ActivityIndicator } from 'react-native'
-import MenuTop from '../components/MenuTop'
+import { View, Text, TouchableOpacity, Picker, ScrollView, ActivityIndicator } from 'react-native'
 import { TextInput, HelperText } from 'react-native-paper';
 import { themeLight } from '../utils/theme';
-import styles, { primary } from '../utils/Style';
+import styles from '../utils/Style';
 import { TextInputMask } from 'react-native-masked-text'
-import imagens from '../utils/imagens';
 import getUsuario from '../utils/getUsuario'
 import api from '../api';
 import Retorno from '../components/Retorno';
@@ -14,7 +12,7 @@ const Perfil = (props) => {
 
   useEffect(() => {
     getUsuario('convenio').then(conv => {
-      console.log(conv)
+
       setId_gds(conv.id_gds)
 
       getDados(conv.id_gds)
@@ -33,20 +31,16 @@ const Perfil = (props) => {
     cargo: {
       value: 'ceo-fundador',
       erro: false,
-
     },
     site: input,
     whatsapp: input
-
   }
+
   const [carregando, setCarregando] = useState(false)
   const [state, setState] = useState(initialState)
   const [retorno, setRetorno] = useState(false)
   useEffect(() => {
-
     if (!!retorno) {
-
-
       setTimeout(() => {
         setRetorno(false)
       }, 2000);
@@ -56,8 +50,8 @@ const Perfil = (props) => {
     let valorAlterado = { ...input, value: valor }
     setState({ ...state, [campo]: valorAlterado })
   }
+
   const getDados = (id) => {
-    console.log(id, 'id')
     api.get('/user/dados_gerais', { params: { id_gds: id } }).then(({ data }) => {
       setState({
         ...state,
@@ -72,11 +66,11 @@ const Perfil = (props) => {
       })
     })
   }
+
   const atualizarDados = async () => {
     setCarregando(true)
     if (state.nome_fachada.value == '') {
       setCarregando(false)
-
       setState({
         ...state, nome_fachada: {
           value: state.nome_fachada.value,
@@ -85,7 +79,6 @@ const Perfil = (props) => {
       })
     } else if (state.email.value.indexOf('@') <= 0) {
       setCarregando(false)
-
       setState({
         ...state, email: {
           value: state.email.value,
@@ -94,7 +87,6 @@ const Perfil = (props) => {
       })
     } else if (state.email.value.indexOf('.') <= 0) {
       setCarregando(false)
-
       setState({
         ...state, email: {
           value: state.email.value,
@@ -102,7 +94,6 @@ const Perfil = (props) => {
         }
       })
     } else {
-
       const {
         nome_fachada,
         email,
@@ -112,9 +103,7 @@ const Perfil = (props) => {
         cargo,
         site,
         whatsapp,
-
       } = state
-
       api.put('/user/edit', {
         nome_fachada,
         email,
@@ -128,7 +117,6 @@ const Perfil = (props) => {
       }).then(({ data }) => {
         setRetorno({ erro: !data.retorno, mensagem: data.mensagem })
         setCarregando(false)
-
         if (data.retorno) {
           setState({
             ...state,
@@ -152,7 +140,6 @@ const Perfil = (props) => {
     <>
       <ScrollView>
         <View style={{ width: '85%', alignSelf: "center" }}>
-
           {retorno ? retorno.erro ? (<Retorno type='danger' mensagem={retorno.mensagem} />) : (<Retorno type='sucess' mensagem={retorno.mensagem} />) : null}
         </View>
         <TextInput
@@ -168,7 +155,6 @@ const Perfil = (props) => {
           style={[styles.imput]}
         />
         {state.nome_fachada.erro && (
-
           <HelperText
             type="error"
             visible={!state.nome_fachada.value != ''}
@@ -178,11 +164,9 @@ const Perfil = (props) => {
             Informe o nome da fachada
           </HelperText>
         )}
-
         <TextInput
           onFocus={null}
           onBlur={null}
-
           label="E-mail"
           dense
           mode="outlined"
@@ -192,7 +176,6 @@ const Perfil = (props) => {
           keyboardType="email-address"
           style={[styles.imput]}
           error={state.email.erro}
-
         />
         {state.email.erro && (
 
