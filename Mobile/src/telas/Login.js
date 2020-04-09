@@ -7,6 +7,7 @@ import {
   StyleSheet,
 
 } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
 
 import StatusBar from '../components/StatusBar';
 
@@ -60,13 +61,20 @@ const Login = props => {
     }
   }, [])
 
+  const getToken = async () => {
+    const token = await messaging().getToken()
 
+    return token
+  }
   const conectar = async () => {
+    let token = await getToken()
+    setUsuario('token', token.toString())
     if (doc.length > 13 && senha) {
       try {
         const { data } = await api.post('/Login',
-          { usuario: doc, senha }
+          { usuario: doc, senha, token }
         );
+        console.log({ usuario: doc, senha, token, data })
         let convenio;
         if (!data.erro) {
           setUsuario('usuario', { usuario: doc, senha });
@@ -77,7 +85,7 @@ const Login = props => {
             efetuarVenda: data.efetuarVenda,
             doc: data.usuario,
           };
-
+          console.log(convenio)
           setUsuario('convenio', convenio);
           props.navigation.navigate('App', convenio);
         } else {

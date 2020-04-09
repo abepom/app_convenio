@@ -14,6 +14,7 @@ export default props => {
   useEffect(() => {
     getUsuario('convenio').then(user => {
       setConvenio(user);
+      console.log(user)
     });
   }, []);
 
@@ -103,6 +104,18 @@ export default props => {
             tintColor={primary}
           />
           <Text style={styles.textMenu}>Perfil</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.itemMenu}
+          onPress={() => {
+            props.navigation.navigate('Perfil', { id_gds: convenio.id_gds })
+          }}>
+          <Image
+            source={require('../assets/img/portfolio.png')}
+            style={{ width: 40, height: 40 }}
+            tintColor={primary}
+          />
+          <Text style={styles.textMenu}>AVALIAÇÕES</Text>
         </TouchableOpacity>
 
       </View>

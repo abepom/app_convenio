@@ -96,7 +96,7 @@ const Home = props => {
         data: { cartao, id_gds: convenio.id_gds, valor: valorUsado },
         method: 'POST',
       });
-      console.log(req);
+
       if (!req.data.erro) {
         setModal(false);
 

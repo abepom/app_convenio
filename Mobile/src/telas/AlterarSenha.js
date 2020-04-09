@@ -16,12 +16,15 @@ const AlterarSenha = () => {
     const [senhaNova, setSenhaNova] = useState('')
     const [senhaConfirmada, setSenhaConfirmada] = useState('')
     const [usuario, setUsuario] = useState('')
+    const [token, setToken] = useState('')
     useEffect(() => {
         getUsuario('usuario').then(conv => {
             setUsuario(conv.usuario)
             setSenha1(conv.senha)
             console.log(conv, 'conve')
         })
+        getUsuario('token').then(token =>
+            setToken(token))
     }, [])
     useEffect(() => {
         if (retorno.retorno) {
@@ -116,7 +119,7 @@ const AlterarSenha = () => {
                         </HelperText>
                     ) : null
                 }
-                < TextInput
+                <TextInput
                     label="Confirme a sua senha"
                     dense
                     mode="outlined"
@@ -145,6 +148,8 @@ const AlterarSenha = () => {
                 <View style={{ flex: 1, alignItems: "center", justifyContent: "center", marginTop: 50 }}>
                     <Text> senha salva no ato do login é ({senha1})</Text>
                     <Text> provavelmente sera a senha atual tambem </Text>
+                    <Text> token para testes de api </Text>
+                    <Text>{token} </Text>
                 </View>
             </ScrollView>
         </View >
