@@ -15,7 +15,7 @@ import imagens from '../utils/imagens';
 
 const Drawer = props => {
   const [menu, setMenu] = useState(useMemo(() => props, menu));
-
+  console.log('olha so')
   let itens = []
 
   const [convenio, setConvenio] = useState({

@@ -246,11 +246,12 @@ const ConsultarVendas = (props) => {
       <View style={{ flexDirection: "row", alignContent: "space-between", width: '100%' }} >
         <View style={{ width: '50%', alignItems: "center" }}>
           <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>ATENDIMENTOS</Text>
-          <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>{vendas.length}</Text>
+          <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>{vendas.length ? vendas.length : '0'}</Text>
         </View>
         <View style={{ width: '50%', alignItems: "center" }}>
           <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>TOTAL</Text>
-          <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>{formatCurrency.format((vendas.reduce((total, valor) => total + Number(valor.CUI_Valor), 0)), { code: 'BRL' })}</Text>
+          {console.log(vendas.valor, 'tesssssteee')}
+          <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>{vendas.valor ? formatCurrency.format((vendas.reduce((total, valor) => total + Number(valor.CUI_Valor), 0)), { code: 'BRL' }) : 'R$ 0,00'}</Text>
         </View>
       </View>
     </>

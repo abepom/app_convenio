@@ -20,7 +20,7 @@ import imagem from './utils/imagens';
 import EfetuarVenda from './telas/EfetuarVenda';
 import { createStackNavigator } from 'react-navigation-stack';
 import ConsultarVendas from './telas/ConsultarVendas';
-
+import Avaliacao from './telas/Avaliacoes'
 const venda = createStackNavigator(
   {
     EfetuarVenda,
@@ -75,6 +75,7 @@ const App = createDrawerNavigator(
         },
       },
     },
+
     EfetuarVenda: {
       screen: venda,
 
@@ -96,6 +97,16 @@ const App = createDrawerNavigator(
         drawerLabel: () => {
           return 'Consultar Vendas';
         },
+      }
+    },
+    Avaliacao: {
+      screen: Avaliacao,
+      navigationOptions: {
+        drawerLabel: () => 'Perfil',
+        drawerIcon: props => (
+          <ItemDrawer {...props} icone={imagem.review} />
+        ),
+        drawerLabel: 'Avaliações',
       }
     },
     Endereco: {

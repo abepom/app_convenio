@@ -28,7 +28,7 @@ export default function TabViewExample(props) {
         { key: '2', title: 'Endereços' },
         { key: '3', title: 'Alterar Senha' },
     ]);
-    const [avaliacao, setAvaliacao] = useState({ carregando: true, qtd: 0, nota: 5, coracoes: [true, true, true, true, true] })
+    const [avaliacao, setAvaliacao] = useState({ carregando: true })
     const [convenio, setConvenio] = useState({
         caminho_logomarca: null,
         nome_parceiro: '',
@@ -41,29 +41,17 @@ export default function TabViewExample(props) {
         })
     }, [])
 
-    const consultarAvaliacoes = (id_gds) => {
+    const consultarAvaliacoes = async (id_gds) => {
         setAvaliacao({ ...avaliacao, carregando: true })
-        api.get(`/user/avaliacoes`, { params: { id_gds } }).then(({ data }) => {
-            data.map((dados) => {
-                console.log(dados)
-                if (dados.media) {
-                    let coracoes = []
-                    for (let i = 0; i < Math.round(dados.media); i++) {
-                        coracoes.push(true)
-                    }
-                    for (let i = 0; i < 5 - Math.round(dados.media); i++) {
-                        coracoes.push(false)
-                    }
-                    setAvaliacao({ carregando: false, qtd: dados.votos, nota: dados.media, coracoes: coracoes })
-
-                } else (
-                    setAvaliacao({ ...avaliacao, carregando: false })
-
-
-                )
+        await api.get(`/user/avaliacoes`, { params: { id_gds } }).then(({ data }) => {
+            data.map(({ votos, media }) => {
+                if (media) {
+                    setAvaliacao({ ...avaliacao, votos, media, carregando: false })
+                }
             })
         })
     }
+
     const renderScene = SceneMap({
         '1': DadosGerais,
         '2': Enderecos,
@@ -86,7 +74,6 @@ export default function TabViewExample(props) {
                 const data = new FormData();
                 data.append('id_gds', `${convenio.id_gds}`)
                 data.append("file", { uri, type, ...nome })
-
                 api.post('/user/upload', data, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -192,14 +179,14 @@ export default function TabViewExample(props) {
                                                 ratingCount={5}
                                                 imageSize={14}
                                                 readonly={true}
-                                                startingValue={avaliacao.nota}
+                                                startingValue={avaliacao.media}
 
                                             />
                                         </View>
-                                        {avaliacao.qtd > 1 ? (
-                                            <Text style={{ fontSize: 10 }}>{avaliacao.qtd} AVALIAÇÕES</Text>
+                                        {avaliacao.votos > 1 ? (
+                                            <Text style={{ fontSize: 10 }}>{`${avaliacao.votos}`} AVALIAÇÕES</Text>
                                         ) : (
-                                                <Text style={{ fontSize: 10 }}>{avaliacao.qtd} AVALIAÇÃO</Text>
+                                                <Text style={{ fontSize: 10 }}>{`${avaliacao.votos}`} AVALIAÇÃO</Text>
                                             )
 
                                         }

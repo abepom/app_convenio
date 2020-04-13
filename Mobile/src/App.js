@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar, View, Text, ToastAndroid, Alert } from 'react-native';
 import { tou } from 'react-native-paper'
 import messaging, { firebase } from '@react-native-firebase/messaging';
@@ -8,7 +8,9 @@ import { primary } from './utils/Style';
 
 
 const App = () => {
+  console.log('renderizou')
 
+  const [state, setstate] = useState(null)
   async function registerAppWithFCM() {
     const data = await messaging().registerDeviceForRemoteMessages();
     console.log(data)
@@ -25,12 +27,12 @@ const App = () => {
     firebase.messaging().hasPermission().then(enabled => {
       if (!enabled) {
         requestUserPermission()
-        console.log('teste')
+
       }
     }).catch(console.log)
     registerAppWithFCM()
     firebase.messaging().onNotificationOpenedApp(not => {
-      console.log(not, 'notificaçao')
+
       alert('notificacao')
     })
 
@@ -39,8 +41,9 @@ const App = () => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       setUsuario('notificacao', remoteMessage.data)
       console.log(remoteMessage)
+      setstate(remoteMessage.data.tela)
       Alert.alert(remoteMessage.notification.title, `${remoteMessage.notification.body} parametro:${remoteMessage.data.tela}`, [
-
+        { text: 'visualizar', onPress: () => { } },
         { text: 'OK', onPress: () => { } },
       ]);
     });
@@ -58,7 +61,7 @@ const App = () => {
 
 
 
-        <Routes />
+        <Routes notificacao={state} />
       </View>
     </>
   );

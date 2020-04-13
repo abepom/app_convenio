@@ -10,7 +10,7 @@ import getUsuario from './../utils/getUsuario';
 
 export default props => {
   const [convenio, setConvenio] = useState({ efetuarVenda: false });
-
+  console.log(props)
   useEffect(() => {
     getUsuario('convenio').then(user => {
       setConvenio(user);
@@ -108,10 +108,10 @@ export default props => {
         <TouchableOpacity
           style={styles.itemMenu}
           onPress={() => {
-            props.navigation.navigate('Perfil', { id_gds: convenio.id_gds })
+            props.navigation.navigate('Avaliacao', { id_gds: convenio.id_gds })
           }}>
           <Image
-            source={require('../assets/img/portfolio.png')}
+            source={require('../assets/img/review.png')}
             style={{ width: 40, height: 40 }}
             tintColor={primary}
           />
