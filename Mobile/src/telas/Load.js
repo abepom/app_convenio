@@ -6,13 +6,20 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { primary } from '../utils/Style';
 import api from '../api';
 import messaging from '@react-native-firebase/messaging';
+import getUsuario from '../utils/getUsuario';
 
 const Load = props => {
   const { navigation } = props;
+
   let usuario;
   let senha;
-
+  let notificacao
   useEffect(() => {
+    getUsuario('notificacao').then(async item => {
+      console.log(item)
+      notificacao = item
+      await AsyncStorage.removeItem('notificacao')
+    }).catch((e) => notificacao = false)
     _retrieveData();
   }, []);
   const getToken = async () => {
@@ -43,8 +50,12 @@ const Load = props => {
             efetuarVenda: data.efetuarVenda,
             doc: data.usuario,
           };
+          if (notificacao) {
+            navigation.navigate(notificacao.tela, convenio);
+          } else {
+            navigation.navigate('App', convenio);
+          }
 
-          navigation.navigate('App', convenio);
         } else { navigation.navigate('Login', { ...data, doc, mensagem: 'Senha não confere, digite novamene a sua senha' }) };
       } else {
         navigation.navigate('Login');
