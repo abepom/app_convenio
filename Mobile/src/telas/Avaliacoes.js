@@ -7,6 +7,7 @@ import imagens from '../utils/imagens';
 import { Rating } from 'react-native-ratings';
 import formatData from '../utils/FormatData'
 import { primary } from '../utils/Style';
+import { ActivityIndicator } from 'react-native-paper';
 // import { Container } from './styles';
 
 export default function telas(props) {
@@ -15,6 +16,7 @@ export default function telas(props) {
     const [carregando, setCarregando] = useState(true)
     const [votos, setVotos] = useState(0)
     const [media, setMedia] = useState(5)
+    const [pendentes, setPendentes] = useState(0)
     const [avaliacoes, setAvaliacoes] = useState([])
     useEffect(() => {
         getUsuario('convenio').then(conv => {
@@ -27,31 +29,36 @@ export default function telas(props) {
 
     const consultarAvaliacoes = async (id_gds) => {
         try {
-
-
             setCarregando(true)
             const { data } = await api.get(`/user/avaliacoes`, { params: { id_gds } })
-
-
             console.log(data)
-
             let mediaTemp
             let votosTemp
             let avaliacoesTemp = []
-
+            let pendentesTemp
             data.forEach((dados, i) => {
                 if (dados.votos) {
                     votosTemp = dados.votos
                     mediaTemp = dados.media
+                    pendentesTemp = dados.pendentes
                 } else {
-                    avaliacoesTemp.push(dados)
+                    if (dados.pendentes) {
+                        pendentesTemp = dados.pendentes
+                    } else {
+                        avaliacoesTemp.push(dados)
+
+                    }
                 }
                 if (data.length == i + 1) {
-                    setMedia(mediaTemp)
+                    console.log(avaliacoesTemp)
+                    setMedia(mediaTemp ? mediaTemp : 5.00)
                     setAvaliacoes(avaliacoesTemp)
-                    setVotos(votosTemp)
+                    setPendentes(pendentesTemp ? pendentesTemp : 0)
+                    setVotos(votosTemp ? votosTemp : 0)
                 }
+
             })
+            setCarregando(false)
 
 
         } catch (error) {
@@ -64,6 +71,15 @@ export default function telas(props) {
         <MenuTop
             drawer {...props}
             title={'Avaliações'}
+            imagemConf={imagens.loop}
+            funcConfig={() => {
+                getUsuario('convenio').then(conv => {
+
+                    setId_gds(conv.id_gds)
+                    console.log('tessete')
+                    consultarAvaliacoes(conv.id_gds)
+                })
+            }}
             header={(
                 <View style={{ width: '80%', alignItems: "center" }}>
                     <View style={{ marginTop: 20, width: '100%', flexDirection: "row", justifyContent: 'space-between', marginTop: 10 }}>
@@ -88,13 +104,14 @@ export default function telas(props) {
 
                             }
                             <Text> Media: {media.toFixed(2)}</Text>
+                            <Text style={{ fontSize: 10 }}> Pendentes: {pendentes}</Text>
                         </View>
 
 
                     </View >
                 </View>
             )}  >
-            {avaliacoes.map((ava, i) => (<View key={i} style={{ width: '95%', backgroundColor: 'white', marginVertical: 5, padding: 15, elevation: 4, borderRadius: 5 }}>
+            {carregando ? (<ActivityIndicator />) : avaliacoes.length > 0 ? avaliacoes.map((ava, i) => (<View key={i} style={{ width: '95%', backgroundColor: 'white', marginVertical: 5, padding: 15, elevation: 4, borderRadius: 5 }}>
                 <View style={{ flexDirection: "row", justifyContent: "space-between", width: '100%', }}>
                     <Text style={{ fontWeight: "bold", color: primary }}>{ava.nome}  <Text style={{ fontSize: 10, color: '#999', top: -10, }}>{ava.data_utilizacao}</Text></Text>
                     <Text><Image source={imagens.heart_true} style={{ width: 20, height: 20, tintColor: 'red' }} /> {ava.avaliacao}</Text>
@@ -106,7 +123,11 @@ export default function telas(props) {
                 </View>
 
             </View>
-            ))}
+            )) : (<View key={i} style={{ width: '95%', backgroundColor: 'white', marginVertical: 5, padding: 15, elevation: 4, borderRadius: 5 }}>
+                <Text style={{ fontWeight: "bold", color: primary }}>Nenhuma avaliação foi realizada</Text>
+
+
+            </View>)}
 
         </MenuTop>
     );

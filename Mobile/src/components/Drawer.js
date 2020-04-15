@@ -8,14 +8,24 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { DrawerNavigatorItems } from 'react-navigation-drawer';
-import styles, { primaryBack, primary } from '../utils/Style';
+import styles, { primaryBack, primary, Alert } from '../utils/Style';
 import getUsuario from '../utils/getUsuario';
 import imagens from '../utils/imagens';
 
+import messaging, { firebase } from '@react-native-firebase/messaging';
 
 const Drawer = props => {
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert(remoteMessage.notification.title, `${remoteMessage.notification.body}`, [
+        { text: 'VER', onPress: () => { props.navigation.navigate(remoteMessage.data.tela, { reload: true }) } },
+        { text: 'FECHAR', onPress: () => { } },
+      ]);
+    });
+
+    return unsubscribe;
+  }, []);
   const [menu, setMenu] = useState(useMemo(() => props, menu));
-  console.log('olha so')
   let itens = []
 
   const [convenio, setConvenio] = useState({
@@ -117,7 +127,5 @@ const Drawer = props => {
     </ScrollView>
   );
 };
-// thiago.denir.ramos@hotmail.com
-// S1F4617027tdr.@
-//ab3p0ms3d3
+
 export default Drawer;

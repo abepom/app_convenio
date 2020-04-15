@@ -90,6 +90,7 @@ const Home = props => {
     setCamera(true);
   };
   async function handlerStoreValue() {
+    setCarregando(true)
     if (valorUsado && valorUsado != 'R$0,00') {
       let req = await api({
         url: '/Informe',
@@ -111,6 +112,7 @@ const Home = props => {
     setAssociado(null);
     setErro(true);
     setMensagens({ descricao: `Consumo informado com sucesso`, tipo: 'sucess' });
+    setCarregando(false)
   }
 
   return (
@@ -166,17 +168,20 @@ const Home = props => {
                   />
                 )}
               />
-              <TouchableOpacity
-                onPress={() => {
-                  handlerStoreValue();
-                }}>
-                <Icone
-                  name="check-circle"
-                  size={40}
-                  color="#006600"
-                  style={{ margin: 15 }}
-                />
-              </TouchableOpacity>
+              {!carregando ? (
+
+                <TouchableOpacity
+                  onPress={() => {
+                    handlerStoreValue();
+                  }}>
+                  <Icone
+                    name="check-circle"
+                    size={40}
+                    color="#006600"
+                    style={{ margin: 15 }}
+                  />
+                </TouchableOpacity>
+              ) : (<ActivityIndicator />)}
             </View>
           </View>
         </View>

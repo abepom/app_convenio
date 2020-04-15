@@ -14,12 +14,12 @@ import icone from '../assets/img/abepom.png';
 import getUsuario from '../utils/getUsuario';
 const MenuTop = props => {
   const [itensconfig, setitensconfig] = React.useState(false);
-  const { children, iconeConfig, drawer, noIcons } = props;
+  const { children, drawer, noIcons, imagemConf, funcConfig } = props;
 
   let iconemenu;
   let _press;
   const _handlerOpemConfig = () => {
-    itensconfig ? setitensconfig(false) : setitensconfig(true);
+    funcConfig ? funcConfig() : alert('teste');
   };
   if (!noIcons) {
     if (drawer) {
@@ -60,7 +60,8 @@ const MenuTop = props => {
           <TouchableOpacity
             style={styles.config}
             onPress={() => _handlerOpemConfig()}>
-            <Icone style={styles.configItem} name={iconeConfig} size={28} />
+            <Image source={imagemConf} tintColor={'white'} style={{ width: 25, height: 25 }} />
+
           </TouchableOpacity>
         ) : null}
       </View>

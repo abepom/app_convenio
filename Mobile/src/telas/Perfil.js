@@ -13,7 +13,7 @@ import { Rating } from 'react-native-ratings';
 import ImagePicker from 'react-native-image-picker';
 import api from '../api';
 import { ActivityIndicator } from 'react-native-paper';
-import Axios from 'axios';
+
 
 
 
@@ -28,7 +28,7 @@ export default function TabViewExample(props) {
         { key: '2', title: 'Endereços' },
         { key: '3', title: 'Alterar Senha' },
     ]);
-    const [avaliacao, setAvaliacao] = useState({ carregando: true })
+    const [avaliacao, setAvaliacao] = useState({ carregando: true, votos: 0, media: 5.00 })
     const [convenio, setConvenio] = useState({
         caminho_logomarca: null,
         nome_parceiro: '',
@@ -45,8 +45,9 @@ export default function TabViewExample(props) {
         setAvaliacao({ ...avaliacao, carregando: true })
         await api.get(`/user/avaliacoes`, { params: { id_gds } }).then(({ data }) => {
             data.map(({ votos, media }) => {
+                console.log(votos, media)
                 if (media) {
-                    setAvaliacao({ ...avaliacao, votos, media, carregando: false })
+                    setAvaliacao({ ...avaliacao, votos: votos ? votos : 0, media: media ? media : 5.00, carregando: false })
                 }
             })
         })
