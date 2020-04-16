@@ -42,15 +42,14 @@ export default function telas(props) {
                     mediaTemp = dados.media
                     pendentesTemp = dados.pendentes
                 } else {
-                    if (dados.pendentes) {
+
+                    if (dados.media == 5) {
                         pendentesTemp = dados.pendentes
                     } else {
                         avaliacoesTemp.push(dados)
-
                     }
                 }
                 if (data.length == i + 1) {
-                    console.log(avaliacoesTemp)
                     setMedia(mediaTemp ? mediaTemp : 5.00)
                     setAvaliacoes(avaliacoesTemp)
                     setPendentes(pendentesTemp ? pendentesTemp : 0)
@@ -111,7 +110,8 @@ export default function telas(props) {
                     </View >
                 </View>
             )}  >
-            {carregando ? (<ActivityIndicator />) : avaliacoes.length > 0 ? avaliacoes.map((ava, i) => (<View key={i} style={{ width: '95%', backgroundColor: 'white', marginVertical: 5, padding: 15, elevation: 4, borderRadius: 5 }}>
+            {console.log(avaliacoes[0])}
+            {carregando ? (<ActivityIndicator />) : avaliacoes[0] ? avaliacoes.map((ava, i) => (<View key={i} style={{ width: '95%', backgroundColor: 'white', marginVertical: 5, padding: 15, elevation: 4, borderRadius: 5 }}>
                 <View style={{ flexDirection: "row", justifyContent: "space-between", width: '100%', }}>
                     <Text style={{ fontWeight: "bold", color: primary }}>{ava.nome}  <Text style={{ fontSize: 10, color: '#999', top: -10, }}>{ava.data_utilizacao}</Text></Text>
                     <Text><Image source={imagens.heart_true} style={{ width: 20, height: 20, tintColor: 'red' }} /> {ava.avaliacao}</Text>

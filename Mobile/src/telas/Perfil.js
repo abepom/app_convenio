@@ -20,14 +20,10 @@ import { ActivityIndicator } from 'react-native-paper';
 const initialLayout = { width: Dimensions.get('window').width };
 
 export default function TabViewExample(props) {
-
+    console.log(props)
     const _press = () => props.navigation.toggleDrawer();
     const [index, setIndex] = useState(0);
-    const [routes] = useState([
-        { key: '1', title: 'Dados Gerais' },
-        { key: '2', title: 'Endereços' },
-        { key: '3', title: 'Alterar Senha' },
-    ]);
+
     const [avaliacao, setAvaliacao] = useState({ carregando: true, votos: 0, media: 5.00 })
     const [convenio, setConvenio] = useState({
         caminho_logomarca: null,
@@ -35,8 +31,8 @@ export default function TabViewExample(props) {
         efetuarVenda: false,
     });
     useEffect(() => {
-        getUsuario('convenio').then(conv => {
-            setConvenio(conv);
+        getUsuario('convenio').then(async conv => {
+            await setConvenio(conv);
             consultarAvaliacoes(conv.id_gds)
         })
     }, [])
@@ -52,6 +48,11 @@ export default function TabViewExample(props) {
             })
         })
     }
+    const [routes] = useState([
+        { key: '1', title: 'Dados Gerais' },
+        { key: '2', title: 'Endereços' },
+        { key: '3', title: 'Alterar Senha' },
+    ]);
 
     const renderScene = SceneMap({
         '1': DadosGerais,
@@ -89,6 +90,7 @@ export default function TabViewExample(props) {
         }
         )
     }
+
     return (
         <>
             <View style={styless.container}>

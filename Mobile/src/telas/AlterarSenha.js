@@ -17,6 +17,7 @@ const AlterarSenha = () => {
     const [senhaConfirmada, setSenhaConfirmada] = useState('')
     const [usuario, setUsuario] = useState('')
     const [token, setToken] = useState('')
+    const [id, setId] = useState('')
     useEffect(() => {
         getUsuario('usuario').then(conv => {
             setUsuario(conv.usuario)
@@ -25,6 +26,10 @@ const AlterarSenha = () => {
         })
         getUsuario('token').then(token =>
             setToken(token))
+        getUsuario('convenio').then((convenio) => {
+
+            setId(convenio.id_gds)
+        })
     }, [])
     useEffect(() => {
         if (retorno.retorno) {
@@ -39,7 +44,7 @@ const AlterarSenha = () => {
             setstate({ ...state, senhaConfirmada: true })
 
         } else if (senhaNova.length > 5) {
-            console.log({ usuario, senha, senhaNova })
+
             api.put('/user/alterarSenha', { usuario, senha, senhaNova }).then(({ data }) => {
                 if (data.retorno) {
                     if (data.tipo == 'danger') {
@@ -148,6 +153,8 @@ const AlterarSenha = () => {
                 <View style={{ flex: 1, alignItems: "center", justifyContent: "center", marginTop: 50 }}>
                     <Text> senha salva no ato do login é ({senha1})</Text>
                     <Text> provavelmente sera a senha atual tambem </Text>
+                    <Text> id_gds:{id} </Text>
+
                     <Text> token para testes de api </Text>
                     <Text>{token} </Text>
                 </View>

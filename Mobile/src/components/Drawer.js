@@ -5,10 +5,10 @@ import {
   ScrollView,
   SafeAreaView,
   Image,
-  TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { DrawerNavigatorItems } from 'react-navigation-drawer';
-import styles, { primaryBack, primary, Alert } from '../utils/Style';
+import styles, { primaryBack, primary } from '../utils/Style';
 import getUsuario from '../utils/getUsuario';
 import imagens from '../utils/imagens';
 
@@ -17,6 +17,7 @@ import messaging, { firebase } from '@react-native-firebase/messaging';
 const Drawer = props => {
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
+
       Alert.alert(remoteMessage.notification.title, `${remoteMessage.notification.body}`, [
         { text: 'VER', onPress: () => { props.navigation.navigate(remoteMessage.data.tela, { reload: true }) } },
         { text: 'FECHAR', onPress: () => { } },
