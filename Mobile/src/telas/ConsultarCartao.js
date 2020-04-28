@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
-  TextInput,
   ActivityIndicator,
 } from 'react-native';
 import { TextInput as Imput } from 'react-native-paper';
@@ -13,19 +12,20 @@ import Menu from '../components/MenuTop';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
 import { TextInputMask } from 'react-native-masked-text';
-
 import styles, { danger, primary, white } from '../utils/Style';
 import api from '../api';
 import { TextInput as TextInputformat } from 'react-native-paper';
-import AsyncStorage from '@react-native-community/async-storage';
 import Retorno from '../components/Retorno';
 import { themeLight } from '../utils/theme';
+import useConvenio from '../../Store/Convenio';
+import useLoad from '../../Store/Load';
 
 const Home = props => {
   const [modal, setModal] = useState(false);
   const [cartao, setCartao] = React.useState('');
   const [erro, setErro] = React.useState(false);
-  const [convenio, setConvenio] = React.useState(false);
+  const [convenio] = useConvenio();
+  const [load, setLoad] = useLoad();
   const [associado, setAssociado] = React.useState(null);
   const [valorUsado, setValorUsado] = useState(null);
   const [mensagens, setMensagens] = React.useState('');
@@ -33,22 +33,15 @@ const Home = props => {
 
   const [carregando, setCarregando] = useState(false)
 
-  useEffect(() => {
-    getItens();
-  }, []);
-  async function getItens() {
-    await AsyncStorage.getItem('convenio').then(usuario => {
-      setConvenio(JSON.parse(usuario));
-    });
-  }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (erro) {
       setTimeout(() => {
         setErro(false);
       }, 4000);
     }
   }, [erro]);
+
   const _handlerConsultaCartao = async card => {
     setCarregando(true)
     if (!card) {
@@ -72,8 +65,9 @@ const Home = props => {
       } else {
         setAssociado(socio);
         setCarregando(false)
+
       }
-      console.log(socio);
+
     } else {
       setErro(true);
       setCarregando(false)
@@ -100,7 +94,7 @@ const Home = props => {
 
       if (!req.data.erro) {
         setModal(false);
-
+        setLoad('ListarAtendimento')
         setValorUsado('');
       } else {
         alert('Erro ao informar Consumo');
@@ -113,6 +107,7 @@ const Home = props => {
     setErro(true);
     setMensagens({ descricao: `Consumo informado com sucesso`, tipo: 'sucess' });
     setCarregando(false)
+
   }
 
   return (
@@ -239,6 +234,8 @@ const Home = props => {
               <Text style={styles.btnDefaultText}> BUSCAR</Text>
             </TouchableOpacity>
           )}
+
+
         </View>
         {erro ? (
           <View style={{ width: '80%' }}>

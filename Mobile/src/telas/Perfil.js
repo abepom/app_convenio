@@ -13,35 +13,28 @@ import { Rating } from 'react-native-ratings';
 import ImagePicker from 'react-native-image-picker';
 import api from '../api';
 import { ActivityIndicator } from 'react-native-paper';
+import useConvenio from '../../Store/Convenio';
 
 
-
+const teste = () => (<View><Text>teste</Text></View>)
 
 const initialLayout = { width: Dimensions.get('window').width };
 
 export default function TabViewExample(props) {
-    console.log(props)
-    const _press = () => props.navigation.toggleDrawer();
+
     const [index, setIndex] = useState(0);
 
     const [avaliacao, setAvaliacao] = useState({ carregando: true, votos: 0, media: 5.00 })
-    const [convenio, setConvenio] = useState({
-        caminho_logomarca: null,
-        nome_parceiro: '',
-        efetuarVenda: false,
-    });
+    const [convenio, setConvenio] = useConvenio()
     useEffect(() => {
-        getUsuario('convenio').then(async conv => {
-            await setConvenio(conv);
-            consultarAvaliacoes(conv.id_gds)
-        })
+
+        consultarAvaliacoes(convenio.id_gds)
     }, [])
 
     const consultarAvaliacoes = async (id_gds) => {
         setAvaliacao({ ...avaliacao, carregando: true })
         await api.get(`/user/avaliacoes`, { params: { id_gds } }).then(({ data }) => {
             data.map(({ votos, media }) => {
-                console.log(votos, media)
                 if (media) {
                     setAvaliacao({ ...avaliacao, votos: votos ? votos : 0, media: media ? media : 5.00, carregando: false })
                 }
@@ -49,7 +42,7 @@ export default function TabViewExample(props) {
         })
     }
     const [routes] = useState([
-        { key: '1', title: 'Dados Gerais' },
+        { key: '1', title: 'Dados Gerais', },
         { key: '2', title: 'Endereços' },
         { key: '3', title: 'Alterar Senha' },
     ]);
@@ -81,14 +74,11 @@ export default function TabViewExample(props) {
                         'Content-Type': 'multipart/form-data',
                     }
                 }).then(a => {
-                    console.log(a)
                     setConvenio({ ...convenio, caminho_logomarca: a.data.caminho_logomarca })
                     setUsuario('convenio', { ...convenio, caminho_logomarca: a.data.caminho_logomarca })
                 }).catch((e) => console.log(e))
-
             }
-        }
-        )
+        })
     }
 
     return (

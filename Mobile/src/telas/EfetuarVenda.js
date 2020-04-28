@@ -16,6 +16,8 @@ import imagens from '../utils/imagens';
 import api from '../api';
 import getUsuario from '../utils/getUsuario';
 import Retorno from '../components/Retorno';
+import useConvenio from '../../Store/Convenio';
+import useLoad from '../../Store/Load';
 
 
 export default props => {
@@ -25,7 +27,8 @@ export default props => {
     dep: '',
   };
   const retornopadrao = { retorno: false, mensagem: '' }
-  const [state, setstate] = useState({});
+  const [state] = useConvenio();
+
   const [associado, setassociado] = useState(vaziu);
   const [imput, setImput] = useState('');
   const [dependentes, setDependentes] = useState([]);
@@ -72,12 +75,7 @@ export default props => {
   //   }
   // }, [imput]);
 
-  useEffect(() => {
 
-    getUsuario('convenio').then(convenio => setstate(convenio));
-
-
-  }, []);
 
 
   const consultarCartao = async cartao => {

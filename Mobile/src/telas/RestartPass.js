@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
-  Dimensions,
 } from 'react-native';
 import mask from '../utils/maskUsuario';
 import { TextInput } from 'react-native-paper';
@@ -31,7 +30,7 @@ const Login = props => {
   //const [doc, setdoc] = useState('33.734.844/0001-15');
   //const [doc, setdoc] = useState('92.665.611/0001-77');
   //const [doc, setdoc] = useState('92.665.611/0001-77');
-  const [doc, setdoc] = useState('03.383.807/0002-20');
+  const [doc, setdoc] = useState('');
   const [teclado, setTeclado] = useState('default');
 
   useEffect(() => {

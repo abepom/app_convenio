@@ -9,6 +9,7 @@ import { themeLight as theme } from '../utils/theme';
 import { ScrollView } from 'react-native-gesture-handler';
 import api from '../api';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import useLoad from '../../Store/Load';
 
 const CadastrarVenda = props => {
 
@@ -20,6 +21,7 @@ const CadastrarVenda = props => {
   const [carregando, setCarregando] = useState(false);
   const [modal, setModal] = useState(false);
   const [limiteAtual, setLimiteAtual] = useState('')
+  const [, setLoad] = useLoad()
   const [msnModal, setMsnModal] = useState({
     erro: true,
     mensagem: '',
@@ -41,6 +43,7 @@ const CadastrarVenda = props => {
       });
       console.log(matricula, dep, id_gds, valor, cupom, data)
       setModal(true);
+      setLoad("ConsultarVendas")
       setMsnModal(dados.data);
 
     } else {
@@ -106,7 +109,7 @@ const CadastrarVenda = props => {
               }}
               onPress={() => {
                 setModal(false);
-                console.log(msnModal);
+
                 if (msnModal.retorno) {
                   props.navigation.goBack();
                 } else {

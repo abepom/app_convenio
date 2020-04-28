@@ -19,10 +19,9 @@ import MC from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import api from '../api';
 import removerAcentos from '../utils/RemoverAcentos';
-import AsyncStorage from '@react-native-community/async-storage';
-import getUsuario from '../utils/getUsuario';
 import Retorno from '../components/Retorno';
 import imagens from '../utils/imagens';
+import useConvenio from '../../Store/Convenio';
 const Enderecos = props => {
   const info = {
     logradouro: '',
@@ -40,7 +39,7 @@ const Enderecos = props => {
   const [mostrar, setMostrar] = useState(false);
   const [enderecosCadastrados, setEnderecosCadastrados] = useState([]);
   const [cidades, setCidades] = useState([]);
-  const [convenio, setConvenio] = useState({ efetuarVenda: false })
+  const [convenio] = useConvenio()
   const [retorno, setRetorno] = useState('')
   const [carregando, setCarregando] = useState(false)
   const [carregandoCep, setCarregandoCep] = useState(false)
@@ -74,11 +73,9 @@ const Enderecos = props => {
         cidade: cdCidade,
       });
       setCarregandoCep(false)
-
     } else {
       setErroCep({ erro: dados.data.erro, mensagem: 'Endereço não encontado' })
       setCarregandoCep(false)
-
     }
   };
   const getCidades = async () => {
@@ -86,22 +83,16 @@ const Enderecos = props => {
     setCidades(dados.data);
   };
   const getEnderecosCadastrados = async () => {
-    const conv = await AsyncStorage.getItem('convenio');
-    let id_gds = JSON.parse(conv).id_gds
-    const { data } = await api.get(`/user/enderecos`, { params: { id_gds } });
 
 
+    const { data } = await api.get(`/user/enderecos`, { params: { id_gds: convenio.id_gds } });
     setEnderecosCadastrados(data);
-
-    ;
-  };
+  }
   const CadastrarEndereco = async () => {
     setCarregando(true)
     setEdit(false);
-    const conv = await AsyncStorage.getItem('convenio');
-    let id_gds = JSON.parse(conv).id_gds;
 
-    const req = await api.post(`/enderecos/${id_gds}`, {
+    const req = await api.post(`/enderecos/${convenio.id_gds}`, {
       logradouro,
       numero,
       cidade,
@@ -111,7 +102,7 @@ const Enderecos = props => {
       cep,
       complemento
     })
-
+    console.log(req)
     setRetorno(req.data)
     setMostrar(false)
     getEnderecosCadastrados();
@@ -121,26 +112,21 @@ const Enderecos = props => {
   const RemoverEndereco = async id_end => {
     setCarregando(true)
 
-    const conv = await AsyncStorage.getItem('convenio');
-    let id_gds = JSON.parse(conv).id_gds;
-
-    const req = await api.delete(`/enderecos/${id_gds}`, {
+    const req = await api.delete(`/enderecos/${convenio.id_gds}`, {
       data: {
         id_end
       }
     })
-
     setRetorno(req.data)
     getEnderecosCadastrados();
-
     setMostrar(false)
     setCarregando(false)
   };
   useEffect(() => {
     getCidades();
-    getUsuario('convenio').then(conv => setConvenio(conv))
     getEnderecosCadastrados();
   }, []);
+
   useEffect(() => {
     if (retorno != '') {
       setTimeout(() => {
@@ -153,10 +139,7 @@ const Enderecos = props => {
     setCarregando(true)
 
 
-    const conv = await AsyncStorage.getItem('convenio');
-    let id_gds = JSON.parse(conv).id_gds;
-
-    const req = await api.put(`/enderecos/${id_gds}`, {
+    const req = await api.put(`/enderecos/${convenio.id_gds}`, {
       logradouro,
       numero,
       cidade,
@@ -196,7 +179,7 @@ const Enderecos = props => {
             !mostrar ?
 
               enderecosCadastrados.map(end => {
-                console.log(end, 'endereços')
+
                 return (
                   <View
                     key={end.id_end}
@@ -304,8 +287,6 @@ const Enderecos = props => {
               width: '80%',
             }}
           />
-
-
           {mostrar ? (
             <>
               {remove && <Text style={{ fontSize: 18, color: primary }}>Deseja remover esse endereço?</Text>}
@@ -540,8 +521,10 @@ const Enderecos = props => {
             <TouchableOpacity
               onPress={() => {
                 setRemove(false);
+                setEdit(false)
                 setMostrar(true);
                 setEndereco(info)
+                setcep('')
               }}
               style={styles.btnDefault}>
               <Text style={styles.btnDefaultText}>CADASTRAR NOVO ENDEREÇO</Text>
