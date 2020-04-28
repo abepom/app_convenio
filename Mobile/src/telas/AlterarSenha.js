@@ -8,6 +8,9 @@ import getUsuario from '../utils/getUsuario'
 import setDados from '../utils/setUsuario'
 import api from '../api';
 import Retorno from '../components/Retorno';
+import useUsuario from '../../Store/Usuario';
+import useConvenio from '../../Store/Convenio';
+
 const AlterarSenha = () => {
     const [state, setstate] = useState({ senha: false, novasenha: false, senhaConfirmada: false })
     const [retorno, setRetorno] = useState({ retorno: 0, mensagem: '', tipo: '' })
@@ -15,22 +18,8 @@ const AlterarSenha = () => {
     const [senha, setSenha] = useState('')
     const [senhaNova, setSenhaNova] = useState('')
     const [senhaConfirmada, setSenhaConfirmada] = useState('')
-    const [usuario, setUsuario] = useState('')
-    const [token, setToken] = useState('')
-    const [id, setId] = useState('')
-    useEffect(() => {
-        getUsuario('usuario').then(conv => {
-            setUsuario(conv.usuario)
-            setSenha1(conv.senha)
-            console.log(conv, 'conve')
-        })
-        getUsuario('token').then(token =>
-            setToken(token))
-        getUsuario('convenio').then((convenio) => {
+    const [user, setUser] = useUsuario()
 
-            setId(convenio.id_gds)
-        })
-    }, [])
     useEffect(() => {
         if (retorno.retorno) {
             setTimeout(() => {
@@ -40,12 +29,13 @@ const AlterarSenha = () => {
     }, [retorno])
 
     const alterarSenha = () => {
+
         if (senhaNova !== senhaConfirmada) {
             setstate({ ...state, senhaConfirmada: true })
 
         } else if (senhaNova.length > 5) {
 
-            api.put('/user/alterarSenha', { usuario, senha, senhaNova }).then(({ data }) => {
+            api.put('/user/alterarSenha', { usuario: user.usuario, senha: user.senha, senhaNova }).then(({ data }) => {
                 if (data.retorno) {
                     if (data.tipo == 'danger') {
                         setSenha('')
@@ -57,7 +47,7 @@ const AlterarSenha = () => {
                         setSenha('')
                         setRetorno(data)
                         setSenha1(senhaNova)
-                        setDados('usuario', { usuario, senha: senhaNova })
+                        setUser({ usuario: user.usuario, senha: senhaNova })
                     }
                 }
             })
@@ -151,12 +141,8 @@ const AlterarSenha = () => {
                     <Text style={styles.btnDefaultText}>CONFIRMAR</Text>
                 </TouchableOpacity>
                 <View style={{ flex: 1, alignItems: "center", justifyContent: "center", marginTop: 50 }}>
-                    <Text> senha salva no ato do login é ({senha1})</Text>
+                    <Text> senha salva no ato do login é ({user.senha})</Text>
                     <Text> provavelmente sera a senha atual tambem </Text>
-                    <Text> id_gds:{id} </Text>
-
-                    <Text> token para testes de api </Text>
-                    <Text>{token} </Text>
                 </View>
             </ScrollView>
         </View >

@@ -7,21 +7,17 @@ import { TextInputMask } from 'react-native-masked-text'
 import getUsuario from '../utils/getUsuario'
 import api from '../api';
 import Retorno from '../components/Retorno';
+import useConvenio from '../../Store/Convenio';
 
 const Perfil = (props) => {
+  const [{ id_gds }] = useConvenio()
 
   useEffect(() => {
-    getUsuario('convenio').then(conv => {
-
-      setId_gds(conv.id_gds)
-
-      getDados(conv.id_gds)
-    })
+    getDados()
   }, [])
 
   const input = { value: '', erro: false, }
 
-  const [id_gds, setId_gds] = useState('')
   const initialState = {
     nome_fachada: input,
     email: input,
@@ -40,19 +36,27 @@ const Perfil = (props) => {
   const [state, setState] = useState(initialState)
   const [retorno, setRetorno] = useState(false)
   useEffect(() => {
+
     if (!!retorno) {
       setTimeout(() => {
         setRetorno(false)
-      }, 2000);
+      }, 5000);
     }
   }, [retorno])
-  const alterarStado = (valor, campo) => {
-    let valorAlterado = { ...input, value: valor }
-    setState({ ...state, [campo]: valorAlterado })
+  const alterarStado = async (valor, campo) => {
+
+    try {
+      let valorAlterado = { ...input, value: valor }
+      await setState({ ...state, [campo]: valorAlterado })
+
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  const getDados = (id) => {
-    api.get('/user/dados_gerais', { params: { id_gds: id } }).then(({ data }) => {
+  const getDados = () => {
+    console.log(id_gds, 'idgds')
+    api.get('/user/dados_gerais', { params: { id_gds } }).then(({ data }) => {
       setState({
         ...state,
         nome_fachada: { value: data.nome_fachada, erro: false, },

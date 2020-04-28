@@ -6,6 +6,7 @@ import { name as appName } from './app.json';
 messaging().setBackgroundMessageHandler(async remoteMessage => {
     console.log('Message handled in the background!', remoteMessage);
 });
+import { StorePrivider } from './store'
 
 function HeadlessCheck({ isHeadless }) {
     if (isHeadless) {
@@ -14,6 +15,8 @@ function HeadlessCheck({ isHeadless }) {
         return null;
     }
 
-    return <App />;
+    return (<StorePrivider>
+        <App />
+    </StorePrivider>)
 }
 AppRegistry.registerComponent(appName, () => HeadlessCheck);

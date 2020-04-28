@@ -1,36 +1,32 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, memo } from 'react'
 import { View, Text, Picker, FlatList, ActivityIndicator, TextInput as Input, TouchableOpacity } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import MenuTop from '../components/MenuTop'
 import styles, { primary, background, danger, danverBackground, sucess, sucessBack } from '../utils/Style'
 import { TextInput } from 'react-native-paper'
 import Modal from 'react-native-modal';
-
 import api from '../api'
-import { themeLight, themeDark } from '../utils/theme'
+import { themeLight } from '../utils/theme'
 import formatCurrency from 'currency-formatter'
-
-import { formatData } from '../utils/FormatData';
 import Retorno from '../components/Retorno';
 import getUsuario from '../utils/getUsuario';
+import useConvenio from '../../Store/Convenio';
+import useLoad from '../../Store/Load';
 
 const meses = []
 
 for (let i = 1; i <= 12; i++) {
     meses.push(i < 10 ? `0${i}` : `${i}`)
-
-
 }
 const anos = []
-styles
+
 for (let i = new Date().getFullYear(); i >= new Date().getFullYear() - 5; i--) {
     anos.push(`${i}`)
 }
 
-const ConsultarVendas = (props) => {
+const ConsultarVendas = memo((props) => {
 
-    const [id_gds, setId_gds] = useState('')
-    const [ano, setAno] = useState(`${new Date().getFullYear()} `)
+    const [{ id_gds }] = useConvenio()
     const [data, setData] = useState(new Date())
     const [show, setShow] = useState(false)
     const [vendas, setvendas] = useState([])
@@ -38,19 +34,22 @@ const ConsultarVendas = (props) => {
     const [modal, setModal] = useState(false)
     const [conteudoModal, setConteudoModal] = useState(null)
     const [retornoExclusao, setRetornoExclusao] = useState('')
+    const [carregando, setCarregando] = useLoad()
+
     useEffect(() => {
-        getUsuario('convenio').then(async conv => {
-            try {
-                await setId_gds(conv.id_gds)
-                await onChange()
-            } catch (error) {
-                console.log(error, 'error')
-            }
+        if (carregando !== "ConsultarVendas" && carregando !== "todos") {
+            onChange()
 
-        }).catch((e) => console.log(e))
-
+        }
     }, [])
+    useEffect(() => {
+        if (carregando == "ConsultarVendas" || carregando == "todos") {
+            onChange()
 
+
+            setCarregando(null)
+        }
+    }, [carregando])
 
     const getConsulta = async (dataSelecionada) => {
         let Data = dataSelecionada ? dataSelecionada : data
@@ -68,14 +67,13 @@ const ConsultarVendas = (props) => {
         let dia = currentDate.getDate() < 10 ? `0${currentDate.getDate()}` : `${currentDate.getDate()}`
         let mes = currentDate.getMonth() < 9 ? `0${currentDate.getMonth() + 1}` : `${currentDate.getMonth() + 1}`
         let ano = `${currentDate.getFullYear()}`
-        console.log(`${dia}/${mes}/${ano}`)
         getConsulta(`${dia}/${mes}/${ano}`)
     };
     const excluirVenda = async (Nr_lancamento) => {
-        console.log(Nr_lancamento, 'Nr_lancamento')
+
         const dados = await api.delete('/removerVendas', { data: { Nr_lancamento } })
         setRetornoExclusao(dados.data.mensagem)
-        console.log(dados)
+
     }
     return (
         <>
@@ -187,11 +185,11 @@ const ConsultarVendas = (props) => {
                     </View >
                 )}  >
                 <View style={{ width: '80%' }}>
-                    {console.log(vendas.length)}
+
                     {load ? <ActivityIndicator size={'large'} color={primary} /> :
                         vendas.length > 0 ? (<FlatList data={vendas}
                             renderItem={({ item }) => {
-                                console.log(item)
+
                                 return (
                                     <TouchableOpacity onPress={() => {
                                         if (item.Processado_desconto) {
@@ -207,16 +205,16 @@ const ConsultarVendas = (props) => {
 
                                                 <Text style={{ fontWeight: "bold" }}>Lançamento: <Text style={{ fontWeight: "100" }}>{item.Nr_lancamento}</Text></Text>
                                                 <Text style={{ fontWeight: "bold" }}>Matricula:
-                                <Text style={{ fontWeight: "100" }}> {item.Matricula}</Text>
+                                                <Text style={{ fontWeight: "100" }}> {item.Matricula}</Text>
                                                 </Text>
                                             </View>
                                             <Text style={{ fontWeight: "bold" }}>Associado: <Text style={{ fontWeight: "100" }}>{item["Nome do dependente"]}</Text></Text>
                                             <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
                                                 <Text style={{ fontWeight: "bold" }}>Valor:
-                                <Text style={{ fontWeight: "100" }}> {formatCurrency.format(item.Valor, { code: 'BRL' })}</Text>
+                                                <Text style={{ fontWeight: "100" }}> {formatCurrency.format(item.Valor, { code: 'BRL' })}</Text>
                                                 </Text>
                                                 <Text style={{ fontWeight: "bold" }}>Data:
-                                <Text style={{ fontWeight: "100" }}> {item.Data}</Text>
+                                                <Text style={{ fontWeight: "100" }}> {item.Data}</Text>
                                                 </Text>
                                             </View>
                                         </View>
@@ -237,6 +235,6 @@ const ConsultarVendas = (props) => {
                 </View>
             </View></>
     )
-}
+})
 
 export default ConsultarVendas

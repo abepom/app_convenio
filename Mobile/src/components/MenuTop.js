@@ -13,9 +13,7 @@ import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/abepom.png';
 import getUsuario from '../utils/getUsuario';
 const MenuTop = props => {
-  const [itensconfig, setitensconfig] = React.useState(false);
   const { children, drawer, noIcons, imagemConf, funcConfig } = props;
-
   let iconemenu;
   let _press;
   const _handlerOpemConfig = () => {

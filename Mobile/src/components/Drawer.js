@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import {
   View,
   Text,
@@ -12,12 +12,18 @@ import styles, { primaryBack, primary } from '../utils/Style';
 import getUsuario from '../utils/getUsuario';
 import imagens from '../utils/imagens';
 
-import messaging, { firebase } from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging';
+import useConvenio from '../../Store/Convenio';
+import useLoad from '../../Store/Load';
 
-const Drawer = props => {
+const Drawer = memo((props) => {
+  const [, setLoad] = useLoad()
+
   useEffect(() => {
+
     const unsubscribe = messaging().onMessage(async remoteMessage => {
 
+      setLoad(remoteMessage.data.tela)
       Alert.alert(remoteMessage.notification.title, `${remoteMessage.notification.body}`, [
         { text: 'VER', onPress: () => { props.navigation.navigate(remoteMessage.data.tela, { reload: true }) } },
         { text: 'FECHAR', onPress: () => { } },
@@ -26,47 +32,45 @@ const Drawer = props => {
 
     return unsubscribe;
   }, []);
-  const [menu, setMenu] = useState(useMemo(() => props, menu));
+  const [menu, setMenu] = useState(props);
   let itens = []
 
-  const [convenio, setConvenio] = useState({
-    caminho_logomarca: null,
-    nome_parceiro: '',
-    efetuarVenda: false,
-  });
+  const [convenio] = useState(useConvenio()[0]);
+  useEffect(() => {
+    setMenu(props)
+  }, [props])
 
   useEffect(() => {
-    getUsuario('convenio').then(async conv => {
-      try {
-        await setConvenio(conv);
-        if (!conv.efetuarVenda) {
-          menu.items.map(item => {
-            switch (item.key) {
-              case 'EfetuarVenda':
-              case 'ConsultarVendas':
-              case 'Endereco':
-                break;
-              default:
-                itens.push({ ...item, params: props.navigation.state.params });
-                break;
-            }
-          });
-        } else {
-          menu.items.map(item => {
-            switch (item.key) {
-              case 'ListarAtendimento':
-                break;
-              default:
-                itens.push({ ...item, params: props.navigation.state.params });
-                break;
-            }
-          })
-        }
-      } catch (error) { console.log(error) }
 
-      setMenu({ ...props, items: itens });
-    });
-  }, [menu]);
+    if (!convenio.efetuarVenda) {
+      //montando o menu dos parceiros
+      menu.items.map(item => {
+        switch (item.key) {
+          case 'EfetuarVenda':
+          case 'ConsultarVendas':
+            break;
+          default:
+            itens.push({ ...item });
+            break;
+        }
+      });
+    } else {
+
+      //montando o menu das farmacias
+
+      menu.items.map(item => {
+        switch (item.key) {
+          case 'ListarAtendimento':
+            break;
+          default:
+            itens.push({ ...item });
+            break;
+        }
+      })
+    }
+    setMenu({ ...props, items: itens });
+
+  }, [props]);
 
   return (
     <ScrollView style={styles.flex}>
@@ -127,6 +131,6 @@ const Drawer = props => {
       </SafeAreaView>
     </ScrollView>
   );
-};
+})
 
 export default Drawer;

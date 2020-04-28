@@ -24,7 +24,9 @@ import mask from '../utils/maskUsuario';
 import api from '../api';
 import theme from '../utils/theme';
 import { ScrollView } from 'react-native-gesture-handler';
-import setUsuario from '../utils/setUsuario';
+import useUsuario from '../../Store/Usuario';
+import useConvenio from '../../Store/Convenio';
+
 
 const Login = props => {
   const [reset, setReset] = useState(
@@ -32,19 +34,16 @@ const Login = props => {
       ? props.navigation.state.params.resetSenha
       : false,
   );
-  console.log(props, 'props Login')
   const [state, setState] = useState({
     erro: false,
     mensagem: '',
   });
-  // const [doc, setdoc] = useState('03.383.807/0002-20');
-  // const [senha, setSenha] = useState('normal123');
   const [doc, setdoc] = useState('');
   const [senha, setSenha] = useState('');
-  // const [doc, setdoc] = useState('33.734.844/0001-15');
-  // const [senha, setSenha] = useState('casaludica2019');
   const [teclado, setTeclado] = useState('default');
   const [nome, setNome] = useState('')
+  const [, setUsuario] = useUsuario()
+  const [, setConv] = useConvenio()
 
   useEffect(() => {
     if (state.erro) {
@@ -63,31 +62,33 @@ const Login = props => {
 
   const getToken = async () => {
     const token = await messaging().getToken()
-
     return token
   }
+
   const conectar = async () => {
     let token = await getToken()
-    setUsuario('token', token.toString())
+
     if (doc.length > 13 && senha) {
       try {
         const { data } = await api.post('/Login',
           { usuario: doc, senha, token }
         );
-        console.log({ usuario: doc, senha, token, data })
+
         let convenio;
         if (!data.erro) {
-          setUsuario('usuario', { usuario: doc, senha });
+          setUsuario({ usuario: doc, senha });
           convenio = {
             id_gds: data.id_gds,
             nome_parceiro: data.nome_parceiro,
             caminho_logomarca: data.caminho_logomarca,
             efetuarVenda: data.efetuarVenda,
             doc: data.usuario,
+            token
           };
-          console.log(convenio)
-          setUsuario('convenio', convenio);
-          props.navigation.navigate('App', convenio);
+
+          setConv(convenio);
+          props.navigation.navigate('App');
+
         } else {
           setState({ erro: true, mensagem: 'Usuário ou Senha incorretos' });
         }
