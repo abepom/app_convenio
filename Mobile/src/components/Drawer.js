@@ -35,9 +35,10 @@ const Drawer = memo((props) => {
   const [menu, setMenu] = useState(props);
   let itens = []
 
-  const [convenio] = useState(useConvenio()[0]);
+  const [convenio] = useConvenio()
   useEffect(() => {
-    setMenu(props)
+    console.log(props)
+
   }, [props])
 
   useEffect(() => {
@@ -55,9 +56,7 @@ const Drawer = memo((props) => {
         }
       });
     } else {
-
       //montando o menu das farmacias
-
       menu.items.map(item => {
         switch (item.key) {
           case 'ListarAtendimento':
@@ -69,7 +68,6 @@ const Drawer = memo((props) => {
       })
     }
     setMenu({ ...props, items: itens });
-
   }, [props]);
 
   return (
@@ -84,8 +82,7 @@ const Drawer = memo((props) => {
                 <Image
                   source={{ uri: convenio.caminho_logomarca }}
                   style={[styles.logoPP]}
-                >
-                </Image>
+                />
 
               </View>
             </>

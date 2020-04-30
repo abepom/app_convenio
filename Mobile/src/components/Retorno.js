@@ -45,7 +45,6 @@ export default props => {
         borderWidth: 2,
         borderRadius: 5,
         borderColor: color,
-        margin: 10,
         padding: 10,
       }}>
       {props.fechar && <View style={{ width: '100%', alignItems: 'flex-end' }}>
