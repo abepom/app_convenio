@@ -81,7 +81,7 @@ const Drawer = memo((props) => {
 
                 <Image
                   source={{ uri: convenio.caminho_logomarca }}
-                  style={[styles.logoPP]}
+                  style={[styles.logoP]}
                 />
 
               </View>
@@ -89,7 +89,7 @@ const Drawer = memo((props) => {
           ) : (<View style={{ borderWidth: 2, borderColor: primary, borderRadius: 50, padding: 10 }}>
             <Image
               source={imagens.camera}
-              style={[styles.logoPP, { resizeMode: 'contain', height: 45, width: 45, }]}
+              style={[styles.logoPP]}
               tintColor={primary}
             />
             {/* <Image
@@ -109,12 +109,12 @@ const Drawer = memo((props) => {
                     /> */}
           </View>
             )}
-          <View>
+          <View style={{ marginHorizontal: 10, maxWidth: '60%' }}>
             <Text
-              style={{ width: 150, marginHorizontal: 20, color: primaryBack }}>
+              style={{}}>
               {[convenio.nome_parceiro]}
             </Text>
-            <Text style={{ fontSize: 10, paddingLeft: 20 }}>
+            <Text style={{ fontSize: 10, }}>
               {convenio.doc && convenio.doc.length > 15
                 ? `CNPF: ${convenio.doc}`
                 : `CPF: ${convenio.doc}`}

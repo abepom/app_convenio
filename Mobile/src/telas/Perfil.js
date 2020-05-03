@@ -172,8 +172,8 @@ export default function TabViewExample(props) {
                                         <View style={{ flexDirection: "row", paddingVertical: 4 }}>
                                             <Rating
                                                 type='custom'
-                                                ratingImage={imagens.heart}
-                                                ratingColor='#f00'
+                                                ratingImage={imagens.star}
+                                                ratingColor='#ff0'
                                                 ratingCount={5}
                                                 imageSize={14}
                                                 readonly={true}
