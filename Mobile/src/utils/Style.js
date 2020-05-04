@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 //export const primary = '#f00';
 export const primary = '#03254e';
@@ -12,28 +12,56 @@ export const danverBackground = '#f7d7da';
 export const white = '#fff';
 export const black = '#222';
 
+let txtM
+let txtP
+let txtG
+
+if (Dimensions.get('screen').width < 380) {
+  txtM = 11
+  txtP = 9
+  txtG = 14
+} else {
+  txtM = 14
+  txtP = 12
+  txtG = 18
+}
+
 const styles = StyleSheet.create({
   conteiner: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  center: {alignItems: 'center', justifyContent: 'center'},
+  center: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   logo: {
     width: 150,
     height: 150,
     resizeMode: 'cover',
   },
   logoP: {
-    width: 100,
-    height: 100,
-    resizeMode: 'cover',
-  },
-  logoPP: {
     width: 75,
     height: 75,
     resizeMode: 'cover',
-    borderRadius: 50,
+    borderRadius: 37.5,
+
+  },
+  logoPP: {
+    width: 45,
+    height: 45,
+    resizeMode: 'contain',
+    borderRadius: 20,
+  },
+  textoP: {
+    fontSize: txtP
+  },
+  textoM: {
+    fontSize: txtM
+  },
+  textoG: {
+    fontSize: txtG
   },
   bgImage: {
     width: Dimensions.get('screen').width,
@@ -94,8 +122,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingHorizontal: 10,
   },
-  textMenu: {textAlign: 'center', marginTop: 10, color: primary},
-  itemDrawer: {textAlign: 'center', width: 50},
+  textMenu: { textAlign: 'center', marginTop: 10, color: primary },
+  itemDrawer: { textAlign: 'center', width: 50 },
 });
 
 export default styles;

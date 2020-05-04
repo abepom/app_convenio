@@ -1,15 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, Image } from 'react-native';
-import MenuTop from '../components/MenuTop';
-import getUsuario from '../utils/getUsuario';
 import api from '../api';
 import imagens from '../utils/imagens';
 import { Rating } from 'react-native-ratings';
-import formatData from '../utils/FormatData'
 import { primary } from '../utils/Style';
 import { ActivityIndicator } from 'react-native-paper';
 import useConvenio from '../../Store/Convenio';
 import useLoad from '../../Store/Load';
+import MenuTop from '../components/MenuTop';
 // import { Container } from './styles';
 
 export default function telas(props) {
@@ -50,6 +48,7 @@ export default function telas(props) {
             let avaliacoesTemp = []
             let pendentesTemp
             data.forEach((dados, i) => {
+                console.log(dados)
                 if (dados.votos) {
                     votosTemp = dados.votos
                     mediaTemp = dados.media
@@ -91,8 +90,8 @@ export default function telas(props) {
 
                             <Rating
                                 type='custom'
-                                ratingImage={imagens.heart}
-                                ratingColor='#f00'
+                                ratingImage={imagens.star}
+                                ratingColor='#ff0'
                                 ratingCount={5}
                                 imageSize={30}
                                 readonly={true}
@@ -114,11 +113,11 @@ export default function telas(props) {
                     </View >
                 </View>
             )}  >
-            {console.log(avaliacoes[0])}
+
             {carregando ? (<ActivityIndicator />) : avaliacoes[0] ? avaliacoes.map((ava, i) => (<View key={i} style={{ width: '95%', backgroundColor: 'white', marginVertical: 5, padding: 15, elevation: 4, borderRadius: 5 }}>
                 <View style={{ flexDirection: "row", justifyContent: "space-between", width: '100%', }}>
                     <Text style={{ fontWeight: "bold", color: primary }}>{ava.nome}  <Text style={{ fontSize: 10, color: '#999', top: -10, }}>{ava.data_utilizacao}</Text></Text>
-                    <Text><Image source={imagens.heart_true} style={{ width: 20, height: 20, tintColor: 'red' }} /> {ava.avaliacao}</Text>
+                    <Text><Image source={imagens.star_cheia} style={{ width: 20, height: 20, }} /> {ava.avaliacao}</Text>
 
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-between", width: '100%', }}>

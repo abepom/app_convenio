@@ -6,7 +6,7 @@ import Enderecos from './Enderecos'
 import AlterarSenha from './AlterarSenha'
 import styles, { primary, background } from '../utils/Style'
 import imagens from '../utils/imagens';
-import setUsuario from '../utils/setUsuario';
+
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/abepom.png';
 import { Rating } from 'react-native-ratings';
@@ -15,15 +15,15 @@ import api from '../api';
 import { ActivityIndicator } from 'react-native-paper';
 import useConvenio from '../../Store/Convenio';
 
-
-const teste = () => (<View><Text>teste</Text></View>)
-
 const initialLayout = { width: Dimensions.get('window').width };
 
 export default function TabViewExample(props) {
-
+    // console.log(Image.queryCache().then(a => {
+    //     //a["http://187.94.98.194:3916/logomarcas/logomarca-430.jpg?id=0.3257220523452733"] = null
+    //     console.log(a)
+    // }), 'imagem')
     const [index, setIndex] = useState(0);
-
+    const [carregandoIMG, setCarregandoIMG] = useState(false)
     const [avaliacao, setAvaliacao] = useState({ carregando: true, votos: 0, media: 5.00 })
     const [convenio, setConvenio] = useConvenio()
     useEffect(() => {
@@ -69,13 +69,15 @@ export default function TabViewExample(props) {
                 const data = new FormData();
                 data.append('id_gds', `${convenio.id_gds}`)
                 data.append("file", { uri, type, ...nome })
+                setCarregandoIMG(true)
+
                 api.post('/user/upload', data, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     }
                 }).then(a => {
                     setConvenio({ ...convenio, caminho_logomarca: a.data.caminho_logomarca })
-                    setUsuario('convenio', { ...convenio, caminho_logomarca: a.data.caminho_logomarca })
+                    setCarregandoIMG(false)
                 }).catch((e) => console.log(e))
             }
         })
@@ -95,12 +97,15 @@ export default function TabViewExample(props) {
 
             </View>
             <View style={[styles.row, styles.center, { marginVertical: 20 }]}>
-                {convenio.caminho_logomarca ? (
+
+                {!carregandoIMG ? convenio.caminho_logomarca ? (
                     <>
                         <TouchableOpacity onPress={enviarImagem}>
-
+                            {console.log(convenio.caminho_logomarca)}
                             <Image
-                                source={{ uri: convenio.caminho_logomarca }}
+                                source={{
+                                    uri: convenio.caminho_logomarca,
+                                }}
                                 style={[styles.logoPP]}
                             >
                             </Image>
@@ -143,7 +148,7 @@ export default function TabViewExample(props) {
                         tintColor={primary}
                     /> */}
                 </TouchableOpacity>
-                    )}
+                    ) : <ActivityIndicator size={50} />}
 
                 <View>
                     <Text
@@ -167,8 +172,8 @@ export default function TabViewExample(props) {
                                         <View style={{ flexDirection: "row", paddingVertical: 4 }}>
                                             <Rating
                                                 type='custom'
-                                                ratingImage={imagens.heart}
-                                                ratingColor='#f00'
+                                                ratingImage={imagens.star}
+                                                ratingColor='#ff0'
                                                 ratingCount={5}
                                                 imageSize={14}
                                                 readonly={true}
@@ -229,4 +234,6 @@ const styless = StyleSheet.create({
         color: 'white',
     },
 });
+
+
 

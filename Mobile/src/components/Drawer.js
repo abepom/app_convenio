@@ -35,9 +35,10 @@ const Drawer = memo((props) => {
   const [menu, setMenu] = useState(props);
   let itens = []
 
-  const [convenio] = useState(useConvenio()[0]);
+  const [convenio] = useConvenio()
   useEffect(() => {
-    setMenu(props)
+    console.log(props)
+
   }, [props])
 
   useEffect(() => {
@@ -55,9 +56,7 @@ const Drawer = memo((props) => {
         }
       });
     } else {
-
       //montando o menu das farmacias
-
       menu.items.map(item => {
         switch (item.key) {
           case 'ListarAtendimento':
@@ -69,7 +68,6 @@ const Drawer = memo((props) => {
       })
     }
     setMenu({ ...props, items: itens });
-
   }, [props]);
 
   return (
@@ -83,16 +81,15 @@ const Drawer = memo((props) => {
 
                 <Image
                   source={{ uri: convenio.caminho_logomarca }}
-                  style={[styles.logoPP]}
-                >
-                </Image>
+                  style={[styles.logoP]}
+                />
 
               </View>
             </>
           ) : (<View style={{ borderWidth: 2, borderColor: primary, borderRadius: 50, padding: 10 }}>
             <Image
               source={imagens.camera}
-              style={[styles.logoPP, { resizeMode: 'contain', height: 45, width: 45, }]}
+              style={[styles.logoPP]}
               tintColor={primary}
             />
             {/* <Image
@@ -112,12 +109,12 @@ const Drawer = memo((props) => {
                     /> */}
           </View>
             )}
-          <View>
+          <View style={{ marginHorizontal: 10, maxWidth: '60%' }}>
             <Text
-              style={{ width: 150, marginHorizontal: 20, color: primaryBack }}>
+              style={{}}>
               {[convenio.nome_parceiro]}
             </Text>
-            <Text style={{ fontSize: 10, paddingLeft: 20 }}>
+            <Text style={{ fontSize: 10, }}>
               {convenio.doc && convenio.doc.length > 15
                 ? `CNPF: ${convenio.doc}`
                 : `CPF: ${convenio.doc}`}

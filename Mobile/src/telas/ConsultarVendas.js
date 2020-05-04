@@ -80,7 +80,7 @@ const ConsultarVendas = memo((props) => {
             <Modal isVisible={modal} {...props}>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     {conteudoModal ? (<>
-                        <View style={{ borderTopRightRadius: 4, borderTopLeftRadius: 4, backgroundColor: `white`, paddingVertical: 10, paddingHorizontal: 5, width: '90%' }}>
+                        <View style={{ borderTopRightRadius: 4, borderTopLeftRadius: 4, backgroundColor: `white`, paddingVertical: 10, paddingHorizontal: 5, width: '100%' }}>
                             <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
                                 <Text style={{ fontWeight: "bold" }}>Lançamento: <Text style={{ fontWeight: "100" }}>{conteudoModal.Nr_lancamento}</Text></Text>
                                 <Text style={{ fontWeight: "bold" }}>Matricula:
@@ -108,7 +108,7 @@ const ConsultarVendas = memo((props) => {
                                     borderBottomLeftRadius: 4,
                                     backgroundColor: danverBackground,
                                     padding: 10,
-                                    width: '45%',
+                                    width: '50%',
                                     alignItems: "center"
                                 }}>
                                 <Text style={{ color: danger }}>Excluir</Text>
@@ -119,7 +119,7 @@ const ConsultarVendas = memo((props) => {
                                     borderBottomRightRadius: 4,
                                     backgroundColor: sucessBack,
                                     padding: 10,
-                                    width: '45%',
+                                    width: '50%',
                                     alignItems: "center"
                                 }}>
                                 <Text style={{ color: sucess }}>FECHAR</Text>
@@ -133,11 +133,11 @@ const ConsultarVendas = memo((props) => {
                                 borderBottomLeftRadius: 4,
                                 backgroundColor: sucessBack,
                                 padding: 10,
-                                width: '90%',
+                                width: '100%',
                                 alignItems: "center"
                             }}>
                             <Text style={{ color: sucess }}>FECHAR</Text>
-                        </TouchableOpacity></>) : (<><View style={{ borderTopRightRadius: 4, borderTopLeftRadius: 4, backgroundColor: `white`, paddingVertical: 10, paddingHorizontal: 5, width: '90%' }}>
+                        </TouchableOpacity></>) : (<><View style={{ borderTopRightRadius: 4, borderTopLeftRadius: 4, backgroundColor: `white`, paddingVertical: 10, paddingHorizontal: 5, width: '100%' }}>
                             <Text style={{ fontSize: 20, textAlign: "justify" }}>{retornoExclusao}</Text>
                         </View>
                             <TouchableOpacity
@@ -147,7 +147,7 @@ const ConsultarVendas = memo((props) => {
                                     borderBottomLeftRadius: 4,
                                     backgroundColor: sucessBack,
                                     padding: 10,
-                                    width: '90%',
+                                    width: '100%',
                                     alignItems: "center"
                                 }}>
                                 <Text style={{ color: sucess }}>FECHAR</Text>
@@ -184,7 +184,7 @@ const ConsultarVendas = memo((props) => {
                         />
                     </View >
                 )}  >
-                <View style={{ width: '80%' }}>
+                <View style={{ width: '95%' }}>
 
                     {load ? <ActivityIndicator size={'large'} color={primary} /> :
                         vendas.length > 0 ? (<FlatList data={vendas}
@@ -200,7 +200,7 @@ const ConsultarVendas = memo((props) => {
                                         }
                                         setModal(true)
                                     }}>
-                                        <View style={{ elevation: 2, borderRadius: 4, marginBottom: 10, backgroundColor: `white`, paddingVertical: 10, paddingHorizontal: 5 }}>
+                                        <View style={{ elevation: 2, borderRadius: 4, marginBottom: 10, backgroundColor: `white`, paddingVertical: 5, paddingHorizontal: 5 }}>
                                             <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
 
                                                 <Text style={{ fontWeight: "bold" }}>Lançamento: <Text style={{ fontWeight: "100" }}>{item.Nr_lancamento}</Text></Text>
@@ -224,14 +224,15 @@ const ConsultarVendas = memo((props) => {
                     }
                 </View>
             </MenuTop >
-            <View style={{ flexDirection: "row", alignContent: "space-between", width: '100%' }} >
-                <View style={{ width: '50%', alignItems: "center" }}>
-                    <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>ATENDIMENTOS</Text>
-                    <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>{vendas.length}</Text>
+            <View style={{ flexDirection: "row", alignContent: "space-between", width: '95%', alignSelf: "center" }} >
+                <View style={{ width: '48%', marginRight: '2%', alignItems: "center", backgroundColor: primary, borderRadius: 50, marginBottom: 10 }}>
+                    <Text style={{ fontWeight: "bold", color: '#fff', fontSize: 10 }}>ATENDIMENTOS</Text>
+                    <Text style={{ fontWeight: "bold", color: '#fff', fontSize: 20 }}>{vendas.length}</Text>
                 </View>
-                <View style={{ width: '50%', alignItems: "center" }}>
-                    <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>TOTAL</Text>
-                    <Text style={{ fontWeight: "bold", color: primary, fontSize: 20 }}>{formatCurrency.format((vendas.reduce((total, valor) => total + Number(valor.Valor), 0)), { code: 'BRL' })}</Text>
+                <View style={{ width: '48%', marginLeft: '2%', alignItems: "center", backgroundColor: primary, borderRadius: 50, marginBottom: 10 }}>
+
+                    <Text style={{ fontWeight: "bold", color: '#fff', fontSize: 10 }}>TOTAL</Text>
+                    <Text style={{ fontWeight: "bold", color: '#fff', fontSize: 20 }}>{formatCurrency.format((vendas.reduce((total, valor) => total + Number(valor.Valor), 0)), { code: 'BRL' })}</Text>
                 </View>
             </View></>
     )

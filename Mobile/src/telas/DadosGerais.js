@@ -10,14 +10,17 @@ import Retorno from '../components/Retorno';
 import useConvenio from '../../Store/Convenio';
 
 const Perfil = (props) => {
-  const [{ id_gds }] = useConvenio()
 
   useEffect(() => {
+
+
     getDados()
+
   }, [])
 
   const input = { value: '', erro: false, }
 
+  const [{ id_gds }] = useConvenio()
   const initialState = {
     nome_fachada: input,
     email: input,
@@ -36,7 +39,6 @@ const Perfil = (props) => {
   const [state, setState] = useState(initialState)
   const [retorno, setRetorno] = useState(false)
   useEffect(() => {
-
     if (!!retorno) {
       setTimeout(() => {
         setRetorno(false)
@@ -44,7 +46,7 @@ const Perfil = (props) => {
     }
   }, [retorno])
   const alterarStado = async (valor, campo) => {
-
+    console.log(valor)
     try {
       let valorAlterado = { ...input, value: valor }
       await setState({ ...state, [campo]: valorAlterado })
@@ -55,7 +57,6 @@ const Perfil = (props) => {
   }
 
   const getDados = () => {
-    console.log(id_gds, 'idgds')
     api.get('/user/dados_gerais', { params: { id_gds } }).then(({ data }) => {
       setState({
         ...state,
@@ -153,10 +154,10 @@ const Perfil = (props) => {
           mode="outlined"
           theme={themeLight}
           value={state.nome_fachada.value}
-          onChangeText={texto => alterarStado(texto.toUpperCase(), 'nome_fachada')}
+          onChangeText={texto => alterarStado(texto, 'nome_fachada')}
           keyboardType="default"
           error={state.nome_fachada.erro}
-          style={[styles.imput]}
+          style={[styles.imput, { fontSize: 10 }]}
         />
         {state.nome_fachada.erro && (
           <HelperText
@@ -178,7 +179,8 @@ const Perfil = (props) => {
           value={state.email.value}
           onChangeText={texto => alterarStado(texto, 'email')}
           keyboardType="email-address"
-          style={[styles.imput]}
+          style={[styles.imput, { fontSize: 10 }]}
+
           error={state.email.erro}
         />
         {state.email.erro && (
@@ -202,7 +204,9 @@ const Perfil = (props) => {
             value={state.tel_comercial.value}
             onChangeText={texto => alterarStado(texto, 'tel_comercial')}
             keyboardType="numeric"
-            style={[styles.imput, { width: '38%' }]}
+
+
+            style={[styles.imput, { width: '38%', fontSize: 10 }]}
             render={(props) => {
               return (<TextInputMask
                 type={'cel-phone'}
@@ -223,7 +227,9 @@ const Perfil = (props) => {
             value={state.tel_contato.value}
             onChangeText={texto => alterarStado(texto, 'tel_contato')}
             keyboardType="numeric"
-            style={[styles.imput, { width: '38%', marginLeft: '4%' }]}
+
+
+            style={[styles.imput, { width: '38%', marginLeft: '4%', fontSize: 10 }]}
             render={(props) => {
               return (<TextInputMask
                 type={'cel-phone'}
@@ -245,7 +251,8 @@ const Perfil = (props) => {
           value={state.representante.value}
           onChangeText={texto => alterarStado(texto.toUpperCase(), 'representante')}
           keyboardType="default"
-          style={[styles.imput]}
+          style={[styles.imput, { fontSize: 10 }]}
+
         />
         {state.cargo.value != '' && (
           <>
@@ -257,7 +264,8 @@ const Perfil = (props) => {
               value={state.cargo.value}
 
               keyboardType="default"
-              style={[styles.imput]}
+              style={[styles.imput, { fontSize: 10 }]}
+
               render={(props) => {
                 return (
                   <Picker
@@ -284,7 +292,8 @@ const Perfil = (props) => {
           value={state.site.value}
           onChangeText={texto => alterarStado(texto, 'site')}
           keyboardType="url"
-          style={[styles.imput]}
+          style={[styles.imput, { fontSize: 10 }]}
+
         />
         <TextInput
           label="Whatsapp"
@@ -294,7 +303,8 @@ const Perfil = (props) => {
           value={state.whatsapp.value}
           onChangeText={texto => alterarStado(texto, 'whatsapp')}
           keyboardType="numeric"
-          style={[styles.imput]}
+          style={[styles.imput, { fontSize: 10 }]}
+
           render={(props) => {
             return (<TextInputMask
               type={'cel-phone'}

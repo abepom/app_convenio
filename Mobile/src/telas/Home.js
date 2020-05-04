@@ -1,18 +1,17 @@
 import React, { memo, useMemo } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Button, Dimensions } from 'react-native';
 import styles, { primary, sucessBack, sucess, background } from '../utils/Style';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/abepom.png';
 import useConvenio from '../../Store/Convenio';
 import useLoad from '../../Store/Load';
+import { useStore } from '../../store';
 
 
 export default
   memo(props => {
     const [convenio] = useConvenio()
-    const [, setLoad] = useLoad()
-    const [conveniado, setusurio] = useConvenio()
-
+    //alert(Dimensions.get('screen').width + '  //  ' + Dimensions.get('window').width)
     return (
 
       <View style={{ width: '100%', backgroundColor: background }}>
@@ -114,8 +113,8 @@ export default
           </TouchableOpacity>
 
         </View>
-        <Button title='setLoad' onPress={() => setLoad('Avaliacoes')} />
-        <Button title='setusurio' onPress={() => { setusurio({ ...conveniado, data: new Date }) }} />
+        {/* <Button title='setLoad' onPress={() => setLoad('Avaliacoes')} />
+        <Button title='setusurio' onPress={() => { setusurio({ ...conveniado, data: new Date }) }} /> */}
 
       </View>
 

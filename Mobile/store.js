@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback, createContext, useContext } from 'react'
-import { useAsyncStorage } from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-community/async-storage'
 
 
-const StoreContext = createContext([initialState, () => { }])
+const StoreContext = createContext([{}, () => { }])
 
 export const useStore = () => {
     const [state, setState] = useContext(StoreContext)
@@ -11,34 +11,45 @@ export const useStore = () => {
 
 export const deleteStore = () => {
     const [state, setState] = useContext(StoreContext)
-
     return [state, setState]
 }
-const initialState = { convenio: { efetuarVenda: false }, load: '', usuario: { usuario: '', senha: '' } }
 
+const initialState = { convenio: { efetuarVenda: false }, load: '', usuario: {} }
 export const StorePrivider = ({ children }) => {
-    const { getItem, setItem } = useAsyncStorage('store')
-    const [state, setState] = useState(initialState)
+    const [state, setState] = useState({ carregouDados: false })
 
     const carregarDados = async () => {
-        const data = await getItem()
+        try {
+            const data = await AsyncStorage.getItem('store')
+            console.log(data, "data")
+            if (!!data) {
+                setState({ ...JSON.parse(data), load: '', carregouDados: true })
+            } else {
+                setState({ load: '', carregouDados: true })
+            }
 
-        console.log(data)
-        if (!!data) {
+        } catch (error) {
 
-            setState({ ...JSON.parse(data), load: '' })
-        } else {
-            setState(null)
         }
-        //AsyncStorage.clear()
     }
 
     useEffect(() => {
         carregarDados()
     }, [])
+    const salvarDados = async () => {
+        try {
+            const dadosAntigos = await AsyncStorage.getItem('store')
+            if (state != dadosAntigos && state != null) {
+                await AsyncStorage.setItem('store', JSON.stringify(state))
+                console.log("tentou salvar", state)
+            }
+        } catch (error) {
+
+        }
+    }
 
     useEffect(() => {
-        setItem(JSON.stringify(state))
+        salvarDados()
     }, [state])
 
     return (
