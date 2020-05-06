@@ -39,13 +39,13 @@ const Enderecos = props => {
   const [mostrar, setMostrar] = useState(false);
   const [enderecosCadastrados, setEnderecosCadastrados] = useState([]);
   const [cidades, setCidades] = useState([]);
-  const [convenio] = useConvenio()
-  const [retorno, setRetorno] = useState('')
-  const [carregando, setCarregando] = useState(false)
-  const [carregandoCep, setCarregandoCep] = useState(false)
-  const [erroCep, setErroCep] = useState({ erro: false, mensagem: '' })
+  const [convenio] = useConvenio();
+  const [retorno, setRetorno] = useState('');
+  const [carregando, setCarregando] = useState(false);
+  const [carregandoCep, setCarregandoCep] = useState(false);
+  const [erroCep, setErroCep] = useState({ erro: false, mensagem: '' });
   const getEndereco = async () => {
-    setCarregandoCep(true)
+    setCarregandoCep(true);
     const dados = await axios.get(
       `http://www.viacep.com.br/ws/${cep
         .replace('.', '')
@@ -54,7 +54,7 @@ const Enderecos = props => {
 
     let cdCidade;
     if (!dados.data.erro) {
-      setErroCep({ erro: dados.data.erro, mensagem: '' })
+      setErroCep({ erro: dados.data.erro, mensagem: '' });
 
       const { logradouro, bairro, localidade, uf } = dados.data;
       cidades.find(cidade => {
@@ -72,10 +72,10 @@ const Enderecos = props => {
         uf: uf.toUpperCase(),
         cidade: cdCidade,
       });
-      setCarregandoCep(false)
+      setCarregandoCep(false);
     } else {
-      setErroCep({ erro: dados.data.erro, mensagem: 'Endereço não encontado' })
-      setCarregandoCep(false)
+      setErroCep({ erro: dados.data.erro, mensagem: 'Endereço não encontado' });
+      setCarregandoCep(false);
     }
   };
   const getCidades = async () => {
@@ -83,44 +83,44 @@ const Enderecos = props => {
     setCidades(dados.data);
   };
   const getEnderecosCadastrados = async () => {
-
-
-    const { data } = await api.get(`/user/enderecos`, { params: { id_gds: convenio.id_gds } });
+    const { data } = await api.get(`/user/enderecos`, {
+      params: { id_gds: convenio.id_gds },
+    });
     setEnderecosCadastrados(data);
-  }
+  };
   const CadastrarEndereco = async () => {
-    setCarregando(true)
+    setCarregando(true);
     setEdit(false);
 
     const req = await api.post(`/enderecos/${convenio.id_gds}`, {
-      logradouro,
+      logradouro: logradouro.toUpperCase(),
+      complemento: complemento.toUpperCase(),
+      bairro: bairro.toUpperCase(),
+      uf: uf.toUpperCase(),
       numero,
       cidade,
-      bairro,
-      uf,
       fone,
       cep,
-      complemento
-    })
-    console.log(req)
-    setRetorno(req.data)
-    setMostrar(false)
+    });
+    console.log(req);
+    setRetorno(req.data);
+    setMostrar(false);
     getEnderecosCadastrados();
-    setCarregando(false)
+    setCarregando(false);
   };
 
   const RemoverEndereco = async id_end => {
-    setCarregando(true)
+    setCarregando(true);
 
     const req = await api.delete(`/enderecos/${convenio.id_gds}`, {
       data: {
-        id_end
-      }
-    })
-    setRetorno(req.data)
+        id_end,
+      },
+    });
+    setRetorno(req.data);
     getEnderecosCadastrados();
-    setMostrar(false)
-    setCarregando(false)
+    setMostrar(false);
+    setCarregando(false);
   };
   useEffect(() => {
     getCidades();
@@ -130,56 +130,64 @@ const Enderecos = props => {
   useEffect(() => {
     if (retorno != '') {
       setTimeout(() => {
-        setRetorno('')
+        setRetorno('');
       }, 3000);
     }
-  }, [retorno])
+  }, [retorno]);
 
-  const editarEndereço = async (id_end) => {
-    setCarregando(true)
-
+  const editarEndereço = async id_end => {
+    setCarregando(true);
 
     const req = await api.put(`/enderecos/${convenio.id_gds}`, {
-      logradouro,
+      logradouro: logradouro.toUpperCase(),
+      complemento: complemento.toUpperCase(),
+      bairro: bairro.toUpperCase(),
+      uf: uf.toUpperCase(),
       numero,
       cidade,
-      bairro,
-      uf,
       fone,
       cep,
-      complemento,
-      id_end
-    })
+      id_end,
+    });
 
-    setRetorno(req.data)
+    setRetorno(req.data);
     getEnderecosCadastrados();
 
-    setMostrar(false)
-    setCarregando(false)
+    setMostrar(false);
+    setCarregando(false);
+  };
 
-  }
-
-  const { logradouro, numero, cidade, fone, bairro, uf, complemento } = endereco;
+  const {
+    logradouro,
+    numero,
+    cidade,
+    fone,
+    bairro,
+    uf,
+    complemento,
+  } = endereco;
 
   return (
     <>
-
-
       {!mostrar && (
-
-        <Text style={{ color: primary, marginVertical: 20, alignSelf: "center" }}>
+        <Text
+          style={{ color: primary, marginVertical: 20, alignSelf: 'center' }}>
           Lista de endereços cadastrados
         </Text>
       )}
       <ScrollView>
-        <View style={{ alignItems: "center" }}>
-
-          {retorno != '' ? (retorno.retorno ? <View style={{ width: '80%', marginRight: '5%' }}><Retorno type={retorno.tipo} mensagem={retorno.mensagem} /></View> : <Retorno type={retorno.tipo} mensagem={Retorno.mensagem} />) : null}
-          {
-            !mostrar ?
-
-              enderecosCadastrados.map(end => {
-
+        <View style={{ alignItems: 'center' }}>
+          {retorno != '' ? (
+            retorno.retorno ? (
+              <View style={{ width: '80%', marginRight: '5%' }}>
+                <Retorno type={retorno.tipo} mensagem={retorno.mensagem} />
+              </View>
+            ) : (
+              <Retorno type={retorno.tipo} mensagem={Retorno.mensagem} />
+            )
+          ) : null}
+          {!mostrar
+            ? enderecosCadastrados.map(end => {
                 return (
                   <View
                     key={end.id_end}
@@ -199,7 +207,8 @@ const Enderecos = props => {
                           color: white,
                           fontSize: 11,
                         }}>
-                        <Text style={{ fontWeight: 'bold' }}>CEP:</Text> {end.cep}
+                        <Text style={{ fontWeight: 'bold' }}>CEP:</Text>{' '}
+                        {end.cep}
                       </Text>
                       <Text
                         style={{
@@ -212,8 +221,8 @@ const Enderecos = props => {
                       </Text>
 
                       <Text style={{ color: '#fff', fontSize: 11 }}>
-
-                        <Text style={{ fontWeight: 'bold', }}>Bairro:</Text> {end.bairro} - {end.cidade}
+                        <Text style={{ fontWeight: 'bold' }}>Bairro:</Text>{' '}
+                        {end.bairro} - {end.cidade}
                       </Text>
 
                       <Text
@@ -227,7 +236,6 @@ const Enderecos = props => {
                       </Text>
                     </View>
                     {!convenio.efetuarVenda && (
-
                       <View>
                         <TouchableOpacity
                           style={{ flex: 1 }}
@@ -246,17 +254,21 @@ const Enderecos = props => {
                               bairro: end.bairro.toUpperCase(),
                               uf: end.uf ? end.uf : 'SC',
                               fone: end.telefone,
-                              id_end: end.id_end
+                              id_end: end.id_end,
                             });
                           }}>
-                          <MC name="circle-edit-outline" size={25} color={white} />
+                          <MC
+                            name="circle-edit-outline"
+                            size={25}
+                            color={white}
+                          />
                         </TouchableOpacity>
                         <TouchableOpacity
                           style={{ flex: 1 }}
                           onPress={() => {
                             setMostrar(true);
                             setRemove(true);
-                            setEdit(false)
+                            setEdit(false);
                             setcep(end.cep);
                             setEndereco({
                               ...endereco,
@@ -267,18 +279,21 @@ const Enderecos = props => {
                               bairro: end.bairro.toUpperCase(),
                               uf: end.uf ? end.uf : 'SC',
                               fone: end.telefone,
-                              id_end: end.id_end
-
+                              id_end: end.id_end,
                             });
                           }}>
-                          <MC name="delete-circle-outline" size={25} color={white} />
+                          <MC
+                            name="delete-circle-outline"
+                            size={25}
+                            color={white}
+                          />
                         </TouchableOpacity>
                       </View>
                     )}
                   </View>
-                )
+                );
               })
-              : null}
+            : null}
           <View
             style={{
               borderBottomColor: 1,
@@ -289,9 +304,21 @@ const Enderecos = props => {
           />
           {mostrar ? (
             <>
-              {remove && <Text style={{ fontSize: 18, color: primary }}>Deseja remover esse endereço?</Text>}
-              {edit && <Text style={{ fontSize: 18, color: primary }}>ALTERAR ENDEREÇO</Text>}
-              {(!remove && !edit) && <Text style={{ fontSize: 18, color: primary }}>CADASTARAR ENDEREÇO</Text>}
+              {remove && (
+                <Text style={{ fontSize: 18, color: primary }}>
+                  Deseja remover esse endereço?
+                </Text>
+              )}
+              {edit && (
+                <Text style={{ fontSize: 18, color: primary }}>
+                  ALTERAR ENDEREÇO
+                </Text>
+              )}
+              {!remove && !edit && (
+                <Text style={{ fontSize: 18, color: primary }}>
+                  CADASTARAR ENDEREÇO
+                </Text>
+              )}
               <View style={{ flexDirection: 'row', width: '100%' }}>
                 <TextInput
                   mode="outlined"
@@ -303,37 +330,48 @@ const Enderecos = props => {
                   onChangeText={text => {
                     setcep(text);
                   }}
-
                   keyboardType="numeric"
                   style={[styles.imput, { width: 150 }]}
                   render={props => (
                     <TextInputMask mask={'[00].[000]-[000]'} {...props} />
                   )}
                 />
-                {!remove ? !carregandoCep ? (
-
-                  <TouchableOpacity onPress={getEndereco} style={[styles.btnDefault, {
-                    margin: 15, opacity: cep.length == 10 ? 1 : 0.5
-                  }]} disabled={cep.length == 10 ? false : true}>
-                    <Image source={imagens.search} style={{ width: 30, height: 30 }} tintColor={'white'} />
-                  </TouchableOpacity>
-                ) : (<ActivityIndicator style={{ marginTop: 20, marginLeft: 20 }} size={32} />) : null}
-
-
+                {!remove ? (
+                  !carregandoCep ? (
+                    <TouchableOpacity
+                      onPress={getEndereco}
+                      style={[
+                        styles.btnDefault,
+                        {
+                          margin: 15,
+                          opacity: cep.length == 10 ? 1 : 0.5,
+                        },
+                      ]}
+                      disabled={cep.length == 10 ? false : true}>
+                      <Image
+                        source={imagens.search}
+                        style={{ width: 30, height: 30 }}
+                        tintColor={'white'}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <ActivityIndicator
+                      style={{ marginTop: 20, marginLeft: 20 }}
+                      size={32}
+                    />
+                  )
+                ) : null}
               </View>
-              {erroCep.erro && (
-                <Text>{erroCep.mensagem}</Text>
-              )}
+              {erroCep.erro && <Text>{erroCep.mensagem}</Text>}
               <TextInput
                 label="Enderecos"
                 dense
                 mode="outlined"
                 disabled={remove ? remove : cep.length == 10 ? false : true}
-
                 theme={themeLight}
                 value={logradouro}
                 onChangeText={text =>
-                  setEndereco({ ...endereco, logradouro: text.toUpperCase() })
+                  setEndereco({ ...endereco, logradouro: text })
                 }
                 keyboardType="default"
                 style={[styles.imput]}
@@ -343,11 +381,12 @@ const Enderecos = props => {
                   label="Numero"
                   dense
                   disabled={remove ? remove : cep.length == 10 ? false : true}
-
                   mode="outlined"
                   theme={themeLight}
                   value={numero}
-                  onChangeText={text => setEndereco({ ...endereco, numero: text })}
+                  onChangeText={text =>
+                    setEndereco({ ...endereco, numero: text })
+                  }
                   keyboardType="numeric"
                   style={[styles.imput, { width: '30%' }]}
                 />
@@ -355,12 +394,11 @@ const Enderecos = props => {
                   label="complemento"
                   dense
                   disabled={remove ? remove : cep.length == 10 ? false : true}
-
                   mode="outlined"
                   theme={themeLight}
                   value={complemento}
                   onChangeText={text =>
-                    setEndereco({ ...endereco, complemento: text.toUpperCase() })
+                    setEndereco({ ...endereco, complemento: text })
                   }
                   keyboardType="default"
                   style={[styles.imput, { width: '40%' }]}
@@ -371,25 +409,19 @@ const Enderecos = props => {
                 label="Cidade"
                 dense
                 disabled={remove ? remove : cep.length == 10 ? false : true}
-
                 mode="outlined"
                 theme={themeLight}
                 value={cidade}
                 selectedValue={cidade}
                 onValueChange={text => {
                   setEndereco({ ...endereco, cidade: text });
-
                 }}
                 keyboardType="default"
                 style={[styles.imput]}
                 render={props => {
                   return (
                     <Picker {...props} mode="dropdown">
-                      <Picker.Item
-                        key={' '}
-                        value={''}
-                        label=''
-                      />
+                      <Picker.Item key={' '} value={''} label="" />
                       {cidades.map(localidade => (
                         <Picker.Item
                           key={localidade.Cd_cidade}
@@ -405,14 +437,11 @@ const Enderecos = props => {
                 label="Estado"
                 dense
                 disabled={remove ? remove : cep.length == 10 ? false : true}
-
                 mode="outlined"
                 theme={themeLight}
                 value={uf}
                 maxLength={2}
-                onChangeText={text =>
-                  setEndereco({ ...endereco, uf: text.toUpperCase() })
-                }
+                onChangeText={text => setEndereco({ ...endereco, uf: text })}
                 keyboardType="default"
                 style={[styles.imput]}
               />
@@ -420,12 +449,11 @@ const Enderecos = props => {
                 label="Bairro"
                 dense
                 disabled={remove ? remove : cep.length == 10 ? false : true}
-
                 mode="outlined"
                 theme={themeLight}
                 value={bairro}
                 onChangeText={text =>
-                  setEndereco({ ...endereco, bairro: text.toUpperCase() })
+                  setEndereco({ ...endereco, bairro: text })
                 }
                 keyboardType="default"
                 style={[styles.imput]}
@@ -434,7 +462,6 @@ const Enderecos = props => {
                 label="Telefone"
                 dense
                 disabled={remove ? remove : cep.length == 10 ? false : true}
-
                 mode="outlined"
                 theme={themeLight}
                 value={fone}
@@ -452,57 +479,81 @@ const Enderecos = props => {
                   />
                 )}
               />
-              {carregando ? (<ActivityIndicator style={{ marginTop: 20, }} size={32} />) : (
-
-                edit ? (
-                  <View style={{ flexDirection: "row" }}>
-                    <TouchableOpacity
-                      style={[
-                        styles.btnDefault,
-                        { margin: 20, paddingHorizontal: 10, backgroundColor: danger },
-                      ]}
-                      onPress={() => {
-                        setMostrar(false)
-                        setRemove(false);
-                      }}>
-                      <Text style={styles.btnDefaultText}>CENCELAR</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      disabled={logradouro != '' ? false : true}
-                      style={[
-                        styles.btnDefault,
-                        { marginVertical: 20, paddingHorizontal: 10, opacity: logradouro.length > 2 ? 1 : 0.5 },
-                      ]}
-                      onPress={() => editarEndereço(endereco.id_end)}>
-                      <Text style={styles.btnDefaultText}>ATUALIZAR ENDEREÇOS</Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : !remove ? (
-                  <View style={{ flexDirection: "row" }}>
-                    <TouchableOpacity
-                      style={[
-                        styles.btnDefault,
-                        { margin: 20, paddingHorizontal: 10, backgroundColor: danger },
-                      ]}
-                      onPress={() => setMostrar(false)}>
-                      <Text style={styles.btnDefaultText}>CENCELAR</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      disabled={logradouro != '' ? false : true}
-
-                      style={[
-                        styles.btnDefault,
-                        { margin: 20, paddingHorizontal: 10, opacity: logradouro.length > 2 ? 1 : 0.5 },
-                      ]}
-                      onPress={CadastrarEndereco}>
-                      <Text style={styles.btnDefaultText}>CADASTRAR ENDEREÇOS</Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : (<View style={{ flexDirection: "row" }}>
+              {carregando ? (
+                <ActivityIndicator style={{ marginTop: 20 }} size={32} />
+              ) : edit ? (
+                <View style={{ flexDirection: 'row' }}>
                   <TouchableOpacity
                     style={[
                       styles.btnDefault,
-                      { margin: 20, paddingHorizontal: 10, backgroundColor: danger },
+                      {
+                        margin: 20,
+                        paddingHorizontal: 10,
+                        backgroundColor: danger,
+                      },
+                    ]}
+                    onPress={() => {
+                      setMostrar(false);
+                      setRemove(false);
+                    }}>
+                    <Text style={styles.btnDefaultText}>CENCELAR</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    disabled={logradouro != '' ? false : true}
+                    style={[
+                      styles.btnDefault,
+                      {
+                        marginVertical: 20,
+                        paddingHorizontal: 10,
+                        opacity: logradouro != '' ? 1 : 0.5,
+                      },
+                    ]}
+                    onPress={() => editarEndereço(endereco.id_end)}>
+                    <Text style={styles.btnDefaultText}>
+                      ATUALIZAR ENDEREÇOS
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : !remove ? (
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity
+                    style={[
+                      styles.btnDefault,
+                      {
+                        margin: 20,
+                        paddingHorizontal: 10,
+                        backgroundColor: danger,
+                      },
+                    ]}
+                    onPress={() => setMostrar(false)}>
+                    <Text style={styles.btnDefaultText}>CENCELAR</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    disabled={logradouro != '' ? false : true}
+                    style={[
+                      styles.btnDefault,
+                      {
+                        margin: 20,
+                        paddingHorizontal: 10,
+                        opacity: logradouro.length > 2 ? 1 : 0.5,
+                      },
+                    ]}
+                    onPress={CadastrarEndereco}>
+                    <Text style={styles.btnDefaultText}>
+                      CADASTRAR ENDEREÇOS
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity
+                    style={[
+                      styles.btnDefault,
+                      {
+                        margin: 20,
+                        paddingHorizontal: 10,
+                        backgroundColor: danger,
+                      },
                     ]}
                     onPress={() => setMostrar(false)}>
                     <Text style={styles.btnDefaultText}>CENCELAR</Text>
@@ -515,20 +566,25 @@ const Enderecos = props => {
                     onPress={() => RemoverEndereco(endereco.id_end)}>
                     <Text style={styles.btnDefaultText}>REMOVER</Text>
                   </TouchableOpacity>
-                </View>))}
+                </View>
+              )}
             </>
-          ) : !convenio.efetuarVenda && (
-            <TouchableOpacity
-              onPress={() => {
-                setRemove(false);
-                setEdit(false)
-                setMostrar(true);
-                setEndereco(info)
-                setcep('')
-              }}
-              style={styles.btnDefault}>
-              <Text style={styles.btnDefaultText}>CADASTRAR NOVO ENDEREÇO</Text>
-            </TouchableOpacity>
+          ) : (
+            !convenio.efetuarVenda && (
+              <TouchableOpacity
+                onPress={() => {
+                  setRemove(false);
+                  setEdit(false);
+                  setMostrar(true);
+                  setEndereco(info);
+                  setcep('');
+                }}
+                style={styles.btnDefault}>
+                <Text style={styles.btnDefaultText}>
+                  CADASTRAR NOVO ENDEREÇO
+                </Text>
+              </TouchableOpacity>
+            )
           )}
         </View>
       </ScrollView>

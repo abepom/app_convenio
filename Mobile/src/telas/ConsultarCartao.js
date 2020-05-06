@@ -12,7 +12,7 @@ import Menu from '../components/MenuTop';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
 import { TextInputMask } from 'react-native-masked-text';
-import styles, { danger, primary, white } from '../utils/Style';
+import styles, { danger, primary, white, alertBack } from '../utils/Style';
 import api from '../api';
 import { TextInput as TextInputformat } from 'react-native-paper';
 import Retorno from '../components/Retorno';
@@ -31,8 +31,7 @@ const Home = props => {
   const [mensagens, setMensagens] = React.useState('');
   const [camera, setCamera] = useState(false);
 
-  const [carregando, setCarregando] = useState(false)
-
+  const [carregando, setCarregando] = useState(false);
 
   useEffect(() => {
     if (erro) {
@@ -43,7 +42,7 @@ const Home = props => {
   }, [erro]);
 
   const _handlerConsultaCartao = async card => {
-    setCarregando(true)
+    setCarregando(true);
     if (!card) {
       card = cartao;
     }
@@ -54,23 +53,21 @@ const Home = props => {
     });
 
     const { erro, socio, mensagem } = req.data;
-
+    console.log(req.data);
     if (card.length === 11) {
       if (erro) {
-        setCarregando(false)
+        setCarregando(false);
 
         setErro(true);
         setMensagens({ descricao: mensagem, tipo: 'danger' });
         setAssociado('');
       } else {
         setAssociado(socio);
-        setCarregando(false)
-
+        setCarregando(false);
       }
-
     } else {
       setErro(true);
-      setCarregando(false)
+      setCarregando(false);
       setMensagens({
         descricao: 'Cartão invalido. Digite novamente.',
         tipo: 'danger',
@@ -84,7 +81,7 @@ const Home = props => {
     setCamera(true);
   };
   async function handlerStoreValue() {
-    setCarregando(true)
+    setCarregando(true);
     if (valorUsado && valorUsado != 'R$0,00') {
       let req = await api({
         url: '/Informe',
@@ -94,7 +91,7 @@ const Home = props => {
 
       if (!req.data.erro) {
         setModal(false);
-        setLoad('ListarAtendimento')
+        setLoad('ListarAtendimento');
         setValorUsado('');
       } else {
         alert('Erro ao informar Consumo');
@@ -105,16 +102,20 @@ const Home = props => {
     setCartao('');
     setAssociado(null);
     setErro(true);
-    setMensagens({ descricao: `Consumo informado com sucesso`, tipo: 'sucess' });
-    setCarregando(false)
-
+    setMensagens({
+      descricao: `Consumo informado com sucesso`,
+      tipo: 'sucess',
+    });
+    setCarregando(false);
   }
 
   return (
     <>
       <Modal isVisible={modal} {...props}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <View style={{ backgroundColor: '#fff', padding: 30, paddingTop: 50 }}>
+        <View
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <View
+            style={{ backgroundColor: '#fff', padding: 30, paddingTop: 50 }}>
             <TouchableOpacity
               style={{ position: 'absolute', right: 0 }}
               onPress={() => setModal(false)}>
@@ -164,7 +165,6 @@ const Home = props => {
                 )}
               />
               {!carregando ? (
-
                 <TouchableOpacity
                   onPress={() => {
                     handlerStoreValue();
@@ -176,7 +176,9 @@ const Home = props => {
                     style={{ margin: 15 }}
                   />
                 </TouchableOpacity>
-              ) : (<ActivityIndicator />)}
+              ) : (
+                <ActivityIndicator />
+              )}
             </View>
           </View>
         </View>
@@ -188,8 +190,8 @@ const Home = props => {
             Informe o número do cartão do associado
           </Text>
 
-          <View style={[styles.input, { borderWidth: 0, backgroundColor: null }]}>
-
+          <View
+            style={[styles.input, { borderWidth: 0, backgroundColor: null }]}>
             <TextInputformat
               label="Cartão"
               dense
@@ -226,16 +228,15 @@ const Home = props => {
               />
             </TouchableOpacity>
           </View> */}
-          {carregando ? (<ActivityIndicator style={{ marginTop: 20, }} size={32} />) : (
-
+          {carregando ? (
+            <ActivityIndicator style={{ marginTop: 20 }} size={32} />
+          ) : (
             <TouchableOpacity
               style={[styles.btnDefault, { marginTop: 10 }]}
               onPress={() => _handlerConsultaCartao(cartao)}>
               <Text style={styles.btnDefaultText}> BUSCAR</Text>
             </TouchableOpacity>
           )}
-
-
         </View>
         {erro ? (
           <View style={{ width: '80%' }}>
@@ -247,7 +248,9 @@ const Home = props => {
               style={{
                 margin: 20,
                 padding: 20,
-                backgroundColor: primary,
+                backgroundColor: associado.Cartao_Recebido
+                  ? primary
+                  : alertBack,
 
                 elevation: 5,
                 borderRadius: 5,
@@ -255,20 +258,63 @@ const Home = props => {
                 alignSelf: 'center',
                 bordercolor: '#fff',
               }}>
-              <Text style={{ color: 'white', margin: 5, fontSize: 12 }}>
-                <Text style={{ fontWeight: 'bold', fontSize: 12 }}>Nome: </Text> {associado.dep}
+              <Text
+                style={[
+                  styles.textoM,
+                  {
+                    color: associado.Cartao_Recebido ? 'white' : primary,
+                    margin: 5,
+                  },
+                ]}>
+                <Text style={[styles.textoM, { fontWeight: 'bold' }]}>
+                  Nome:{' '}
+                </Text>{' '}
+                {associado.dep}
               </Text>
-              <Text style={{ color: 'white', margin: 5, fontSize: 12 }}>
-                <Text style={{ fontWeight: 'bold', fontSize: 12 }}>Status: </Text>
-                {associado.Inativo ? 'Inativo' : 'Ativo'}
+              <Text
+                style={[
+                  styles.textoM,
+                  {
+                    color: associado.Cartao_Recebido ? 'white' : primary,
+                    margin: 5,
+                  },
+                ]}>
+                <Text style={{ fontWeight: 'bold' }}>Status: </Text>
+                {associado.Cartao_Recebido
+                  ? 'Cartão Validado'
+                  : 'Cartão não validado'}
               </Text>
-              <Text style={{ color: 'white', margin: 5, fontSize: 12 }}>
-                <Text style={{ fontWeight: 'bold', fontSize: 12 }}>Cartão: </Text>{' '}
+              <Text
+                style={[
+                  styles.textoM,
+                  {
+                    color: associado.Cartao_Recebido ? 'white' : primary,
+                    margin: 5,
+                  },
+                ]}>
+                <Text style={{ fontWeight: 'bold' }}>Cartão: </Text>{' '}
                 {associado.Nr_Cartao_Abepom}
               </Text>
+              {!associado.Cartao_Recebido && (
+                <Text
+                  style={[
+                    styles.textoM,
+                    {
+                      fontWeight: 'bold',
+
+                      color: primary,
+                      margin: 5,
+                    },
+                  ]}>
+                  Observação:{' '}
+                  <Text style={{ color: primary, fontWeight: 'normal' }}>
+                    Solicite que o Associado entre na minha abepom e valide o
+                    seu cartão
+                  </Text>
+                </Text>
+              )}
             </View>
             {!convenio.efetuarVenda && (
-
               <TouchableOpacity
                 style={[styles.btnDefault, { alignSelf: 'center' }]}
                 onPress={() => setModal(true)}>
