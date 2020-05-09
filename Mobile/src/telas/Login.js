@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-
-} from 'react-native';
+import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 
 import StatusBar from '../components/StatusBar';
@@ -27,7 +20,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import useUsuario from '../../Store/Usuario';
 import useConvenio from '../../Store/Convenio';
 
-
 const Login = props => {
   const [reset, setReset] = useState(
     props.navigation.state.params
@@ -41,9 +33,9 @@ const Login = props => {
   const [doc, setdoc] = useState('');
   const [senha, setSenha] = useState('');
   const [teclado, setTeclado] = useState('default');
-  const [nome, setNome] = useState('')
-  const [, setUsuario] = useUsuario()
-  const [, setConv] = useConvenio()
+  const [nome, setNome] = useState('');
+  const [, setUsuario] = useUsuario();
+  const [, setConv] = useConvenio();
 
   useEffect(() => {
     if (state.erro) {
@@ -55,24 +47,26 @@ const Login = props => {
 
   useEffect(() => {
     if (props.navigation.state.params) {
-      setdoc(props.navigation.state.params.doc)
-      setState(props.navigation.state.params)
+      setdoc(props.navigation.state.params.doc);
+      setState(props.navigation.state.params);
     }
-  }, [])
+  }, []);
 
   const getToken = async () => {
-    const token = await messaging().getToken()
-    return token
-  }
+    const token = await messaging().getToken();
+    return token;
+  };
 
   const conectar = async () => {
-    let token = await getToken()
+    let token = await getToken();
 
     if (doc.length > 13 && senha) {
       try {
-        const { data } = await api.post('/Login',
-          { usuario: doc, senha, token }
-        );
+        const { data } = await api.post('/Login', {
+          usuario: doc,
+          senha,
+          token,
+        });
 
         let convenio;
         if (!data.erro) {
@@ -83,17 +77,16 @@ const Login = props => {
             caminho_logomarca: data.caminho_logomarca,
             efetuarVenda: data.efetuarVenda,
             doc: data.usuario,
-            token
+            token,
           };
 
           setConv(convenio);
           props.navigation.navigate('App');
-
         } else {
           setState({ erro: true, mensagem: 'Usuário ou Senha incorretos' });
         }
       } catch (error) {
-        alert(`${error}  	`)
+        alert(`${error}  	`);
       }
     } else {
       setState({ erro: true, mensagem: 'Usuário ou Senha incorretos' });
@@ -109,10 +102,9 @@ const Login = props => {
             style={[styles.logo, { marginTop: '10%', alignSelf: 'center' }]}
             source={logo}
           />
-          <View style={{ alignItems: "center" }}>
-            <Text style={{ fontWeight: "bold", fontSize: 36, color: 'white' }}>ABEPOM</Text>
-            <Text style={{ fontSize: 20, color: 'white' }}>CONVENIADOS</Text>
-
+          <View style={{ alignItems: 'center' }}>
+            <Text style={[styles.white, styles.textoGG]}>ABEPOM</Text>
+            <Text style={[styles.white, styles.textoM]}>CONVENIADOS</Text>
           </View>
 
           <View style={{ marginTop: 20, width: '100%' }}>
@@ -152,7 +144,7 @@ const Login = props => {
                   setReset(false);
                 }, 3000)
               }>
-              <Text style={{ color: 'white' }}>
+              <Text style={styles.white}>
                 Você recebera um email com sua senha
               </Text>
             </View>
@@ -185,46 +177,47 @@ const Login = props => {
             </TouchableOpacity>
           </View>
         </ScrollView>
-        <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity style={[
-            styles.btnDefault,
-            {
-              padding: 10,
-              paddingHorizontal: 20,
-              backgroundColor: background,
-              margin: 20
-            },
-          ]} onPress={() => {
-            api.post('/randomFarmacia').then(({ data }) => {
-              setdoc(data.Cgc)
-              setSenha(data.Senha)
-              setNome(data.Nome_fantasia)
-            })
-          }}>
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity
+            style={[
+              styles.btnDefault,
+              {
+                padding: 10,
+                paddingHorizontal: 20,
+                backgroundColor: background,
+                margin: 20,
+              },
+            ]}
+            onPress={() => {
+              api.post('/randomFarmacia').then(({ data }) => {
+                setdoc(data.Cgc);
+                setSenha(data.Senha);
+                setNome(data.Nome_fantasia);
+              });
+            }}>
             <Text>Farmacia</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[
-            styles.btnDefault,
-            {
-              padding: 10,
-              paddingHorizontal: 20,
-              backgroundColor: background,
-              margin: 20
-            },
-          ]} onPress={() => {
-            api.post('/randomparceiro').then(({ data }) => {
-              setdoc(data.doc)
-              setSenha(data.senha)
-              setNome(data.nome_fantasia)
-            })
-          }}>
+          <TouchableOpacity
+            style={[
+              styles.btnDefault,
+              {
+                padding: 10,
+                paddingHorizontal: 20,
+                backgroundColor: background,
+                margin: 20,
+              },
+            ]}
+            onPress={() => {
+              api.post('/randomparceiro').then(({ data }) => {
+                setdoc(data.doc);
+                setSenha(data.senha);
+                setNome(data.nome_fantasia);
+              });
+            }}>
             <Text>Parceiro</Text>
           </TouchableOpacity>
         </View>
-        {!!nome && (
-          <Text style={{ color: 'white' }}>{nome}</Text>
-        )}
-
+        {!!nome && <Text style={{ color: 'white' }}>{nome}</Text>}
       </View>
     </>
   );

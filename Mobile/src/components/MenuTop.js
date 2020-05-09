@@ -8,7 +8,7 @@ import {
   Image,
   StatusBar,
 } from 'react-native';
-import { primary, background } from '../utils/Style';
+import styless, { primary, background } from '../utils/Style';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/abepom.png';
 import getUsuario from '../utils/getUsuario';
@@ -39,8 +39,8 @@ const MenuTop = props => {
   }
 
   useEffect(() => {
-    getUsuario("notificacao").then(dados => console.log(dados, "itens "))
-  }, [])
+    getUsuario('notificacao').then(dados => console.log(dados, 'itens '));
+  }, []);
 
   return (
     <>
@@ -53,18 +53,26 @@ const MenuTop = props => {
           source={icone}
           style={{ width: 40, height: 40, marginHorizontal: 10 }}
         />
-        <Text style={styles.titulo}>{props.title}</Text>
+        <Text style={[styless.textoG, styless.white]}>{props.title}</Text>
         {!noIcons ? (
           <TouchableOpacity
             style={styles.config}
             onPress={() => _handlerOpemConfig()}>
-            <Image source={imagemConf} tintColor={'white'} style={{ width: 25, height: 25 }} />
-
+            <Image
+              source={imagemConf}
+              tintColor={'white'}
+              style={{ width: 25, height: 25 }}
+            />
           </TouchableOpacity>
         ) : null}
       </View>
       {props.header && (
-        <View style={{ alignItems: 'center', paddingBottom: 20, backgroundColor: background }}>
+        <View
+          style={{
+            alignItems: 'center',
+            paddingBottom: 20,
+            backgroundColor: background,
+          }}>
           {props.header}
         </View>
       )}
@@ -109,10 +117,6 @@ const styles = StyleSheet.create({
     right: 20,
   },
   configItem: {
-    color: 'white',
-  },
-  titulo: {
-    fontSize: 18,
     color: 'white',
   },
 });

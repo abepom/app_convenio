@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import formatCurrency from 'currency-formatter'
+import formatCurrency from 'currency-formatter';
 import Modal from 'react-native-modal';
 import styles, { primary } from '../utils/Style';
 import { TextInputMask } from 'react-native-masked-text';
@@ -12,16 +12,15 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import useLoad from '../../Store/Load';
 
 const CadastrarVenda = props => {
-
   const { matricula, dep, nome, id_gds } = props.navigation.state.params;
-  const [data, setData] = useState(new Date())
-  const [show, setShow] = useState(false)
+  const [data, setData] = useState(new Date());
+  const [show, setShow] = useState(false);
   const [valor, setValor] = useState('');
   const [cupom, setCupom] = useState('');
   const [carregando, setCarregando] = useState(false);
   const [modal, setModal] = useState(false);
-  const [limiteAtual, setLimiteAtual] = useState('')
-  const [, setLoad] = useLoad()
+  const [limiteAtual, setLimiteAtual] = useState('');
+  const [, setLoad] = useLoad();
   const [msnModal, setMsnModal] = useState({
     erro: true,
     mensagem: '',
@@ -30,7 +29,6 @@ const CadastrarVenda = props => {
     const currentDate = selectedDate || data;
     setShow(Platform.OS === 'ios');
     setData(currentDate);
-
   };
 
   const InformarVenda = async () => {
@@ -41,17 +39,16 @@ const CadastrarVenda = props => {
         method: 'POST',
         data: { matricula, dep, id_gds, valor, cupom, data },
       });
-      console.log(matricula, dep, id_gds, valor, cupom, data)
+      console.log(dados);
       setModal(true);
-      setLoad("ConsultarVendas")
+      setLoad('ConsultarVendas');
       setMsnModal(dados.data);
-
     } else {
       alert('valor em branco');
       setCarregando(false);
     }
   };
-
+  //
   // useEffect(() => {
   //   console.log(msnModal);
   //   if (modal) {
@@ -64,18 +61,21 @@ const CadastrarVenda = props => {
   //   }
   // }, [modal]);
   useEffect(() => {
-    api.post(`/limite/${matricula}`).then(({ data }) => setLimiteAtual(data.limite))
-  }, [])
+    api
+      .post(`/limite/${matricula}`)
+      .then(({ data }) => setLimiteAtual(data.limite));
+  }, []);
 
   return (
     <>
       <Modal isVisible={modal} {...props}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <View
             style={{
               backgroundColor: '#fff',
-              width: '80%',
-              height: 200,
+              width: '90%',
+              height: 270,
               alignItems: 'center',
 
               borderRadius: 5,
@@ -85,15 +85,56 @@ const CadastrarVenda = props => {
               style={{
                 fontSize: 20,
                 color: primary,
-                padding: 20,
+                paddingHorizontal: 20,
                 marginTop: 10,
-                marginBottom: 25,
+
                 textAlign: 'center',
               }}>
               {msnModal.mensagem}.{'\n'}
-              {msnModal.limite && ` Limite atual é de ${formatCurrency.format(msnModal.limite, { code: 'BRL' })}`}
-
+              {msnModal.limite &&
+                ` Limite atual é de ${formatCurrency.format(msnModal.limite, {
+                  code: 'BRL',
+                })}`}
             </Text>
+            {msnModal.data && (
+              <View
+                style={{
+                  backgroundColor: '#f5f4b3',
+                  width: '90%',
+
+                  padding: 10,
+                }}>
+                <Text
+                  style={[
+                    styles.textoG,
+                    styles.textPrimary,
+                    {
+                      alignSelf: 'center',
+                      marginBottom: 5,
+                      fontWeight: 'bold',
+                    },
+                  ]}>
+                  Dados da transação
+                </Text>
+
+                <Text style={[styles.textoG, styles.textPrimary]}>
+                  Nº Lançamento: {msnModal.lancamento}
+                </Text>
+                <Text style={[styles.textoG, styles.textPrimary]}>
+                  Associado: {msnModal.nome}
+                </Text>
+                <Text style={[styles.textoG, styles.textPrimary]}>
+                  Valor:{' '}
+                  {formatCurrency.format(msnModal.valor, {
+                    code: 'BRL',
+                  })}
+                </Text>
+                <Text style={[styles.textoG, styles.textPrimary]}>
+                  Data: {msnModal.data.split('-')[2]}/
+                  {msnModal.data.split('-')[1]}/{msnModal.data.split('-')[0]}
+                </Text>
+              </View>
+            )}
             <TouchableOpacity
               style={{
                 position: 'absolute',
@@ -137,7 +178,12 @@ const CadastrarVenda = props => {
             <Text style={{ color: primary }}>Associado {nome}</Text>
             <Text style={{ color: primary }}>Matrícula: {matricula}</Text>
             <Text style={{ color: primary }}>Dependência: {dep}</Text>
-            <Text style={{ color: primary }}>Limite: {limiteAtual > 150 ? 'R$ +150,00' : formatCurrency.format(limiteAtual, { code: 'BRL' })}</Text>
+            <Text style={{ color: primary }}>
+              Limite:{' '}
+              {limiteAtual > 150
+                ? 'R$ +150,00'
+                : formatCurrency.format(limiteAtual, { code: 'BRL' })}
+            </Text>
             {/* <Text style={{ color: primary }}>real para teste: {formatCurrency.format(limiteAtual, { code: 'BRL' })}</Text> */}
           </View>
           <TextInput
@@ -149,19 +195,33 @@ const CadastrarVenda = props => {
             theme={theme}
             style={[styles.imput]}
             onFocus={() => alert(teste)}
-            render={(props) => {
+            render={props => {
               if (show) {
-                return (<DateTimePicker
-                  {...props}
-                  mode={'date'}
-                />)
+                return (
+                  <DateTimePicker
+                    {...props}
+                    mode={'date'}
+                    maximumDate={new Date()}
+                  />
+                );
               } else {
-                return (<Text onPress={() => setShow(true)} style={{ textAlignVertical: "center", flex: 1, marginLeft: 10 }}>
-                  {`${data.getDate()}`}/{data.getMonth() < 9 ? `0${data.getMonth() + 1}` : `${data.getMonth() + 1}`}/{`${data.getFullYear()}`}
-                </Text>)
+                return (
+                  <Text
+                    onPress={() => setShow(true)}
+                    style={{
+                      textAlignVertical: 'center',
+                      flex: 1,
+                      marginLeft: 10,
+                    }}>
+                    {`${data.getDate()}`}/
+                    {data.getMonth() < 9
+                      ? `0${data.getMonth() + 1}`
+                      : `${data.getMonth() + 1}`}
+                    /{`${data.getFullYear()}`}
+                  </Text>
+                );
               }
-            }
-            }
+            }}
           />
           <TextInput
             label="Valor"
@@ -205,8 +265,8 @@ const CadastrarVenda = props => {
                 <Text style={{ color: 'white' }}>INFORMAR VENDA</Text>
               </TouchableOpacity>
             ) : (
-                <ActivityIndicator style={{ marginTop: 30 }} />
-              )}
+              <ActivityIndicator style={{ marginTop: 30 }} />
+            )}
           </View>
         </View>
       </ScrollView>

@@ -12,18 +12,18 @@ export const danverBackground = '#f7d7da';
 export const white = '#fff';
 export const black = '#222';
 
-let txtM
-let txtP
-let txtG
+let txtM;
+let txtP;
+let txtG;
 
 if (Dimensions.get('screen').width < 380) {
-  txtM = 11
-  txtP = 9
-  txtG = 14
+  txtM = 11;
+  txtP = 9;
+  txtG = 14;
 } else {
-  txtM = 14
-  txtP = 12
-  txtG = 18
+  txtM = 14;
+  txtP = 12;
+  txtG = 16;
 }
 
 const styles = StyleSheet.create({
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   center: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   logo: {
     width: 150,
@@ -46,22 +46,31 @@ const styles = StyleSheet.create({
     height: 75,
     resizeMode: 'cover',
     borderRadius: 37.5,
-
   },
   logoPP: {
-    width: 45,
-    height: 45,
+    width: 50,
+    height: 50,
     resizeMode: 'contain',
-    borderRadius: 20,
+    borderRadius: 25,
   },
   textoP: {
-    fontSize: txtP
+    fontSize: txtP,
   },
   textoM: {
-    fontSize: txtM
+    fontSize: txtM,
   },
   textoG: {
-    fontSize: txtG
+    fontSize: txtG,
+  },
+  textoGG: {
+    fontSize: txtG * 2,
+    fontWeight: 'bold',
+  },
+  textPrimary: {
+    color: primary,
+  },
+  white: {
+    color: '#fff',
   },
   bgImage: {
     width: Dimensions.get('screen').width,
@@ -72,6 +81,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: '10%',
     marginTop: 10,
+    textTransform: 'uppercase',
   },
   input: {
     backgroundColor: 'white',
@@ -122,7 +132,13 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingHorizontal: 10,
   },
-  textMenu: { textAlign: 'center', marginTop: 10, color: primary },
+  textMenu: {
+    textAlign: 'center',
+    marginTop: 10,
+    color: primary,
+    fontSize: txtM,
+    textTransform: 'uppercase',
+  },
   itemDrawer: { textAlign: 'center', width: 50 },
 });
 
