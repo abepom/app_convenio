@@ -74,7 +74,6 @@ const Drawer = memo(props => {
       });
     }
     setMenu({ ...props, items: itens });
-    console.log(itens);
   }, [props]);
 
   return (

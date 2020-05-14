@@ -6,7 +6,6 @@ import messaging, { firebase } from '@react-native-firebase/messaging';
 import Routes from './Routes';
 import { primary } from './utils/Style';
 
-
 const App = () => {
   async function registerAppWithFCM() {
     await messaging().registerDeviceForRemoteMessages();
@@ -18,15 +17,17 @@ const App = () => {
     }
   }
   useEffect(() => {
-    firebase.messaging().hasPermission().then(enabled => {
-      if (!enabled) {
-        requestUserPermission()
-      }
-    }).catch(console.log)
-    registerAppWithFCM()
-  }, [])
-
-
+    firebase
+      .messaging()
+      .hasPermission()
+      .then(enabled => {
+        if (!enabled) {
+          requestUserPermission();
+        }
+      })
+      .catch(console.log);
+    registerAppWithFCM();
+  }, []);
 
   return (
     <>
