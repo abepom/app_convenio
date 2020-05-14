@@ -67,7 +67,6 @@ const App = createDrawerNavigator(
     },
     ListarAtendimento: {
       screen: ListarAtendimento,
-
       navigationOptions: {
         drawerIcon: props => <ItemDrawer {...props} icone={imagem.list} />,
         drawerLabel: () => {

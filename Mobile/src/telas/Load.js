@@ -6,14 +6,15 @@ import api from '../api';
 import messaging from '@react-native-firebase/messaging';
 import { useStore } from '../../store';
 import useUsuario from '../../Store/Usuario';
+import useConvenio from './../../Store/Convenio';
 
 const Load = props => {
   const { navigation } = props;
   let notificacao;
   const [user] = useUsuario();
   const [store] = useStore();
+  const [, setConv] = useConvenio();
   useEffect(() => {
-    console.log(store, 'carregou dados');
     if (store.carregouDados) {
       conectar();
     }
@@ -22,7 +23,7 @@ const Load = props => {
   const conectar = async () => {
     try {
       let token = await messaging().getToken();
-      console.log('passou por aqui', user);
+
       if (user === undefined) {
         return navigation.navigate('Login');
       }
@@ -43,8 +44,11 @@ const Load = props => {
             nome_parceiro: data.nome_parceiro,
             caminho_logomarca: data.caminho_logomarca,
             efetuarVenda: data.efetuarVenda,
-            doc: data.usuario,
+            doc: data.doc,
+            usuario: data.usuario,
+            nivel: data.nivel,
           };
+          setConv(convenio);
           if (notificacao) {
             navigation.navigate(notificacao.tela, convenio);
           } else {

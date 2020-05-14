@@ -2,7 +2,6 @@ import React, { useState, useEffect, memo } from 'react';
 import {
   View,
   Text,
-  Picker,
   FlatList,
   ActivityIndicator,
   TextInput as Input,
@@ -13,7 +12,6 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import MenuTop from '../components/MenuTop';
 import styles, {
   primary,
-  background,
   danger,
   danverBackground,
   sucess,
@@ -42,7 +40,8 @@ for (let i = new Date().getFullYear(); i >= new Date().getFullYear() - 5; i--) {
 }
 
 const ConsultarVendas = memo(props => {
-  const [{ id_gds }] = useConvenio();
+  const [{ id_gds, nivel, usuario }] = useConvenio();
+
   const [data, setData] = useState(new Date());
   const [show, setShow] = useState(false);
   const [vendas, setvendas] = useState([]);
@@ -68,7 +67,7 @@ const ConsultarVendas = memo(props => {
   const getConsulta = async () => {
     setLoad(true);
     const dados = await api.get('/ConsultarVendas', {
-      params: { id_gds, data },
+      params: { id_gds, data, usuario, nivel },
     });
 
     console.log(dados, 'testess');

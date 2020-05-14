@@ -5,9 +5,11 @@ import {
   TouchableOpacity,
   Dimensions,
   ActivityIndicator,
+  TextInput,
+  Alert,
 } from 'react-native';
 import { TextInput as Imput } from 'react-native-paper';
-import { RNCamera } from 'react-native-camera';
+import QRCodeScanner from 'react-native-qrcode-scanner';
 import Menu from '../components/MenuTop';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
@@ -192,42 +194,43 @@ const Home = props => {
 
           <View
             style={[styles.input, { borderWidth: 0, backgroundColor: null }]}>
-            <TextInputformat
+            <Imput
               label="Cartão"
               dense
               mode="outlined"
               theme={themeLight}
               onChangeText={setCartao}
               value={cartao}
-              keyboardType="numeric"
               style={[{ width: '100%', flex: 1 }]}
               onSubmitEditing={() => _handlerConsultaCartao()}
+              render={props => (
+                <View style={[{ flexDirection: 'row' }]}>
+                  <TextInput
+                    {...props}
+                    keyboardType="numeric"
+                    maxLength={11}
+                    value={cartao}
+                    style={{ width: '85%' }}
+                    onChangeText={setCartao}
+                    onSubmitEditing={() => _handlerConsultaCartao()}
+                  />
+
+                  <TouchableOpacity
+                    style={{ width: '15%' }}
+                    onPress={() => {
+                      _abrirCamera();
+                    }}>
+                    <Icone
+                      name="camera"
+                      style={{ width: '100%', color: '#1f4ba4' }}
+                      size={40}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
             />
           </View>
 
-          {/* <View style={[styles.input, { flexDirection: 'row' }]}>
-            <TextInput
-              placeholder="Cartão"
-              keyboardType="numeric"
-              maxLength={11}
-              value={cartao}
-              style={{ width: '85%' }}
-              onChangeText={setCartao}
-              onSubmitEditing={() => _handlerConsultaCartao()}
-            />
-
-            <TouchableOpacity
-              style={{ width: '15%' }}
-              onPress={() => {
-                _abrirCamera();
-              }}>
-              <Icone
-                name="camera"
-                style={{ width: '100%', color: '#1f4ba4' }}
-                size={40}
-              />
-            </TouchableOpacity>
-          </View> */}
           {carregando ? (
             <ActivityIndicator style={{ marginTop: 20 }} size={32} />
           ) : (
@@ -330,34 +333,31 @@ const Home = props => {
               width: Dimensions.get('screen').height * 0.4,
             }}>
             <Modal isVisible={camera}>
-              <RNCamera
-                ref={null}
-                style={{
-                  flex: 1,
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                }}
-                androidCameraPermissionOptions={{
-                  title: 'Permission to use camera',
-                  message: 'We need your permission to use your camera',
-                  buttonPositive: 'Ok',
-                  buttonNegative: 'Cancel',
-                }}
-                androidRecordAudioPermissionOptions={{
-                  title: 'Permission to use audio recording',
-                  message: 'We need your permission to use your audio',
-                  buttonPositive: 'Ok',
-                  buttonNegative: 'Cancel',
-                }}
-                onGoogleVisionBarcodesDetected={({ barcodes }) => {
-                  let [codigo] = barcodes;
-                  console.log(codigo.data);
-                  setCamera(false);
-                  setCartao(codigo.data);
+              <QRCodeScanner
+                onRead={({ data }) => {
+                  let dataqrcode =
+                    data.substr(15, 4) +
+                    '-' +
+                    data.substr(13, 2) +
+                    '-' +
+                    data.substr(11, 2);
 
-                  _handlerConsultaCartao(codigo.data);
+                  if (dataqrcode == new Date().toJSON().substr(0, 10)) {
+                    setCartao(data.substr(0, 11));
+                    setCamera(false);
+                  } else {
+                    setCamera(false);
+
+                    setCartao('');
+
+                    Alert.alert(
+                      'Código Invalido',
+                      'Esse QR code não é valido, por favor solicite que o associado gere um novo QR code.',
+                    );
+                  }
                 }}
               />
+
               <View
                 style={{
                   position: 'absolute',

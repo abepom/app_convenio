@@ -3,21 +3,22 @@ import {
   View,
   Text,
   Image,
-  FlatList,
+  Dimensions,
+  Alert,
   TextInput as TextInputrn,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import MenuTop from '../components/MenuTop';
 import { TextInput } from 'react-native-paper';
-import Mensagem from '../components/Mensagem';
 import styles, { primary, danger } from '../utils/Style';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import imagens from '../utils/imagens';
+import QRCodeScanner from 'react-native-qrcode-scanner';
 import api from '../api';
-import getUsuario from '../utils/getUsuario';
 import Retorno from '../components/Retorno';
 import useConvenio from '../../Store/Convenio';
-import useLoad from '../../Store/Load';
+import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
+import Modal from 'react-native-modal';
 
 export default props => {
   const vaziu = {
@@ -36,6 +37,12 @@ export default props => {
   const [retorno, setRetorno] = useState(retornopadrao);
   const [erro, setErro] = useState('');
   const [carregando, setcarregando] = useState(false);
+  const [camera, setCamera] = useState(false);
+
+  const _abrirCamera = () => {
+    setImput('');
+    setCamera(true);
+  };
 
   const consultarCartao = async cartao => {
     setcarregando(true);
@@ -135,16 +142,72 @@ export default props => {
                   justifyContent: 'center',
                 }}>
                 <TextInputrn {...props} />
-
-                <Image
-                  source={imagens.pay}
-                  style={{ width: 30, height: 30, margin: 5 }}
-                  tintColor={primary}
-                />
+                <TouchableOpacity onPress={_abrirCamera}>
+                  <Icone
+                    name="camera"
+                    style={{ width: '100%', color: '#1f4ba4' }}
+                    size={40}
+                  />
+                </TouchableOpacity>
               </View>
             </>
           )}
         />
+        {camera ? (
+          <View
+            style={{
+              height: Dimensions.get('screen').height * 0.4,
+              width: Dimensions.get('screen').height * 0.4,
+            }}>
+            <Modal isVisible={camera}>
+              <QRCodeScanner
+                onRead={({ data }) => {
+                  let dataqrcode =
+                    data.substr(15, 4) +
+                    '-' +
+                    data.substr(13, 2) +
+                    '-' +
+                    data.substr(11, 2);
+
+                  if (dataqrcode == new Date().toJSON().substr(0, 10)) {
+                    setImput(data.substr(0, 11));
+                    setCamera(false);
+                  } else {
+                    setCamera(false);
+
+                    setImput('');
+
+                    Alert.alert(
+                      'Código Invalido',
+                      'Esse QR code não é valido, por favor solicite que o associado gere um novo QR code.',
+                    );
+                  }
+                }}
+              />
+
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: 10,
+                  flex: 1,
+                  alignItems: 'center',
+
+                  width: '100%',
+                }}>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: primary,
+                    padding: 20,
+                    borderRadius: 30,
+                  }}
+                  onPress={() => setCamera(false)}>
+                  <Icone name="close" style={30} color="#FFF" />
+                </TouchableOpacity>
+              </View>
+            </Modal>
+          </View>
+        ) : null}
+
         {!carregando ? (
           <TouchableOpacity
             style={{
