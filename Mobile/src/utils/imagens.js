@@ -9,12 +9,11 @@ import list from '../assets/img/list.png';
 import search from '../assets/img/search.png';
 import save from '../assets/img/save.png';
 import close from '../assets/img/close.png';
-import heart from '../assets/img/heart.png';
+
 import company from '../assets/img/company.png';
 import camera from '../assets/img/camera.png';
 import plus from '../assets/img/plus.png';
 import review from '../assets/img/review.png';
-import heart_true from '../assets/img/heart_true.png';
 import loop from '../assets/img/loop.png';
 import star from '../assets/img/star.png';
 import star_cheia from '../assets/img/star_Cheia.png';
@@ -25,7 +24,6 @@ export default {
   star_cheia,
   star,
   loop,
-  heart_true,
   review,
   plus,
   camera,
@@ -40,6 +38,6 @@ export default {
   search,
   save,
   close,
-  heart,
+
   company,
 };
