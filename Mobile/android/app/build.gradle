@@ -120,7 +120,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "0.11.0"
+        versionName "0.11.1"
         missingDimensionStrategy 'react-native-camera', 'mlkit'
         multiDexEnabled true
     }
@@ -186,9 +186,9 @@ dependencies {
     // }
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.android.support:support-v4:27.0.2'
-    implementation 'com.google.gms:google-services:+'
-    implementation 'com.google.android.gms:play-services-base:+'
-    implementation 'com.google.android.gms:play-services-maps:+'
+    implementation 'com.google.gms:google-services:4.2.0+'
+    implementation 'com.google.android.gms:play-services-base:10.0.1'
+    implementation 'com.google.android.gms:play-services-maps:10.0.1'
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'

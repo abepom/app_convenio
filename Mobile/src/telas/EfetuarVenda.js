@@ -154,13 +154,10 @@ export default props => {
           )}
         />
         {camera ? (
-          <View
-            style={{
-              height: Dimensions.get('screen').height * 0.4,
-              width: Dimensions.get('screen').height * 0.4,
-            }}>
+          <View>
             <Modal isVisible={camera}>
               <QRCodeScanner
+                cameraStyle={{ width: '100%', height: '100%' }}
                 onRead={({ data }) => {
                   let dataqrcode =
                     data.substr(15, 4) +
