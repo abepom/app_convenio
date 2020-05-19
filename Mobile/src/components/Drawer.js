@@ -85,7 +85,7 @@ const Drawer = memo(props => {
               <View>
                 <Image
                   source={{ uri: convenio.caminho_logomarca }}
-                  style={[styles.logoP]}
+                  style={[styles.logoP, { resizeMode: 'contain' }]}
                 />
               </View>
             </>

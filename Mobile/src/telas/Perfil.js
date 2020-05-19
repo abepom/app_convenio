@@ -129,28 +129,38 @@ export default function TabViewExample(props) {
       <View style={[styles.row, styles.center, { marginVertical: 20 }]}>
         {!carregandoIMG ? (
           convenio.caminho_logomarca ? (
-            <>
-              <TouchableOpacity onPress={enviarImagem}>
-                {console.log(convenio.caminho_logomarca)}
-                <Image
-                  source={{
-                    uri: convenio.caminho_logomarca,
-                  }}
-                  style={[styles.logoPP, { resizeMode: 'cover' }]}
-                />
-                <Image
-                  source={imagens.plus}
-                  style={{
-                    width: 20,
-                    height: 20,
-                    resizeMode: 'cover',
+            convenio.nivel < 2 ? (
+              <>
+                <TouchableOpacity onPress={enviarImagem}>
+                  {console.log(convenio.caminho_logomarca)}
+                  <Image
+                    source={{
+                      uri: convenio.caminho_logomarca,
+                    }}
+                    style={[styles.logoPP, { resizeMode: 'contain' }]}
+                  />
 
-                    bottom: 20,
-                    right: -35,
-                  }}
-                />
-              </TouchableOpacity>
-            </>
+                  <Image
+                    source={imagens.plus}
+                    style={{
+                      width: 20,
+                      height: 20,
+                      resizeMode: 'cover',
+
+                      bottom: 20,
+                      right: -35,
+                    }}
+                  />
+                </TouchableOpacity>
+              </>
+            ) : (
+              <Image
+                source={{
+                  uri: convenio.caminho_logomarca,
+                }}
+                style={[styles.logoPP, { resizeMode: 'contain' }]}
+              />
+            )
           ) : (
             <TouchableOpacity
               onPress={enviarImagem}
