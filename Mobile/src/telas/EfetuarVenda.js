@@ -65,22 +65,23 @@ export default props => {
           }
           setErro('');
           setDependentes(validado.data);
-          console.log(validado.data);
+          console.log(validado.data, 'b');
           setcarregando(false);
         } else {
-          console.log(validado.data);
+          console.log(validado.data, 'a');
 
           if (validado.data.avancar == 1) {
             console.log(validado.data);
             setErro('');
             setAvancar(true);
             setMensagem(validado.data.mensagem);
-
+            console.log(validado, 'teste');
             setassociado({
               cartao: imput,
               matricula: imput.substring(0, 6),
               dep: imput.substring(7, 9),
               nome: validado.data.Nome,
+              titular: validado.data.titular,
             });
             setcarregando(false);
           } else if (validado.data.retorno == 1) {
@@ -257,19 +258,28 @@ export default props => {
             <View style={{ width: '80%' }}>
               {dependentes.map(item => (
                 <TouchableOpacity
+                  key={item.Cd_dependente}
                   onPress={() => {
-                    setImput('');
-                    props.navigation.navigate('CadastrarVenda', {
-                      cartao: imput,
-                      matricula: item.Matricula,
-                      dep: item.Cd_dependente,
-                      nome: item.NOME,
-                      id_gds: state.id_gds,
-                    });
-                    setRetorno(retornopadrao);
-                    setDependentes([]);
-                    setassociado(vaziu);
-                    setAvancar(false);
+                    if (item.Cartao_Recebido) {
+                      Alert.alert(
+                        '',
+                        'Este associado já possuí o CARTÃO DO ASSOCIADO, é indispensável a apresentação deste para efetuar o lancamento',
+                      );
+                    } else {
+                      setImput('');
+                      props.navigation.navigate('CadastrarVenda', {
+                        cartao: imput,
+                        matricula: item.Matricula,
+                        dep: item.Cd_dependente,
+                        nome: item.NOME,
+                        id_gds: state.id_gds,
+                        titular: item.titular,
+                      });
+                      setRetorno(retornopadrao);
+                      setDependentes([]);
+                      setassociado(vaziu);
+                      setAvancar(false);
+                    }
                   }}
                   style={{
                     marginTop: 20,
@@ -307,10 +317,25 @@ export default props => {
             elevation: 2,
             borderRadius: 3,
           }}>
-          <Text>
-            Associado:{' '}
-            <Text style={{ fontWeight: 'bold' }}>{associado.nome}</Text>
-          </Text>
+          {console.log(associado, 'associado')}
+          {associado.titular != associado.nome ? (
+            <>
+              <Text>
+                Dependente:{' '}
+                <Text style={{ fontWeight: 'bold' }}>{associado.nome}</Text>
+              </Text>
+              <Text>
+                Titular:{' '}
+                <Text style={{ fontWeight: 'bold' }}>{associado.titular}</Text>
+              </Text>
+            </>
+          ) : (
+            <Text>
+              Associado:{' '}
+              <Text style={{ fontWeight: 'bold' }}>{associado.nome}</Text>
+            </Text>
+          )}
+
           <Text>Cartao: {mensagem}</Text>
         </View>
       )}
