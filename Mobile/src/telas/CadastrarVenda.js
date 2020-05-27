@@ -12,7 +12,13 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import useLoad from '../../Store/Load';
 
 const CadastrarVenda = props => {
-  const { matricula, dep, nome, id_gds } = props.navigation.state.params;
+  const {
+    matricula,
+    dep,
+    nome,
+    id_gds,
+    titular,
+  } = props.navigation.state.params;
   const [data, setData] = useState(new Date());
   const [show, setShow] = useState(false);
   const [valor, setValor] = useState('');
@@ -75,7 +81,7 @@ const CadastrarVenda = props => {
             style={{
               backgroundColor: '#fff',
               width: '90%',
-              height: 270,
+              height: msnModal.limite ? 270 : msnModal.data ? 250 : 170,
               alignItems: 'center',
 
               borderRadius: 5,
@@ -90,11 +96,14 @@ const CadastrarVenda = props => {
 
                 textAlign: 'center',
               }}>
-              {msnModal.mensagem}.{'\n'}
+              {msnModal.mensagem}
               {msnModal.limite &&
-                ` Limite atual é de ${formatCurrency.format(msnModal.limite, {
-                  code: 'BRL',
-                })}`}
+                ` \n Limite atual é de ${formatCurrency.format(
+                  msnModal.limite,
+                  {
+                    code: 'BRL',
+                  },
+                )}`}
             </Text>
             {msnModal.data && (
               <View
@@ -175,9 +184,16 @@ const CadastrarVenda = props => {
               borderColor: primary,
               borderWidth: 1,
             }}>
-            <Text style={{ color: primary }}>Associado {nome}</Text>
+            {titular != nome ? (
+              <>
+                <Text style={{ color: primary }}>Dependente: {nome}</Text>
+                <Text style={{ color: primary }}>Associado: {titular}</Text>
+              </>
+            ) : (
+              <Text style={{ color: primary }}>Associado: {nome}</Text>
+            )}
             <Text style={{ color: primary }}>Matrícula: {matricula}</Text>
-            <Text style={{ color: primary }}>Dependência: {dep}</Text>
+
             <Text style={{ color: primary }}>
               Limite:{' '}
               {limiteAtual > 150

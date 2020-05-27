@@ -254,12 +254,12 @@ export default function telas(props) {
             }}>
             <Text
               style={[styles.textoG, { color: primary, marginHorizontal: 20 }]}>
-              Para remover algum comentário que possua alguma conteúdo impróprio
+              Para remover algum comentário que possua algum conteúdo impróprio
               selecione-o e marque a opção excluir.
             </Text>
             <Text
               style={[styles.textoG, { color: primary, marginHorizontal: 20 }]}>
-              Esse comentária será removido imediatamente do site e irá para
+              Esse comentário será removido imediatamente do site e irá para
               análize dos nossos setores intenos.
             </Text>
             <TouchableOpacity

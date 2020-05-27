@@ -276,9 +276,7 @@ const Perfil = () => {
           theme={themeLight}
           editable={convenio.nivel == '1' ? true : false}
           value={state.representante.value}
-          onChangeText={texto =>
-            alterarStado(texto.toUpperCase(), 'representante')
-          }
+          onChangeText={texto => alterarStado(texto, 'representante')}
           keyboardType="default"
           style={[styles.imput, styles.textoM]}
         />
