@@ -45,36 +45,20 @@ const Drawer = memo(props => {
   let itens = [];
 
   const [convenio] = useConvenio();
+  // useEffect(() => {
 
-  console.log(props);
-  useEffect(() => {
-    if (!convenio.efetuarVenda) {
-      //montando o menu dos parceiros
-      menu.items.map(item => {
-        console.log(item);
-        switch (item.key) {
-          case 'EfetuarVenda':
-          case 'ConsultarVendas':
-            break;
-          default:
-            itens.push({ ...item });
-            break;
-        }
-      });
-    } else {
-      //montando o menu das farmacias
-      menu.items.map(item => {
-        switch (item.key) {
-          case 'ListarAtendimento':
-            break;
-          default:
-            itens.push({ ...item });
-            break;
-        }
-      });
-    }
-    setMenu({ ...props, items: itens });
-  }, [props]);
+  //   menu.items.map(item => {
+  //     switch (item.key) {
+  //       case 'ListarAtendimento':
+  //         break;
+  //       default:
+  //         itens.push({ ...item });
+  //         break;
+  //     }
+  //   });
+
+  //   setMenu({ ...props, items: itens });
+  // }, [props]);
 
   return (
     <ScrollView style={styles.flex}>
@@ -129,7 +113,7 @@ const Drawer = memo(props => {
           </View>
         </View>
         <DrawerNavigatorItems
-          {...menu}
+          {...props}
           itensConteinerStyles={{ width: '100%', backgroundColor: 'blue' }}
         />
       </SafeAreaView>

@@ -20,9 +20,7 @@ import useConvenio from '../../Store/Convenio';
 
 export default memo(props => {
   const [convenio] = useConvenio();
-  // alert(
-  //   Dimensions.get('screen').width + '  //  ' + Dimensions.get('window').width,
-  // );
+
   return (
     <View style={{ width: '100%', backgroundColor: background }}>
       <View style={styless.container}>
@@ -50,20 +48,6 @@ export default memo(props => {
           />
           <Text style={styles.textMenu}>Consultar Cartão</Text>
         </TouchableOpacity>
-        {!convenio.efetuarVenda && (
-          <TouchableOpacity
-            style={styles.itemMenu}
-            onPress={() => {
-              props.navigation.navigate('ListarAtendimento', convenio);
-            }}>
-            <Image
-              source={require('../assets/img/list.png')}
-              style={styless.imgMenu}
-              tintColor={primary}
-            />
-            <Text style={styles.textMenu}>Listar Atendimentos</Text>
-          </TouchableOpacity>
-        )}
       </View>
 
       {convenio.efetuarVenda && (

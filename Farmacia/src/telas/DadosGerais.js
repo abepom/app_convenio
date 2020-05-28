@@ -350,18 +350,7 @@ const Perfil = () => {
         />
         {carregando ? (
           <ActivityIndicator style={{ marginTop: 20 }} size={32} />
-        ) : convenio.efetuarVenda ? (
-          convenio.nivel == 1 ? (
-            <TouchableOpacity
-              onPress={() => atualizarDados()}
-              style={[
-                styles.btnDefault,
-                { marginTop: 12, width: '40%', alignSelf: 'center' },
-              ]}>
-              <Text style={{ color: `white` }}>SALVAR</Text>
-            </TouchableOpacity>
-          ) : null
-        ) : (
+        ) : convenio.nivel == 1 ? (
           <TouchableOpacity
             onPress={() => atualizarDados()}
             style={[
@@ -370,7 +359,7 @@ const Perfil = () => {
             ]}>
             <Text style={{ color: `white` }}>SALVAR</Text>
           </TouchableOpacity>
-        )}
+        ) : null}
         <View style={{ height: 100 }} />
       </ScrollView>
     </>
