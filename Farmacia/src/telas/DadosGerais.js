@@ -280,39 +280,6 @@ const Perfil = () => {
           keyboardType="default"
           style={[styles.imput, styles.textoM]}
         />
-        {state.cargo.value != '' && (
-          <>
-            <TextInput
-              label="Cargo"
-              dense
-              mode="outlined"
-              editable={convenio.nivel == '1' ? true : false}
-              theme={themeLight}
-              value={state.cargo.value}
-              keyboardType="default"
-              style={[styles.imput, styles.textoM]}
-              render={props => {
-                return (
-                  <Picker
-                    selectedValue={state.cargo.value}
-                    mode="dropdown"
-                    onValueChange={(itemValue, itemIndex) =>
-                      alterarStado(itemValue, 'cargo')
-                    }>
-                    <Picker.Item value="ceo-fundador" label="CEO / Fundador" />
-                    <Picker.Item value="diretor" label="Diretor" />
-                    <Picker.Item value="gerente" label="Gerente" />
-                    <Picker.Item
-                      value="representante-de-vendas"
-                      label="Representante de vendas"
-                    />
-                    <Picker.Item value="outros" label="outros" />
-                  </Picker>
-                );
-              }}
-            />
-          </>
-        )}
         <TextInput
           label="Site"
           dense

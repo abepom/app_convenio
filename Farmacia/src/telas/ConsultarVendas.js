@@ -23,7 +23,7 @@ import api from '../api';
 import { themeLight } from '../utils/theme';
 import formatCurrency from 'currency-formatter';
 import Retorno from '../components/Retorno';
-
+import { Checkbox } from 'react-native-paper';
 import useConvenio from '../../Store/Convenio';
 import useLoad from '../../Store/Load';
 import imagens from '../utils/imagens';
@@ -41,7 +41,7 @@ for (let i = new Date().getFullYear(); i >= new Date().getFullYear() - 5; i--) {
 
 const ConsultarVendas = memo(props => {
   const [{ id_gds, nivel, usuario }] = useConvenio();
-
+  const [mes, setMes] = useState(false);
   const [data, setData] = useState(new Date());
   const [show, setShow] = useState(false);
   const [vendas, setvendas] = useState([]);
@@ -67,7 +67,7 @@ const ConsultarVendas = memo(props => {
   const getConsulta = async () => {
     setLoad(true);
     const dados = await api.get('/ConsultarVendas', {
-      params: { id_gds, data, usuario, nivel },
+      params: { id_gds, data, usuario, nivel, mes },
     });
 
     console.log(dados, 'testess');
@@ -267,64 +267,80 @@ const ConsultarVendas = memo(props => {
         {...props}
         title={'Consultar Vendas'}
         header={
-          <View
-            style={{
-              width: '60%',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 10,
-            }}>
-            <TextInput
-              label="Selecione uma Data"
-              dense
-              value={data}
-              mode="outlined"
-              onChange={onChange}
-              theme={themeLight}
-              style={{ width: '80%' }}
-              render={props => {
-                if (show) {
-                  return (
-                    <DateTimePicker
-                      {...props}
-                      mode={'date'}
-                      display="default"
-                    />
-                  );
-                } else {
-                  return (
-                    <Text
-                      onPress={() => setShow(true)}
-                      style={{
-                        textAlignVertical: 'center',
-                        flex: 1,
-                        marginLeft: 10,
-                      }}>
-                      {`${data.getDate()}`}/
-                      {data.getMonth() < 9
-                        ? `0${data.getMonth() + 1}`
-                        : `${data.getMonth() + 1}`}
-                      /{`${data.getFullYear()}`}
-                    </Text>
-                  );
-                }
-              }}
-            />
-            <TouchableOpacity
+          <View>
+            <View
               style={{
-                marginLeft: 5,
-                marginTop: 7,
-                paddingVertical: 6,
-                paddingHorizontal: 10,
-                backgroundColor: primary,
-                borderRadius: 5,
-              }}
-              onPress={getConsulta}>
-              <Image
-                source={imagens.search}
-                style={{ width: 25, height: 25, tintColor: 'white' }}
+                width: '60%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: 10,
+              }}>
+              <TextInput
+                label="Selecione uma Data"
+                dense
+                value={data}
+                mode="outlined"
+                onChange={onChange}
+                theme={themeLight}
+                style={{ width: '80%' }}
+                render={props => {
+                  if (show) {
+                    return (
+                      <DateTimePicker
+                        {...props}
+                        mode={'date'}
+                        display="default"
+                      />
+                    );
+                  } else {
+                    return (
+                      <Text
+                        onPress={() => setShow(true)}
+                        style={{
+                          textAlignVertical: 'center',
+                          flex: 1,
+                          marginLeft: 10,
+                        }}>
+                        {`${data.getDate()}`}/
+                        {data.getMonth() < 9
+                          ? `0${data.getMonth() + 1}`
+                          : `${data.getMonth() + 1}`}
+                        /{`${data.getFullYear()}`}
+                      </Text>
+                    );
+                  }
+                }}
               />
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  marginLeft: 5,
+                  marginTop: 7,
+                  paddingVertical: 6,
+                  paddingHorizontal: 10,
+                  backgroundColor: primary,
+                  borderRadius: 5,
+                }}
+                onPress={getConsulta}>
+                <Image
+                  source={imagens.search}
+                  style={{ width: 25, height: 25, tintColor: 'white' }}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Checkbox
+                status={mes ? 'checked' : 'unchecked'}
+                onPress={() => {
+                  setMes(!mes);
+                }}
+                color={primary}
+              />
+              <Text
+                style={{ paddingTop: 10, color: primary }}
+                onPress={() => setMes(!mes)}>
+                Consulta mês inteiro
+              </Text>
+            </View>
           </View>
         }>
         <View style={{ width: '95%' }}>
