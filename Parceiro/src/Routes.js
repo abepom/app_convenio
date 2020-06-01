@@ -3,7 +3,6 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import Login from './telas/Login';
 import Load from './telas/Load';
 import Home from './telas/Home';
-import CadastrarVenda from './telas/CadastrarVenda';
 import RestartPass from './telas/RestartPass';
 
 import { createDrawerNavigator } from 'react-navigation-drawer';
@@ -17,34 +16,8 @@ import { primary, primaryBack, white } from './utils/Style';
 import ItemDrawer from './components/ItemDrawer';
 import ListarAtendimento from './telas/ListarAtendimento';
 import imagem from './utils/imagens';
-import EfetuarVenda from './telas/EfetuarVenda';
-import { createStackNavigator } from 'react-navigation-stack';
-import ConsultarVendas from './telas/ConsultarVendas';
-import Avaliacao from './telas/Avaliacoes';
-const venda = createStackNavigator(
-  {
-    EfetuarVenda,
-    CadastrarVenda: {
-      screen: CadastrarVenda,
-      navigationOptions: {
-        headerShown: true,
-        title: 'Cadastrar Venda',
-      },
-    },
-  },
-  {
-    defaultNavigationOptions: {
-      animationEnabled: false,
-      headerShown: false,
 
-      headerTitleAlign: 'center',
-      headerTitleStyle: { color: 'white' },
-      headerStyle: { backgroundColor: primary },
-      headerBackTitleVisible: false,
-      headerTintColor: 'white',
-    },
-  },
-);
+import Avaliacao from './telas/Avaliacoes';
 
 const App = createDrawerNavigator(
   {
@@ -75,29 +48,6 @@ const App = createDrawerNavigator(
       },
     },
 
-    EfetuarVenda: {
-      screen: venda,
-
-      navigationOptions: {
-        drawerIcon: props => {
-          return <ItemDrawer {...props} icone={imagem.money} />;
-        },
-        drawerLabel: () => {
-          return 'Efetuar Vendas';
-        },
-      },
-    },
-    ConsultarVendas: {
-      screen: ConsultarVendas,
-      navigationOptions: {
-        drawerIcon: props => {
-          return <ItemDrawer {...props} icone={imagem.bill} />;
-        },
-        drawerLabel: () => {
-          return 'Consultar Vendas';
-        },
-      },
-    },
     Avaliacao: {
       screen: Avaliacao,
       navigationOptions: {

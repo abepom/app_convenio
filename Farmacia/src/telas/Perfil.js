@@ -178,21 +178,6 @@ export default function TabViewExample(props) {
                 ]}
                 tintColor={primary}
               />
-              {/* <Image
-                        source={imagens.camera}
-                        style={{
-                            width: 20,
-                            height: 20,
-                            resizeMode: 'cover',
-                            position: "absolute",
-                            left: 2,
-                            top: 5,
-
-
-
-                        }}
-                        tintColor={primary}
-                    /> */}
             </TouchableOpacity>
           )
         ) : (

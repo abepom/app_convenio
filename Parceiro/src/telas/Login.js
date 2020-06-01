@@ -62,7 +62,7 @@ const Login = props => {
 
     if (doc.length > 13 && senha) {
       try {
-        const { data } = await api.post('/Login', {
+        const { data } = await api.post('/LoginParceiro', {
           usuario: doc,
           senha,
           token,
@@ -106,7 +106,7 @@ const Login = props => {
           />
           <View style={{ alignItems: 'center' }}>
             <Text style={[styles.white, styles.textoGG]}>ABEPOM</Text>
-            <Text style={[styles.white, styles.textoM]}>CONVENIADOS</Text>
+            <Text style={[styles.white, styles.textoM]}>PARCEIROS</Text>
           </View>
 
           <View style={{ marginTop: 20, width: '100%' }}>
@@ -180,45 +180,6 @@ const Login = props => {
           </View>
         </ScrollView>
         <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity
-            style={[
-              styles.btnDefault,
-              {
-                padding: 10,
-                paddingHorizontal: 20,
-                backgroundColor: background,
-                margin: 20,
-              },
-            ]}
-            onPress={() => {
-              api.post('/randomMultiUsuarios').then(({ data }) => {
-                console.log(data);
-                setdoc(data.doc);
-                setSenha(data.senha);
-                setNome(data.nome_fantasia);
-              });
-            }}>
-            <Text>MultUsuarios</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.btnDefault,
-              {
-                padding: 10,
-                paddingHorizontal: 20,
-                backgroundColor: background,
-                margin: 20,
-              },
-            ]}
-            onPress={() => {
-              api.post('/randomFarmacia').then(({ data }) => {
-                setdoc(data.Cgc);
-                setSenha(data.Senha);
-                setNome(data.Nome_fantasia);
-              });
-            }}>
-            <Text>Farmacia</Text>
-          </TouchableOpacity>
           <TouchableOpacity
             style={[
               styles.btnDefault,

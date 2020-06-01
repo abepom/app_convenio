@@ -4,12 +4,9 @@ import { TextInput, HelperText } from 'react-native-paper';
 import { themeLight } from '../utils/theme';
 import styles from '../utils/Style';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
-import getUsuario from '../utils/getUsuario';
-import setDados from '../utils/setUsuario';
 import api from '../api';
 import Retorno from '../components/Retorno';
 import useUsuario from '../../Store/Usuario';
-import useConvenio from '../../Store/Convenio';
 
 const AlterarSenha = () => {
   const [state, setstate] = useState({
@@ -169,11 +166,8 @@ const AlterarSenha = () => {
             alignItems: 'center',
             justifyContent: 'center',
             marginTop: 50,
-          }}>
-          <Text> Esses texto serão removido do modo de produção</Text>
-          <Text> senha salva no ato do login é ({user.senha})</Text>
-          <Text> provavelmente sera a senha atual tambem </Text>
-        </View>
+          }}
+        />
       </ScrollView>
     </View>
   );

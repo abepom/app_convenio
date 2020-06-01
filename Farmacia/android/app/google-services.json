@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "792353190406",
-    "firebase_url": "https://app-conveniado-abepom.firebaseio.com",
-    "project_id": "app-conveniado-abepom",
-    "storage_bucket": "app-conveniado-abepom.appspot.com"
+    "project_number": "1093477989295",
+    "firebase_url": "https://mobile-farmacia.firebaseio.com",
+    "project_id": "mobile-farmacia",
+    "storage_bucket": "mobile-farmacia.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:792353190406:android:f66db5d81f7f4e350c8987",
+        "mobilesdk_app_id": "1:1093477989295:android:e689a3232a4c1631a00d5a",
         "android_client_info": {
-          "package_name": "com.abepom"
+          "package_name": "br.org.abepom.farmacia"
         }
       },
       "oauth_client": [
         {
-          "client_id": "792353190406-t7gsjorsequr9g3lmnm3m7doco6dhdo0.apps.googleusercontent.com",
+          "client_id": "1093477989295-shpbosbpu6t45r4a5fgmac8t521pp73s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.abepom",
-            "certificate_hash": "a4ca5cf9089cfcea534dca8a5c5fbe3330d1d091"
+            "package_name": "br.org.abepom.farmacia",
+            "certificate_hash": "9097842e80f71f8ea3e14e8def5ea3898167b8ff"
           }
         },
         {
-          "client_id": "792353190406-f36pqklb5i3k0drj1127phbpm7jv1rl5.apps.googleusercontent.com",
+          "client_id": "1093477989295-8hsbn6arolru534pubjs9halfqeag6h6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAHe95O4bQA3V55QDkNRZPUEsz1zcKqB6E"
+          "current_key": "AIzaSyBp3GQejgrmPoSOPv7mlQV17R-ajHQ3I34"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "792353190406-f36pqklb5i3k0drj1127phbpm7jv1rl5.apps.googleusercontent.com",
+              "client_id": "1093477989295-8hsbn6arolru534pubjs9halfqeag6h6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

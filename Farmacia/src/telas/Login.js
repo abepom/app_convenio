@@ -106,7 +106,7 @@ const Login = props => {
           />
           <View style={{ alignItems: 'center' }}>
             <Text style={[styles.white, styles.textoGG]}>ABEPOM</Text>
-            <Text style={[styles.white, styles.textoM]}>CONVENIADOS</Text>
+            <Text style={[styles.white, styles.textoM]}>FARMÁCIA</Text>
           </View>
 
           <View style={{ marginTop: 20, width: '100%' }}>
@@ -218,25 +218,6 @@ const Login = props => {
               });
             }}>
             <Text>Farmacia</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.btnDefault,
-              {
-                padding: 10,
-                paddingHorizontal: 20,
-                backgroundColor: background,
-                margin: 20,
-              },
-            ]}
-            onPress={() => {
-              api.post('/randomparceiro').then(({ data }) => {
-                setdoc(data.doc);
-                setSenha(data.senha);
-                setNome(data.nome_fantasia);
-              });
-            }}>
-            <Text>Parceiro</Text>
           </TouchableOpacity>
         </View>
         {!!nome && <Text style={{ color: 'white' }}>{nome}</Text>}

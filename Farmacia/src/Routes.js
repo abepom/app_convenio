@@ -13,9 +13,8 @@ import ConsultarCartao from './telas/ConsultarCartao';
 import Endereco from './telas/Enderecos';
 import Perfil from './telas/Perfil';
 import Drawer from './components/Drawer';
-import { primary, primaryBack, white } from './utils/Style';
+import { primary, white } from './utils/Style';
 import ItemDrawer from './components/ItemDrawer';
-import ListarAtendimento from './telas/ListarAtendimento';
 import imagem from './utils/imagens';
 import EfetuarVenda from './telas/EfetuarVenda';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -65,19 +64,9 @@ const App = createDrawerNavigator(
         },
       },
     },
-    ListarAtendimento: {
-      screen: ListarAtendimento,
-      navigationOptions: {
-        drawerIcon: props => <ItemDrawer {...props} icone={imagem.list} />,
-        drawerLabel: () => {
-          return 'Listar Atendimento';
-        },
-      },
-    },
 
     EfetuarVenda: {
       screen: venda,
-
       navigationOptions: {
         drawerIcon: props => {
           return <ItemDrawer {...props} icone={imagem.money} />;
