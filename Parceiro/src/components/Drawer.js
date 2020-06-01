@@ -9,9 +9,7 @@ import {
 } from 'react-native';
 import { DrawerNavigatorItems } from 'react-navigation-drawer';
 import styles, { primaryBack, primary } from '../utils/Style';
-import getUsuario from '../utils/getUsuario';
 import imagens from '../utils/imagens';
-
 import messaging from '@react-native-firebase/messaging';
 import useConvenio from '../../Store/Convenio';
 import useLoad from '../../Store/Load';
@@ -48,31 +46,17 @@ const Drawer = memo(props => {
 
   console.log(props);
   useEffect(() => {
-    if (!convenio.efetuarVenda) {
-      //montando o menu dos parceiros
-      menu.items.map(item => {
-        console.log(item);
-        switch (item.key) {
-          case 'EfetuarVenda':
-          case 'ConsultarVendas':
-            break;
-          default:
-            itens.push({ ...item });
-            break;
-        }
-      });
-    } else {
-      //montando o menu das farmacias
-      menu.items.map(item => {
-        switch (item.key) {
-          case 'ListarAtendimento':
-            break;
-          default:
-            itens.push({ ...item });
-            break;
-        }
-      });
-    }
+    menu.items.map(item => {
+      console.log(item);
+      switch (item.key) {
+        case 'EfetuarVenda':
+        case 'ConsultarVendas':
+          break;
+        default:
+          itens.push({ ...item });
+          break;
+      }
+    });
     setMenu({ ...props, items: itens });
   }, [props]);
 
@@ -102,21 +86,18 @@ const Drawer = memo(props => {
                 style={[styles.logoPP]}
                 tintColor={primary}
               />
-              {/* <Image
-                        source={imagens.camera}
-                        style={{
-                            width: 20,
-                            height: 20,
-                            resizeMode: 'cover',
-                            position: "absolute",
-                            left: 2,
-                            top: 5,
-
-
-
-                        }}
-                        tintColor={primary}
-                    /> */}
+              {/*<Image
+                source={imagens.camera}
+                style={{
+                    width: 20,
+                    height: 20,
+                    resizeMode: 'cover',
+                    position: "absolute",
+                    left: 2,
+                    top: 5,
+                }}
+                tintColor={primary}
+              />*/}
             </View>
           )}
           <View style={{ marginHorizontal: 10, maxWidth: '60%' }}>

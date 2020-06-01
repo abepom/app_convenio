@@ -106,7 +106,7 @@ const Login = props => {
           />
           <View style={{ alignItems: 'center' }}>
             <Text style={[styles.white, styles.textoGG]}>ABEPOM</Text>
-            <Text style={[styles.white, styles.textoM]}>CONVENIADOS</Text>
+            <Text style={[styles.white, styles.textoM]}>PARCEIROS</Text>
           </View>
 
           <View style={{ marginTop: 20, width: '100%' }}>

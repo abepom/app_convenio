@@ -50,52 +50,20 @@ export default memo(props => {
           />
           <Text style={styles.textMenu}>Consultar Cartão</Text>
         </TouchableOpacity>
-        {!convenio.efetuarVenda && (
-          <TouchableOpacity
-            style={styles.itemMenu}
-            onPress={() => {
-              props.navigation.navigate('ListarAtendimento', convenio);
-            }}>
-            <Image
-              source={require('../assets/img/list.png')}
-              style={styless.imgMenu}
-              tintColor={primary}
-            />
-            <Text style={styles.textMenu}>Listar Atendimentos</Text>
-          </TouchableOpacity>
-        )}
-      </View>
 
-      {convenio.efetuarVenda && (
-        <View style={styles.linhaMenu}>
-          <TouchableOpacity
-            style={[styles.itemMenu, { backgroundColor: sucessBack }]}
-            onPress={() => props.navigation.navigate('EfetuarVenda', convenio)}>
-            <Image
-              source={require('../assets/img/money.png')}
-              style={styless.imgMenu}
-              tintColor={primary}
-            />
-            <Text style={[styles.textMenu, { color: sucess }]}>
-              Efetuar Venda
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.itemMenu, { backgroundColor: sucessBack }]}
-            onPress={() =>
-              props.navigation.navigate('ConsultarVendas', { load: new Date() })
-            }>
-            <Image
-              source={require('../assets/img/bill.png')}
-              style={styless.imgMenu}
-              tintColor={primary}
-            />
-            <Text style={[styles.textMenu, { color: sucess }]}>
-              Consultar Vendas
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )}
+        <TouchableOpacity
+          style={styles.itemMenu}
+          onPress={() => {
+            props.navigation.navigate('ListarAtendimento', convenio);
+          }}>
+          <Image
+            source={require('../assets/img/list.png')}
+            style={styless.imgMenu}
+            tintColor={primary}
+          />
+          <Text style={styles.textMenu}>Listar Atendimentos</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.linhaMenu}>
         <TouchableOpacity
           style={styles.itemMenu}

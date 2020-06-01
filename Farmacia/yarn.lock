@@ -4911,10 +4911,6 @@ react-test-renderer@16.9.0:
     react-is "^16.9.0"
     scheduler "^0.15.0"
 
-react-via-cep@^2.0.8:
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/react-via-cep/-/react-via-cep-2.0.8.tgz#efd00a7fd3f4124cc66f8649d23db1c5f1d04c29"
-
 react@16.9.0:
   version "16.9.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.9.0.tgz#40ba2f9af13bc1a38d75dbf2f4359a5185c4f7aa"

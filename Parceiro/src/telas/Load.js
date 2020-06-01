@@ -32,7 +32,7 @@ const Load = props => {
 
       if (!!usuario && !!senha) {
         const { data } = await api({
-          url: '/Login',
+          url: '/LoginParceiro',
           data: { usuario, senha, token },
           method: 'post',
         });

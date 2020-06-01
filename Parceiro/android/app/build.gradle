@@ -116,11 +116,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.abepom"
+        applicationId "br.org.abepom.parceiro"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "0.11.2"
+        versionName "0.12.0"
         missingDimensionStrategy 'react-native-camera', 'mlkit'
         multiDexEnabled true
     }

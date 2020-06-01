@@ -13,7 +13,7 @@ import MenuTop from '../components/MenuTop';
 import { TextInput } from 'react-native-paper';
 import styles, { primary, danger } from '../utils/Style';
 import imagens from '../utils/imagens';
-import QRCodeScanner from 'react-native-qrcode-scanner';
+//import QRCodeScanner from 'react-native-qrcode-scanner';
 import api from '../api';
 import Retorno from '../components/Retorno';
 import useConvenio from '../../Store/Convenio';
@@ -154,10 +154,10 @@ export default props => {
             </>
           )}
         />
-        {camera ? (
+        {false ? (
           <View>
             <Modal isVisible={camera}>
-              <QRCodeScanner
+              {/* <QRCodeScanner
                 cameraStyle={{ width: '100%', height: '100%' }}
                 onRead={({ data }) => {
                   let dataqrcode =
@@ -181,7 +181,7 @@ export default props => {
                     );
                   }
                 }}
-              />
+              /> */}
 
               <View
                 style={{
