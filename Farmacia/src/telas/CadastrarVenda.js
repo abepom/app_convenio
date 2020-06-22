@@ -10,6 +10,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import api from '../api';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import useLoad from '../../Store/Load';
+import useUsuario from './../../Store/Usuario';
 
 const CadastrarVenda = props => {
   const {
@@ -19,6 +20,7 @@ const CadastrarVenda = props => {
     id_gds,
     titular,
   } = props.navigation.state.params;
+  const [{ usuario }] = useUsuario();
   const [data, setData] = useState(new Date());
   const [show, setShow] = useState(false);
   const [valor, setValor] = useState('');
@@ -43,9 +45,9 @@ const CadastrarVenda = props => {
       const dados = await api({
         url: '/efetuarVendas',
         method: 'POST',
-        data: { matricula, dep, id_gds, valor, cupom, data },
+        data: { matricula, dep, id_gds, valor, cupom, data, usuario },
       });
-      console.log(dados);
+
       setModal(true);
       setLoad('ConsultarVendas');
       setMsnModal(dados.data);
