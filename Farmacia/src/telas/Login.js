@@ -179,48 +179,6 @@ const Login = props => {
             </TouchableOpacity>
           </View>
         </ScrollView>
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity
-            style={[
-              styles.btnDefault,
-              {
-                padding: 10,
-                paddingHorizontal: 20,
-                backgroundColor: background,
-                margin: 20,
-              },
-            ]}
-            onPress={() => {
-              api.post('/randomMultiUsuarios').then(({ data }) => {
-                console.log(data);
-                setdoc(data.doc);
-                setSenha(data.senha);
-                setNome(data.nome_fantasia);
-              });
-            }}>
-            <Text>MultUsuarios</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.btnDefault,
-              {
-                padding: 10,
-                paddingHorizontal: 20,
-                backgroundColor: background,
-                margin: 20,
-              },
-            ]}
-            onPress={() => {
-              api.post('/randomFarmacia').then(({ data }) => {
-                setdoc(data.Cgc);
-                setSenha(data.Senha);
-                setNome(data.Nome_fantasia);
-              });
-            }}>
-            <Text>Farmacia</Text>
-          </TouchableOpacity>
-        </View>
-        {!!nome && <Text style={{ color: 'white' }}>{nome}</Text>}
       </View>
     </>
   );
