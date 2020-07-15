@@ -2,6 +2,7 @@ import React from 'react';
 import {Image} from 'react-native';
 
 const ItemDrawer = props => {
+
   return (
     <Image
       source={props.icone}

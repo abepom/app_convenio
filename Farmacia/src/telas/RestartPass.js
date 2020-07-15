@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import mask from '../utils/maskUsuario';
 import { TextInput } from 'react-native-paper';
@@ -51,18 +52,27 @@ const Login = props => {
       docu = doc;
     }
 
-    const { data } = await api({
-      url: '/user/resetPass',
-      data: { usuario: docu },
-      method: 'post',
-    });
-    data.erro
-      ? setState({
+    if (docu) {
+
+      const { data } = await api({
+        url: '/user/resetPass',
+        data: { usuario: docu },
+        method: 'post',
+      });
+      data.erro
+        ? setState({
+          ...state,
+          erro: data.erro,
+          mensagem: 'Verifique o Usuário.',
+        })
+        : props.navigation.navigate('Login', { resetSenha: true });
+    } else {
+      setState({
         ...state,
-        erro: data.erro,
-        mensagem: 'Verifique o Usuário.',
+        erro: true,
+        mensagem: 'Informe um usuário e senha.',
       })
-      : props.navigation.navigate('Login', { resetSenha: true });
+    }
     setLoad(false);
   };
 

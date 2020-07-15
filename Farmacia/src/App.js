@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { StatusBar, View, Text, ToastAndroid, Alert } from 'react-native';
+import React, { useEffect } from 'react';
+import { StatusBar, View } from 'react-native';
 
-import setUsuario from './utils/setUsuario';
 import messaging, { firebase } from '@react-native-firebase/messaging';
 import Routes from './Routes';
 import { primary } from './utils/Style';

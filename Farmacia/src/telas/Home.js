@@ -5,8 +5,7 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  Button,
-  Dimensions,
+
 } from 'react-native';
 import styles, {
   primary,
@@ -15,19 +14,21 @@ import styles, {
   background,
 } from '../utils/Style';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import icone from '../assets/img/abepom.png';
+import { menu } from '../utils/imagens'
 import useConvenio from '../../Store/Convenio';
 
 export default memo(props => {
   const [convenio] = useConvenio();
-
+  console.log(convenio)
   return (
     <View style={{ width: '100%', backgroundColor: background }}>
       <View style={styless.container}>
         <TouchableOpacity
           style={styless.menu}
           onPress={() => props.navigation.toggleDrawer()}>
-          <Icone style={styless.configItem} name={'menu'} size={28} />
+          <Icone style={{ color: 'white' }} name={'menu'} size={28} />
         </TouchableOpacity>
         <Image
           source={icone}

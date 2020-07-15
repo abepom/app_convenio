@@ -15,7 +15,7 @@ public class MainActivity extends ReactActivity {
   protected String getMainComponentName() {
     return "abepom";
   }
-@Override
+  @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
     return new ReactActivityDelegate(this, getMainComponentName()) {
       @Override
@@ -24,7 +24,4 @@ public class MainActivity extends ReactActivity {
       }
     };
   }
-
 }
-
-

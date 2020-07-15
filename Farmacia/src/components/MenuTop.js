@@ -17,7 +17,7 @@ const MenuTop = props => {
   let iconemenu;
   let _press;
   const _handlerOpemConfig = () => {
-    funcConfig ? funcConfig() : alert('teste');
+    funcConfig ? funcConfig() : null
   };
   if (!noIcons) {
     if (drawer) {

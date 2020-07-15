@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import Login from './telas/Login';
 import Load from './telas/Load';
@@ -8,6 +8,7 @@ import RestartPass from './telas/RestartPass';
 
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import Sair from './telas/Sair';
+import Trocar from './telas/Trocar';
 
 import ConsultarCartao from './telas/ConsultarCartao';
 import Endereco from './telas/Enderecos';
@@ -20,6 +21,10 @@ import EfetuarVenda from './telas/EfetuarVenda';
 import { createStackNavigator } from 'react-navigation-stack';
 import ConsultarVendas from './telas/ConsultarVendas';
 import Avaliacao from './telas/Avaliacoes';
+import Administrador from './telas/Administrador';
+import useUsuario from '../Store/Usuario';
+
+
 const venda = createStackNavigator(
   {
     EfetuarVenda,
@@ -44,6 +49,8 @@ const venda = createStackNavigator(
     },
   },
 );
+
+  
 
 const App = createDrawerNavigator(
   {
@@ -110,6 +117,13 @@ const App = createDrawerNavigator(
         drawerLabel: 'Perfil',
       },
     },
+            Trocar: {
+              screen: Trocar,
+              navigationOptions: {
+                drawerIcon: props => <ItemDrawer {...props} icone={imagem.contact} />,
+                drawerLabel: 'Trocar Farmácia',
+              },
+            }, 
     Sair: {
       screen: Sair,
       navigationOptions: {
@@ -143,6 +157,8 @@ const Routes = createAppContainer(
       Login,
       RestartPass,
       App,
+      Administrador
+      
     },
     {
       initialRouteName: 'Load',

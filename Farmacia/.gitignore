@@ -4,7 +4,6 @@
 
 # Xcode
 #
-*.hprof
 build/
 *.pbxuser
 !default.pbxuser
@@ -21,7 +20,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
-
+*.hprof
 # Android/IntelliJ
 #
 build/
@@ -32,7 +31,6 @@ local.properties
 
 # node.js
 #
-apk/
 node_modules/
 npm-debug.log
 yarn-error.log
@@ -40,7 +38,7 @@ yarn-error.log
 # BUCK
 buck-out/
 \.buckd/
-
+*.keystore
 !debug.keystore
 
 # fastlane
@@ -59,6 +57,3 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
-
-#consts
-
