@@ -1,26 +1,22 @@
-import React, { useState, useEffect, memo } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  Image,
-  Alert,
-} from 'react-native';
-import { DrawerNavigatorItems } from 'react-navigation-drawer';
-import styles, { primaryBack, primary } from '../utils/Style';
-import getUsuario from '../utils/getUsuario';
+import React, {useState, useEffect, memo} from 'react';
+import {View, Text, ScrollView, SafeAreaView,Image,Alert,TouchableOpacity} from 'react-native';
+import {DrawerNavigatorItems} from 'react-navigation-drawer';
+import styles, {primaryBack, primary, danger} from '../utils/Style';
+
 import imagens from '../utils/imagens';
+import ItemDrawer from './ItemDrawer';
 
 import messaging from '@react-native-firebase/messaging';
 import useConvenio from '../../Store/Convenio';
 import useLoad from '../../Store/Load';
+import useUsuario from '../../Store/Usuario';
 
-const Drawer = memo(props => {
+const Drawer = memo((props) => {
   const [, setLoad] = useLoad();
-
+  const [user] = useUsuario();
   useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
+   
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
       setLoad(remoteMessage.data.tela);
       Alert.alert(
         remoteMessage.notification.title,
@@ -34,7 +30,7 @@ const Drawer = memo(props => {
               });
             },
           },
-          { text: 'FECHAR', onPress: () => {} },
+          {text: 'FECHAR', onPress: () => {}},
         ],
       );
     });
@@ -45,31 +41,38 @@ const Drawer = memo(props => {
   let itens = [];
 
   const [convenio] = useConvenio();
-  // useEffect(() => {
+  useEffect(() => {
+    console.log(user.usuario !='abepom')
+    if(user.usuario !='abepom') {
 
-  //   menu.items.map(item => {
-  //     switch (item.key) {
-  //       case 'ListarAtendimento':
-  //         break;
-  //       default:
-  //         itens.push({ ...item });
-  //         break;
-  //     }
-  //   });
-
-  //   setMenu({ ...props, items: itens });
-  // }, [props]);
+      menu.items.map(item => {
+     
+        switch (item.key) {
+          case 'Trocar':
+            break;
+          default:
+            itens.push({ ...item });
+            break;
+          }
+      });
+      setMenu({ ...props, items: itens });
+      console.log('teste')
+    }else{
+      setMenu(props );
+    }
+    console.log(menu)
+  }, [props]);
 
   return (
     <ScrollView style={styles.flex}>
       <SafeAreaView style={styles.flex}>
-        <View style={[styles.row, styles.center, { marginVertical: 20 }]}>
+        <View style={[styles.row, styles.center, {marginVertical: 20}]}>
           {convenio.caminho_logomarca ? (
             <>
               <View>
                 <Image
-                  source={{ uri: convenio.caminho_logomarca }}
-                  style={[styles.logoP, { resizeMode: 'contain' }]}
+                  source={{uri: convenio.caminho_logomarca}}
+                  style={[styles.logoP, {resizeMode: 'contain'}]}
                 />
               </View>
             </>
@@ -103,9 +106,9 @@ const Drawer = memo(props => {
                     /> */}
             </View>
           )}
-          <View style={{ marginHorizontal: 10, maxWidth: '60%' }}>
+          <View style={{marginHorizontal: 10, maxWidth: '60%'}}>
             <Text style={{}}>{[convenio.nome_parceiro]}</Text>
-            <Text style={{ fontSize: 10 }}>
+            <Text style={{fontSize: 10}}>
               {convenio.doc && convenio.doc.length > 15
                 ? `CNPF: ${convenio.doc}`
                 : `CPF: ${convenio.doc}`}
@@ -113,9 +116,10 @@ const Drawer = memo(props => {
           </View>
         </View>
         <DrawerNavigatorItems
-          {...props}
-          itensConteinerStyles={{ width: '100%', backgroundColor: 'blue' }}
+          {...menu}
+          itensConteinerStyles={{width: '100%', backgroundColor: 'blue'}}
         />
+        
       </SafeAreaView>
     </ScrollView>
   );

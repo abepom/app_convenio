@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const StoreContext = createContext([{}, () => {}]);
+const StoreContext = createContext([{}, () => { }]);
 
 export const useStore = () => {
   const [state, setState] = useContext(StoreContext);
@@ -25,13 +25,13 @@ export const StorePrivider = ({ children }) => {
   const carregarDados = async () => {
     try {
       const data = await AsyncStorage.getItem('store');
-      console.log(data, 'data');
+
       if (!!data) {
         setState({ ...JSON.parse(data), load: '', carregouDados: true });
       } else {
         setState({ load: '', carregouDados: true });
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {
@@ -42,9 +42,9 @@ export const StorePrivider = ({ children }) => {
       const dadosAntigos = await AsyncStorage.getItem('store');
       if (state != dadosAntigos && state != null) {
         await AsyncStorage.setItem('store', JSON.stringify(state));
-        console.log('tentou salvar', state);
+
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {

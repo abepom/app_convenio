@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -10,8 +10,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import MenuTop from '../components/MenuTop';
-import { TextInput } from 'react-native-paper';
-import styles, { primary, danger } from '../utils/Style';
+import {TextInput} from 'react-native-paper';
+import styles, {primary, danger} from '../utils/Style';
 import imagens from '../utils/imagens';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import api from '../api';
@@ -20,13 +20,13 @@ import useConvenio from '../../Store/Convenio';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
 
-export default props => {
+export default (props) => {
   const vaziu = {
     cartao: '',
     matricula: '',
     dep: '',
   };
-  const retornopadrao = { retorno: false, mensagem: '' };
+  const retornopadrao = {retorno: false, mensagem: ''};
   const [state] = useConvenio();
 
   const [associado, setassociado] = useState(vaziu);
@@ -44,7 +44,7 @@ export default props => {
     setCamera(true);
   };
 
-  const consultarCartao = async cartao => {
+  const consultarCartao = async (cartao) => {
     setcarregando(true);
     setDependentes([]);
     setMensagem('');
@@ -84,6 +84,7 @@ export default props => {
               titular: validado.data.titular,
             });
             setcarregando(false);
+            return validado;
           } else if (validado.data.retorno == 1) {
             setErro(validado.data.mensagem);
             setcarregando(false);
@@ -115,7 +116,7 @@ export default props => {
         Informe a Matrícula ou o Cartão do assocado para iniciar a venda.
       </Text>
 
-      <View style={{ width: '100%', flexDirection: 'row' }}>
+      <View style={{width: '100%', flexDirection: 'row'}}>
         <TextInput
           label="Cartão / Matricula"
           dense
@@ -132,8 +133,8 @@ export default props => {
           }}
           maxLength={11}
           keyboardType="numeric"
-          style={[styles.imput, { width: '70%' }]}
-          render={props => (
+          style={[styles.imput, {width: '70%'}]}
+          render={(props) => (
             <>
               <View
                 style={{
@@ -146,7 +147,7 @@ export default props => {
                 <TouchableOpacity onPress={_abrirCamera}>
                   <Icone
                     name="camera"
-                    style={{ width: '100%', color: '#1f4ba4' }}
+                    style={{width: '100%', color: '#1f4ba4'}}
                     size={40}
                   />
                 </TouchableOpacity>
@@ -158,8 +159,8 @@ export default props => {
           <View>
             <Modal isVisible={camera}>
               <QRCodeScanner
-                cameraStyle={{ width: '100%', height: '100%' }}
-                onRead={({ data }) => {
+                cameraStyle={{width: '100%', height: '100%'}}
+                onRead={({data}) => {
                   let dataqrcode =
                     data.substr(15, 4) +
                     '-' +
@@ -168,8 +169,27 @@ export default props => {
                     data.substr(11, 2);
 
                   if (dataqrcode == new Date().toJSON().substr(0, 10)) {
-                    setImput(data.substr(0, 11));
+                    //setImput(data.substr(0, 11));
                     setCamera(false);
+                    consultarCartao(data.substr(0, 11)).then((dados) => {
+                      const info = dados.data;
+                      let assoc = {
+                        cartao: data.substr(0, 11),
+                        matricula: data.substr(0, 6),
+                        dep: data.substr(7, 9),
+                        nome: info.Nome,
+                        titular: info.titular,
+                      };
+                      setImput('');
+                      props.navigation.navigate('CadastrarVenda', {
+                        ...assoc,
+                        id_gds: state.id_gds,
+                      });
+                      setMensagem('');
+                      setRetorno(retornopadrao);
+                      setassociado(vaziu);
+                      setAvancar(false);
+                    });
                   } else {
                     setCamera(false);
 
@@ -226,23 +246,21 @@ export default props => {
             }}>
             <Image
               source={imagens.search}
-              style={{ width: 30, height: 30, margin: 5 }}
+              style={{width: 30, height: 30, margin: 5}}
               tintColor={'white'}
             />
           </TouchableOpacity>
         ) : (
-          <ActivityIndicator style={{ margin: 30 }} size={30} />
+          <ActivityIndicator style={{margin: 30}} size={30} />
         )}
       </View>
       {retorno.retorno && (
-        <View style={{ width: '80%', marginTop: 30 }}>
-          <Text style={{ fontSize: 11, color: danger }}>
-            {retorno.mensagem}
-          </Text>
+        <View style={{width: '80%', marginTop: 30}}>
+          <Text style={{fontSize: 11, color: danger}}>{retorno.mensagem}</Text>
         </View>
       )}
       {erro ? (
-        <View style={{ width: '85%', marginTop: 30 }}>
+        <View style={{width: '85%', marginTop: 30}}>
           <Retorno type="danger" mensagem={erro} fechar={() => setErro('')} />
         </View>
       ) : null}
@@ -251,12 +269,12 @@ export default props => {
         dependentes && (
           <>
             {dependentes.length > 0 && (
-              <Text style={{ marginTop: 30, fontSize: 20, fontWeight: 'bold' }}>
+              <Text style={{marginTop: 30, fontSize: 20, fontWeight: 'bold'}}>
                 Selecione um Associado
               </Text>
             )}
-            <View style={{ width: '80%' }}>
-              {dependentes.map(item => (
+            <View style={{width: '80%'}}>
+              {dependentes.map((item) => (
                 <TouchableOpacity
                   key={item.Cd_dependente}
                   onPress={() => {
@@ -289,16 +307,16 @@ export default props => {
                     elevation: 2,
                     borderRadius: 5,
                   }}>
-                  <Text style={{ fontWeight: 'bold', color: primary }}>
+                  <Text style={{fontWeight: 'bold', color: primary}}>
                     {' '}
                     Nome:{' '}
-                    <Text style={{ fontWeight: '100', color: primary }}>
+                    <Text style={{fontWeight: '100', color: primary}}>
                       {item.NOME}
                     </Text>{' '}
                   </Text>
-                  <Text style={{ fontWeight: 'bold', color: primary }}>
+                  <Text style={{fontWeight: 'bold', color: primary}}>
                     Dependencia:{' '}
-                    <Text style={{ fontWeight: '100', color: primary }}>
+                    <Text style={{fontWeight: '100', color: primary}}>
                       {item.descri}
                     </Text>
                     {/* Dep: <Text style={{ fontWeight: "100", color: primary }}>{item.Cd_dependente}</Text> */}
@@ -322,17 +340,17 @@ export default props => {
             <>
               <Text>
                 Dependente:{' '}
-                <Text style={{ fontWeight: 'bold' }}>{associado.nome}</Text>
+                <Text style={{fontWeight: 'bold'}}>{associado.nome}</Text>
               </Text>
               <Text>
                 Titular:{' '}
-                <Text style={{ fontWeight: 'bold' }}>{associado.titular}</Text>
+                <Text style={{fontWeight: 'bold'}}>{associado.titular}</Text>
               </Text>
             </>
           ) : (
             <Text>
               Associado:{' '}
-              <Text style={{ fontWeight: 'bold' }}>{associado.nome}</Text>
+              <Text style={{fontWeight: 'bold'}}>{associado.nome}</Text>
             </Text>
           )}
 
@@ -352,11 +370,7 @@ export default props => {
             setassociado(vaziu);
             setAvancar(false);
           }}
-          style={[
-            { marginTop: 30 },
-            styles.btnDefault,
-            { paddingHorizontal: 30 },
-          ]}>
+          style={[{marginTop: 30}, styles.btnDefault, {paddingHorizontal: 30}]}>
           <Text style={styles.btnDefaultText}>EFETUAR VENDA</Text>
         </TouchableOpacity>
       )}
