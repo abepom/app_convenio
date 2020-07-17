@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, {useState, useEffect, memo} from 'react';
 import {
   View,
   Text,
@@ -17,13 +17,13 @@ import styles, {
   sucess,
   sucessBack,
 } from '../utils/Style';
-import { TextInput } from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import Modal from 'react-native-modal';
 import api from '../api';
-import { themeLight } from '../utils/theme';
+import {themeLight} from '../utils/theme';
 import formatCurrency from 'currency-formatter';
 import Retorno from '../components/Retorno';
-import { Checkbox } from 'react-native-paper';
+import {Checkbox} from 'react-native-paper';
 import useConvenio from '../../Store/Convenio';
 import useLoad from '../../Store/Load';
 import imagens from '../utils/imagens';
@@ -39,8 +39,8 @@ for (let i = new Date().getFullYear(); i >= new Date().getFullYear() - 5; i--) {
   anos.push(`${i}`);
 }
 
-const ConsultarVendas = memo(props => {
-  const [{ id_gds, nivel, usuario }] = useConvenio();
+const ConsultarVendas = memo((props) => {
+  const [{id_gds, nivel, usuario}] = useConvenio();
   const [mes, setMes] = useState(false);
   const [data, setData] = useState(new Date());
   const [show, setShow] = useState(false);
@@ -67,7 +67,7 @@ const ConsultarVendas = memo(props => {
   const getConsulta = async () => {
     setLoad(true);
     const dados = await api.get('/ConsultarVendas', {
-      params: { id_gds, data, usuario, nivel, mes },
+      params: {id_gds, data, usuario, nivel, mes},
     });
 
     console.log(dados, 'testess');
@@ -79,17 +79,16 @@ const ConsultarVendas = memo(props => {
     setShow(Platform.OS === 'ios');
     setData(currentDate);
   };
-  const excluirVenda = async Nr_lancamento => {
+  const excluirVenda = async (Nr_lancamento) => {
     const dados = await api.delete('/removerVendas', {
-      data: { Nr_lancamento },
+      data: {Nr_lancamento},
     });
     setRetornoExclusao(dados.data.mensagem);
   };
   return (
     <>
       <Modal isVisible={modal} {...props}>
-        <View
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           {conteudoModal ? (
             <>
               <View
@@ -109,20 +108,20 @@ const ConsultarVendas = memo(props => {
                   <Text
                     style={[
                       styles.textoM,
-                      { fontWeight: 'bold', marginVertical: 2 },
+                      {fontWeight: 'bold', marginVertical: 2},
                     ]}>
                     Lançamento:{' '}
-                    <Text style={{ fontWeight: '100' }}>
+                    <Text style={{fontWeight: '100'}}>
                       {conteudoModal.Nr_lancamento}
                     </Text>
                   </Text>
                   <Text
                     style={[
                       styles.textoM,
-                      { fontWeight: 'bold', marginVertical: 2 },
+                      {fontWeight: 'bold', marginVertical: 2},
                     ]}>
                     Matricula:
-                    <Text style={{ fontWeight: '100' }}>
+                    <Text style={{fontWeight: '100'}}>
                       {' '}
                       {conteudoModal.Matricula}
                     </Text>
@@ -131,10 +130,10 @@ const ConsultarVendas = memo(props => {
                 <Text
                   style={[
                     styles.textoM,
-                    { fontWeight: 'bold', marginVertical: 2 },
+                    {fontWeight: 'bold', marginVertical: 2},
                   ]}>
                   Associado:{' '}
-                  <Text style={{ fontWeight: '100' }}>
+                  <Text style={{fontWeight: '100'}}>
                     {conteudoModal['Nome do dependente']}
                   </Text>
                 </Text>
@@ -147,10 +146,10 @@ const ConsultarVendas = memo(props => {
                   <Text
                     style={[
                       styles.textoM,
-                      { fontWeight: 'bold', marginVertical: 2 },
+                      {fontWeight: 'bold', marginVertical: 2},
                     ]}>
                     Valor:
-                    <Text style={{ fontWeight: '100' }}>
+                    <Text style={{fontWeight: '100'}}>
                       {' '}
                       {formatCurrency.format(conteudoModal.Valor, {
                         code: 'BRL',
@@ -161,10 +160,10 @@ const ConsultarVendas = memo(props => {
                   <Text
                     style={[
                       styles.textoM,
-                      { fontWeight: 'bold', marginVertical: 2 },
+                      {fontWeight: 'bold', marginVertical: 2},
                     ]}>
                     Data:
-                    <Text style={{ fontWeight: '100' }}>
+                    <Text style={{fontWeight: '100'}}>
                       {' '}
                       {conteudoModal.Data}
                     </Text>
@@ -179,7 +178,7 @@ const ConsultarVendas = memo(props => {
                 <TouchableOpacity
                   onPress={() => {
                     setConteudoModal(null);
-                    excluirVenda(conteudoModal.Nr_lancamento).then(a =>
+                    excluirVenda(conteudoModal.Nr_lancamento).then((a) =>
                       console.log(a),
                     );
                     getConsulta(conteudoModal.Data);
@@ -191,7 +190,7 @@ const ConsultarVendas = memo(props => {
                     width: '50%',
                     alignItems: 'center',
                   }}>
-                  <Text style={{ color: danger }}>Excluir</Text>
+                  <Text style={{color: danger}}>Excluir</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => setModal(false)}
@@ -202,7 +201,7 @@ const ConsultarVendas = memo(props => {
                     width: '50%',
                     alignItems: 'center',
                   }}>
-                  <Text style={{ color: sucess }}>FECHAR</Text>
+                  <Text style={{color: sucess}}>FECHAR</Text>
                 </TouchableOpacity>
               </View>
             </>
@@ -228,7 +227,7 @@ const ConsultarVendas = memo(props => {
                   width: '100%',
                   alignItems: 'center',
                 }}>
-                <Text style={{ color: sucess }}>FECHAR</Text>
+                <Text style={{color: sucess}}>FECHAR</Text>
               </TouchableOpacity>
             </>
           ) : (
@@ -242,7 +241,7 @@ const ConsultarVendas = memo(props => {
                   paddingHorizontal: 5,
                   width: '100%',
                 }}>
-                <Text style={{ fontSize: 20, textAlign: 'justify' }}>
+                <Text style={{fontSize: 20, textAlign: 'justify'}}>
                   {retornoExclusao}
                 </Text>
               </View>
@@ -256,7 +255,7 @@ const ConsultarVendas = memo(props => {
                   width: '100%',
                   alignItems: 'center',
                 }}>
-                <Text style={{ color: sucess }}>FECHAR</Text>
+                <Text style={{color: sucess}}>FECHAR</Text>
               </TouchableOpacity>
             </>
           )}
@@ -282,8 +281,8 @@ const ConsultarVendas = memo(props => {
                 mode="outlined"
                 onChange={onChange}
                 theme={themeLight}
-                style={{ width: '80%' }}
-                render={props => {
+                style={{width: '80%'}}
+                render={(props) => {
                   if (show) {
                     return (
                       <DateTimePicker
@@ -323,11 +322,11 @@ const ConsultarVendas = memo(props => {
                 onPress={getConsulta}>
                 <Image
                   source={imagens.search}
-                  style={{ width: 25, height: 25, tintColor: 'white' }}
+                  style={{width: 25, height: 25, tintColor: 'white'}}
                 />
               </TouchableOpacity>
             </View>
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{flexDirection: 'row'}}>
               <Checkbox
                 status={mes ? 'checked' : 'unchecked'}
                 onPress={() => {
@@ -336,20 +335,20 @@ const ConsultarVendas = memo(props => {
                 color={primary}
               />
               <Text
-                style={{ paddingTop: 10, color: primary }}
+                style={{paddingTop: 10, color: primary}}
                 onPress={() => setMes(!mes)}>
                 Consulta mês inteiro
               </Text>
             </View>
           </View>
         }>
-        <View style={{ width: '95%' }}>
+        <View style={{width: '95%'}}>
           {load ? (
             <ActivityIndicator size={'large'} color={primary} />
           ) : vendas.length > 0 ? (
             <FlatList
               data={vendas}
-              renderItem={({ item }) => {
+              renderItem={({item}) => {
                 return (
                   <TouchableOpacity
                     onPress={() => {
@@ -380,20 +379,20 @@ const ConsultarVendas = memo(props => {
                         <Text
                           style={[
                             styles.textoM,
-                            { fontWeight: 'bold', marginVertical: 2 },
+                            {fontWeight: 'bold', marginVertical: 2},
                           ]}>
                           Lançamento:{' '}
-                          <Text style={{ fontWeight: '100' }}>
+                          <Text style={{fontWeight: '100'}}>
                             {item.Nr_lancamento}
                           </Text>
                         </Text>
                         <Text
                           style={[
                             styles.textoM,
-                            { fontWeight: 'bold', marginVertical: 2 },
+                            {fontWeight: 'bold', marginVertical: 2},
                           ]}>
                           Matricula:
-                          <Text style={{ fontWeight: '100' }}>
+                          <Text style={{fontWeight: '100'}}>
                             {' '}
                             {item.Matricula}
                           </Text>
@@ -406,10 +405,10 @@ const ConsultarVendas = memo(props => {
                         <Text
                           style={[
                             styles.textoM,
-                            { fontWeight: 'bold', marginVertical: 2 },
+                            {fontWeight: 'bold', marginVertical: 2},
                           ]}>
                           Associado:{' '}
-                          <Text style={{ fontWeight: '100' }}>
+                          <Text style={{fontWeight: '100'}}>
                             {item['Nome do dependente']}
                           </Text>
                         </Text>
@@ -433,24 +432,21 @@ const ConsultarVendas = memo(props => {
                         <Text
                           style={[
                             styles.textoM,
-                            { fontWeight: 'bold', marginVertical: 2 },
+                            {fontWeight: 'bold', marginVertical: 2},
                           ]}>
                           Valor:
-                          <Text style={{ fontWeight: '100' }}>
+                          <Text style={{fontWeight: '100'}}>
                             {' '}
-                            {formatCurrency.format(item.Valor, { code: 'BRL' })}
+                            {formatCurrency.format(item.Valor, {code: 'BRL'})}
                           </Text>
                         </Text>
                         <Text
                           style={[
                             styles.textoM,
-                            { fontWeight: 'bold', marginVertical: 2 },
+                            {fontWeight: 'bold', marginVertical: 2},
                           ]}>
                           Data:
-                          <Text style={{ fontWeight: '100' }}>
-                            {' '}
-                            {item.Data}
-                          </Text>
+                          <Text style={{fontWeight: '100'}}> {item.Data}</Text>
                         </Text>
                       </View>
                     </View>
@@ -479,11 +475,11 @@ const ConsultarVendas = memo(props => {
             borderRadius: 50,
             marginBottom: 10,
           }}>
-          <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 10 }}>
+          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 10}}>
             ATENDIMENTOS
           </Text>
-          <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 20 }}>
-            {vendas.length}
+          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>
+            {vendas.length ? vendas.length : '0'}
           </Text>
         </View>
         <View
@@ -495,14 +491,19 @@ const ConsultarVendas = memo(props => {
             borderRadius: 50,
             marginBottom: 10,
           }}>
-          <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 10 }}>
+          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 10}}>
             TOTAL
           </Text>
-          <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 20 }}>
-            {formatCurrency.format(
-              vendas.reduce((total, valor) => total + Number(valor.Valor), 0),
-              { code: 'BRL' },
-            )}
+          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>
+            {vendas.valor
+              ? formatCurrency.format(
+                  vendas.reduce(
+                    (total, valor) => total + Number(valor.Valor),
+                    0,
+                  ),
+                  {code: 'BRL'},
+                )
+              : 'R$ 0,00'}
           </Text>
         </View>
       </View>

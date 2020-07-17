@@ -3,12 +3,13 @@ import {useEffect, useState} from 'react';
 import {
   View,
   Text,
-  Modal,
+  FlatList,
   StatusBar,
   StyleSheet,
   Image,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import icone from '../assets/img/abepom.png';
 import api from '../api';
@@ -110,6 +111,7 @@ export default function Administrador(props) {
       console.log(error);
     }
   };
+
   return (
     <>
       <StatusBar backgroundColor={primary} barStyle="light-content" />
@@ -132,9 +134,47 @@ export default function Administrador(props) {
             onChangeText={setBusca}
           />
         </View>
-        <ScrollView>
-          {farmacias &&
-            farmacias.map((farmacia, i) => {
+        {farmacias ? (
+          <ScrollView>
+            <FlatList
+              data={farmacias}
+              keyExtractor={(item, index) => index}
+              renderItem={({item}) => {
+                let farmacia = item;
+                console.log(item);
+                return (
+                  <View style={styles.item}>
+                    <View style={{width: '75%'}}>
+                      <Text style={styles.texto}>
+                        <Text style={styles.textoNegrito}>NOME:</Text>{' '}
+                        {farmacia.Nome_fantasia}
+                      </Text>
+                      <Text style={styles.texto}>
+                        <Text style={styles.textoNegrito}>DOCUMENTO:</Text>{' '}
+                        {farmacia.doc}
+                      </Text>
+                      <Text style={styles.texto}>
+                        <Text style={styles.textoNegrito}>USUARIO:</Text>{' '}
+                        {farmacia.usuario}
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      style={styles.acessar}
+                      onPress={() =>
+                        conectar(
+                          farmacia.nivel == '1'
+                            ? farmacia.doc
+                            : farmacia.usuario,
+                          farmacia.Senha,
+                        )
+                      }>
+                      <Text style={{color: 'white'}}>ACESSAR</Text>
+                    </TouchableOpacity>
+                  </View>
+                );
+              }}
+            />
+            {/* {farmacias.map((farmacia, i) => {
               return (
                 <View key={`${i}`} style={styles.item}>
                   <View style={{width: '75%'}}>
@@ -163,8 +203,13 @@ export default function Administrador(props) {
                   </TouchableOpacity>
                 </View>
               );
-            })}
-        </ScrollView>
+            })} */}
+          </ScrollView>
+        ) : (
+          <View>
+            <ActivityIndicator />
+          </View>
+        )}
       </View>
     </>
   );

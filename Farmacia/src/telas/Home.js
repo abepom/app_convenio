@@ -1,38 +1,26 @@
-import React, { memo, useMemo } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-
-} from 'react-native';
-import styles, {
-  primary,
-  sucessBack,
-  sucess,
-  background,
-} from '../utils/Style';
+import React, {memo, useMemo} from 'react';
+import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import styles, {primary, sucessBack, sucess, background} from '../utils/Style';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import icone from '../assets/img/abepom.png';
-import { menu } from '../utils/imagens'
+import {menu} from '../utils/imagens';
 import useConvenio from '../../Store/Convenio';
 
-export default memo(props => {
+export default memo((props) => {
   const [convenio] = useConvenio();
-  console.log(convenio)
+  console.log(convenio);
   return (
-    <View style={{ width: '100%', backgroundColor: background }}>
+    <View style={{width: '100%', backgroundColor: background}}>
       <View style={styless.container}>
         <TouchableOpacity
           style={styless.menu}
           onPress={() => props.navigation.toggleDrawer()}>
-          <Icone style={{ color: 'white' }} name={'menu'} size={28} />
+          <Icone style={{color: 'white'}} name={'menu'} size={28} />
         </TouchableOpacity>
         <Image
           source={icone}
-          style={{ width: 40, height: 40, marginHorizontal: 10 }}
+          style={{width: 40, height: 40, marginHorizontal: 10}}
         />
         <Text style={styless.titulo}>ABEPOM</Text>
       </View>
@@ -54,28 +42,28 @@ export default memo(props => {
       {convenio.efetuarVenda && (
         <View style={styles.linhaMenu}>
           <TouchableOpacity
-            style={[styles.itemMenu, { backgroundColor: sucessBack }]}
+            style={[styles.itemMenu, {backgroundColor: sucessBack}]}
             onPress={() => props.navigation.navigate('EfetuarVenda', convenio)}>
             <Image
               source={require('../assets/img/money.png')}
               style={styless.imgMenu}
               tintColor={primary}
             />
-            <Text style={[styles.textMenu, { color: sucess }]}>
+            <Text style={[styles.textMenu, {color: sucess}]}>
               Efetuar Venda
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.itemMenu, { backgroundColor: sucessBack }]}
+            style={[styles.itemMenu, {backgroundColor: sucessBack}]}
             onPress={() =>
-              props.navigation.navigate('ConsultarVendas', { load: new Date() })
+              props.navigation.navigate('ConsultarVendas', {load: new Date()})
             }>
             <Image
               source={require('../assets/img/bill.png')}
               style={styless.imgMenu}
               tintColor={primary}
             />
-            <Text style={[styles.textMenu, { color: sucess }]}>
+            <Text style={[styles.textMenu, {color: sucess}]}>
               Consultar Vendas
             </Text>
           </TouchableOpacity>
@@ -85,7 +73,7 @@ export default memo(props => {
         <TouchableOpacity
           style={styles.itemMenu}
           onPress={() => {
-            props.navigation.navigate('Perfil', { id_gds: convenio.id_gds });
+            props.navigation.navigate('Perfil', {id_gds: convenio.id_gds});
           }}>
           <Image
             source={require('../assets/img/portfolio.png')}
@@ -97,7 +85,7 @@ export default memo(props => {
         <TouchableOpacity
           style={styles.itemMenu}
           onPress={() => {
-            props.navigation.navigate('Avaliacao', { id_gds: convenio.id_gds });
+            props.navigation.navigate('Avaliacao', {id_gds: convenio.id_gds});
           }}>
           <Image
             source={require('../assets/img/review.png')}
@@ -105,6 +93,20 @@ export default memo(props => {
             tintColor={primary}
           />
           <Text style={styles.textMenu}>AVALIAÇÕES</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.linhaMenu}>
+        <TouchableOpacity
+          style={styles.itemMenu}
+          onPress={() =>
+            props.navigation.navigate('RepassesFuturos', convenio)
+          }>
+          <Image
+            source={require('../assets/img/statistics.png')}
+            style={styless.imgMenu}
+            tintColor={primary}
+          />
+          <Text style={styles.textMenu}>Repasses Futuros</Text>
         </TouchableOpacity>
       </View>
       {/* <Button title='setLoad' onPress={() => setLoad('Avaliacoes')} />
@@ -134,5 +136,5 @@ const styless = StyleSheet.create({
     fontSize: 18,
     color: 'white',
   },
-  imgMenu: { width: 40, height: 40 },
+  imgMenu: {width: 40, height: 40},
 });

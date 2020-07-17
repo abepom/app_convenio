@@ -1,11 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { View, Image, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 
 import StatusBar from '../components/StatusBar';
 
 import logo from '../assets/img/logo_abepom_branca.png';
-import { TextInput } from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import styles, {
   danger,
   danverBackground,
@@ -16,11 +23,11 @@ import styles, {
 import mask from '../utils/maskUsuario';
 import api from '../api';
 import theme from '../utils/theme';
-import { ScrollView } from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 import useUsuario from '../../Store/Usuario';
 import useConvenio from '../../Store/Convenio';
 
-const Login = props => {
+const Login = (props) => {
   const [reset, setReset] = useState(
     props.navigation.state.params
       ? props.navigation.state.params.resetSenha
@@ -30,8 +37,8 @@ const Login = props => {
     erro: false,
     mensagem: '',
   });
-  const [doc, setdoc] = useState('');
-  const [senha, setSenha] = useState('');
+  const [doc, setdoc] = useState('92.665.611/0001-77');
+  const [senha, setSenha] = useState('4767154');
   const [teclado, setTeclado] = useState('default');
   const [nome, setNome] = useState('');
   const [, setUsuario] = useUsuario();
@@ -40,7 +47,7 @@ const Login = props => {
   useEffect(() => {
     if (state.erro) {
       setTimeout(() => {
-        setState({ ...state, erro: false });
+        setState({...state, erro: false});
       }, 4000);
     }
   }, [state.erro]);
@@ -60,8 +67,11 @@ const Login = props => {
   const conectar = async () => {
     let token = await getToken();
 
-    if (doc === 'abepom' && senha === 'ab3p0ms3d3' || doc === 'Abepom' && senha === 'ab3p0ms3d3') {
-      setUsuario({ usuario: doc.toLowerCase(), senha });
+    if (
+      (doc === 'abepom' && senha === 'ab3p0ms3d3') ||
+      (doc === 'Abepom' && senha === 'ab3p0ms3d3')
+    ) {
+      setUsuario({usuario: doc.toLowerCase(), senha});
       convenio = {
         id_gds: '',
         nome_parceiro: 'ADMINISTRADOR',
@@ -77,12 +87,9 @@ const Login = props => {
       props.navigation.navigate('Administrador');
     }
 
-
     if (doc.length > 1 && senha) {
-
-
       try {
-        const { data } = await api.post('/Login', {
+        const {data} = await api.post('/Login', {
           usuario: doc,
           senha,
           token,
@@ -90,7 +97,7 @@ const Login = props => {
 
         let convenio;
         if (!data.erro) {
-          setUsuario({ usuario: doc, senha });
+          setUsuario({usuario: doc, senha});
           convenio = {
             id_gds: data.id_gds,
             nome_parceiro: data.nome_parceiro,
@@ -105,13 +112,13 @@ const Login = props => {
           setConv(convenio);
           props.navigation.navigate('App');
         } else {
-          setState({ erro: true, mensagem: 'Usuário ou Senha incorretos' });
+          setState({erro: true, mensagem: 'Usuário ou Senha incorretos'});
         }
       } catch (error) {
         alert(`${error}  	`);
       }
     } else {
-      setState({ erro: true, mensagem: 'Usuário ou Senha incorretos' });
+      setState({erro: true, mensagem: 'Usuário ou Senha incorretos'});
     }
   };
 
@@ -119,24 +126,24 @@ const Login = props => {
     <>
       <StatusBar />
       <View style={estilos.conteiner}>
-        <ScrollView style={{ width: '100%' }}>
+        <ScrollView style={{width: '100%'}}>
           <Image
-            style={[styles.logo, { marginTop: '10%', alignSelf: 'center' }]}
+            style={[styles.logo, {marginTop: '10%', alignSelf: 'center'}]}
             source={logo}
           />
-          <View style={{ alignItems: 'center' }}>
+          <View style={{alignItems: 'center'}}>
             <Text style={[styles.white, styles.textoGG]}>ABEPOM</Text>
             <Text style={[styles.white, styles.textoM]}>FARMÁCIA</Text>
           </View>
 
-          <View style={{ marginTop: 20, width: '100%' }}>
+          <View style={{marginTop: 20, width: '100%'}}>
             <TextInput
               label="CNPJ / CPF / Usuário"
               dense
               mode="outlined"
               theme={theme}
               value={doc}
-              onChangeText={text => mask(text, setdoc, setTeclado)}
+              onChangeText={(text) => mask(text, setdoc, setTeclado)}
               keyboardType={teclado}
               style={[styles.imput]}
             />
@@ -155,7 +162,7 @@ const Login = props => {
           </View>
           {state.erro && (
             <View style={[estilos.retornoBackend, estilos.mensagemErro]}>
-              <Text style={{ color: danger }}>{state.mensagem}</Text>
+              <Text style={{color: danger}}>{state.mensagem}</Text>
             </View>
           )}
           {reset && (
@@ -175,7 +182,7 @@ const Login = props => {
           <View style={estilos.buttonView}>
             <TouchableOpacity
               onPress={() => {
-                props.navigation.navigate('RestartPass', { noLogin: true });
+                props.navigation.navigate('RestartPass', {noLogin: true});
               }}
               style={[
                 styles.link,
@@ -195,7 +202,7 @@ const Login = props => {
                 },
               ]}
               onPress={() => conectar()}>
-              <Text style={{ color: primary }}>ENTRAR</Text>
+              <Text style={{color: primary}}>ENTRAR</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
