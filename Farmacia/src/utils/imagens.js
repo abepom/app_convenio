@@ -19,8 +19,10 @@ import star from '../assets/img/star.png';
 import star_cheia from '../assets/img/star_Cheia.png';
 import trash from '../assets/img/trash.png';
 import menu from '../assets/img/open_menu.png';
+import statistics from '../assets/img/statistics.png';
 
 export default {
+  statistics,
   contact,
   trash,
   menu,

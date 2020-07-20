@@ -1,5 +1,13 @@
 import React, {useState, useEffect, memo} from 'react';
-import {View, Text, ScrollView, SafeAreaView,Image,Alert,TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  SafeAreaView,
+  Image,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
 import {DrawerNavigatorItems} from 'react-navigation-drawer';
 import styles, {primaryBack, primary, danger} from '../utils/Style';
 
@@ -15,7 +23,6 @@ const Drawer = memo((props) => {
   const [, setLoad] = useLoad();
   const [user] = useUsuario();
   useEffect(() => {
-   
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
       setLoad(remoteMessage.data.tela);
       Alert.alert(
@@ -42,25 +49,34 @@ const Drawer = memo((props) => {
 
   const [convenio] = useConvenio();
   useEffect(() => {
-    console.log(user.usuario !='abepom')
-    if(user.usuario !='abepom') {
-
-      menu.items.map(item => {
-     
+    console.log(user.usuario != 'abepom');
+    if (user.usuario != 'abepom') {
+      menu.items.map((item) => {
         switch (item.key) {
           case 'Trocar':
             break;
+
           default:
-            itens.push({ ...item });
+            itens.push({...item});
             break;
-          }
+        }
       });
-      setMenu({ ...props, items: itens });
-      console.log('teste')
-    }else{
-      setMenu(props );
+      return setMenu({...props, items: itens});
     }
-    console.log(menu)
+    if (convenio.nivel != 1) {
+      menu.items.map((item) => {
+        switch (item.key) {
+          case 'RepassesFuturos':
+            break;
+          default:
+            itens.push({...item});
+            break;
+        }
+      });
+      return setMenu({...props, items: itens});
+
+      setMenu(props);
+    }
   }, [props]);
 
   return (
@@ -119,7 +135,6 @@ const Drawer = memo((props) => {
           {...menu}
           itensConteinerStyles={{width: '100%', backgroundColor: 'blue'}}
         />
-        
       </SafeAreaView>
     </ScrollView>
   );
