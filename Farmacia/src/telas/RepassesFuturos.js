@@ -10,6 +10,7 @@ import MenuTop from './../components/MenuTop';
 import useConvenio from './../../Store/Convenio';
 import api from './../api';
 import {primary} from './../utils/Style';
+import formatCurrency from 'currency-formatter';
 
 export default function RepassesFuturos(props) {
   const [convenio] = useConvenio();
@@ -17,19 +18,24 @@ export default function RepassesFuturos(props) {
   useEffect(() => {
     api
       .get('/repassesFuturo', {params: {mes: '07', ano: '2020', id: 98}})
-      .then(({data}) => setRepasses(data));
+      .then(({data}) => {
+        let ordenado = data.sort((a, b) => {
+          if (a.Nr_lancamento < b.Nr_lancamento) {
+            return 1;
+          }
+          if (a.Nr_lancamento > b.Nr_lancamento) {
+            return -1;
+          }
+          // a must be equal to b
+          return 0;
+        });
+        setRepasses(data);
+        console.log(ordenado);
+      });
   }, []);
   return (
     <>
-      <MenuTop
-        drawer
-        {...props}
-        title={'Repasses Futuro'}
-        header={
-          <View style={{width: '80%', alignItems: 'center'}}>
-            <Text>Header</Text>
-          </View>
-        }>
+      <MenuTop drawer {...props} title={'Repasses Futuro'}>
         <FlatList
           data={repasses}
           keyExtractor={(item) => item.Nr_lancamento}
@@ -51,7 +57,7 @@ export default function RepassesFuturos(props) {
                     <Text
                       style={{
                         fontWeight: 'bold',
-                        fontSize: 8,
+                        fontSize: 10,
                         color: primary,
                       }}>
                       Matricula:{' '}
@@ -60,7 +66,7 @@ export default function RepassesFuturos(props) {
                     <Text
                       style={{
                         fontWeight: 'bold',
-                        fontSize: 8,
+                        fontSize: 10,
                         color: primary,
                       }}>
                       Lançamento:{' '}
@@ -70,7 +76,7 @@ export default function RepassesFuturos(props) {
                       <Text
                         style={{
                           fontWeight: 'bold',
-                          fontSize: 8,
+                          fontSize: 10,
                           color: primary,
                         }}>
                         Data:{' '}
@@ -89,7 +95,7 @@ export default function RepassesFuturos(props) {
                         <Text
                           style={{
                             fontWeight: 'bold',
-                            fontSize: 8,
+                            fontSize: 10,
                             color: primary,
                           }}>
                           Dependente:{' '}
@@ -100,7 +106,7 @@ export default function RepassesFuturos(props) {
                     <Text
                       style={{
                         fontWeight: 'bold',
-                        fontSize: 8,
+                        fontSize: 10,
                         color: primary,
                       }}>
                       Associado:{' '}
@@ -110,12 +116,14 @@ export default function RepassesFuturos(props) {
                       <Text
                         style={{
                           fontWeight: 'bold',
-                          fontSize: 8,
+                          fontSize: 10,
                           color: primary,
                         }}>
                         Valor:{' '}
                       </Text>
-                      <Text style={{fontSize: 18}}>R$ {item.subtotal}</Text>
+                      <Text style={{fontSize: 18}}>
+                        {formatCurrency.format(item.subtotal, {code: 'BRL'})}
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -125,6 +133,56 @@ export default function RepassesFuturos(props) {
           ListEmptyComponent={() => <ActivityIndicator />}
         />
       </MenuTop>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignContent: 'space-between',
+          width: '95%',
+          alignSelf: 'center',
+          marginVertical: 5,
+          marginTop: 10,
+        }}>
+        <View
+          style={{
+            width: '48%',
+            marginRight: '2%',
+            alignItems: 'center',
+            backgroundColor: primary,
+            borderRadius: 50,
+            marginBottom: 10,
+          }}>
+          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 10}}>
+            ATENDIMENTOS
+          </Text>
+          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>
+            {repasses ? repasses.length : '0'}
+          </Text>
+        </View>
+        <View
+          style={{
+            width: '48%',
+            marginLeft: '2%',
+            alignItems: 'center',
+            backgroundColor: primary,
+            borderRadius: 50,
+            marginBottom: 10,
+          }}>
+          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 10}}>
+            TOTAL
+          </Text>
+          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>
+            {repasses
+              ? formatCurrency.format(
+                  repasses.reduce(
+                    (total, subtotal) => total + Number(subtotal.subtotal),
+                    0,
+                  ),
+                  {code: 'BRL'},
+                )
+              : 'R$ 0,00'}
+          </Text>
+        </View>
+      </View>
     </>
   );
 }

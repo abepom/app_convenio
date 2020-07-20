@@ -48,14 +48,10 @@ export default function Administrador(props) {
     if (isNaN(busca)) {
       //texto
 
-      console.log('sim');
       filtro = todasFarmacias.filter((i) => {
         return (
           i.Nome_fantasia.toUpperCase().indexOf(busca.toUpperCase()) >= 0 ||
           i.usuario.toUpperCase().indexOf(busca.toUpperCase()) >= 0
-
-          //documento.indexOf(busca.replace(/[./-]/g, '') )
-          // i.usuario.toUpperCase().indexOf(busca.toUpperCase()) >=0
         );
       });
     } else {
@@ -68,9 +64,6 @@ export default function Administrador(props) {
             .replace(/[./-]/g, '')
             .indexOf(busca.replace(/[./-]/g, '')) >= 0 ||
           documento.indexOf(busca.replace(/[./-]/g, '')) >= 0
-
-          //documento.indexOf(busca.replace(/[./-]/g, '') )
-          // i.usuario.toUpperCase().indexOf(busca.toUpperCase()) >=0
         );
       });
     }
@@ -141,7 +134,7 @@ export default function Administrador(props) {
               keyExtractor={(item, index) => index}
               renderItem={({item}) => {
                 let farmacia = item;
-                console.log(item);
+
                 return (
                   <View style={styles.item}>
                     <View style={{width: '75%'}}>

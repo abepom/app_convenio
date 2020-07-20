@@ -95,22 +95,22 @@ export default memo((props) => {
           <Text style={styles.textMenu}>AVALIAÇÕES</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.linhaMenu}>
-        <TouchableOpacity
-          style={styles.itemMenu}
-          onPress={() =>
-            props.navigation.navigate('RepassesFuturos', convenio)
-          }>
-          <Image
-            source={require('../assets/img/statistics.png')}
-            style={styless.imgMenu}
-            tintColor={primary}
-          />
-          <Text style={styles.textMenu}>Repasses Futuros</Text>
-        </TouchableOpacity>
-      </View>
-      {/* <Button title='setLoad' onPress={() => setLoad('Avaliacoes')} />
-        <Button title='setusurio' onPress={() => { setusurio({ ...conveniado, data: new Date }) }} /> */}
+      {convenio.nivel == 1 && (
+        <View style={styles.linhaMenu}>
+          <TouchableOpacity
+            style={styles.itemMenu}
+            onPress={() =>
+              props.navigation.navigate('RepassesFuturos', convenio)
+            }>
+            <Image
+              source={require('../assets/img/statistics.png')}
+              style={styless.imgMenu}
+              tintColor={primary}
+            />
+            <Text style={styles.textMenu}>Repasses Futuros</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 });
