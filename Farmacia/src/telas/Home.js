@@ -106,7 +106,7 @@ export default memo((props) => {
           </TouchableOpacity>
         </View>
         {convenio.nivel == 1 && (
-          <View style={[styles.linhaMenu, {marginBottom: 30}]}>
+          <View style={[styles.linhaMenu, {marginBottom: 100}]}>
             <TouchableOpacity
               style={styles.itemMenu}
               onPress={() =>

@@ -13,25 +13,22 @@ import {primary} from './../utils/Style';
 import formatCurrency from 'currency-formatter';
 
 export default function RepassesFuturos(props) {
-  const [convenio] = useConvenio();
+  const [{id_gds}] = useConvenio();
   const [repasses, setRepasses] = useState();
   useEffect(() => {
-    api
-      .get('/repassesFuturo', {params: {mes: '07', ano: '2020', id: 98}})
-      .then(({data}) => {
-        let ordenado = data.sort((a, b) => {
-          if (a.Nr_lancamento < b.Nr_lancamento) {
-            return 1;
-          }
-          if (a.Nr_lancamento > b.Nr_lancamento) {
-            return -1;
-          }
-          // a must be equal to b
-          return 0;
-        });
-        setRepasses(data);
-        console.log(ordenado);
+    api.get('/repassesFuturo', {params: {id: id_gds}}).then(({data}) => {
+      let ordenado = data.sort((a, b) => {
+        if (a.Nr_lancamento < b.Nr_lancamento) {
+          return 1;
+        }
+        if (a.Nr_lancamento > b.Nr_lancamento) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
       });
+      setRepasses(data);
+    });
   }, []);
   return (
     <>
@@ -81,7 +78,7 @@ export default function RepassesFuturos(props) {
                         }}>
                         Data:{' '}
                       </Text>
-                      <Text> {data.toLocaleString().substr(0, 10)}</Text>
+                      <Text> {data.toLocaleDateString()}</Text>
                     </View>
                   </View>
                   <View

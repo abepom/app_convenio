@@ -10,8 +10,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "assemble": "cd android && gradlew clean && gradlew assembleRelease && cd ..",
-    "bundle": "cd android && gradlew clean && gradlew bundleRelease && gradlew assembleRelease && cd .. && react-native run-android",
+    "assemble": "cd android && gradlew assembleRelease && cd ..",
+    "bundle": "cd android && gradlew bundleRelease && gradlew assembleRelease && cd .. && react-native run-android",
     "apk": "react-native run-android --variant=release",
     "ao": "emulator -avd ao"
   },
