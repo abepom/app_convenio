@@ -28,6 +28,7 @@ import useUsuario from '../../Store/Usuario';
 import useConvenio from '../../Store/Convenio';
 
 const Login = (props) => {
+  console.log(props);
   const [reset, setReset] = useState(
     props.navigation.state.params
       ? props.navigation.state.params.resetSenha
@@ -174,7 +175,8 @@ const Login = (props) => {
                 }, 3000)
               }>
               <Text style={styles.white}>
-                Você recebera um email com sua senha
+                Você recebera sua senha no email
+                {props.navigation.state.params.email}
               </Text>
             </View>
           )}

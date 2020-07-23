@@ -45,7 +45,6 @@ const CadastrarVenda = (props) => {
       setModal(true);
       setLoad('ConsultarVendas');
       setMsnModal(dados.data);
-      console.log(dados.data);
     } else {
       alert('valor em branco');
       setCarregando(false);
@@ -77,7 +76,7 @@ const CadastrarVenda = (props) => {
             style={{
               backgroundColor: '#fff',
               width: '90%',
-              height: msnModal.limite ? 270 : msnModal.data ? 250 : 170,
+              height: msnModal.limite ? 270 : msnModal.data ? 250 : '30%',
               alignItems: 'center',
 
               borderRadius: 5,
@@ -85,7 +84,7 @@ const CadastrarVenda = (props) => {
             }}>
             <Text
               style={{
-                fontSize: 20,
+                fontSize: 18,
                 color: primary,
                 paddingHorizontal: 20,
                 marginTop: 10,
@@ -93,13 +92,14 @@ const CadastrarVenda = (props) => {
                 textAlign: 'center',
               }}>
               {msnModal.mensagem}
-              {msnModal.limite &&
-                ` \n Limite atual é de ${formatCurrency.format(
-                  msnModal.limite,
-                  {
-                    code: 'BRL',
-                  },
-                )}`}
+              {msnModal.limite
+                ? ` \n Limite atual é de ${formatCurrency.format(
+                    msnModal.limite,
+                    {
+                      code: 'BRL',
+                    },
+                  )}`
+                : null}
             </Text>
             {msnModal.data && (
               <View

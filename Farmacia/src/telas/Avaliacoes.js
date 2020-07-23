@@ -58,7 +58,7 @@ export default function telas(props) {
       let mediaTemp;
       let votosTemp;
       let avaliacoesTemp = [];
-      let pendentesTemp;
+     
       data.forEach((dados, i) => {
         console.log(dados);
         if (dados.votos) {
@@ -106,7 +106,7 @@ export default function telas(props) {
                     { color: primary, paddingVertical: 10 },
                   ]}>
                   {' '}
-                  Solicitar Excluisão do comentário selecionado?
+                  Solicitar Exclusão do comentário selecionado?
                 </Text>
                 <View
                   style={{
@@ -254,13 +254,13 @@ export default function telas(props) {
             }}>
             <Text
               style={[styles.textoG, { color: primary, marginHorizontal: 20 }]}>
-              Para remover algum comentário que possua algum conteúdo impróprio
+              Para remover algum comentário que possua algum conteúdo impróprio,
               selecione-o e marque a opção excluir.
             </Text>
             <Text
               style={[styles.textoG, { color: primary, marginHorizontal: 20 }]}>
               Esse comentário será removido imediatamente do site e irá para
-              análize dos nossos setores intenos.
+              análise dos nossos setores internos.
             </Text>
             <TouchableOpacity
               onPress={() => setModal(false)}

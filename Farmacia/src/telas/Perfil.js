@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -7,22 +7,22 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import DadosGerais from './DadosGerais';
 import Enderecos from './Enderecos';
 import AlterarSenha from './AlterarSenha';
-import styles, { primary, background } from '../utils/Style';
+import styles, {primary, background} from '../utils/Style';
 import imagens from '../utils/imagens';
 
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/abepom.png';
-import { Rating } from 'react-native-ratings';
+import {Rating} from 'react-native-ratings';
 import ImagePicker from 'react-native-image-picker';
 import api from '../api';
-import { ActivityIndicator } from 'react-native-paper';
+import {ActivityIndicator} from 'react-native-paper';
 import useConvenio from '../../Store/Convenio';
 
-const initialLayout = { width: Dimensions.get('window').width };
+const initialLayout = {width: Dimensions.get('window').width};
 
 export default function TabViewExample(props) {
   // console.log(Image.queryCache().then(a => {
@@ -41,27 +41,25 @@ export default function TabViewExample(props) {
     consultarAvaliacoes(convenio.id_gds);
   }, []);
 
-  const consultarAvaliacoes = async id_gds => {
-    setAvaliacao({ ...avaliacao, carregando: true });
-    await api
-      .get(`/user/avaliacoes`, { params: { id_gds } })
-      .then(({ data }) => {
-        data.map(({ votos, media }) => {
-          if (media) {
-            setAvaliacao({
-              ...avaliacao,
-              votos: votos ? votos : 0,
-              media: media ? media : 5.0,
-              carregando: false,
-            });
-          }
-        });
+  const consultarAvaliacoes = async (id_gds) => {
+    setAvaliacao({...avaliacao, carregando: true});
+    await api.get(`/user/avaliacoes`, {params: {id_gds}}).then(({data}) => {
+      data.map(({votos, media}) => {
+        if (media) {
+          setAvaliacao({
+            ...avaliacao,
+            votos: votos ? votos : 0,
+            media: media ? media : 5.0,
+            carregando: false,
+          });
+        }
       });
+    });
   };
   const [routes] = useState([
-    { key: '1', title: 'Dados Gerais' },
-    { key: '2', title: 'Endereços' },
-    { key: '3', title: 'Alterar Senha' },
+    {key: '1', title: 'Dados Gerais'},
+    {key: '2', title: 'Endereços'},
+    {key: '3', title: 'Alterar Senha'},
   ]);
 
   const renderScene = SceneMap({
@@ -81,17 +79,17 @@ export default function TabViewExample(props) {
         path: 'images',
       },
     };
-    ImagePicker.showImagePicker(options, resp => {
+    ImagePicker.showImagePicker(options, (resp) => {
       if (!resp.didCancel) {
         let nome = {
           name: `logomarca-${convenio.id_gds}.${
             resp.fileName.split('.')[resp.fileName.split('.').length - 1]
           }`,
         };
-        const { uri, type } = resp;
+        const {uri, type} = resp;
         const data = new FormData();
         data.append('id_gds', `${convenio.id_gds}`);
-        data.append('file', { uri, type, ...nome });
+        data.append('file', {uri, type, ...nome});
         setCarregandoIMG(true);
 
         api
@@ -100,14 +98,14 @@ export default function TabViewExample(props) {
               'Content-Type': 'multipart/form-data',
             },
           })
-          .then(a => {
+          .then((a) => {
             setConvenio({
               ...convenio,
               caminho_logomarca: a.data.caminho_logomarca,
             });
             setCarregandoIMG(false);
           })
-          .catch(e => console.log(e));
+          .catch((e) => console.log(e));
       }
     });
   };
@@ -122,11 +120,11 @@ export default function TabViewExample(props) {
         </TouchableOpacity>
         <Image
           source={icone}
-          style={{ width: 40, height: 40, marginHorizontal: 10 }}
+          style={{width: 40, height: 40, marginHorizontal: 10}}
         />
         <Text style={styless.titulo}>PERFIL</Text>
       </View>
-      <View style={[styles.row, styles.center, { marginVertical: 20 }]}>
+      <View style={[styles.row, styles.center, {marginVertical: 20}]}>
         {!carregandoIMG ? (
           convenio.caminho_logomarca ? (
             convenio.nivel < 2 ? (
@@ -137,7 +135,7 @@ export default function TabViewExample(props) {
                     source={{
                       uri: convenio.caminho_logomarca,
                     }}
-                    style={[styles.logoPP, { resizeMode: 'contain' }]}
+                    style={[styles.logoPP, {resizeMode: 'contain'}]}
                   />
 
                   <Image
@@ -158,10 +156,10 @@ export default function TabViewExample(props) {
                 source={{
                   uri: convenio.caminho_logomarca,
                 }}
-                style={[styles.logoPP, { resizeMode: 'contain' }]}
+                style={[styles.logoPP, {resizeMode: 'contain'}]}
               />
             )
-          ) : (
+          ) : convenio.nivel < 2 ? (
             <TouchableOpacity
               onPress={enviarImagem}
               style={{
@@ -174,21 +172,30 @@ export default function TabViewExample(props) {
                 source={imagens.camera}
                 style={[
                   styles.logoPP,
-                  { resizeMode: 'contain', height: 45, width: 45 },
+                  {resizeMode: 'contain', height: 45, width: 45},
                 ]}
                 tintColor={primary}
               />
             </TouchableOpacity>
+          ) : (
+            <Image
+              source={imagens.camera}
+              style={[
+                styles.logoPP,
+                {resizeMode: 'contain', height: 45, width: 45},
+              ]}
+              tintColor={primary}
+            />
           )
         ) : (
           <ActivityIndicator size={50} />
         )}
 
         <View>
-          <Text style={{ width: 150, marginHorizontal: 20, color: primary }}>
+          <Text style={{width: 150, marginHorizontal: 20, color: primary}}>
             {[convenio.nome_parceiro]}
           </Text>
-          <Text style={{ fontSize: 10, paddingLeft: 20 }}>
+          <Text style={{fontSize: 10, paddingLeft: 20}}>
             {convenio.doc && convenio.doc.length > 15
               ? `CNPJ: ${convenio.doc}`
               : `CPF: ${convenio.doc}`}
@@ -199,10 +206,10 @@ export default function TabViewExample(props) {
         ) : (
           <TouchableOpacity
             onPress={() => consultarAvaliacoes(convenio.id_gds)}
-            style={{ color: primary }}>
+            style={{color: primary}}>
             <View>
               <>
-                <View style={{ flexDirection: 'row', paddingVertical: 4 }}>
+                <View style={{flexDirection: 'row', paddingVertical: 4}}>
                   <Rating
                     type="custom"
                     ratingImage={imagens.star}
@@ -214,11 +221,11 @@ export default function TabViewExample(props) {
                   />
                 </View>
                 {avaliacao.votos > 1 ? (
-                  <Text style={{ fontSize: 10 }}>
+                  <Text style={{fontSize: 10}}>
                     {`${avaliacao.votos}`} AVALIAÇÕES
                   </Text>
                 ) : (
-                  <Text style={{ fontSize: 10 }}>
+                  <Text style={{fontSize: 10}}>
                     {`${avaliacao.votos}`} AVALIAÇÃO
                   </Text>
                 )}
@@ -228,16 +235,16 @@ export default function TabViewExample(props) {
         )}
       </View>
       <TabView
-        navigationState={{ index, routes }}
+        navigationState={{index, routes}}
         renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={initialLayout}
         lazy={true}
-        renderTabBar={props => (
+        renderTabBar={(props) => (
           <TabBar
             {...props}
-            indicatorStyle={{ backgroundColor: 'white' }}
-            style={{ backgroundColor: primary }}
+            indicatorStyle={{backgroundColor: 'white'}}
+            style={{backgroundColor: primary}}
             labelStyle={styles.textoM}
           />
         )}

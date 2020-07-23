@@ -27,7 +27,7 @@ export default function RepassesFuturos(props) {
         // a must be equal to b
         return 0;
       });
-      setRepasses(data);
+      setRepasses(ordenado);
     });
   }, []);
   return (
@@ -37,9 +37,6 @@ export default function RepassesFuturos(props) {
           data={repasses}
           keyExtractor={(item) => item.Nr_lancamento}
           renderItem={({item}) => {
-            console.log(item);
-            let data = new Date(item.Data);
-            console.log(data);
             return (
               <View
                 style={{
@@ -78,7 +75,7 @@ export default function RepassesFuturos(props) {
                         }}>
                         Data:{' '}
                       </Text>
-                      <Text> {data.toLocaleDateString()}</Text>
+                      <Text> {item.Data}</Text>
                     </View>
                   </View>
                   <View
@@ -141,7 +138,7 @@ export default function RepassesFuturos(props) {
         }}>
         <View
           style={{
-            width: '48%',
+            width: '20%',
             marginRight: '2%',
             alignItems: 'center',
             backgroundColor: primary,
@@ -149,7 +146,7 @@ export default function RepassesFuturos(props) {
             marginBottom: 10,
           }}>
           <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 10}}>
-            ATENDIMENTOS
+            VENDAS
           </Text>
           <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>
             {repasses ? repasses.length : '0'}
@@ -157,7 +154,23 @@ export default function RepassesFuturos(props) {
         </View>
         <View
           style={{
-            width: '48%',
+            width: '33%',
+            marginHorizontal: '2%',
+            alignItems: 'center',
+            backgroundColor: primary,
+            borderRadius: 50,
+            marginBottom: 10,
+          }}>
+          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 10}}>
+            MÊS DE REPASSE
+          </Text>
+          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>
+            {repasses ? repasses[0].Mesano : '0'}
+          </Text>
+        </View>
+        <View
+          style={{
+            width: '39%',
             marginLeft: '2%',
             alignItems: 'center',
             backgroundColor: primary,
