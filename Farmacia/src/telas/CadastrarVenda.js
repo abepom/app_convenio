@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import React, {useEffect, useState} from 'react';
+import {View, Text, ActivityIndicator, TouchableOpacity} from 'react-native';
+import {TextInput} from 'react-native-paper';
 import formatCurrency from 'currency-formatter';
 import Modal from 'react-native-modal';
-import styles, { primary } from '../utils/Style';
-import { TextInputMask } from 'react-native-masked-text';
-import { themeLight as theme } from '../utils/theme';
-import { ScrollView } from 'react-native-gesture-handler';
+import styles, {primary} from '../utils/Style';
+import {TextInputMask} from 'react-native-masked-text';
+import {themeLight as theme} from '../utils/theme';
+import {ScrollView} from 'react-native-gesture-handler';
 import api from '../api';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import useLoad from '../../Store/Load';
 import useConvenio from '../../Store/Convenio';
 
-const CadastrarVenda = props => {
-  const {
-    matricula,
-    dep,
-    nome,
-    id_gds,
-    titular,
-  } = props.navigation.state.params;
-  const[{usuario}] = useConvenio()
+const CadastrarVenda = (props) => {
+  const {matricula, dep, nome, id_gds, titular} = props.navigation.state.params;
+  const [{usuario}] = useConvenio();
   const [data, setData] = useState(new Date());
   const [show, setShow] = useState(false);
   const [valor, setValor] = useState('');
@@ -45,9 +39,9 @@ const CadastrarVenda = props => {
       const dados = await api({
         url: '/efetuarVendas',
         method: 'POST',
-        data: { matricula, dep, id_gds, valor, cupom, data ,usuario},
+        data: {matricula, dep, id_gds, valor, cupom, data, usuario},
       });
-    
+
       setModal(true);
       setLoad('ConsultarVendas');
       setMsnModal(dados.data);
@@ -71,19 +65,18 @@ const CadastrarVenda = props => {
   useEffect(() => {
     api
       .post(`/limite/${matricula}`)
-      .then(({ data }) => setLimiteAtual(data.limite));
+      .then(({data}) => setLimiteAtual(data.limite));
   }, []);
 
   return (
     <>
       <Modal isVisible={modal} {...props}>
-        <View
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <View
             style={{
               backgroundColor: '#fff',
               width: '90%',
-              height: msnModal.limite ? 270 : msnModal.data ? 250 : 170,
+              height: msnModal.limite ? 270 : msnModal.data ? 250 : '30%',
               alignItems: 'center',
 
               borderRadius: 5,
@@ -91,7 +84,7 @@ const CadastrarVenda = props => {
             }}>
             <Text
               style={{
-                fontSize: 20,
+                fontSize: 18,
                 color: primary,
                 paddingHorizontal: 20,
                 marginTop: 10,
@@ -99,13 +92,14 @@ const CadastrarVenda = props => {
                 textAlign: 'center',
               }}>
               {msnModal.mensagem}
-              {msnModal.limite &&
-                ` \n Limite atual é de ${formatCurrency.format(
-                  msnModal.limite,
-                  {
-                    code: 'BRL',
-                  },
-                )}`}
+              {msnModal.limite
+                ? ` \n Limite atual é de ${formatCurrency.format(
+                    msnModal.limite,
+                    {
+                      code: 'BRL',
+                    },
+                  )}`
+                : null}
             </Text>
             {msnModal.data && (
               <View
@@ -168,13 +162,13 @@ const CadastrarVenda = props => {
                   setCarregando(false);
                 }
               }}>
-              <Text style={{ color: 'white' }}>FECHAR</Text>
+              <Text style={{color: 'white'}}>FECHAR</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
       <ScrollView>
-        <View style={{ flex: 1, alignItems: 'center' }}>
+        <View style={{flex: 1, alignItems: 'center'}}>
           <View
             style={{
               marginTop: 20,
@@ -188,19 +182,19 @@ const CadastrarVenda = props => {
             }}>
             {titular != nome ? (
               <>
-                <Text style={{ color: primary }}>Dependente: {nome}</Text>
-                <Text style={{ color: primary }}>Associado: {titular}</Text>
+                <Text style={{color: primary}}>Dependente: {nome}</Text>
+                <Text style={{color: primary}}>Associado: {titular}</Text>
               </>
             ) : (
-              <Text style={{ color: primary }}>Associado: {nome}</Text>
+              <Text style={{color: primary}}>Associado: {nome}</Text>
             )}
-            <Text style={{ color: primary }}>Matrícula: {matricula}</Text>
+            <Text style={{color: primary}}>Matrícula: {matricula}</Text>
 
-            <Text style={{ color: primary }}>
+            <Text style={{color: primary}}>
               Limite:{' '}
               {limiteAtual > 150
                 ? 'R$ +150,00'
-                : formatCurrency.format(limiteAtual, { code: 'BRL' })}
+                : formatCurrency.format(limiteAtual, {code: 'BRL'})}
             </Text>
             {/* <Text style={{ color: primary }}>real para teste: {formatCurrency.format(limiteAtual, { code: 'BRL' })}</Text> */}
           </View>
@@ -213,7 +207,7 @@ const CadastrarVenda = props => {
             theme={theme}
             style={[styles.imput]}
             onFocus={() => alert(teste)}
-            render={props => {
+            render={(props) => {
               if (show) {
                 return (
                   <DateTimePicker
@@ -250,7 +244,7 @@ const CadastrarVenda = props => {
             style={[styles.imput]}
             value={valor}
             onChangeText={setValor}
-            render={props => (
+            render={(props) => (
               <TextInputMask
                 type={'money'}
                 options={{
@@ -275,15 +269,15 @@ const CadastrarVenda = props => {
             onChangeText={setCupom}
           />
 
-          <View style={{ width: '80%' }}>
+          <View style={{width: '80%'}}>
             {!carregando ? (
               <TouchableOpacity
-                style={[styles.btnDefault, { marginTop: 30 }]}
+                style={[styles.btnDefault, {marginTop: 30}]}
                 onPress={() => InformarVenda()}>
-                <Text style={{ color: 'white' }}>INFORMAR VENDA</Text>
+                <Text style={{color: 'white'}}>INFORMAR VENDA</Text>
               </TouchableOpacity>
             ) : (
-              <ActivityIndicator style={{ marginTop: 30 }} />
+              <ActivityIndicator style={{marginTop: 30}} />
             )}
           </View>
         </View>

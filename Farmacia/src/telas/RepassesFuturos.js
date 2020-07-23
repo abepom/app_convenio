@@ -13,25 +13,22 @@ import {primary} from './../utils/Style';
 import formatCurrency from 'currency-formatter';
 
 export default function RepassesFuturos(props) {
-  const [convenio] = useConvenio();
+  const [{id_gds}] = useConvenio();
   const [repasses, setRepasses] = useState();
   useEffect(() => {
-    api
-      .get('/repassesFuturo', {params: {mes: '07', ano: '2020', id: 98}})
-      .then(({data}) => {
-        let ordenado = data.sort((a, b) => {
-          if (a.Nr_lancamento < b.Nr_lancamento) {
-            return 1;
-          }
-          if (a.Nr_lancamento > b.Nr_lancamento) {
-            return -1;
-          }
-          // a must be equal to b
-          return 0;
-        });
-        setRepasses(data);
-        console.log(ordenado);
+    api.get('/repassesFuturo', {params: {id: id_gds}}).then(({data}) => {
+      let ordenado = data.sort((a, b) => {
+        if (a.Nr_lancamento < b.Nr_lancamento) {
+          return 1;
+        }
+        if (a.Nr_lancamento > b.Nr_lancamento) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
       });
+      setRepasses(ordenado);
+    });
   }, []);
   return (
     <>
@@ -40,9 +37,6 @@ export default function RepassesFuturos(props) {
           data={repasses}
           keyExtractor={(item) => item.Nr_lancamento}
           renderItem={({item}) => {
-            console.log(item);
-            let data = new Date(item.Data);
-            console.log(data);
             return (
               <View
                 style={{
@@ -81,7 +75,7 @@ export default function RepassesFuturos(props) {
                         }}>
                         Data:{' '}
                       </Text>
-                      <Text> {data.toLocaleString().substr(0, 10)}</Text>
+                      <Text> {item.Data}</Text>
                     </View>
                   </View>
                   <View
@@ -144,7 +138,7 @@ export default function RepassesFuturos(props) {
         }}>
         <View
           style={{
-            width: '48%',
+            width: '20%',
             marginRight: '2%',
             alignItems: 'center',
             backgroundColor: primary,
@@ -152,7 +146,7 @@ export default function RepassesFuturos(props) {
             marginBottom: 10,
           }}>
           <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 10}}>
-            ATENDIMENTOS
+            VENDAS
           </Text>
           <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>
             {repasses ? repasses.length : '0'}
@@ -160,7 +154,23 @@ export default function RepassesFuturos(props) {
         </View>
         <View
           style={{
-            width: '48%',
+            width: '33%',
+            marginHorizontal: '2%',
+            alignItems: 'center',
+            backgroundColor: primary,
+            borderRadius: 50,
+            marginBottom: 10,
+          }}>
+          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 10}}>
+            MÊS DE REPASSE
+          </Text>
+          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>
+            {repasses ? repasses[0].Mesano : '0'}
+          </Text>
+        </View>
+        <View
+          style={{
+            width: '39%',
             marginLeft: '2%',
             alignItems: 'center',
             backgroundColor: primary,

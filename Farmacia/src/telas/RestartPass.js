@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Image,
@@ -6,10 +6,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
-  Alert,
 } from 'react-native';
 import mask from '../utils/maskUsuario';
-import { TextInput } from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import styles, {
   danger,
   danverBackground,
@@ -21,7 +20,7 @@ import api from '../api';
 import theme from '../utils/theme';
 import MenuTop from '../components/MenuTop';
 
-const Login = props => {
+const Login = (props) => {
   const [state, setState] = useState({
     erro: false,
     mensagem: '',
@@ -37,7 +36,7 @@ const Login = props => {
   useEffect(() => {
     if (state.erro) {
       setTimeout(() => {
-        setState({ ...state, erro: false });
+        setState({...state, erro: false});
       }, 3000);
     }
   }, [state.erro]);
@@ -53,25 +52,28 @@ const Login = props => {
     }
 
     if (docu) {
-
-      const { data } = await api({
+      const {data} = await api({
         url: '/user/resetPass',
-        data: { usuario: docu },
+        data: {usuario: docu},
         method: 'post',
       });
+      console.log(data);
       data.erro
         ? setState({
-          ...state,
-          erro: data.erro,
-          mensagem: 'Verifique o Usuário.',
-        })
-        : props.navigation.navigate('Login', { resetSenha: true });
+            ...state,
+            erro: data.erro,
+            mensagem: data.mensagem ?? 'Verifique o Usuário.',
+          })
+        : props.navigation.navigate('Login', {
+            ...data,
+            resetSenha: true,
+          });
     } else {
       setState({
         ...state,
         erro: true,
         mensagem: 'Informe um usuário e senha.',
-      })
+      });
     }
     setLoad(false);
   };
@@ -94,40 +96,39 @@ const Login = props => {
               alterar sua senha.
             </Text>
 
-            <View style={{ marginTop: 20, width: '100%' }}>
+            <View style={{marginTop: 20, width: '100%'}}>
               <TextInput
                 label="CNPJ / CPF / Usuário"
                 dense
                 mode="outlined"
                 theme={theme}
                 value={doc}
-                onChangeText={text => mask(text, setdoc, setTeclado)}
+                onChangeText={(text) => mask(text, setdoc, setTeclado)}
                 keyboardType={teclado}
                 style={[styles.imput]}
               />
             </View>
             {state.erro && (
               <View style={estilos.retornoBackend}>
-                <Text style={{ color: danger }}>{state.mensagem}</Text>
+                <Text style={{color: danger}}>{state.mensagem}</Text>
               </View>
             )}
 
-            <View
-              style={[estilos.buttonView,]}>
+            <View style={[estilos.buttonView]}>
               {load ? (
                 <ActivityIndicator size={30} color="white" />
               ) : (
-                  <TouchableOpacity
-                    style={[
-                      styles.btnDefault,
-                      { paddingHorizontal: 10, backgroundColor: background },
-                    ]}
-                    onPress={resetSenha}>
-                    <Text style={[{ fontWeight: 'bold', color: primary }]}>
-                      REDEFINIR SENHA
+                <TouchableOpacity
+                  style={[
+                    styles.btnDefault,
+                    {paddingHorizontal: 10, backgroundColor: background},
+                  ]}
+                  onPress={resetSenha}>
+                  <Text style={[{fontWeight: 'bold', color: primary}]}>
+                    REDEFINIR SENHA
                   </Text>
-                  </TouchableOpacity>
-                )}
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </MenuTop>

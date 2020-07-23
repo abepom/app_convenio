@@ -61,8 +61,22 @@ const Drawer = memo((props) => {
             break;
         }
       });
+      if (convenio.nivel != 1) {
+        let items = [];
+        itens.map((item) => {
+          switch (item.key) {
+            case 'RepassesFuturos':
+              break;
+            default:
+              items.push({...item});
+              break;
+          }
+        });
+        itens = items;
+      }
       return setMenu({...props, items: itens});
     }
+
     if (convenio.nivel != 1) {
       menu.items.map((item) => {
         switch (item.key) {
@@ -74,8 +88,6 @@ const Drawer = memo((props) => {
         }
       });
       return setMenu({...props, items: itens});
-
-      setMenu(props);
     }
   }, [props]);
 

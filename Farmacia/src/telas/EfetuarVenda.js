@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
+import {RNCamera} from 'react-native-camera';
+import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
+import Modal from 'react-native-modal';
 import {
   View,
   Text,
   Image,
-  Dimensions,
   Alert,
   TextInput as TextInputrn,
   ActivityIndicator,
@@ -13,12 +15,9 @@ import MenuTop from '../components/MenuTop';
 import {TextInput} from 'react-native-paper';
 import styles, {primary, danger} from '../utils/Style';
 import imagens from '../utils/imagens';
-import QRCodeScanner from 'react-native-qrcode-scanner';
 import api from '../api';
 import Retorno from '../components/Retorno';
 import useConvenio from '../../Store/Convenio';
-import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
-import Modal from 'react-native-modal';
 
 export default (props) => {
   const vaziu = {
@@ -158,51 +157,74 @@ export default (props) => {
         {camera ? (
           <View>
             <Modal isVisible={camera}>
-              <QRCodeScanner
-                cameraStyle={{width: '100%', height: '100%'}}
-                onRead={({data}) => {
-                  let dataqrcode =
-                    data.substr(15, 4) +
-                    '-' +
-                    data.substr(13, 2) +
-                    '-' +
-                    data.substr(11, 2);
+              <RNCamera
+                ref={() => {}}
+                androidCameraPermissionOptions={{
+                  title: 'Permissao para usar a CAMERA',
+                  message:
+                    'Precisamos usar a CAMERA para efetuar a leitura do codigo do QR CODE',
+                  buttonPositive: 'Aceitar',
+                  buttonNegative: 'Cancelar',
+                }}
+                captureAudio={false}
+                onGoogleVisionBarcodesDetected={(dados) => {
+                  if (dados.barcodes[0]) {
+                    let {data} = dados.barcodes[0];
+                    let dataqrcode =
+                      data.substr(15, 4) +
+                      '-' +
+                      data.substr(13, 2) +
+                      '-' +
+                      data.substr(11, 2);
 
-                  if (dataqrcode == new Date().toJSON().substr(0, 10)) {
-                    //setImput(data.substr(0, 11));
-                    setCamera(false);
-                    consultarCartao(data.substr(0, 11)).then((dados) => {
-                      const info = dados.data;
-                      let assoc = {
-                        cartao: data.substr(0, 11),
-                        matricula: data.substr(0, 6),
-                        dep: data.substr(7, 9),
-                        nome: info.Nome,
-                        titular: info.titular,
-                      };
-                      setImput('');
-                      props.navigation.navigate('CadastrarVenda', {
-                        ...assoc,
-                        id_gds: state.id_gds,
+                    if (dataqrcode == new Date().toJSON().substr(0, 10)) {
+                      //setImput(data.substr(0, 11));
+                      setCamera(false);
+                      consultarCartao(data.substr(0, 11)).then((dados) => {
+                        const info = dados.data;
+                        let assoc = {
+                          cartao: data.substr(0, 11),
+                          matricula: data.substr(0, 6),
+                          dep: data.substr(7, 9),
+                          nome: info.Nome,
+                          titular: info.titular,
+                        };
+                        setImput('');
+                        props.navigation.navigate('CadastrarVenda', {
+                          ...assoc,
+                          id_gds: state.id_gds,
+                        });
+                        setMensagem('');
+                        setRetorno(retornopadrao);
+                        setassociado(vaziu);
+                        setAvancar(false);
                       });
-                      setMensagem('');
-                      setRetorno(retornopadrao);
-                      setassociado(vaziu);
-                      setAvancar(false);
-                    });
+                    } else {
+                      setCamera(false);
+
+                      setImput('');
+
+                      Alert.alert(
+                        'Código Invalido',
+                        'Esse QR code não é valido, por favor solicite que o associado gere um novo QR code.',
+                      );
+                    }
                   } else {
-                    setCamera(false);
-
-                    setImput('');
-
-                    Alert.alert(
-                      'Código Invalido',
-                      'Esse QR code não é valido, por favor solicite que o associado gere um novo QR code.',
-                    );
+                    console.log('nada');
                   }
                 }}
-              />
-
+                googleVisionBarcodeMode={
+                  RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeMode
+                    .NORMAL
+                }
+                googleVisionBarcodeType={
+                  RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType
+                    .ALL
+                }
+                style={{
+                  flex: 1,
+                  width: '100%',
+                }}></RNCamera>
               <View
                 style={{
                   position: 'absolute',

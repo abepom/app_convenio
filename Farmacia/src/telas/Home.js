@@ -1,5 +1,12 @@
 import React, {memo, useMemo} from 'react';
-import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import styles, {primary, sucessBack, sucess, background} from '../utils/Style';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -24,93 +31,97 @@ export default memo((props) => {
         />
         <Text style={styless.titulo}>ABEPOM</Text>
       </View>
-      <View style={styles.linhaMenu}>
-        <TouchableOpacity
-          style={styles.itemMenu}
-          onPress={() =>
-            props.navigation.navigate('ConsultarCartao', convenio)
-          }>
-          <Image
-            source={require('../assets/img/pay.png')}
-            style={styless.imgMenu}
-            tintColor={primary}
-          />
-          <Text style={styles.textMenu}>Consultar Cartão</Text>
-        </TouchableOpacity>
-      </View>
-
-      {convenio.efetuarVenda && (
-        <View style={styles.linhaMenu}>
-          <TouchableOpacity
-            style={[styles.itemMenu, {backgroundColor: sucessBack}]}
-            onPress={() => props.navigation.navigate('EfetuarVenda', convenio)}>
-            <Image
-              source={require('../assets/img/money.png')}
-              style={styless.imgMenu}
-              tintColor={primary}
-            />
-            <Text style={[styles.textMenu, {color: sucess}]}>
-              Efetuar Venda
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.itemMenu, {backgroundColor: sucessBack}]}
-            onPress={() =>
-              props.navigation.navigate('ConsultarVendas', {load: new Date()})
-            }>
-            <Image
-              source={require('../assets/img/bill.png')}
-              style={styless.imgMenu}
-              tintColor={primary}
-            />
-            <Text style={[styles.textMenu, {color: sucess}]}>
-              Consultar Vendas
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )}
-      <View style={styles.linhaMenu}>
-        <TouchableOpacity
-          style={styles.itemMenu}
-          onPress={() => {
-            props.navigation.navigate('Perfil', {id_gds: convenio.id_gds});
-          }}>
-          <Image
-            source={require('../assets/img/portfolio.png')}
-            style={styless.imgMenu}
-            tintColor={primary}
-          />
-          <Text style={styles.textMenu}>Perfil</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.itemMenu}
-          onPress={() => {
-            props.navigation.navigate('Avaliacao', {id_gds: convenio.id_gds});
-          }}>
-          <Image
-            source={require('../assets/img/review.png')}
-            style={styless.imgMenu}
-            tintColor={primary}
-          />
-          <Text style={styles.textMenu}>AVALIAÇÕES</Text>
-        </TouchableOpacity>
-      </View>
-      {convenio.nivel == 1 && (
+      <ScrollView>
         <View style={styles.linhaMenu}>
           <TouchableOpacity
             style={styles.itemMenu}
             onPress={() =>
-              props.navigation.navigate('RepassesFuturos', convenio)
+              props.navigation.navigate('ConsultarCartao', convenio)
             }>
             <Image
-              source={require('../assets/img/statistics.png')}
+              source={require('../assets/img/pay.png')}
               style={styless.imgMenu}
               tintColor={primary}
             />
-            <Text style={styles.textMenu}>Repasses Futuros</Text>
+            <Text style={styles.textMenu}>Consultar Cartão</Text>
           </TouchableOpacity>
         </View>
-      )}
+
+        {convenio.efetuarVenda && (
+          <View style={styles.linhaMenu}>
+            <TouchableOpacity
+              style={[styles.itemMenu, {backgroundColor: sucessBack}]}
+              onPress={() =>
+                props.navigation.navigate('EfetuarVenda', convenio)
+              }>
+              <Image
+                source={require('../assets/img/money.png')}
+                style={styless.imgMenu}
+                tintColor={primary}
+              />
+              <Text style={[styles.textMenu, {color: sucess}]}>
+                Efetuar Venda
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.itemMenu, {backgroundColor: sucessBack}]}
+              onPress={() =>
+                props.navigation.navigate('ConsultarVendas', {load: new Date()})
+              }>
+              <Image
+                source={require('../assets/img/bill.png')}
+                style={styless.imgMenu}
+                tintColor={primary}
+              />
+              <Text style={[styles.textMenu, {color: sucess}]}>
+                Consultar Vendas
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        <View style={styles.linhaMenu}>
+          <TouchableOpacity
+            style={styles.itemMenu}
+            onPress={() => {
+              props.navigation.navigate('Perfil', {id_gds: convenio.id_gds});
+            }}>
+            <Image
+              source={require('../assets/img/portfolio.png')}
+              style={styless.imgMenu}
+              tintColor={primary}
+            />
+            <Text style={styles.textMenu}>Perfil</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.itemMenu}
+            onPress={() => {
+              props.navigation.navigate('Avaliacao', {id_gds: convenio.id_gds});
+            }}>
+            <Image
+              source={require('../assets/img/review.png')}
+              style={styless.imgMenu}
+              tintColor={primary}
+            />
+            <Text style={styles.textMenu}>AVALIAÇÕES</Text>
+          </TouchableOpacity>
+        </View>
+        {convenio.nivel == 1 && (
+          <View style={[styles.linhaMenu, {marginBottom: 100}]}>
+            <TouchableOpacity
+              style={styles.itemMenu}
+              onPress={() =>
+                props.navigation.navigate('RepassesFuturos', convenio)
+              }>
+              <Image
+                source={require('../assets/img/statistics.png')}
+                style={styless.imgMenu}
+                tintColor={primary}
+              />
+              <Text style={styles.textMenu}>Repasses Futuros</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </ScrollView>
     </View>
   );
 });

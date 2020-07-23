@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Picker,
   Text,
@@ -7,12 +7,13 @@ import {
   ActivityIndicator,
   ScrollView,
   Image,
+  Linking,
 } from 'react-native';
 
-import { TextInput } from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import TextInputMask from 'react-native-text-input-mask';
-import styles, { white, primary, danger } from '../utils/Style';
-import { themeLight } from '../utils/theme';
+import styles, {white, primary, danger} from '../utils/Style';
+import {themeLight} from '../utils/theme';
 
 import MC from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -21,7 +22,7 @@ import api from '../api';
 import Retorno from '../components/Retorno';
 import imagens from '../utils/imagens';
 import useConvenio from '../../Store/Convenio';
-const Enderecos = props => {
+const Enderecos = (props) => {
   const info = {
     logradouro: '',
     numero: '',
@@ -42,7 +43,7 @@ const Enderecos = props => {
   const [retorno, setRetorno] = useState('');
   const [carregando, setCarregando] = useState(false);
   const [carregandoCep, setCarregandoCep] = useState(false);
-  const [erroCep, setErroCep] = useState({ erro: false, mensagem: '' });
+  const [erroCep, setErroCep] = useState({erro: false, mensagem: ''});
 
   const getCidades = async () => {
     const dados = await api.get('/cidades');
@@ -50,8 +51,8 @@ const Enderecos = props => {
   };
 
   const getEnderecosCadastrados = async () => {
-    const { data } = await api.get(`/user/enderecos`, {
-      params: { id_gds: convenio.id_gds },
+    const {data} = await api.get(`/user/enderecos`, {
+      params: {id_gds: convenio.id_gds},
     });
     setEnderecosCadastrados(data);
   };
@@ -69,29 +70,20 @@ const Enderecos = props => {
     }
   }, [retorno]);
 
-  const {
-    logradouro,
-    numero,
-    cidade,
-    fone,
-    bairro,
-    uf,
-    complemento,
-  } = endereco;
+  const {logradouro, numero, cidade, fone, bairro, uf, complemento} = endereco;
 
   return (
     <>
       {!mostrar && (
-        <Text
-          style={{ color: primary, marginVertical: 20, alignSelf: 'center' }}>
+        <Text style={{color: primary, marginVertical: 20, alignSelf: 'center'}}>
           Lista de endereços cadastrados
         </Text>
       )}
       <ScrollView>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{alignItems: 'center'}}>
           {retorno != '' ? (
             retorno.retorno ? (
-              <View style={{ width: '80%', marginRight: '5%' }}>
+              <View style={{width: '80%', marginRight: '5%'}}>
                 <Retorno type={retorno.tipo} mensagem={retorno.mensagem} />
               </View>
             ) : (
@@ -99,7 +91,7 @@ const Enderecos = props => {
             )
           ) : null}
           {!mostrar
-            ? enderecosCadastrados.map(end => {
+            ? enderecosCadastrados.map((end) => {
                 return (
                   <View
                     key={end.id_end}
@@ -112,15 +104,14 @@ const Enderecos = props => {
                       borderWidth: 1,
                       borderColor: '#fff',
                     }}>
-                    <View style={{ width: '90%' }}>
+                    <View style={{width: '90%'}}>
                       <Text
                         style={{
                           backgroundColor: primary,
                           color: white,
                           fontSize: 11,
                         }}>
-                        <Text style={{ fontWeight: 'bold' }}>CEP:</Text>{' '}
-                        {end.cep}
+                        <Text style={{fontWeight: 'bold'}}>CEP:</Text> {end.cep}
                       </Text>
                       <Text
                         style={{
@@ -128,12 +119,12 @@ const Enderecos = props => {
                           color: white,
                           fontSize: 11,
                         }}>
-                        <Text style={{ fontWeight: 'bold' }}>Endereço:</Text>{' '}
+                        <Text style={{fontWeight: 'bold'}}>Endereço:</Text>{' '}
                         {end.logradouro} {end.endereco} - {end.numero}
                       </Text>
 
-                      <Text style={{ color: '#fff', fontSize: 11 }}>
-                        <Text style={{ fontWeight: 'bold' }}>Bairro:</Text>{' '}
+                      <Text style={{color: '#fff', fontSize: 11}}>
+                        <Text style={{fontWeight: 'bold'}}>Bairro:</Text>{' '}
                         {end.bairro} - {end.cidade}
                       </Text>
 
@@ -143,7 +134,7 @@ const Enderecos = props => {
                           color: white,
                           fontSize: 11,
                         }}>
-                        <Text style={{ fontWeight: 'bold' }}>Telefone:</Text>{' '}
+                        <Text style={{fontWeight: 'bold'}}>Telefone:</Text>{' '}
                         {end.telefone}
                       </Text>
                     </View>
@@ -161,6 +152,15 @@ const Enderecos = props => {
           />
         </View>
       </ScrollView>
+      <View>
+        <Text>Problema com seu(s) endereço(s)?</Text>
+        <Text
+          onPress={() => {
+            Linking.openURL(`tel:+554821070200`);
+          }}>
+          Entre em contato com nosso setor de CONVÊNIOS pelo (48) 2107-0200
+        </Text>
+      </View>
     </>
   );
 };

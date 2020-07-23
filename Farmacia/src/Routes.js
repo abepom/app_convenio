@@ -22,7 +22,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 import ConsultarVendas from './telas/ConsultarVendas';
 import Avaliacao from './telas/Avaliacoes';
 import Administrador from './telas/Administrador';
-import useUsuario from '../Store/Usuario';
+
 import RepassesFuturos from './telas/RepassesFuturos';
 
 const venda = createStackNavigator(
@@ -40,7 +40,6 @@ const venda = createStackNavigator(
     defaultNavigationOptions: {
       animationEnabled: false,
       headerShown: false,
-
       headerTitleAlign: 'center',
       headerTitleStyle: {color: 'white'},
       headerStyle: {backgroundColor: primary},

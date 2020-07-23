@@ -1,6 +1,6 @@
 {
   "name": "abepom",
-  "version": "1.1.1",
+  "version": "1.1.3",
   "private": true,
   "scripts": {
     "c": "cd android && gradlew clean  && cd ..",
@@ -10,9 +10,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "assemble": "cd android && gradlew clean && gradlew assembleRelease && cd ..",
-    "bundle": "cd android && gradlew clean && gradlew bundleRelease && gradlew assembleRelease && cd ..",
-    "apk": "react-native run-android --variant=release",
+    "a": "cd android && gradlew assembleRelease && cd ..",
+    "b": "cd android && gradlew bundleRelease && gradlew assembleRelease && cd .. && react-native run-android",
     "ao": "emulator -avd ao"
   },
   "dependencies": {
@@ -26,14 +25,13 @@
     "currency-formatter": "1.5.5",
     "react": "16.11.0",
     "react-native": "0.62.2",
-    "react-native-camera": "3.26.0",
+    "react-native-camera": "^3.33.0",
     "react-native-gesture-handler": "1.6.1",
     "react-native-image-picker": "2.3.1",
     "react-native-masked-text": "1.13.0",
     "react-native-modal": "11.5.3",
     "react-native-paper": "3.6.0",
     "react-native-permissions": "2.1.4",
-    "react-native-qrcode-scanner": "1.4.1",
     "react-native-ratings": "6.5.0",
     "react-native-reanimated": "1.7.1",
     "react-native-safe-area-context": "0.6.2",

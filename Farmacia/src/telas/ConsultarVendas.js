@@ -495,10 +495,10 @@ const ConsultarVendas = memo((props) => {
             TOTAL
           </Text>
           <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>
-            {vendas.valor
+            {vendas
               ? formatCurrency.format(
                   vendas.reduce(
-                    (total, valor) => total + Number(valor.Valor),
+                    (total, Valor) => total + Number(Valor.Valor),
                     0,
                   ),
                   {code: 'BRL'},
