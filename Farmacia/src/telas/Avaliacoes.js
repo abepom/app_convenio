@@ -1,18 +1,19 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import React, {useEffect, useState, useCallback} from 'react';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import api from '../api';
 import imagens from '../utils/imagens';
-import { Rating } from 'react-native-ratings';
-import styles, { primary, danger } from '../utils/Style';
-import { ActivityIndicator } from 'react-native-paper';
+import {Rating} from 'react-native-ratings';
+import styles, {primary, danger} from '../utils/Style';
+import {ActivityIndicator} from 'react-native-paper';
 import useConvenio from '../../Store/Convenio';
 import useLoad from '../../Store/Load';
 import MenuTop from '../components/MenuTop';
 import Modal from 'react-native-modal';
-import { danverBackground } from './../utils/Style';
+import {danverBackground} from '../utils/Style';
+import {FlatList} from 'react-native-gesture-handler';
 
 export default function telas(props) {
-  const [{ id_gds }] = useConvenio();
+  const [{id_gds}] = useConvenio();
   const [load, setLoad] = useLoad();
   const [carregando, setCarregando] = useState(true);
   const [votos, setVotos] = useState(0);
@@ -36,9 +37,9 @@ export default function telas(props) {
     }
   }, [load]);
 
-  const RemoverComentario = async id => {
+  const RemoverComentario = async (id) => {
     try {
-      const { data } = await api.post(`/user/removerAvaliacao`, { id });
+      const {data} = await api.post(`/user/removerAvaliacao`, {id});
       if (data.retorno) {
         consultarAvaliacoes();
       } else console.log(data);
@@ -52,13 +53,13 @@ export default function telas(props) {
     console.log('aqui', id_gds);
     try {
       setCarregando(true);
-      const { data } = await api.get(`/user/avaliacoes`, {
-        params: { id_gds },
+      const {data} = await api.get(`/user/avaliacoes`, {
+        params: {id_gds},
       });
       let mediaTemp;
       let votosTemp;
       let avaliacoesTemp = [];
-     
+
       data.forEach((dados, i) => {
         console.log(dados);
         if (dados.votos) {
@@ -86,8 +87,7 @@ export default function telas(props) {
   return (
     <>
       <Modal isVisible={modalRemover} {...props}>
-        <View
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <View
             style={{
               backgroundColor: '#fff',
@@ -103,7 +103,7 @@ export default function telas(props) {
                 <Text
                   style={[
                     styles.textoM,
-                    { color: primary, paddingVertical: 10 },
+                    {color: primary, paddingVertical: 10},
                   ]}>
                   {' '}
                   Solicitar Exclusão do comentário selecionado?
@@ -126,18 +126,17 @@ export default function telas(props) {
                     <Text
                       style={[
                         styles.textoM,
-                        { fontWeight: 'bold', color: primary },
+                        {fontWeight: 'bold', color: primary},
                       ]}>
                       {avaliacao.nome}{' '}
-                      <Text
-                        style={[styles.textoP, { color: '#999', top: -10 }]}>
+                      <Text style={[styles.textoP, {color: '#999', top: -10}]}>
                         {avaliacao.data_utilizacao}
                       </Text>
                     </Text>
                     <Text>
                       <Image
                         source={imagens.star_cheia}
-                        style={{ width: 20, height: 20 }}
+                        style={{width: 20, height: 20}}
                       />{' '}
                       {avaliacao.avaliacao}
                     </Text>
@@ -151,7 +150,7 @@ export default function telas(props) {
                     <Text style={[styles.textoM]}>{avaliacao.comentario}</Text>
                   </View>
                 </View>
-                <View style={{ width: '100%', flexDirection: 'row' }}>
+                <View style={{width: '100%', flexDirection: 'row'}}>
                   <TouchableOpacity
                     onPress={() =>
                       RemoverComentario(avaliacao.id_avaliacao_convenio)
@@ -206,7 +205,7 @@ export default function telas(props) {
                 <Text
                   style={[
                     styles.textoM,
-                    { color: primary, paddingVertical: 10 },
+                    {color: primary, paddingVertical: 10},
                   ]}>
                   Já foi Solicitado exclusão da avaliação
                 </Text>
@@ -239,8 +238,7 @@ export default function telas(props) {
         </View>
       </Modal>
       <Modal isVisible={modal} {...props}>
-        <View
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <View
             style={{
               backgroundColor: '#fff',
@@ -253,12 +251,12 @@ export default function telas(props) {
               elevation: 2,
             }}>
             <Text
-              style={[styles.textoG, { color: primary, marginHorizontal: 20 }]}>
+              style={[styles.textoG, {color: primary, marginHorizontal: 20}]}>
               Para remover algum comentário que possua algum conteúdo impróprio,
               selecione-o e marque a opção excluir.
             </Text>
             <Text
-              style={[styles.textoG, { color: primary, marginHorizontal: 20 }]}>
+              style={[styles.textoG, {color: primary, marginHorizontal: 20}]}>
               Esse comentário será removido imediatamente do site e irá para
               análise dos nossos setores internos.
             </Text>
@@ -297,7 +295,7 @@ export default function telas(props) {
           consultarAvaliacoes();
         }}
         header={
-          <View style={{ width: '80%', alignItems: 'center' }}>
+          <View style={{width: '80%', alignItems: 'center'}}>
             <View
               style={{
                 marginTop: 20,
@@ -306,7 +304,7 @@ export default function telas(props) {
                 justifyContent: 'space-between',
                 marginTop: 10,
               }}>
-              <View style={{ alignItems: 'center', width: '100%' }}>
+              <View style={{alignItems: 'center', width: '100%'}}>
                 <Rating
                   type="custom"
                   ratingImage={imagens.star}
@@ -330,62 +328,73 @@ export default function telas(props) {
         {carregando ? (
           <ActivityIndicator />
         ) : avaliacoes[0] ? (
-          avaliacoes.map((ava, i) => (
-            <TouchableOpacity
-              onPress={() => {
-                if (!ava.Avaliacao_Bloqueada) {
-                  setModalRemover(true);
-                  setAvaliacao(ava);
-                } else {
-                  setModalRemover(true);
-                  setAvaliacao(false);
-                }
-              }}
-              key={ava.id_avaliacao_convenio}
-              style={{
-                width: '95%',
-                backgroundColor: ava.Avaliacao_Bloqueada
-                  ? danverBackground
-                  : 'white',
-                marginVertical: 5,
-                padding: 15,
-                elevation: 4,
-                borderRadius: 5,
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                }}>
-                <Text
-                  style={[
-                    styles.textoM,
-                    { fontWeight: 'bold', color: primary },
-                  ]}>
-                  {ava.nome}{' '}
-                  <Text style={[styles.textoP, { color: '#999', top: -10 }]}>
-                    {ava.data_utilizacao}
-                  </Text>
-                </Text>
-                <Text>
-                  <Image
-                    source={imagens.star_cheia}
-                    style={{ width: 20, height: 20 }}
-                  />{' '}
-                  {ava.avaliacao}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                }}>
-                <Text style={[styles.textoM]}>{ava.comentario}</Text>
-              </View>
-            </TouchableOpacity>
-          ))
+          <FlatList
+            data={avaliacoes}
+            style={{width: '98%'}}
+            keyExtractor={(item) => item.id_avaliacao_convenio}
+            renderItem={({item}) => {
+              console.log({item});
+              return (
+                <View style={{width: '100%'}}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (!item.Avaliacao_Bloqueada) {
+                        setModalRemover(true);
+                        setAvaliacao(item);
+                      } else {
+                        setModalRemover(true);
+                        setAvaliacao(false);
+                      }
+                    }}
+                    style={{
+                      backgroundColor: item.avaliacao_bloqueada
+                        ? danverBackground
+                        : 'white',
+                      marginVertical: 5,
+                      padding: 15,
+                      elevation: 4,
+                      borderRadius: 5,
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                      }}>
+                      <Text
+                        style={[
+                          styles.textoM,
+                          {fontWeight: 'bold', color: primary},
+                        ]}>
+                        {item.nome}{' '}
+                        <Text
+                          style={[styles.textoP, {color: '#999', top: -10}]}>
+                          {item.data_utilizacao}
+                        </Text>
+                      </Text>
+                      <Text>
+                        <Image
+                          source={imagens.star_cheia}
+                          style={{width: 20, height: 20}}
+                        />{' '}
+                        {item.avaliacao}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                      }}>
+                      <Text style={[styles.textoM, {maxWidth: '95%'}]}>
+                        {item.comentario}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
+          />
         ) : (
           <View
             style={{
@@ -396,7 +405,7 @@ export default function telas(props) {
               elevation: 4,
               borderRadius: 5,
             }}>
-            <Text style={{ fontWeight: 'bold', color: primary }}>
+            <Text style={{fontWeight: 'bold', color: primary}}>
               Nenhuma avaliação foi realizada
             </Text>
           </View>

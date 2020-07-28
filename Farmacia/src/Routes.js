@@ -24,6 +24,7 @@ import Avaliacao from './telas/Avaliacoes';
 import Administrador from './telas/Administrador';
 
 import RepassesFuturos from './telas/RepassesFuturos';
+import Notificacoes from './telas/Notificacoes';
 
 const venda = createStackNavigator(
   {
@@ -57,6 +58,13 @@ const App = createDrawerNavigator(
       navigationOptions: {
         drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.abepom} />,
         drawerLabel: 'ABEPOM',
+      },
+    },
+    Notificacoes: {
+      screen: Notificacoes,
+      navigationOptions: {
+        drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.bell} />,
+        drawerLabel: 'Notificações',
       },
     },
     ConsultarCartao: {
@@ -131,6 +139,7 @@ const App = createDrawerNavigator(
         ),
       },
     },
+
     Sair: {
       screen: Sair,
       navigationOptions: {

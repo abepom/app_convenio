@@ -101,7 +101,7 @@ const Home = (props) => {
                     keyboardType="numeric"
                     maxLength={11}
                     value={cartao}
-                    style={{width: '85%'}}
+                    style={{width: '85%', fontSize: 26, color: primary}}
                     onChangeText={setCartao}
                     onSubmitEditing={() => _handlerConsultaCartao()}
                   />
@@ -242,7 +242,7 @@ const Home = (props) => {
                       setCartao('');
 
                       Alert.alert(
-                        'Código Invalido',
+                        'Código Inválido',
                         'Esse QR code não é valido, por favor solicite que o associado gere um novo QR code.',
                       );
                     }

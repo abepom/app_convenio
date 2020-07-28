@@ -18,28 +18,41 @@ import messaging from '@react-native-firebase/messaging';
 import useConvenio from '../../Store/Convenio';
 import useLoad from '../../Store/Load';
 import useUsuario from '../../Store/Usuario';
+import api from './../api';
 
 const Drawer = memo((props) => {
-  const [, setLoad] = useLoad();
+  const [load, setLoad] = useLoad();
   const [user] = useUsuario();
+  const [convenio] = useConvenio();
+
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-      setLoad(remoteMessage.data.tela);
-      Alert.alert(
-        remoteMessage.notification.title,
-        `${remoteMessage.notification.body}`,
-        [
-          {
-            text: 'VER',
-            onPress: () => {
-              props.navigation.navigate(remoteMessage.data.tela, {
-                reload: true,
-              });
-            },
-          },
-          {text: 'FECHAR', onPress: () => {}},
-        ],
-      );
+      api
+        .get('/user/notificacoes', {
+          params: {cd_convenio: convenio.cd_convenio},
+        })
+        .then(({data}) => {
+          console.log(data);
+          Alert.alert(
+            data[0].ACM_titulo,
+            data[0].ACM_mensagem.replace(/<[^>]*>?/gm, '').replace(
+              /&[^;]*;?/gm,
+              '',
+            ),
+            [
+              {
+                text: 'Ler',
+                onPress: () => {
+                  api
+                    .post('/user/LerNotificacoes', {id: data[0].ACMI_id_itens})
+                    .then((a) => setLoad('notificacao'))
+                    .catch((e) => console.log(e));
+                },
+              },
+              {text: 'FECHAR', onPress: () => {}},
+            ],
+          );
+        });
     });
 
     return unsubscribe;
@@ -47,9 +60,9 @@ const Drawer = memo((props) => {
   const [menu, setMenu] = useState(props);
   let itens = [];
 
-  const [convenio] = useConvenio();
+  //verifica o tipo do usuario
   useEffect(() => {
-    console.log(user.usuario != 'abepom');
+    //se nao for usuario adm remove o menu do drawer trocar
     if (user.usuario != 'abepom') {
       menu.items.map((item) => {
         switch (item.key) {
@@ -61,6 +74,7 @@ const Drawer = memo((props) => {
             break;
         }
       });
+      //se nao for usuario principal da farmacia nao mostra os intens no case
       if (convenio.nivel != 1) {
         let items = [];
         itens.map((item) => {

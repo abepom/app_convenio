@@ -1,18 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-} from 'react-native';
+import {View, Image, Text, StyleSheet, Dimensions} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
-
 import StatusBar from '../components/StatusBar';
-
 import logo from '../assets/img/logo_abepom_branca.png';
-import {TextInput} from 'react-native-paper';
+
 import styles, {
   danger,
   danverBackground,
@@ -20,15 +11,20 @@ import styles, {
   sucess,
   background,
 } from '../utils/Style';
-import mask from '../utils/maskUsuario';
 import api from '../api';
-import theme from '../utils/theme';
 import {ScrollView} from 'react-native-gesture-handler';
 import useUsuario from '../../Store/Usuario';
 import useConvenio from '../../Store/Convenio';
+import LoginAdm from '../components/LoginAdm';
+import LoginPDV from '../components/LoginPDV';
+import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+
+const initialLayout = {width: Dimensions.get('window').width};
 
 const Login = (props) => {
-  console.log(props);
+  const [index, setIndex] = useState(0);
+  const [carregando, setCarregando] = useState(false);
+
   const [reset, setReset] = useState(
     props.navigation.state.params
       ? props.navigation.state.params.resetSenha
@@ -38,24 +34,21 @@ const Login = (props) => {
     erro: false,
     mensagem: '',
   });
-  const [doc, setdoc] = useState('');
-  const [senha, setSenha] = useState('');
-  const [teclado, setTeclado] = useState('default');
-  const [nome, setNome] = useState('');
+
   const [, setUsuario] = useUsuario();
   const [, setConv] = useConvenio();
-
   useEffect(() => {
     if (state.erro) {
       setTimeout(() => {
         setState({...state, erro: false});
-      }, 4000);
+      }, 6000);
     }
   }, [state.erro]);
 
   useEffect(() => {
     if (props.navigation.state.params) {
-      setdoc(props.navigation.state.params.doc);
+      setIndex(props.navigation.state.params.index);
+
       setState(props.navigation.state.params);
     }
   }, []);
@@ -64,15 +57,47 @@ const Login = (props) => {
     const token = await messaging().getToken();
     return token;
   };
+  const [routes] = useState([
+    {key: '1', title: 'Administrador'},
+    {key: '2', title: 'Ponto de venda'},
+  ]);
 
-  const conectar = async () => {
+  const renderScene = SceneMap({
+    '2': () => (
+      <LoginPDV
+        {...props}
+        carregando={carregando}
+        setState={setState}
+        state={state}
+        reset={reset}
+        func={conectar}
+        setReset={setReset}
+      />
+    ),
+    '1': () => (
+      <LoginAdm
+        {...props}
+        carregando={carregando}
+        setState={setState}
+        state={state}
+        reset={reset}
+        func={conectar}
+        setReset={setReset}
+      />
+    ),
+  });
+
+  const conectar = async (imput) => {
+    setCarregando(true);
+
+    const {doc, user, pass} = imput;
     let token = await getToken();
 
     if (
-      (doc === 'abepom' && senha === 'ab3p0ms3d3') ||
-      (doc === 'Abepom' && senha === 'ab3p0ms3d3')
+      (doc === 'abepom' && pass === 'ab3p0ms3d3' && !user) ||
+      (doc === 'Abepom' && pass === 'ab3p0ms3d3' && !user)
     ) {
-      setUsuario({usuario: doc.toLowerCase(), senha});
+      setUsuario(imput);
       convenio = {
         id_gds: '',
         nome_parceiro: 'ADMINISTRADOR',
@@ -88,17 +113,18 @@ const Login = (props) => {
       props.navigation.navigate('Administrador');
     }
 
-    if (doc.length > 1 && senha) {
+    if (doc.length > 1 && pass) {
       try {
         const {data} = await api.post('/Login', {
-          usuario: doc,
-          senha,
+          doc: doc,
+          senha: pass,
+          user,
           token,
         });
 
         let convenio;
         if (!data.erro) {
-          setUsuario({usuario: doc, senha});
+          setUsuario(imput);
           convenio = {
             id_gds: data.id_gds,
             nome_parceiro: data.nome_parceiro,
@@ -108,11 +134,14 @@ const Login = (props) => {
             usuario: data.usuario,
             nivel: data.nivel,
             token,
+            cd_convenio: data['cd_convênio'],
           };
 
           setConv(convenio);
           props.navigation.navigate('App');
         } else {
+          setCarregando(false);
+
           setState({erro: true, mensagem: 'Usuário ou Senha incorretos'});
         }
       } catch (error) {
@@ -137,76 +166,24 @@ const Login = (props) => {
             <Text style={[styles.white, styles.textoM]}>FARMÁCIA</Text>
           </View>
 
-          <View style={{marginTop: 20, width: '100%'}}>
-            <TextInput
-              label="CNPJ / CPF / Usuário"
-              dense
-              mode="outlined"
-              theme={theme}
-              value={doc}
-              onChangeText={(text) => mask(text, setdoc, setTeclado)}
-              keyboardType={teclado}
-              style={[styles.imput]}
-            />
-
-            <TextInput
-              label="senha"
-              dense
-              mode="outlined"
-              theme={theme}
-              value={senha}
-              onChangeText={setSenha}
-              keyboardType="default"
-              style={[styles.imput]}
-              secureTextEntry
-            />
-          </View>
-          {state.erro && (
-            <View style={[estilos.retornoBackend, estilos.mensagemErro]}>
-              <Text style={{color: danger}}>{state.mensagem}</Text>
-            </View>
-          )}
-          {reset && (
-            <View
-              style={[estilos.retornoBackend, estilos.mensagemSucesso]}
-              onLayout={() =>
-                setTimeout(() => {
-                  setReset(false);
-                }, 3000)
-              }>
-              <Text style={styles.white}>
-                Você recebera sua senha no email
-                {props.navigation.state.params.email}
-              </Text>
-            </View>
-          )}
-
-          <View style={estilos.buttonView}>
-            <TouchableOpacity
-              onPress={() => {
-                props.navigation.navigate('RestartPass', {noLogin: true});
-              }}
-              style={[
-                styles.link,
-                {
-                  marginBottom: 10,
-                },
-              ]}>
-              <Text style={styles.btnDefaultText}>Esqueceu sua senha?</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.btnDefault,
-                {
-                  padding: 10,
-                  paddingHorizontal: 20,
-                  backgroundColor: background,
-                },
-              ]}
-              onPress={() => conectar()}>
-              <Text style={{color: primary}}>ENTRAR</Text>
-            </TouchableOpacity>
-          </View>
+          <TabView
+            navigationState={{index, routes}}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            style={{
+              marginTop: 20,
+            }}
+            initialLayout={initialLayout}
+            lazy={true}
+            renderTabBar={(props) => (
+              <TabBar
+                {...props}
+                indicatorStyle={{backgroundColor: 'white'}}
+                style={{backgroundColor: primary, elevation: 1}}
+                labelStyle={styles.textoM}
+              />
+            )}
+          />
         </ScrollView>
       </View>
     </>

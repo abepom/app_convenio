@@ -1,60 +1,42 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-  StyleSheet,
-} from 'react-native';
-import mask from '../utils/maskUsuario';
-import {TextInput} from 'react-native-paper';
-import styles, {
-  danger,
-  danverBackground,
-  primary,
-  background,
-} from '../utils/Style';
+import {View, StyleSheet, Dimensions, Text} from 'react-native';
+import styles, {danger, danverBackground, primary} from '../utils/Style';
+import LoginAdm from '../components/LoginAdm';
+import LoginPDV from '../components/LoginPDV';
+import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 
 import api from '../api';
-import theme from '../utils/theme';
-import MenuTop from '../components/MenuTop';
 
+import MenuTop from '../components/MenuTop';
+import {ScrollView} from 'react-native-gesture-handler';
+const initialLayout = {width: Dimensions.get('window').width};
 const Login = (props) => {
+  const [carregando, setCarregando] = useState(false);
+
+  const [index, setIndex] = useState(props.navigation.state.params.index);
   const [state, setState] = useState({
     erro: false,
     mensagem: '',
   });
-  const [load, setLoad] = useState(false);
-
-  //const [doc, setdoc] = useState('33.734.844/0001-15');
-  //const [doc, setdoc] = useState('92.665.611/0001-77');
-  //const [doc, setdoc] = useState('92.665.611/0001-77');
-  const [doc, setdoc] = useState('');
-  const [teclado, setTeclado] = useState('default');
 
   useEffect(() => {
     if (state.erro) {
       setTimeout(() => {
         setState({...state, erro: false});
-      }, 3000);
+      }, 6000);
     }
   }, [state.erro]);
-  const resetSenha = async () => {
-    setLoad(true);
-    let docu = doc
-      .replace('.', '')
-      .replace('.', '')
-      .replace('/', '')
-      .replace('-', '');
-    if (isNaN(docu)) {
-      docu = doc;
-    }
 
-    if (docu) {
+  const resetSenha = async (imput) => {
+    setCarregando(true);
+
+    console.log(imput);
+    const {doc} = imput;
+    //setLoad(true);
+    if (doc) {
       const {data} = await api({
         url: '/user/resetPass',
-        data: {usuario: docu},
+        data: imput,
         method: 'post',
       });
       console.log(data);
@@ -67,6 +49,8 @@ const Login = (props) => {
         : props.navigation.navigate('Login', {
             ...data,
             resetSenha: true,
+            index: imput.user ? 1 : 0,
+            imput,
           });
     } else {
       setState({
@@ -75,9 +59,36 @@ const Login = (props) => {
         mensagem: 'Informe um usuário e senha.',
       });
     }
-    setLoad(false);
+    setCarregando(true);
   };
 
+  const [routes] = useState([
+    {key: '1', title: 'Administrador'},
+    {key: '2', title: 'Ponto de venda'},
+  ]);
+
+  const renderScene = SceneMap({
+    '2': () => (
+      <LoginPDV
+        {...props}
+        setState={setState}
+        state={state}
+        func={resetSenha}
+        redefinirSenha
+        carregando={carregando}
+      />
+    ),
+    '1': () => (
+      <LoginAdm
+        {...props}
+        carregando={carregando}
+        setState={setState}
+        state={state}
+        func={resetSenha}
+        redefinirSenha
+      />
+    ),
+  });
   return (
     <>
       <View
@@ -90,47 +101,34 @@ const Login = (props) => {
           {...props}
           irpara="Login"
           backgroundColor={primary}>
-          <View style={[estilos.conteiner]}>
-            <Text style={estilos.cabecalho}>
-              Informe o seu usuário e recebe um email com instruções para
-              alterar sua senha.
-            </Text>
-
-            <View style={{marginTop: 20, width: '100%'}}>
-              <TextInput
-                label="CNPJ / CPF / Usuário"
-                dense
-                mode="outlined"
-                theme={theme}
-                value={doc}
-                onChangeText={(text) => mask(text, setdoc, setTeclado)}
-                keyboardType={teclado}
-                style={[styles.imput]}
-              />
+          <ScrollView style={{width: '100%'}}>
+            <View style={{width: '80%', alignSelf: 'center', marginTop: 20}}>
+              <Text style={[styles.textoG, styles.white]}>
+                Informe os dados necessário para efetuar a redefinição de senha.
+              </Text>
+              <Text style={[styles.textoG, styles.white]}>
+                Você receberá um e-mail com a nova senha.
+              </Text>
             </View>
-            {state.erro && (
-              <View style={estilos.retornoBackend}>
-                <Text style={{color: danger}}>{state.mensagem}</Text>
-              </View>
-            )}
-
-            <View style={[estilos.buttonView]}>
-              {load ? (
-                <ActivityIndicator size={30} color="white" />
-              ) : (
-                <TouchableOpacity
-                  style={[
-                    styles.btnDefault,
-                    {paddingHorizontal: 10, backgroundColor: background},
-                  ]}
-                  onPress={resetSenha}>
-                  <Text style={[{fontWeight: 'bold', color: primary}]}>
-                    REDEFINIR SENHA
-                  </Text>
-                </TouchableOpacity>
+            <TabView
+              navigationState={{index, routes}}
+              renderScene={renderScene}
+              onIndexChange={setIndex}
+              style={{
+                marginTop: 20,
+              }}
+              initialLayout={initialLayout}
+              lazy={true}
+              renderTabBar={(props) => (
+                <TabBar
+                  {...props}
+                  indicatorStyle={{backgroundColor: 'white'}}
+                  style={{backgroundColor: primary, elevation: 1}}
+                  labelStyle={styles.textoM}
+                />
               )}
-            </View>
-          </View>
+            />
+          </ScrollView>
         </MenuTop>
       </View>
     </>

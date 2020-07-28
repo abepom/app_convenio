@@ -1,10 +1,7 @@
 export default mask = (text, set, setTeclado) => {
   let type = ['default', 'numeric'];
   let texto = text;
-  text = text
-    .replace(/[.]/g, '')
-    .replace('/', '')
-    .replace('-', '');
+  text = text.replace(/[.]/g, '').replace('/', '').replace('-', '');
 
   if (isNaN(text.substr(0, 1)) || text == '') {
     setTeclado(type[0]);
