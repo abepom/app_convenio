@@ -21,9 +21,9 @@ const AlterarSenha = () => {
   });
   const [carregando, setCarregando] = useState(false);
   const [senha1, setSenha1] = useState('');
-  const [senha, setSenha] = useState('111111');
-  const [senhaNova, setSenhaNova] = useState('222222');
-  const [senhaConfirmada, setSenhaConfirmada] = useState('222222');
+  const [senha, setSenha] = useState('');
+  const [senhaNova, setSenhaNova] = useState('');
+  const [senhaConfirmada, setSenhaConfirmada] = useState('');
   const [user, setUser] = useUsuario();
 
   useEffect(() => {

@@ -44,6 +44,7 @@ export default (props) => {
   };
 
   const consultarCartao = async (cartao) => {
+    setAvancar(false);
     setcarregando(true);
     setDependentes([]);
     setMensagem('');
@@ -132,7 +133,7 @@ export default (props) => {
           }}
           maxLength={11}
           keyboardType="numeric"
-          style={[styles.imput, {width: '70%'}]}
+          style={[styles.imput, {width: '70%', fontSize: 26, color: primary}]}
           render={(props) => (
             <>
               <View
@@ -205,7 +206,7 @@ export default (props) => {
                       setImput('');
 
                       Alert.alert(
-                        'Código Invalido',
+                        'Código Inválido',
                         'Esse QR code não é valido, por favor solicite que o associado gere um novo QR code.',
                       );
                     }

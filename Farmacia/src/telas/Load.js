@@ -1,46 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { View, Image, Text } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Image, Text} from 'react-native';
 import logo from '../assets/img/logo_abepom_branca.png';
-import styles, { primary } from '../utils/Style';
+import styles, {primary} from '../utils/Style';
 import api from '../api';
 import messaging from '@react-native-firebase/messaging';
-import { useStore } from '../../store';
+import {useStore} from '../../store';
 import useUsuario from '../../Store/Usuario';
 import useConvenio from './../../Store/Convenio';
 
-const Load = props => {
-  const { navigation } = props;
+const Load = (props) => {
+  const {navigation} = props;
   let notificacao;
-  const [user] = useUsuario();
+  const [usuario] = useUsuario();
   const [store] = useStore();
   const [, setConv] = useConvenio();
   useEffect(() => {
     if (store.carregouDados) {
       conectar();
     }
-
   }, [store.carregouDados]);
 
   const conectar = async () => {
     try {
       let token = await messaging().getToken();
-      if (user === undefined) {
+      if (usuario === undefined) {
         return navigation.navigate('Login');
       }
 
-      const { usuario, senha } = user;
+      const {doc, user, pass} = usuario;
 
-
-      if (usuario === 'abepom' && senha === 'ab3p0ms3d3' ) {
-
-        navigation.navigate('Administrador', { doc: '' });
+      if (usuario === 'abepom' && senha === 'ab3p0ms3d3' && !pass) {
+        navigation.navigate('Administrador', {doc: ''});
       }
 
-      if (!!usuario && !!senha) {
-        const { data } = await api({
-          url: '/Login',
-          data: { usuario, senha, token },
-          method: 'post',
+      if (!!doc && !!pass) {
+        const {data} = await api.post('/Login', {
+          doc: doc,
+          senha: pass,
+          user,
+          token,
         });
 
         let convenio;
@@ -53,6 +51,8 @@ const Load = props => {
             doc: data.doc,
             usuario: data.usuario,
             nivel: data.nivel,
+            token,
+            cd_convenio: data['cd_convênio'],
           };
           setConv(convenio);
           if (notificacao) {
@@ -81,7 +81,7 @@ const Load = props => {
           backgroundColor: primary,
         },
       ]}>
-      <Image source={logo} style={{ width: 150, height: 150 }} />
+      <Image source={logo} style={{width: 150, height: 150}} />
     </View>
   );
 };

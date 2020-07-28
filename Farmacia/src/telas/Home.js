@@ -1,4 +1,4 @@
-import React, {memo, useMemo} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,17 +6,74 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Alert,
 } from 'react-native';
 import styles, {primary, sucessBack, sucess, background} from '../utils/Style';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import icone from '../assets/img/abepom.png';
-import {menu} from '../utils/imagens';
+import imagens, {menu} from '../utils/imagens';
 import useConvenio from '../../Store/Convenio';
+import api from './../api';
+import useLoad from './../../Store/Load';
 
 export default memo((props) => {
   const [convenio] = useConvenio();
-  console.log(convenio);
+  const [notificacoes, setNotificacoes] = useState([]);
+  const [load, setload] = useLoad();
+  const [naoLida, setNaoLida] = useState(0);
+
+  useEffect(() => {
+    if (load !== 'notificacao' && load !== 'todos') {
+      carregar(true);
+    }
+  }, []);
+  useEffect(() => {
+    if (load == 'notificacao' || load == 'todos') {
+      carregar();
+
+      setload(null);
+    }
+  }, [load]);
+  const carregar = (primeiro) => {
+    api
+      .get('/user/notificacoes', {params: {cd_convenio: convenio.cd_convenio}})
+      .then(({data}) => {
+        setNaoLida(
+          data.filter((item) => {
+            if (!item.ACMI_lido) {
+              return item;
+            }
+          }).length,
+        );
+        setNotificacoes(data);
+        if (data.length) {
+          let ultima = data[0].ACM_mensagem.replace(/<[^>]*>?/gm, '').replace(
+            /&[^;]*;?/gm,
+            '',
+          );
+          if (!data[0].ACMI_lido && primeiro) {
+            return Alert.alert(data[0].ACM_titulo, ultima, [
+              {
+                text: 'Ler',
+                onPress: () => {
+                  setNotificacoes([]);
+                  api
+                    .post('/user/LerNotificacoes', {id: data[0].ACMI_id_itens})
+                    .then((a) => carregar())
+                    .catch((e) => console.log(e));
+                },
+              },
+              {
+                text: 'Fechar',
+                onPress: () => {},
+              },
+            ]);
+          }
+        }
+      })
+      .catch((a) => console.log(a));
+  };
   return (
     <View style={{width: '100%', backgroundColor: background}}>
       <View style={styless.container}>
@@ -30,6 +87,31 @@ export default memo((props) => {
           style={{width: 40, height: 40, marginHorizontal: 10}}
         />
         <Text style={styless.titulo}>ABEPOM</Text>
+        <TouchableOpacity
+          style={{position: 'absolute', right: 20}}
+          onPress={() =>
+            props.navigation.navigate('Notificacoes', notificacoes)
+          }>
+          <Image
+            source={imagens.bell}
+            style={{tintColor: 'white', width: 28, height: 28}}
+          />
+          {naoLida > 0 && (
+            <View
+              style={{
+                backgroundColor: 'red',
+                borderRadius: 50,
+                width: 15,
+                height: 15,
+                alignItems: 'center',
+                position: 'absolute',
+              }}>
+              <Text style={{color: 'white', fontSize: 10}}>
+                {`${naoLida > 9 ? '+9' : naoLida}`}
+              </Text>
+            </View>
+          )}
+        </TouchableOpacity>
       </View>
       <ScrollView>
         <View style={styles.linhaMenu}>
@@ -50,7 +132,7 @@ export default memo((props) => {
         {convenio.efetuarVenda && (
           <View style={styles.linhaMenu}>
             <TouchableOpacity
-              style={[styles.itemMenu, {backgroundColor: sucessBack}]}
+              style={[styles.itemMenu]}
               onPress={() =>
                 props.navigation.navigate('EfetuarVenda', convenio)
               }>
@@ -59,23 +141,21 @@ export default memo((props) => {
                 style={styless.imgMenu}
                 tintColor={primary}
               />
-              <Text style={[styles.textMenu, {color: sucess}]}>
-                Efetuar Venda
-              </Text>
+              <Text style={[styles.textMenu]}>Efetuar Venda</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.itemMenu, {backgroundColor: sucessBack}]}
+              style={[styles.itemMenu]}
               onPress={() =>
-                props.navigation.navigate('ConsultarVendas', {load: new Date()})
+                props.navigation.navigate('ConsultarVendas', {
+                  load: new Date(),
+                })
               }>
               <Image
                 source={require('../assets/img/bill.png')}
                 style={styless.imgMenu}
                 tintColor={primary}
               />
-              <Text style={[styles.textMenu, {color: sucess}]}>
-                Consultar Vendas
-              </Text>
+              <Text style={[styles.textMenu]}>Consultar Vendas</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -95,7 +175,9 @@ export default memo((props) => {
           <TouchableOpacity
             style={styles.itemMenu}
             onPress={() => {
-              props.navigation.navigate('Avaliacao', {id_gds: convenio.id_gds});
+              props.navigation.navigate('Avaliacao', {
+                id_gds: convenio.id_gds,
+              });
             }}>
             <Image
               source={require('../assets/img/review.png')}
