@@ -33,14 +33,14 @@ export default function LoginPDV(props) {
         props.navigation.state.params.index == 1
         ? props.navigation.state.params.imput
         : {
-            doc: '',
-            user: '',
-            pass: '',
+            doc: '14.363.166/0001-87',
+            user: '14363166000187',
+            pass: '848874',
           }
       : {
-          doc: '',
-          user: '',
-          pass: '',
+          doc: '14.363.166/0001-87',
+          user: '14363166000187',
+          pass: '848874',
         },
   );
 

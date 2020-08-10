@@ -92,7 +92,14 @@ const Home = (props) => {
               theme={themeLight}
               onChangeText={setCartao}
               value={cartao}
-              style={[{width: '100%', flex: 1}]}
+              style={[
+                {
+                  width: '100%',
+                  fontSize: 26,
+                  color: primary,
+                  alignSelf: 'flex-start',
+                },
+              ]}
               onSubmitEditing={() => _handlerConsultaCartao()}
               render={(props) => (
                 <View style={[{flexDirection: 'row'}]}>
@@ -101,7 +108,6 @@ const Home = (props) => {
                     keyboardType="numeric"
                     maxLength={11}
                     value={cartao}
-                    style={{width: '85%', fontSize: 26, color: primary}}
                     onChangeText={setCartao}
                     onSubmitEditing={() => _handlerConsultaCartao()}
                   />

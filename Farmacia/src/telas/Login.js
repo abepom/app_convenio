@@ -135,6 +135,7 @@ const Login = (props) => {
             nivel: data.nivel,
             token,
             cd_convenio: data['cd_convênio'],
+            primeiro_acesso: data.primeiro_acesso,
           };
 
           setConv(convenio);

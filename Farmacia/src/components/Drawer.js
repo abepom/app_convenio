@@ -41,7 +41,7 @@ const Drawer = memo((props) => {
             ),
             [
               {
-                text: 'Ler',
+                text: 'Ok',
                 onPress: () => {
                   api
                     .post('/user/LerNotificacoes', {id: data[0].ACMI_id_itens})
@@ -106,32 +106,33 @@ const Drawer = memo((props) => {
   }, [props]);
 
   return (
-    <ScrollView style={styles.flex}>
-      <SafeAreaView style={styles.flex}>
-        <View style={[styles.row, styles.center, {marginVertical: 20}]}>
-          {convenio.caminho_logomarca ? (
-            <>
-              <View>
+    <>
+      <ScrollView style={styles.flex}>
+        <SafeAreaView style={styles.flex}>
+          <View style={[styles.row, styles.center, {marginVertical: 20}]}>
+            {convenio.caminho_logomarca ? (
+              <>
+                <View>
+                  <Image
+                    source={{uri: convenio.caminho_logomarca}}
+                    style={[styles.logoP, {resizeMode: 'contain'}]}
+                  />
+                </View>
+              </>
+            ) : (
+              <View
+                style={{
+                  borderWidth: 2,
+                  borderColor: primary,
+                  borderRadius: 50,
+                  padding: 10,
+                }}>
                 <Image
-                  source={{uri: convenio.caminho_logomarca}}
-                  style={[styles.logoP, {resizeMode: 'contain'}]}
+                  source={imagens.camera}
+                  style={[styles.logoPP]}
+                  tintColor={primary}
                 />
-              </View>
-            </>
-          ) : (
-            <View
-              style={{
-                borderWidth: 2,
-                borderColor: primary,
-                borderRadius: 50,
-                padding: 10,
-              }}>
-              <Image
-                source={imagens.camera}
-                style={[styles.logoPP]}
-                tintColor={primary}
-              />
-              {/* <Image
+                {/* <Image
                         source={imagens.camera}
                         style={{
                             width: 20,
@@ -146,23 +147,24 @@ const Drawer = memo((props) => {
                         }}
                         tintColor={primary}
                     /> */}
+              </View>
+            )}
+            <View style={{marginHorizontal: 10, maxWidth: '60%'}}>
+              <Text style={{}}>{[convenio.nome_parceiro]}</Text>
+              <Text style={{fontSize: 10}}>
+                {convenio.doc && convenio.doc.length > 15
+                  ? `CNPF: ${convenio.doc}`
+                  : `CPF: ${convenio.doc}`}
+              </Text>
             </View>
-          )}
-          <View style={{marginHorizontal: 10, maxWidth: '60%'}}>
-            <Text style={{}}>{[convenio.nome_parceiro]}</Text>
-            <Text style={{fontSize: 10}}>
-              {convenio.doc && convenio.doc.length > 15
-                ? `CNPF: ${convenio.doc}`
-                : `CPF: ${convenio.doc}`}
-            </Text>
           </View>
-        </View>
-        <DrawerNavigatorItems
-          {...menu}
-          itensConteinerStyles={{width: '100%', backgroundColor: 'blue'}}
-        />
-      </SafeAreaView>
-    </ScrollView>
+          <DrawerNavigatorItems
+            {...menu}
+            itensConteinerStyles={{width: '100%', backgroundColor: 'blue'}}
+          />
+        </SafeAreaView>
+      </ScrollView>
+    </>
   );
 });
 

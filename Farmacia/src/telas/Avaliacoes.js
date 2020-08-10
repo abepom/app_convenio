@@ -257,8 +257,8 @@ export default function telas(props) {
             </Text>
             <Text
               style={[styles.textoG, {color: primary, marginHorizontal: 20}]}>
-              Esse comentário será removido imediatamente do site e irá para
-              análise dos nossos setores internos.
+              Esse comentário será encaminhado para o setor de Convênios para
+              análise.
             </Text>
             <TouchableOpacity
               onPress={() => setModal(false)}
