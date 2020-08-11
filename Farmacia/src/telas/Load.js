@@ -40,7 +40,7 @@ const Load = (props) => {
           user,
           token,
         });
-
+        console.log(data, 'load');
         let convenio;
         if (!data.erro) {
           convenio = {
@@ -53,6 +53,7 @@ const Load = (props) => {
             nivel: data.nivel,
             token,
             cd_convenio: data['cd_convênio'],
+            primeiro_acesso: data.primeiro_acesso,
           };
           setConv(convenio);
           if (notificacao) {

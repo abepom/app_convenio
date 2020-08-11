@@ -8,22 +8,32 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import styles, {primary, sucessBack, sucess, background} from '../utils/Style';
+import styles, {
+  primary,
+  sucessBack,
+  sucess,
+  background,
+  danger,
+} from '../utils/Style';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import Modal from 'react-native-modal';
 import icone from '../assets/img/abepom.png';
 import imagens, {menu} from '../utils/imagens';
 import useConvenio from '../../Store/Convenio';
 import api from './../api';
 import useLoad from './../../Store/Load';
-
-export default memo((props) => {
+import {WebView} from 'react-native-webview';
+export default (props) => {
   const [convenio] = useConvenio();
   const [notificacoes, setNotificacoes] = useState([]);
   const [load, setload] = useLoad();
   const [naoLida, setNaoLida] = useState(0);
-
+  const [modal, setModal] = useState(false);
   useEffect(() => {
+    console.log(convenio);
+    if (convenio.primeiro_acesso) {
+      setModal(true);
+    }
     if (load !== 'notificacao' && load !== 'todos') {
       carregar(true);
     }
@@ -55,7 +65,7 @@ export default memo((props) => {
           if (!data[0].ACMI_lido && primeiro) {
             return Alert.alert(data[0].ACM_titulo, ultima, [
               {
-                text: 'Ler',
+                text: 'Ok',
                 onPress: () => {
                   setNotificacoes([]);
                   api
@@ -74,139 +84,200 @@ export default memo((props) => {
       })
       .catch((a) => console.log(a));
   };
-  return (
-    <View style={{width: '100%', backgroundColor: background}}>
-      <View style={styless.container}>
-        <TouchableOpacity
-          style={styless.menu}
-          onPress={() => props.navigation.toggleDrawer()}>
-          <Icone style={{color: 'white'}} name={'menu'} size={28} />
-        </TouchableOpacity>
-        <Image
-          source={icone}
-          style={{width: 40, height: 40, marginHorizontal: 10}}
-        />
-        <Text style={styless.titulo}>ABEPOM</Text>
-        <TouchableOpacity
-          style={{position: 'absolute', right: 20}}
-          onPress={() =>
-            props.navigation.navigate('Notificacoes', notificacoes)
-          }>
-          <Image
-            source={imagens.bell}
-            style={{tintColor: 'white', width: 28, height: 28}}
-          />
-          {naoLida > 0 && (
-            <View
-              style={{
-                backgroundColor: 'red',
-                borderRadius: 50,
-                width: 15,
-                height: 15,
-                alignItems: 'center',
-                position: 'absolute',
-              }}>
-              <Text style={{color: 'white', fontSize: 10}}>
-                {`${naoLida > 9 ? '+9' : naoLida}`}
-              </Text>
-            </View>
-          )}
-        </TouchableOpacity>
-      </View>
-      <ScrollView>
-        <View style={styles.linhaMenu}>
-          <TouchableOpacity
-            style={styles.itemMenu}
-            onPress={() =>
-              props.navigation.navigate('ConsultarCartao', convenio)
-            }>
-            <Image
-              source={require('../assets/img/pay.png')}
-              style={styless.imgMenu}
-              tintColor={primary}
-            />
-            <Text style={styles.textMenu}>Consultar Cartão</Text>
-          </TouchableOpacity>
-        </View>
 
-        {convenio.efetuarVenda && (
-          <View style={styles.linhaMenu}>
+  const aprovarTermo = async () => {
+    console.log('aceitou');
+    api.post('/AceitarTermo', {token: convenio.token});
+    setModal(false);
+  };
+  const reprovarTermo = async () => {
+    api.post('/RecusarTermo', {token: convenio.token}).then(() => {
+      props.navigation.navigate('Sair');
+    });
+  };
+  return (
+    <>
+      <Modal isVisible={modal}>
+        <View
+          style={{
+            height: '100%',
+            width: '100%',
+            backgroundColor: 'white',
+            borderRadius: 5,
+            padding: 10,
+          }}>
+          <WebView
+            source={{
+              uri:
+                'http://192.168.1.238/guiaonline/politica_de_privacidade.asp',
+            }}
+            textZoom={250}
+            style={{flex: 19, borderRadius: 5}}
+          />
+          <View
+            style={{
+              flex: 0.1,
+
+              alignItems: 'center',
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+            }}>
             <TouchableOpacity
-              style={[styles.itemMenu]}
-              onPress={() =>
-                props.navigation.navigate('EfetuarVenda', convenio)
-              }>
-              <Image
-                source={require('../assets/img/money.png')}
-                style={styless.imgMenu}
-                tintColor={primary}
-              />
-              <Text style={[styles.textMenu]}>Efetuar Venda</Text>
+              style={{
+                backgroundColor: primary,
+                padding: 10,
+                borderRadius: 5,
+                paddingHorizontal: 20,
+              }}
+              onPress={aprovarTermo}>
+              <Text style={{fontSize: 24, color: 'white'}}>ACEITAR</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.itemMenu]}
-              onPress={() =>
-                props.navigation.navigate('ConsultarVendas', {
-                  load: new Date(),
-                })
-              }>
-              <Image
-                source={require('../assets/img/bill.png')}
-                style={styless.imgMenu}
-                tintColor={primary}
-              />
-              <Text style={[styles.textMenu]}>Consultar Vendas</Text>
+              style={{
+                backgroundColor: danger,
+                padding: 10,
+                borderRadius: 5,
+                paddingHorizontal: 20,
+              }}
+              onPress={() => reprovarTermo()}>
+              <Text style={{fontSize: 24, color: 'white'}}>RECUSAR</Text>
             </TouchableOpacity>
           </View>
-        )}
-        <View style={styles.linhaMenu}>
+        </View>
+      </Modal>
+      <View style={{width: '100%', backgroundColor: background}}>
+        <View style={styless.container}>
           <TouchableOpacity
-            style={styles.itemMenu}
-            onPress={() => {
-              props.navigation.navigate('Perfil', {id_gds: convenio.id_gds});
-            }}>
-            <Image
-              source={require('../assets/img/portfolio.png')}
-              style={styless.imgMenu}
-              tintColor={primary}
-            />
-            <Text style={styles.textMenu}>Perfil</Text>
+            style={styless.menu}
+            onPress={() => props.navigation.toggleDrawer()}>
+            <Icone style={{color: 'white'}} name={'menu'} size={28} />
           </TouchableOpacity>
+          <Image
+            source={icone}
+            style={{width: 40, height: 40, marginHorizontal: 10}}
+          />
+          <Text style={styless.titulo}>ABEPOM</Text>
           <TouchableOpacity
-            style={styles.itemMenu}
-            onPress={() => {
-              props.navigation.navigate('Avaliacao', {
-                id_gds: convenio.id_gds,
-              });
-            }}>
+            style={{position: 'absolute', right: 20}}
+            onPress={() =>
+              props.navigation.navigate('Notificacoes', notificacoes)
+            }>
             <Image
-              source={require('../assets/img/review.png')}
-              style={styless.imgMenu}
-              tintColor={primary}
+              source={imagens.bell}
+              style={{tintColor: 'white', width: 28, height: 28}}
             />
-            <Text style={styles.textMenu}>AVALIAÇÕES</Text>
+            {naoLida > 0 && (
+              <View
+                style={{
+                  backgroundColor: 'red',
+                  borderRadius: 50,
+                  width: 15,
+                  height: 15,
+                  alignItems: 'center',
+                  position: 'absolute',
+                }}>
+                <Text style={{color: 'white', fontSize: 10}}>
+                  {`${naoLida > 9 ? '+9' : naoLida}`}
+                </Text>
+              </View>
+            )}
           </TouchableOpacity>
         </View>
-        {convenio.nivel == 1 && (
-          <View style={[styles.linhaMenu, {marginBottom: 100}]}>
+        <ScrollView>
+          <View style={styles.linhaMenu}>
             <TouchableOpacity
               style={styles.itemMenu}
               onPress={() =>
-                props.navigation.navigate('RepassesFuturos', convenio)
+                props.navigation.navigate('ConsultarCartao', convenio)
               }>
               <Image
-                source={require('../assets/img/statistics.png')}
+                source={require('../assets/img/pay.png')}
                 style={styless.imgMenu}
                 tintColor={primary}
               />
-              <Text style={styles.textMenu}>Repasses Futuros</Text>
+              <Text style={styles.textMenu}>Consultar Cartão</Text>
             </TouchableOpacity>
           </View>
-        )}
-      </ScrollView>
-    </View>
+
+          {convenio.efetuarVenda && (
+            <View style={styles.linhaMenu}>
+              <TouchableOpacity
+                style={[styles.itemMenu]}
+                onPress={() =>
+                  props.navigation.navigate('EfetuarVenda', convenio)
+                }>
+                <Image
+                  source={require('../assets/img/money.png')}
+                  style={styless.imgMenu}
+                  tintColor={primary}
+                />
+                <Text style={[styles.textMenu]}>Efetuar Venda</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.itemMenu]}
+                onPress={() =>
+                  props.navigation.navigate('ConsultarVendas', {
+                    load: new Date(),
+                  })
+                }>
+                <Image
+                  source={require('../assets/img/bill.png')}
+                  style={styless.imgMenu}
+                  tintColor={primary}
+                />
+                <Text style={[styles.textMenu]}>Consultar Vendas</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          <View style={styles.linhaMenu}>
+            <TouchableOpacity
+              style={styles.itemMenu}
+              onPress={() => {
+                props.navigation.navigate('Perfil', {id_gds: convenio.id_gds});
+              }}>
+              <Image
+                source={require('../assets/img/portfolio.png')}
+                style={styless.imgMenu}
+                tintColor={primary}
+              />
+              <Text style={styles.textMenu}>Perfil</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.itemMenu}
+              onPress={() => {
+                props.navigation.navigate('Avaliacao', {
+                  id_gds: convenio.id_gds,
+                });
+              }}>
+              <Image
+                source={require('../assets/img/review.png')}
+                style={styless.imgMenu}
+                tintColor={primary}
+              />
+              <Text style={styles.textMenu}>AVALIAÇÕES</Text>
+            </TouchableOpacity>
+          </View>
+          {convenio.nivel == 1 && (
+            <View style={[styles.linhaMenu, {marginBottom: 100}]}>
+              <TouchableOpacity
+                style={styles.itemMenu}
+                onPress={() =>
+                  props.navigation.navigate('RepassesFuturos', convenio)
+                }>
+                <Image
+                  source={require('../assets/img/statistics.png')}
+                  style={styless.imgMenu}
+                  tintColor={primary}
+                />
+                <Text style={styles.textMenu}>Repasses Futuros</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </ScrollView>
+      </View>
+    </>
   );
-});
+};
 
 const styless = StyleSheet.create({
   container: {

@@ -21,8 +21,10 @@ import trash from '../assets/img/trash.png';
 import menu from '../assets/img/open_menu.png';
 import statistics from '../assets/img/statistics.png';
 import bell from '../assets/img/bell.png';
+import paper from '../assets/img/paper.png';
 
 export default {
+  paper,
   bell,
   statistics,
   contact,

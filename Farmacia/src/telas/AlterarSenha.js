@@ -30,18 +30,32 @@ const AlterarSenha = () => {
     if (retorno.retorno) {
       setTimeout(() => {
         setRetorno({retorno: 0, mensagem: '', tipo: ''});
-      }, 3000);
+      }, 5000);
     }
   }, [retorno]);
 
   const alterarSenha = () => {
     setCarregando(true);
+    if (senha == '') {
+      setstate({senha: true, novasenha: false, senhaConfirmada: false});
+      setCarregando(false);
+      return;
+    }
+
     if (senhaNova !== senhaConfirmada) {
       setstate({...state, senhaConfirmada: true});
+      setCarregando(false);
+      setRetorno({
+        retorno: 0,
+        mensagem: 'Senhas não coincidem',
+        tipo: 'danger',
+      });
+      alert(JSON.stringify(state));
     } else if (senhaNova.length > 5) {
       api
         .put('/user/alterarSenha', {
-          usuario: user.usuario,
+          doc: user.doc,
+          usuario: user.user,
           senha,
           senhaNova,
         })
@@ -65,11 +79,13 @@ const AlterarSenha = () => {
               setCarregando(false);
 
               setSenha1(senhaNova);
-              setUser({usuario: user.usuario, senha: senhaNova});
+              setUser({...user, senha: senhaNova});
             }
           }
         });
     } else {
+      setCarregando(false);
+
       setstate({...state, novasenha: true});
     }
   };
@@ -143,19 +159,17 @@ const AlterarSenha = () => {
           secureTextEntry
           error={
             state.senhaConfirmada
-              ? senhaConfirmada.length == senhaNova.length
+              ? senhaConfirmada === senhaNova
                 ? false
                 : true
               : false
           }
         />
         {state.senhaConfirmada ? (
-          senhaConfirmada.length == senhaNova.length ? null : (
+          senhaConfirmada === senhaNova ? null : (
             <HelperText
               type="error"
-              visible={
-                senhaConfirmada.length == senhaNova.length ? false : true
-              }
+              visible={senhaConfirmada === senhaNova ? false : true}
               padding="none"
               style={{width: '80%', marginLeft: '10%'}}>
               Senhas estão diferente.

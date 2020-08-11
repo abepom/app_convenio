@@ -25,6 +25,7 @@ import Administrador from './telas/Administrador';
 
 import RepassesFuturos from './telas/RepassesFuturos';
 import Notificacoes from './telas/Notificacoes';
+import TermoAdasao from './telas/TermoAdasao';
 
 const venda = createStackNavigator(
   {
@@ -144,6 +145,13 @@ const App = createDrawerNavigator(
       screen: Sair,
       navigationOptions: {
         drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.off} />,
+      },
+    },
+    TermoAdasao: {
+      screen: TermoAdasao,
+      navigationOptions: {
+        drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.paper} />,
+        drawerLabel: 'TermoAdasao',
       },
     },
   },
