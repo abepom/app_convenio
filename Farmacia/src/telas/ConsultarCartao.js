@@ -80,8 +80,14 @@ const Home = (props) => {
     <>
       <Menu {...props} title="Consulta de Cartões">
         <View style={{alignItems: 'center'}}>
-          <Text style={{fontSize: 16, marginVertical: 20, color: primary}}>
-            Informe o número do cartão do associado
+          <Text
+            style={{
+              fontSize: 20,
+              marginVertical: 20,
+              fontWeight: 'bold',
+              color: primary,
+            }}>
+            Informe o cartão do associado
           </Text>
 
           <View style={[styles.input, {borderWidth: 0, backgroundColor: null}]}>

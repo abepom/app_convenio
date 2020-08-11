@@ -26,6 +26,7 @@ import Administrador from './telas/Administrador';
 import RepassesFuturos from './telas/RepassesFuturos';
 import Notificacoes from './telas/Notificacoes';
 import TermoAdasao from './telas/TermoAdasao';
+import AdministrarUsuarios from './telas/AdministrarUsuarios';
 
 const venda = createStackNavigator(
   {
@@ -138,9 +139,16 @@ const App = createDrawerNavigator(
         drawerIcon: (props) => (
           <ItemDrawer {...props} icone={imagem.statistics} />
         ),
+        drawerLabel: 'Repasses Futuros',
       },
     },
-
+    AdministrarUsuarios: {
+      screen: AdministrarUsuarios,
+      navigationOptions: {
+        drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.add} />,
+        drawerLabel: 'Administrar Usuarios',
+      },
+    },
     Sair: {
       screen: Sair,
       navigationOptions: {
@@ -151,7 +159,7 @@ const App = createDrawerNavigator(
       screen: TermoAdasao,
       navigationOptions: {
         drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.paper} />,
-        drawerLabel: 'TermoAdasao',
+        drawerLabel: 'Termo de utilização',
       },
     },
   },

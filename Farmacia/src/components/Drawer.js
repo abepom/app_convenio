@@ -80,7 +80,9 @@ const Drawer = memo((props) => {
         itens.map((item) => {
           switch (item.key) {
             case 'RepassesFuturos':
+            case 'AdministrarUsuarios':
               break;
+
             default:
               items.push({...item});
               break;

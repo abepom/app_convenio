@@ -32,14 +32,14 @@ export default function LoginAdm(props) {
         props.navigation.state.params.index == 0
         ? props.navigation.state.params.imput
         : {
-            doc: '14.363.166/0001-87',
+            doc: '',
             user: '',
-            pass: '123456',
+            pass: '',
           }
       : {
-          doc: '14.363.166/0001-87',
+          doc: '',
           user: '',
-          pass: '123456',
+          pass: '',
         },
   );
   return (

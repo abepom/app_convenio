@@ -36,14 +36,15 @@ export default function TermoAdasao(props) {
       </View>
       <WebView
         source={{
-          uri: 'http://192.168.1.238/guiaonline/politica_de_privacidade.asp',
+          uri:
+            'http://www.abepom.org.br/guiaonline/politica_de_privacidade_mobile.asp',
         }}
         textZoom={250}
         style={{height: '100%', borderRadius: 5, margin: 10}}
       />
 
-      <Text>Referencia do termo:</Text>
-      <Text>Data da leitura:</Text>
+      {/* <Text>Referencia do termo:</Text>
+      <Text>Data da leitura:</Text> */}
     </>
   );
 }
