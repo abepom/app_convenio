@@ -109,7 +109,7 @@ export default (props) => {
           <WebView
             source={{
               uri:
-                'http://192.168.1.238/guiaonline/politica_de_privacidade.asp',
+                'http://www.abepom.org.br/guiaonline/politica_de_privacidade_mobile.asp',
             }}
             textZoom={250}
             style={{flex: 19, borderRadius: 5}}

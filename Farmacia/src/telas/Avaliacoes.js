@@ -75,6 +75,7 @@ export default function telas(props) {
         }
         if (data.length == i + 1) {
           setMedia(mediaTemp ? mediaTemp : 5.0);
+          console.log(avaliacoesTemp);
           setAvaliacoes(avaliacoesTemp);
 
           setVotos(votosTemp ? votosTemp : 0);
@@ -100,13 +101,10 @@ export default function telas(props) {
             }}>
             {!!avaliacao ? (
               <>
-                <Text
-                  style={[
-                    styles.textoM,
-                    {color: primary, paddingVertical: 10},
-                  ]}>
-                  {' '}
-                  Solicitar Exclusão do comentário selecionado?
+                <Text style={[styles.textoM, {color: primary, padding: 10}]}>
+                  {avaliacao.data_avaliacao_convenio
+                    ? 'Comentario já foi avaliado pelo setor de convênio não poderá ser removido'
+                    : 'Solicitar exclusão do comentário selecionado?'}
                 </Text>
                 <View
                   style={{
@@ -128,7 +126,9 @@ export default function telas(props) {
                         styles.textoM,
                         {fontWeight: 'bold', color: primary},
                       ]}>
-                      {avaliacao.nome}{' '}
+                      {avaliacao['Nome do dependente']
+                        ? avaliacao['Nome do dependente'].split(' ')[0]
+                        : ''}{' '}
                       <Text style={[styles.textoP, {color: '#999', top: -10}]}>
                         {avaliacao.data_utilizacao}
                       </Text>
@@ -151,35 +151,37 @@ export default function telas(props) {
                   </View>
                 </View>
                 <View style={{width: '100%', flexDirection: 'row'}}>
-                  <TouchableOpacity
-                    onPress={() =>
-                      RemoverComentario(avaliacao.id_avaliacao_convenio)
-                    }
-                    style={{
-                      justifyContent: 'flex-end',
-                      width: '50%',
-                      backgroundColor: danger,
-                      alignItems: 'center',
-                      marginTop: 3,
-                      borderBottomLeftRadius: 5,
-                    }}>
-                    <Text
-                      style={[
-                        styles.textoG,
-                        {
-                          color: 'white',
-                          marginHorizontal: 20,
-                          padding: 10,
-                        },
-                      ]}>
-                      EXCLUIR
-                    </Text>
-                  </TouchableOpacity>
+                  {avaliacao.data_avaliacao_convenio ? null : (
+                    <TouchableOpacity
+                      onPress={() =>
+                        RemoverComentario(avaliacao.id_avaliacao_convenio)
+                      }
+                      style={{
+                        justifyContent: 'flex-end',
+                        flex: 1,
+                        backgroundColor: danger,
+                        alignItems: 'center',
+                        marginTop: 3,
+                        borderBottomLeftRadius: 5,
+                      }}>
+                      <Text
+                        style={[
+                          styles.textoG,
+                          {
+                            color: 'white',
+                            marginHorizontal: 20,
+                            padding: 10,
+                          },
+                        ]}>
+                        EXCLUIR
+                      </Text>
+                    </TouchableOpacity>
+                  )}
                   <TouchableOpacity
                     onPress={() => setModalRemover(false)}
                     style={{
                       justifyContent: 'flex-end',
-                      width: '50%',
+                      flex: 1,
                       backgroundColor: primary,
                       alignItems: 'center',
                       marginTop: 3,
@@ -338,7 +340,7 @@ export default function telas(props) {
                 <View style={{width: '100%'}}>
                   <TouchableOpacity
                     onPress={() => {
-                      if (!item.Avaliacao_Bloqueada) {
+                      if (!item.avaliacao_solicitada_convenio) {
                         setModalRemover(true);
                         setAvaliacao(item);
                       } else {
@@ -347,7 +349,7 @@ export default function telas(props) {
                       }
                     }}
                     style={{
-                      backgroundColor: item.avaliacao_bloqueada
+                      backgroundColor: item.avaliacao_solicitada_convenio
                         ? danverBackground
                         : 'white',
                       marginVertical: 5,
@@ -366,7 +368,7 @@ export default function telas(props) {
                           styles.textoM,
                           {fontWeight: 'bold', color: primary},
                         ]}>
-                        {item.nome}{' '}
+                        {item['Nome do dependente'].split(' ')[0]}{' '}
                         <Text
                           style={[styles.textoP, {color: '#999', top: -10}]}>
                           {item.data_utilizacao}
@@ -387,7 +389,7 @@ export default function telas(props) {
                         width: '100%',
                       }}>
                       <Text style={[styles.textoM, {maxWidth: '95%'}]}>
-                        {item.comentario}
+                        {!item.data_avaliacao_convenio && item.comentario}
                       </Text>
                     </View>
                   </TouchableOpacity>

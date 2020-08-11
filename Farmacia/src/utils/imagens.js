@@ -22,8 +22,16 @@ import menu from '../assets/img/open_menu.png';
 import statistics from '../assets/img/statistics.png';
 import bell from '../assets/img/bell.png';
 import paper from '../assets/img/paper.png';
+import add from '../assets/img/add.png';
+import linha_verde from '../assets/img/linha_verde.png';
+import linha_vermelha from '../assets/img/linha_vermelha.png';
+import logo_circulo from '../assets/img/logo_circulo.png';
 
 export default {
+  linha_verde,
+  linha_vermelha,
+  logo_circulo,
+  add,
   paper,
   bell,
   statistics,
