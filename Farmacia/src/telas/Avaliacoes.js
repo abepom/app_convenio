@@ -4,13 +4,13 @@ import api from '../api';
 import imagens from '../utils/imagens';
 import {Rating} from 'react-native-ratings';
 import styles, {primary, danger} from '../utils/Style';
-import {ActivityIndicator} from 'react-native-paper';
 import useConvenio from '../../Store/Convenio';
 import useLoad from '../../Store/Load';
 import MenuTop from '../components/MenuTop';
 import Modal from 'react-native-modal';
 import {danverBackground} from '../utils/Style';
 import {FlatList} from 'react-native-gesture-handler';
+import Carregando from '../components/Carregando';
 
 export default function telas(props) {
   const [{id_gds}] = useConvenio();
@@ -328,7 +328,7 @@ export default function telas(props) {
           </View>
         }>
         {carregando ? (
-          <ActivityIndicator />
+          <Carregando />
         ) : avaliacoes[0] ? (
           <FlatList
             data={avaliacoes}

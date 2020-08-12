@@ -1,12 +1,5 @@
 import React, {useEffect, useState, useMemo} from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  Dimensions,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import {View, Text, FlatList, Dimensions, TouchableOpacity} from 'react-native';
 import MenuTop from './../components/MenuTop';
 import imagens from '../utils/imagens';
 import useConvenio from './../../Store/Convenio';
@@ -16,6 +9,7 @@ import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
 import {themeLight} from './../utils/theme';
 import {TextInput} from 'react-native-paper';
+import Carregando from '../components/Carregando';
 
 export default function AdministrarUsuarios(props) {
   const [{cd_convenio, doc}] = useConvenio();
@@ -280,7 +274,7 @@ export default function AdministrarUsuarios(props) {
             keyExtractor={(item, index) => index}
             ListEmptyComponent={
               <View>
-                <ActivityIndicator />
+                <Carregando />
               </View>
             }
             renderItem={({item}) => {

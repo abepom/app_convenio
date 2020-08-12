@@ -3,7 +3,6 @@ import {
   View,
   Text,
   FlatList,
-  ActivityIndicator,
   TextInput as Input,
   TouchableOpacity,
   Image,
@@ -27,6 +26,7 @@ import {Checkbox} from 'react-native-paper';
 import useConvenio from '../../Store/Convenio';
 import useLoad from '../../Store/Load';
 import imagens from '../utils/imagens';
+import Carregando from './../components/Carregando';
 
 const meses = [];
 
@@ -215,7 +215,7 @@ const ConsultarVendas = memo((props) => {
                   paddingHorizontal: 5,
                   width: '90%',
                 }}>
-                <ActivityIndicator />
+                <Carregando />
               </View>
               <TouchableOpacity
                 onPress={() => setModal(false)}
@@ -344,7 +344,7 @@ const ConsultarVendas = memo((props) => {
         }>
         <View style={{width: '95%'}}>
           {load ? (
-            <ActivityIndicator size={'large'} color={primary} />
+            <Carregando />
           ) : vendas.length > 0 ? (
             <FlatList
               data={vendas}

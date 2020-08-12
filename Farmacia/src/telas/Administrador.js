@@ -9,7 +9,6 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
 import icone from '../assets/img/abepom.png';
 import api from '../api';
@@ -19,6 +18,7 @@ import {themeLight} from '../utils/theme';
 
 import messaging from '@react-native-firebase/messaging';
 import useConvenio from '../../Store/Convenio';
+import Carregando from '../components/Carregando';
 
 export default function Administrador(props) {
   const [farmacias, setFarmacias] = useState([]);
@@ -200,7 +200,7 @@ export default function Administrador(props) {
           </ScrollView>
         ) : (
           <View>
-            <ActivityIndicator />
+            <Carregando />
           </View>
         )}
       </View>

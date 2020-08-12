@@ -1,12 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-  TextInput,
-  Alert,
-} from 'react-native';
+import {View, Text, TouchableOpacity, TextInput, Alert} from 'react-native';
 import {TextInput as Imput} from 'react-native-paper';
 //import QRCodeScanner from 'react-native-qrcode-scanner';
 import Menu from '../components/MenuTop';
@@ -18,6 +11,7 @@ import Retorno from '../components/Retorno';
 import {themeLight} from '../utils/theme';
 import useConvenio from '../../Store/Convenio';
 import {RNCamera} from 'react-native-camera';
+import Carregando from '../components/Carregando';
 
 const Home = (props) => {
   const [cartao, setCartao] = React.useState('');
@@ -134,7 +128,9 @@ const Home = (props) => {
           </View>
 
           {carregando ? (
-            <ActivityIndicator style={{marginTop: 20}} size={32} />
+            <View style={{marginTop: 7}}>
+              <Carregando />
+            </View>
           ) : (
             <TouchableOpacity
               style={[styles.btnDefault, {marginTop: 10}]}

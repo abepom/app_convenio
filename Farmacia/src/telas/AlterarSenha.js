@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
-import {TextInput, HelperText, ActivityIndicator} from 'react-native-paper';
+import {TextInput, HelperText} from 'react-native-paper';
 import {themeLight} from '../utils/theme';
 import styles, {primary} from '../utils/Style';
 import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
 import api from '../api';
 import Retorno from '../components/Retorno';
 import useUsuario from '../../Store/Usuario';
+import Carregando from '../components/Carregando';
 
 const AlterarSenha = () => {
   const [state, setstate] = useState({
@@ -178,7 +179,7 @@ const AlterarSenha = () => {
         ) : null}
         {carregando ? (
           <View style={{width: '80%', marginTop: 30, alignSelf: 'center'}}>
-            <ActivityIndicator color={primary} />
+            <Carregando color={primary} />
           </View>
         ) : (
           <TouchableOpacity

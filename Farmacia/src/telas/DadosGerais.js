@@ -1,30 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Picker,
-  ScrollView,
-  ActivityIndicator,
-} from 'react-native';
-import { TextInput, HelperText } from 'react-native-paper';
-import { themeLight } from '../utils/theme';
+import React, {useState, useEffect} from 'react';
+import {View, Text, TouchableOpacity, Picker, ScrollView} from 'react-native';
+import {TextInput, HelperText} from 'react-native-paper';
+import {themeLight} from '../utils/theme';
 import styles from '../utils/Style';
-import { TextInputMask } from 'react-native-masked-text';
+import {TextInputMask} from 'react-native-masked-text';
 import getUsuario from '../utils/getUsuario';
 import api from '../api';
 import Retorno from '../components/Retorno';
 import useConvenio from '../../Store/Convenio';
+import Carregando from '../components/Carregando';
 
 const Perfil = () => {
   useEffect(() => {
     getDados();
   }, []);
 
-  const input = { value: '', erro: false };
+  const input = {value: '', erro: false};
 
   const [convenio] = useConvenio();
-  const { id_gds } = convenio;
+  const {id_gds} = convenio;
   const initialState = {
     nome_fachada: input,
     email: input,
@@ -52,24 +46,24 @@ const Perfil = () => {
   const alterarStado = async (valor, campo) => {
     console.log(valor);
     try {
-      let valorAlterado = { ...input, value: valor };
-      await setState({ ...state, [campo]: valorAlterado });
+      let valorAlterado = {...input, value: valor};
+      await setState({...state, [campo]: valorAlterado});
     } catch (error) {
       console.log(error);
     }
   };
 
   const getDados = () => {
-    api.get('/user/dados_gerais', { params: { id_gds } }).then(({ data }) => {
+    api.get('/user/dados_gerais', {params: {id_gds}}).then(({data}) => {
       setState({
         ...state,
-        nome_fachada: { value: data.nome_fachada, erro: false },
-        email: { value: data.email, erro: false },
-        tel_comercial: { value: data.tel_comercial, erro: false },
-        tel_contato: { value: data.tel_contato, erro: false },
-        representante: { value: data.representante, erro: false },
-        cargo: { value: data.cargo, erro: false },
-        site: { value: data.site, erro: false },
+        nome_fachada: {value: data.nome_fachada, erro: false},
+        email: {value: data.email, erro: false},
+        tel_comercial: {value: data.tel_comercial, erro: false},
+        tel_contato: {value: data.tel_contato, erro: false},
+        representante: {value: data.representante, erro: false},
+        cargo: {value: data.cargo, erro: false},
+        site: {value: data.site, erro: false},
         whatsapp: {
           value: data.whatsapp == 'undefined' ? '' : data.whatsapp,
           erro: false,
@@ -130,19 +124,19 @@ const Perfil = () => {
           whatsapp,
           id_gds,
         })
-        .then(({ data }) => {
-          setRetorno({ erro: !data.retorno, mensagem: data.mensagem });
+        .then(({data}) => {
+          setRetorno({erro: !data.retorno, mensagem: data.mensagem});
           setCarregando(false);
           if (data.retorno) {
             setState({
               ...state,
-              nome_fachada: { value: data.nome_fachada, erro: false },
-              email: { value: data.email, erro: false },
-              tel_comercial: { value: data.tel_comercial, erro: false },
-              tel_contato: { value: data.tel_contato, erro: false },
-              representante: { value: data.representante, erro: false },
-              cargo: { value: data.cargo, erro: false },
-              site: { value: data.site, erro: false },
+              nome_fachada: {value: data.nome_fachada, erro: false},
+              email: {value: data.email, erro: false},
+              tel_comercial: {value: data.tel_comercial, erro: false},
+              tel_contato: {value: data.tel_contato, erro: false},
+              representante: {value: data.representante, erro: false},
+              cargo: {value: data.cargo, erro: false},
+              site: {value: data.site, erro: false},
               whatsapp: {
                 value: data.whatsapp == 'undefined' ? '' : data.whatsapp,
                 erro: false,
@@ -150,13 +144,13 @@ const Perfil = () => {
             });
           }
         })
-        .catch(error => setCarregando(false));
+        .catch((error) => setCarregando(false));
     }
   };
   return (
     <>
       <ScrollView>
-        <View style={{ width: '85%', alignSelf: 'center' }}>
+        <View style={{width: '85%', alignSelf: 'center'}}>
           {retorno ? (
             retorno.erro ? (
               <Retorno type="danger" mensagem={retorno.mensagem} />
@@ -166,14 +160,14 @@ const Perfil = () => {
           ) : null}
         </View>
         <TextInput
-          ref={ref => null}
+          ref={(ref) => null}
           label="Nome de Fachada"
           editable={convenio.nivel == '1' ? true : false}
           dense
           mode="outlined"
           theme={themeLight}
           value={state.nome_fachada.value}
-          onChangeText={texto => alterarStado(texto, 'nome_fachada')}
+          onChangeText={(texto) => alterarStado(texto, 'nome_fachada')}
           keyboardType="default"
           error={state.nome_fachada.erro}
           style={[styles.imput, styles.textoM]}
@@ -183,7 +177,7 @@ const Perfil = () => {
             type="error"
             visible={!state.nome_fachada.value != ''}
             padding="none"
-            style={{ width: '80%', marginLeft: '10%' }}>
+            style={{width: '80%', marginLeft: '10%'}}>
             Informe o nome da fachada
           </HelperText>
         )}
@@ -196,7 +190,7 @@ const Perfil = () => {
           mode="outlined"
           theme={themeLight}
           value={state.email.value}
-          onChangeText={texto => alterarStado(texto, 'email')}
+          onChangeText={(texto) => alterarStado(texto, 'email')}
           keyboardType="email-address"
           style={[styles.imput, styles.textoM]}
           error={state.email.erro}
@@ -212,11 +206,11 @@ const Perfil = () => {
                 : false
             }
             padding="none"
-            style={{ width: '80%', marginLeft: '10%' }}>
+            style={{width: '80%', marginLeft: '10%'}}>
             Informe um email valido
           </HelperText>
         )}
-        <View style={{ width: '100%', flexDirection: 'row' }}>
+        <View style={{width: '100%', flexDirection: 'row'}}>
           <TextInput
             label="Tel. Comercial"
             dense
@@ -224,10 +218,10 @@ const Perfil = () => {
             mode="outlined"
             theme={themeLight}
             value={state.tel_comercial.value}
-            onChangeText={texto => alterarStado(texto, 'tel_comercial')}
+            onChangeText={(texto) => alterarStado(texto, 'tel_comercial')}
             keyboardType="numeric"
-            style={[styles.imput, { width: '38%', fontSize: 10 }]}
-            render={props => {
+            style={[styles.imput, {width: '38%', fontSize: 10}]}
+            render={(props) => {
               return (
                 <TextInputMask
                   type={'cel-phone'}
@@ -248,13 +242,13 @@ const Perfil = () => {
             editable={convenio.nivel == '1' ? true : false}
             theme={themeLight}
             value={state.tel_contato.value}
-            onChangeText={texto => alterarStado(texto, 'tel_contato')}
+            onChangeText={(texto) => alterarStado(texto, 'tel_contato')}
             keyboardType="numeric"
             style={[
               styles.imput,
-              { width: '38%', marginLeft: '4%', fontSize: 10 },
+              {width: '38%', marginLeft: '4%', fontSize: 10},
             ]}
-            render={props => {
+            render={(props) => {
               return (
                 <TextInputMask
                   type={'cel-phone'}
@@ -276,7 +270,7 @@ const Perfil = () => {
           theme={themeLight}
           editable={convenio.nivel == '1' ? true : false}
           value={state.representante.value}
-          onChangeText={texto => alterarStado(texto, 'representante')}
+          onChangeText={(texto) => alterarStado(texto, 'representante')}
           keyboardType="default"
           style={[styles.imput, styles.textoM]}
         />
@@ -287,7 +281,7 @@ const Perfil = () => {
           mode="outlined"
           theme={themeLight}
           value={state.site.value}
-          onChangeText={texto => alterarStado(texto, 'site')}
+          onChangeText={(texto) => alterarStado(texto, 'site')}
           keyboardType="url"
           style={[styles.imput, styles.textoM]}
         />
@@ -298,10 +292,10 @@ const Perfil = () => {
           mode="outlined"
           theme={themeLight}
           value={state.whatsapp.value}
-          onChangeText={texto => alterarStado(texto, 'whatsapp')}
+          onChangeText={(texto) => alterarStado(texto, 'whatsapp')}
           keyboardType="numeric"
           style={[styles.imput, styles.textoM]}
-          render={props => {
+          render={(props) => {
             return (
               <TextInputMask
                 type={'cel-phone'}
@@ -316,18 +310,18 @@ const Perfil = () => {
           }}
         />
         {carregando ? (
-          <ActivityIndicator style={{ marginTop: 20 }} size={32} />
+          <Carregando style={{marginTop: 20}} size={32} />
         ) : convenio.nivel == 1 ? (
           <TouchableOpacity
             onPress={() => atualizarDados()}
             style={[
               styles.btnDefault,
-              { marginTop: 12, width: '40%', alignSelf: 'center' },
+              {marginTop: 12, width: '40%', alignSelf: 'center'},
             ]}>
-            <Text style={{ color: `white` }}>SALVAR</Text>
+            <Text style={{color: `white`}}>SALVAR</Text>
           </TouchableOpacity>
         ) : null}
-        <View style={{ height: 100 }} />
+        <View style={{height: 100}} />
       </ScrollView>
     </>
   );

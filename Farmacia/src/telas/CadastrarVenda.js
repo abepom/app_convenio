@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, ActivityIndicator, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import formatCurrency from 'currency-formatter';
 import Modal from 'react-native-modal';
@@ -11,6 +11,7 @@ import api from '../api';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import useLoad from '../../Store/Load';
 import useConvenio from '../../Store/Convenio';
+import Carregando from '../components/Carregando';
 
 const CadastrarVenda = (props) => {
   const {matricula, dep, nome, id_gds, titular} = props.navigation.state.params;
@@ -277,7 +278,7 @@ const CadastrarVenda = (props) => {
                 <Text style={{color: 'white'}}>INFORMAR VENDA</Text>
               </TouchableOpacity>
             ) : (
-              <ActivityIndicator style={{marginTop: 30}} />
+              <Carregando style={{marginTop: 30}} />
             )}
           </View>
         </View>

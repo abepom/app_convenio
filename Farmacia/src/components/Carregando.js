@@ -1,84 +1,95 @@
-import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, Image, Animated, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, Animated, Image} from 'react-native';
 import imagens from '../utils/imagens';
-import {Easing} from 'react-native-reanimated';
+import {primary} from './../utils/Style';
 
-export default function Carregando() {
-  let spinValue = new Animated.Value(0);
-  // First set up animation
-  Animated.timing(spinValue, {
-    toValue: 1,
-    duration: 2000,
-    easing: Easing.sin,
-    useNativeDriver: true,
-  }).start();
+export default function Carregando(props) {
+  let {cor, tamanho = 50, tipo = 'padrao'} = props;
 
-  // Second interpolate beginning and end values (in this case 0 and 1)
-  const spin = spinValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  });
-  console.log(spin);
+  const [giroVerde, setGiroVerde] = useState(new Animated.Value(0));
+  const [giroVermelho, setGiroVermelho] = useState(new Animated.Value(0));
+
+  tipo == 'sequencial' &&
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(giroVerde, {
+          toValue: 6.3,
+          duration: 2000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(giroVermelho, {
+          toValue: 6.3,
+          duration: 2000,
+          useNativeDriver: true,
+        }),
+      ]),
+    ).start();
+
+  tipo == 'padrao' &&
+    Animated.loop(
+      Animated.parallel([
+        Animated.timing(giroVerde, {
+          toValue: -6.3,
+          duration: 2000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(giroVermelho, {
+          toValue: 6.3,
+          duration: 2000,
+          useNativeDriver: true,
+        }),
+      ]),
+    ).start();
+
   return (
-    <View style={{flex: 1}}>
+    <View
+      style={{
+        width: tamanho,
+        height: tamanho,
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 10,
+      }}>
       <Animated.View
         style={{
-          width: 50,
-          height: 50,
+          width: tamanho,
+          height: tamanho,
+          transform: [{rotate: giroVerde}],
           position: 'absolute',
         }}>
         <Image
           source={imagens.linha_verde}
-          style={{width: 50, height: 50, transform: [{rotate: spin}]}}
+          style={{width: tamanho, height: tamanho, tintColor: cor ?? null}}
         />
       </Animated.View>
       <Animated.View
         style={{
-          width: 50,
-          height: 50,
+          width: tamanho,
+          height: tamanho,
+          transform: [{rotate: giroVermelho}],
           position: 'absolute',
         }}>
         <Image
           source={imagens.linha_vermelha}
-          style={{width: 50, height: 50}}
+          style={{width: tamanho, height: tamanho, tintColor: cor ?? null}}
         />
       </Animated.View>
-      <Animated.View
-        style={{
-          width: 50,
-          height: 50,
-          position: 'absolute',
-        }}>
-        <Image source={imagens.logo_circulo} style={{width: 50, height: 50}} />
-      </Animated.View>
-    </View>
-  );
-
-  return (
-    <View style={{flex: 1}}>
+      {!cor && (
+        <Image
+          source={imagens.circulo_branco}
+          style={{width: tamanho, height: tamanho}}
+        />
+      )}
       <Image
-        source={imagens.linha_verde}
-        style={{width: 100, height: 100, position: 'absolute'}}
-      />
-
-      <Animated.Image
-        source={imagens.linha_vermelha}
+        source={imagens.circulo_estrela_vazada}
         style={{
-          width: 100,
-          height: 100,
+          width: tamanho,
+          height: tamanho,
           position: 'absolute',
-          transform: [{rotate: lVermelho + 'deg'}],
+          tintColor: cor ?? null,
         }}
       />
-
-      <Image
-        source={imagens.logo_circulo}
-        style={{width: 100, height: 100, position: 'absolute'}}
-      />
-
-      <TouchableOpacity onPress={() => {}} style={{alignSelf: 'center'}}>
-        <Text>rodar</Text>
-      </TouchableOpacity>
     </View>
   );
 }
