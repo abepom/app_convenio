@@ -1,17 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import api from './../api';
 import MenuTop from './../components/MenuTop';
 import {FlatList} from 'react-native-gesture-handler';
 import useConvenio from '../../Store/Convenio';
 import {primary} from './../utils/Style';
 import useLoad from './../../Store/Load';
+import Carregando from '../components/Carregando';
 
 export default function Notificacoes(props) {
   const [convenio, setConvenio] = useConvenio();
@@ -58,7 +53,7 @@ export default function Notificacoes(props) {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <ActivityIndicator size={48} />
+              <Carregando size={48} />
             </View>
           )}
           data={notificacoes}

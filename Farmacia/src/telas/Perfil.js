@@ -19,8 +19,8 @@ import icone from '../assets/img/abepom.png';
 import {Rating} from 'react-native-ratings';
 import ImagePicker from 'react-native-image-picker';
 import api from '../api';
-import {ActivityIndicator} from 'react-native-paper';
 import useConvenio from '../../Store/Convenio';
+import Carregando from '../components/Carregando';
 
 const initialLayout = {width: Dimensions.get('window').width};
 
@@ -188,7 +188,7 @@ export default function TabViewExample(props) {
             />
           )
         ) : (
-          <ActivityIndicator size={50} />
+          <Carregando size={50} />
         )}
 
         <View>
@@ -202,7 +202,7 @@ export default function TabViewExample(props) {
           </Text>
         </View>
         {avaliacao.carregando ? (
-          <ActivityIndicator />
+          <Carregando />
         ) : (
           <TouchableOpacity
             onPress={() => consultarAvaliacoes(convenio.id_gds)}

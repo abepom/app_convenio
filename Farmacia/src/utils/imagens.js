@@ -26,8 +26,12 @@ import add from '../assets/img/add.png';
 import linha_verde from '../assets/img/linha_verde.png';
 import linha_vermelha from '../assets/img/linha_vermelha.png';
 import logo_circulo from '../assets/img/logo_circulo.png';
+import circulo_estrela_vazada from '../assets/img/circulo_estrela_vazada.png';
+import circulo_branco from '../assets/img/circulo_branco.png';
 
 export default {
+  circulo_estrela_vazada,
+  circulo_branco,
   linha_verde,
   linha_vermelha,
   logo_circulo,

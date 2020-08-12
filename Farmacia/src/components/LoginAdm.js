@@ -1,11 +1,6 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+
 import {TextInput} from 'react-native-paper';
 import themeDark from '../utils/theme';
 import TextInputMask from 'react-native-text-input-mask';
@@ -16,6 +11,7 @@ import styles, {
   sucess,
   background,
 } from '../utils/Style';
+import Carregando from './Carregando';
 export default function LoginAdm(props) {
   const {
     func,
@@ -100,7 +96,7 @@ export default function LoginAdm(props) {
               marginTop: 20,
             },
           ]}>
-          <ActivityIndicator size="large" />
+          <Carregando cor="#fff" />
         </View>
       ) : !redefinirSenha ? (
         <View style={estilos.buttonView}>

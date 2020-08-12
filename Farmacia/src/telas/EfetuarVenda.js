@@ -8,7 +8,6 @@ import {
   Image,
   Alert,
   TextInput as TextInputrn,
-  ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
 import MenuTop from '../components/MenuTop';
@@ -18,6 +17,7 @@ import imagens from '../utils/imagens';
 import api from '../api';
 import Retorno from '../components/Retorno';
 import useConvenio from '../../Store/Convenio';
+import Carregando from '../components/Carregando';
 
 export default (props) => {
   const vaziu = {
@@ -274,7 +274,7 @@ export default (props) => {
             />
           </TouchableOpacity>
         ) : (
-          <ActivityIndicator style={{margin: 30}} size={30} />
+          <Carregando style={{margin: 30}} size={30} />
         )}
       </View>
       {retorno.retorno && (

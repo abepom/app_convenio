@@ -1,16 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import MenuTop from './../components/MenuTop';
 import useConvenio from './../../Store/Convenio';
 import api from './../api';
 import {primary} from './../utils/Style';
 import formatCurrency from 'currency-formatter';
+import Carregando from '../components/Carregando';
 
 export default function RepassesFuturos(props) {
   const [{id_gds}] = useConvenio();
@@ -124,7 +119,7 @@ export default function RepassesFuturos(props) {
               </View>
             );
           }}
-          ListEmptyComponent={() => <ActivityIndicator />}
+          ListEmptyComponent={() => <Carregando />}
         />
       </MenuTop>
       <View

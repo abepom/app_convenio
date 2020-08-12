@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, ActivityIndicator, TouchableOpacity} from 'react-native';
+import {View, Text} from 'react-native';
 import MenuTop from './../components/MenuTop';
 
 export default function RepassesRealizados(props) {

@@ -1,11 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import themeDark from '../utils/theme';
 import TextInputMask from 'react-native-text-input-mask';
@@ -17,6 +11,7 @@ import styles, {
   background,
 } from '../utils/Style';
 import {set} from 'react-native-reanimated';
+import Carregando from './Carregando';
 export default function LoginPDV(props) {
   const {
     func,
@@ -113,7 +108,7 @@ export default function LoginPDV(props) {
               marginTop: 20,
             },
           ]}>
-          <ActivityIndicator size="large" />
+          <Carregando cor="#fff" />
         </View>
       ) : !redefinirSenha ? (
         <View style={estilos.buttonView}>

@@ -8,6 +8,7 @@ messaging().setBackgroundMessageHandler(async (remoteMessage) => {
   console.log('Message handled in the background!', remoteMessage);
 });
 import {StorePrivider} from './store';
+import Carregando from './src/components/Carregando';
 
 function HeadlessCheck({isHeadless}) {
   if (isHeadless) {
