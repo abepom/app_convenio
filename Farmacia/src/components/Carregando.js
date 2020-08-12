@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, Animated, Image} from 'react-native';
 import imagens from '../utils/imagens';
-import {primary} from './../utils/Style';
 
 export default function Carregando(props) {
   let {cor, tamanho = 50, tipo = 'padrao'} = props;
