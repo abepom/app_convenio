@@ -66,7 +66,7 @@ const App = createDrawerNavigator(
       screen: Notificacoes,
       navigationOptions: {
         drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.bell} />,
-        drawerLabel: 'Notificações',
+        drawerLabel: 'Mensagens',
       },
     },
     ConsultarCartao: {
@@ -146,7 +146,7 @@ const App = createDrawerNavigator(
       screen: AdministrarUsuarios,
       navigationOptions: {
         drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.add} />,
-        drawerLabel: 'Administrar Usuarios',
+        drawerLabel: 'Administrar Usuários',
       },
     },
     Sair: {

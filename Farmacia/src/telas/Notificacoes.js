@@ -43,7 +43,7 @@ export default function Notificacoes(props) {
   }
   return (
     <View>
-      <MenuTop drawer {...props} title={'Notificações'}>
+      <MenuTop drawer {...props} title={'Mensagens'}>
         <FlatList
           ListEmptyComponent={() => (
             <View

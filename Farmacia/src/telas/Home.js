@@ -23,18 +23,25 @@ import useConvenio from '../../Store/Convenio';
 import api from './../api';
 import useLoad from './../../Store/Load';
 import {WebView} from 'react-native-webview';
+import Carregando from '../components/Carregando';
 export default (props) => {
   const [convenio] = useConvenio();
   const [notificacoes, setNotificacoes] = useState([]);
   const [load, setload] = useLoad();
   const [naoLida, setNaoLida] = useState(0);
   const [modal, setModal] = useState(false);
+  const [termo, setTermo] = useState({});
   useEffect(() => {
-    console.log(convenio);
     if (convenio.primeiro_acesso) {
       setModal(true);
+      api.get('/termoAdesao', null).then(({data}) => {
+        setTermo(data);
+      });
     }
     if (load !== 'notificacao' && load !== 'todos') {
+      api.get('/termoAdesao', null).then(({data}) => {
+        setTermo(data);
+      });
       carregar(true);
     }
   }, []);
@@ -86,8 +93,8 @@ export default (props) => {
   };
 
   const aprovarTermo = async () => {
-    console.log('aceitou');
-    api.post('/AceitarTermo', {token: convenio.token});
+    console.log('aceitou', termo.T_id_termo);
+    api.post('/AceitarTermo', {token: convenio.token, termo: termo.T_id_termo});
     setModal(false);
   };
   const reprovarTermo = async () => {
@@ -106,43 +113,48 @@ export default (props) => {
             borderRadius: 5,
             padding: 10,
           }}>
-          <WebView
-            source={{
-              uri:
-                'http://www.abepom.org.br/guiaonline/politica_de_privacidade_mobile.asp',
-            }}
-            textZoom={250}
-            style={{flex: 19, borderRadius: 5}}
-          />
-          <View
-            style={{
-              flex: 0.1,
+          {termo ? (
+            <>
+              <WebView
+                source={{
+                  html: termo.T_descricao,
+                }}
+                textZoom={250}
+                style={{flex: 19, borderRadius: 5}}
+              />
+              <View
+                style={{
+                  flex: 0.1,
 
-              alignItems: 'center',
-              justifyContent: 'space-around',
-              flexDirection: 'row',
-            }}>
-            <TouchableOpacity
-              style={{
-                backgroundColor: primary,
-                padding: 10,
-                borderRadius: 5,
-                paddingHorizontal: 20,
-              }}
-              onPress={aprovarTermo}>
-              <Text style={{fontSize: 24, color: 'white'}}>ACEITAR</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                backgroundColor: danger,
-                padding: 10,
-                borderRadius: 5,
-                paddingHorizontal: 20,
-              }}
-              onPress={() => reprovarTermo()}>
-              <Text style={{fontSize: 24, color: 'white'}}>RECUSAR</Text>
-            </TouchableOpacity>
-          </View>
+                  alignItems: 'center',
+                  justifyContent: 'space-around',
+                  flexDirection: 'row',
+                }}>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: primary,
+                    padding: 10,
+                    borderRadius: 5,
+                    paddingHorizontal: 20,
+                  }}
+                  onPress={aprovarTermo}>
+                  <Text style={{fontSize: 24, color: 'white'}}>ACEITAR</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: danger,
+                    padding: 10,
+                    borderRadius: 5,
+                    paddingHorizontal: 20,
+                  }}
+                  onPress={() => reprovarTermo()}>
+                  <Text style={{fontSize: 24, color: 'white'}}>RECUSAR</Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          ) : (
+            <Carregando />
+          )}
         </View>
       </Modal>
       <View style={{width: '100%', backgroundColor: background}}>

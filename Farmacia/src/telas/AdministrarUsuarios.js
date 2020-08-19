@@ -1,5 +1,12 @@
 import React, {useEffect, useState, useMemo} from 'react';
-import {View, Text, FlatList, Dimensions, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  Dimensions,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import MenuTop from './../components/MenuTop';
 import imagens from '../utils/imagens';
 import useConvenio from './../../Store/Convenio';
@@ -60,8 +67,8 @@ export default function AdministrarUsuarios(props) {
         </Text>
         <Text style={{marginBottom: 50, marginHorizontal: 20, fontSize: 16}}>
           {status
-            ? ' Essa ação ira BLOQUEAR o acesso do ponto de atendimento ao sistema.'
-            : ' Essa ação ira DESBLOQUEAR o acesso do ponto de atendimento ao sistema.'}
+            ? ' Essa ação ira BLOQUEAR o acesso do ponto de Venda ao sistema.'
+            : ' Essa ação ira DESBLOQUEAR o acesso do ponto de Venda ao sistema.'}
         </Text>
         <View
           style={{
@@ -103,26 +110,36 @@ export default function AdministrarUsuarios(props) {
 
   const criarUsuario = () => {
     const {usuario, email, senha} = usuarioSelecionado;
-    alert('criar');
+    if (!usuario && !email && !senha) {
+      return Alert.alert(null, 'Preencha todos os campos');
+    }
     api
       .post('/user/criarPDV', {cd_convenio, doc, usuario, email, senha})
       .then(({data}) => {
         console.log(data);
         if (!data.error) {
+          Alert.alert(null, data.mensagem);
           getPDV();
           SetUsuarioSelecionado(false);
+        } else {
+          console.log(data.error);
+          Alert.alert(null, JSON.stringify(data.error));
         }
       })
       .catch((e) => console.log(e));
     setModal(false);
   };
   const editarUsuario = () => {
+    if (!usuario && !email && !senha) {
+      return Alert.alert(null, 'Preencha todos os campos');
+    }
     api
       .post('/user/editarPDV', {...usuarioSelecionado})
       .then(({data}) => {
         console.log('editar');
         console.log(data);
         if (!data.error) {
+          Alert.alert(null, 'Usuario Alterado com sucesso');
           getPDV();
           SetUsuarioSelecionado(false);
         }
@@ -142,10 +159,11 @@ export default function AdministrarUsuarios(props) {
             fontSize: 20,
             fontWeight: 'bold',
           }}>
-          {edicao ? 'Editar Usuário' : 'Criar Usuário'}
+          {edicao ? 'Editar PDV' : 'Criar PDV'}
         </Text>
         <TextInput
           label="Usuario"
+          maxLength={14}
           dense
           mode="outlined"
           theme={themeLight}
@@ -165,7 +183,7 @@ export default function AdministrarUsuarios(props) {
           onChangeText={(texto) =>
             SetUsuarioSelecionado({...usuarioSelecionado, email: texto})
           }
-          keyboardType="default"
+          keyboardType="email-address"
           style={[styles.textoM, {marginHorizontal: 10}]}
         />
         <TextInput
@@ -206,7 +224,7 @@ export default function AdministrarUsuarios(props) {
             }}
             onPress={edicao ? editarUsuario : criarUsuario}>
             <Text style={{color: 'white'}}>
-              {edicao ? 'Salvar Alteração' : 'Criar Usuário'}
+              {edicao ? 'Salvar Alteração' : 'Criar PDV'}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -221,7 +239,7 @@ export default function AdministrarUsuarios(props) {
               SetUsuarioSelecionado(false);
               setModal(false);
             }}>
-            <Text style={{color: 'white'}}>Fechar</Text>
+            <Text style={{color: 'white'}}>Cancelar</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -239,7 +257,7 @@ export default function AdministrarUsuarios(props) {
         header={
           <View style={{marginTop: 20}}>
             <Text style={{fontSize: 20, color: primary}}>
-              Lista de ponto de atendimento
+              Lista de ponto de venda
             </Text>
             <TouchableOpacity
               style={{
@@ -256,7 +274,7 @@ export default function AdministrarUsuarios(props) {
                   senha: '',
                 })
               }>
-              <Text style={{color: 'white'}}>Criar Ponto de Venda</Text>
+              <Text style={{color: 'white'}}>Criar PDV</Text>
             </TouchableOpacity>
           </View>
         }>
@@ -264,7 +282,7 @@ export default function AdministrarUsuarios(props) {
           <View style={{flex: 1}}>
             <View style={{padding: 15, backgroundColor: sucessBack}}>
               <Text style={{color: sucess}}>
-                Nenhum Ponto de atendimento cadastrado.
+                Nenhum Ponto de Venda cadastrado.
               </Text>
             </View>
           </View>
@@ -330,25 +348,31 @@ export default function AdministrarUsuarios(props) {
                         onPress={() =>
                           modalbloquearUsuario(item.id, item.ativo)
                         }>
-                        {item.ativo ? (
+                        {!item.ativo ? (
                           <Icone
                             name={'lock-outline'}
                             size={30}
-                            color={sucess}
+                            color={danger}
                           />
                         ) : (
                           <Icone
                             name={'lock-open-outline'}
                             size={30}
-                            color={danger}
+                            color={sucess}
                           />
                         )}
                       </TouchableOpacity>
                       <TouchableOpacity
+                        disabled={!item.ativo}
                         onPress={async () => {
                           await SetUsuarioSelecionado(item);
                         }}>
-                        <Icone name={'pencil'} size={30} />
+                        <Icone
+                          name={'pencil'}
+                          size={30}
+                          color={primary}
+                          style={{opacity: item.ativo ? 1 : 0.3}}
+                        />
                       </TouchableOpacity>
                     </View>
                   </View>

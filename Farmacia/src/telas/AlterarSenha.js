@@ -42,7 +42,6 @@ const AlterarSenha = () => {
       setCarregando(false);
       return;
     }
-
     if (senhaNova !== senhaConfirmada) {
       setstate({...state, senhaConfirmada: true});
       setCarregando(false);
@@ -61,7 +60,7 @@ const AlterarSenha = () => {
           senhaNova,
         })
         .then(({data}) => {
-          if (data.retorno) {
+          if (!!data.retorno) {
             if (data.tipo == 'danger') {
               setSenha('');
 
@@ -108,11 +107,11 @@ const AlterarSenha = () => {
           keyboardType="default"
           style={[styles.imput]}
           secureTextEntry
-          error={state.senha ? (senha.length <= 5 ? true : false) : false}
+          error={state.senha ? (senha.length <= 2 ? true : false) : false}
         />
 
         {state.senha ? (
-          senha.length <= 5 ? (
+          senha.length <= 2 ? (
             <HelperText
               type="error"
               visible={true}

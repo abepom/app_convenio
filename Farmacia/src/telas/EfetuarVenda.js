@@ -304,7 +304,7 @@ export default (props) => {
                     if (item.Cartao_Recebido) {
                       Alert.alert(
                         '',
-                        'Este associado já possuí o CARTÃO DO ASSOCIADO, é indispensável a apresentação deste para efetuar o lancamento',
+                        'Este associado já possui o CARTÃO DO ASSOCIADO, é indispensável a apresentação deste para efetuar o lançamento',
                       );
                     } else {
                       setImput('');
