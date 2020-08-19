@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -12,9 +12,17 @@ import {WebView} from 'react-native-webview';
 
 import styless, {primary} from './../utils/Style';
 import imagens from '../utils/imagens';
+import api from './../api';
+import Carregando from '../components/Carregando';
 
 export default function TermoAdasao(props) {
-  console.log(props);
+  const [termo, setTermo] = useState(false);
+  useEffect(() => {
+    api.get('/termoAdesao', null).then(({data}) => {
+      setTermo(data);
+      console.log(data);
+    });
+  }, []);
   return (
     <>
       <StatusBar backgroundColor={primary} barStyle="light-content" />
@@ -33,17 +41,21 @@ export default function TermoAdasao(props) {
         />
         <Text style={[styless.textoG, styless.white]}>TERMO DE ADESÃO</Text>
       </View>
-      <WebView
-        source={{
-          uri:
-            'http://www.abepom.org.br/guiaonline/politica_de_privacidade_mobile.asp',
-        }}
-        textZoom={250}
-        style={{height: '100%', borderRadius: 5, margin: 10}}
-      />
-
-      {/* <Text>Referencia do termo:</Text>
-      <Text>Data da leitura:</Text> */}
+      {termo ? (
+        <WebView
+          source={{
+            html: termo.T_descricao,
+          }}
+          textZoom={250}
+          style={{height: '100%', borderRadius: 5, margin: 10}}
+        />
+      ) : (
+        <Carregando />
+      )}
+      <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+        <Text>Nº Termo: {termo.T_id_termo}</Text>
+        <Text>Data da leitura: {termo.ACTU_data_leitura_termo}</Text>
+      </View>
     </>
   );
 }

@@ -28,8 +28,12 @@ import linha_vermelha from '../assets/img/linha_vermelha.png';
 import logo_circulo from '../assets/img/logo_circulo.png';
 import circulo_estrela_vazada from '../assets/img/circulo_estrela_vazada.png';
 import circulo_branco from '../assets/img/circulo_branco.png';
+import cartao_frente from '../assets/img/cartao_frente.png';
+import cartao_verso from '../assets/img/cartao_verso.png';
 
 export default {
+  cartao_frente,
+  cartao_verso,
   circulo_estrela_vazada,
   circulo_branco,
   linha_verde,

@@ -175,7 +175,6 @@ const Login = (props) => {
               marginTop: 20,
             }}
             initialLayout={initialLayout}
-            lazy={true}
             renderTabBar={(props) => (
               <TabBar
                 {...props}

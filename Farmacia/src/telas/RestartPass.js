@@ -39,7 +39,7 @@ const Login = (props) => {
         data: imput,
         method: 'post',
       });
-      console.log(data);
+
       data.erro
         ? setState({
             ...state,
@@ -52,6 +52,7 @@ const Login = (props) => {
             index: imput.user ? 1 : 0,
             imput,
           });
+      setCarregando(false);
     } else {
       setState({
         ...state,
@@ -59,7 +60,7 @@ const Login = (props) => {
         mensagem: 'Informe um usuário e senha.',
       });
     }
-    setCarregando(true);
+    setCarregando(false);
   };
 
   const [routes] = useState([

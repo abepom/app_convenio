@@ -104,7 +104,7 @@ export default function telas(props) {
                 <Text style={[styles.textoM, {color: primary, padding: 10}]}>
                   {avaliacao.data_avaliacao_convenio
                     ? 'Comentario já foi avaliado pelo setor de convênio não poderá ser removido'
-                    : 'Solicitar exclusão do comentário selecionado?'}
+                    : 'Solicitar análise do comentário selecionado?'}
                 </Text>
                 <View
                   style={{
@@ -169,11 +169,10 @@ export default function telas(props) {
                           styles.textoG,
                           {
                             color: 'white',
-                            marginHorizontal: 20,
                             padding: 10,
                           },
                         ]}>
-                        EXCLUIR
+                        SOLICITAR ANÁLISE
                       </Text>
                     </TouchableOpacity>
                   )}
@@ -209,7 +208,7 @@ export default function telas(props) {
                     styles.textoM,
                     {color: primary, paddingVertical: 10},
                   ]}>
-                  Já foi Solicitado exclusão da avaliação
+                  Já foi Solicitado Análise da avaliação
                 </Text>
                 <TouchableOpacity
                   onPress={() => setModalRemover(false)}
@@ -431,7 +430,7 @@ export default function telas(props) {
               elevation: 2,
             },
           ]}>
-          Removido
+          Analise
         </Text>
         <Text
           style={[

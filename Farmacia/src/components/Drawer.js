@@ -19,6 +19,7 @@ import useConvenio from '../../Store/Convenio';
 import useLoad from '../../Store/Load';
 import useUsuario from '../../Store/Usuario';
 import api from './../api';
+import useNotificacao from './../../Store/Notificacoes';
 
 const Drawer = memo((props) => {
   const [load, setLoad] = useLoad();
@@ -26,37 +27,18 @@ const Drawer = memo((props) => {
   const [convenio] = useConvenio();
 
   useEffect(() => {
-    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-      api
-        .get('/user/notificacoes', {
-          params: {cd_convenio: convenio.cd_convenio},
-        })
-        .then(({data}) => {
-          console.log(data);
-          Alert.alert(
-            data[0].ACM_titulo,
-            data[0].ACM_mensagem.replace(/<[^>]*>?/gm, '').replace(
-              /&[^;]*;?/gm,
-              '',
-            ),
-            [
-              {
-                text: 'Ok',
-                onPress: () => {
-                  api
-                    .post('/user/LerNotificacoes', {id: data[0].ACMI_id_itens})
-                    .then((a) => setLoad('notificacao'))
-                    .catch((e) => console.log(e));
-                },
-              },
-              {text: 'FECHAR', onPress: () => {}},
-            ],
-          );
-        });
-    });
+    messaging().onMessage(async (remoteMessage) => {
+      try {
+        let {title, body} = remoteMessage.notification;
+        let teste;
 
-    return unsubscribe;
+        teste = {title, body, messageId: remoteMessage.messageId};
+
+        Alert.alert(title, body, [{text: 'FECHAR', onPress: () => {}}]);
+      } catch (error) {}
+    });
   }, []);
+
   const [menu, setMenu] = useState(props);
   let itens = [];
 
