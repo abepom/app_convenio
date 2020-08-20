@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  RefreshControl,
+} from 'react-native';
 import api from './../api';
 import MenuTop from './../components/MenuTop';
 import {FlatList} from 'react-native-gesture-handler';
@@ -9,6 +15,8 @@ import useLoad from './../../Store/Load';
 import Carregando from '../components/Carregando';
 
 export default function Notificacoes(props) {
+  const [refreshing, setRefreshing] = useState(false);
+
   const [convenio, setConvenio] = useConvenio();
   const [load, setLoad] = useLoad();
 
@@ -16,6 +24,7 @@ export default function Notificacoes(props) {
     props.navigation.state.params,
   );
   function getNotificacoes() {
+    setNotificacoes(null);
     api
       .get('/user/notificacoes', {params: {cd_convenio: convenio.cd_convenio}})
       .then(({data}) => {
@@ -45,6 +54,12 @@ export default function Notificacoes(props) {
     <View>
       <MenuTop drawer {...props} title={'Mensagens'}>
         <FlatList
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={getNotificacoes}
+            />
+          }
           ListEmptyComponent={() => (
             <View
               style={{

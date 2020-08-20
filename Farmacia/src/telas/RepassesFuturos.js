@@ -1,16 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, FlatList} from 'react-native';
+import {View, Text, TouchableOpacity, RefreshControl} from 'react-native';
 import MenuTop from './../components/MenuTop';
 import useConvenio from './../../Store/Convenio';
 import api from './../api';
 import {primary} from './../utils/Style';
 import formatCurrency from 'currency-formatter';
 import Carregando from '../components/Carregando';
+import {FlatList} from 'react-native-gesture-handler';
 
 export default function RepassesFuturos(props) {
+  const [refreshing, setRefreshing] = useState(false);
   const [{id_gds}] = useConvenio();
   const [repasses, setRepasses] = useState();
-  useEffect(() => {
+  const getRepasse = () => {
+    setRepasses(null);
     api.get('/repassesFuturo', {params: {id: id_gds}}).then(({data}) => {
       let ordenado = data.sort((a, b) => {
         if (a.Nr_lancamento < b.Nr_lancamento) {
@@ -24,11 +27,17 @@ export default function RepassesFuturos(props) {
       });
       setRepasses(ordenado);
     });
+  };
+  useEffect(() => {
+    getRepasse();
   }, []);
   return (
     <>
       <MenuTop drawer {...props} title={'Repasses Futuro'}>
         <FlatList
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={getRepasse} />
+          }
           data={repasses}
           keyExtractor={(item) => item.Nr_lancamento}
           renderItem={({item}) => {

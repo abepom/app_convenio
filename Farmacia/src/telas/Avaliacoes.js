@@ -1,5 +1,11 @@
-import React, {useEffect, useState, useCallback} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  RefreshControl,
+} from 'react-native';
 import api from '../api';
 import imagens from '../utils/imagens';
 import {Rating} from 'react-native-ratings';
@@ -13,6 +19,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import Carregando from '../components/Carregando';
 
 export default function telas(props) {
+  const [refreshing, setRefreshing] = useState(false);
   const [{id_gds}] = useConvenio();
   const [load, setLoad] = useLoad();
   const [carregando, setCarregando] = useState(true);
@@ -50,7 +57,6 @@ export default function telas(props) {
   };
 
   const consultarAvaliacoes = async () => {
-    console.log('aqui', id_gds);
     try {
       setCarregando(true);
       const {data} = await api.get(`/user/avaliacoes`, {
@@ -330,6 +336,12 @@ export default function telas(props) {
           <Carregando />
         ) : avaliacoes[0] ? (
           <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={consultarAvaliacoes}
+              />
+            }
             data={avaliacoes}
             style={{width: '98%'}}
             keyExtractor={(item) => item.id_avaliacao_convenio}

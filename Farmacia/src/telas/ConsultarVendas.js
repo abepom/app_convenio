@@ -1,11 +1,12 @@
-import React, {useState, useEffect, memo} from 'react';
+import React, {useState, useEffect, memo, useCallback} from 'react';
 import {
   View,
   Text,
-  FlatList,
   TextInput as Input,
   TouchableOpacity,
   Image,
+  RefreshControl,
+  ScrollView,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import MenuTop from '../components/MenuTop';
@@ -27,6 +28,7 @@ import useConvenio from '../../Store/Convenio';
 import useLoad from '../../Store/Load';
 import imagens from '../utils/imagens';
 import Carregando from './../components/Carregando';
+import {FlatList} from 'react-native-gesture-handler';
 
 const meses = [];
 
@@ -40,6 +42,7 @@ for (let i = new Date().getFullYear(); i >= new Date().getFullYear() - 5; i--) {
 }
 
 const ConsultarVendas = memo((props) => {
+  const [refreshing, setRefreshing] = useState(false);
   const [{id_gds, nivel, usuario}] = useConvenio();
   const [mes, setMes] = useState(false);
   const [data, setData] = useState(new Date());
@@ -347,10 +350,18 @@ const ConsultarVendas = memo((props) => {
             <Carregando />
           ) : vendas.length > 0 ? (
             <FlatList
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={getConsulta}
+                />
+              }
               data={vendas}
-              renderItem={({item}) => {
+              keyExtractor={({index}) => index}
+              renderItem={({item, index}) => {
                 return (
                   <TouchableOpacity
+                    key={index}
                     onPress={() => {
                       if (item.Processado_desconto) {
                         setConteudoModal(null);
@@ -455,7 +466,15 @@ const ConsultarVendas = memo((props) => {
               }}
             />
           ) : (
-            <Retorno type="sucess" mensagem="Nenhuma venda encontrada" />
+            <ScrollView
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={getConsulta()}
+                />
+              }>
+              <Retorno type="sucess" mensagem="Nenhuma venda encontrada" />
+            </ScrollView>
           )}
         </View>
       </MenuTop>

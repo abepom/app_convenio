@@ -2,10 +2,10 @@ import React, {useEffect, useState, useMemo} from 'react';
 import {
   View,
   Text,
-  FlatList,
   Dimensions,
   TouchableOpacity,
   Alert,
+  RefreshControl,
 } from 'react-native';
 import MenuTop from './../components/MenuTop';
 import imagens from '../utils/imagens';
@@ -17,8 +17,10 @@ import Modal from 'react-native-modal';
 import {themeLight} from './../utils/theme';
 import {TextInput} from 'react-native-paper';
 import Carregando from '../components/Carregando';
+import {FlatList} from 'react-native-gesture-handler';
 
 export default function AdministrarUsuarios(props) {
+  const [refreshing, setRefreshing] = useState(false);
   const [{cd_convenio, doc}] = useConvenio();
   const [state, setstate] = useState([]);
   const [pesquisa, setPesquisa] = useState('');
@@ -288,6 +290,9 @@ export default function AdministrarUsuarios(props) {
           </View>
         ) : (
           <FlatList
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={getPDV} />
+            }
             data={state}
             keyExtractor={(item, index) => index}
             ListEmptyComponent={
