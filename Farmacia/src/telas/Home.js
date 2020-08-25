@@ -32,6 +32,7 @@ export default (props) => {
   const [modal, setModal] = useState(false);
   const [termo, setTermo] = useState({});
   useEffect(() => {
+    console.log(convenio);
     if (convenio.primeiro_acesso) {
       setModal(true);
       api.get('/termoAdesao', null).then(({data}) => {

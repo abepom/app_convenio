@@ -41,7 +41,7 @@ for (let i = new Date().getFullYear(); i >= new Date().getFullYear() - 5; i--) {
   anos.push(`${i}`);
 }
 
-const ConsultarVendas = memo((props) => {
+const ConsultarVendas = (props) => {
   const [refreshing, setRefreshing] = useState(false);
   const [{id_gds, nivel, usuario}] = useConvenio();
   const [mes, setMes] = useState(false);
@@ -65,17 +65,21 @@ const ConsultarVendas = memo((props) => {
 
       setCarregando(null);
     }
+    console.log('a');
   }, [carregando]);
 
-  const getConsulta = async () => {
+  const getConsulta = () => {
+    console.log('saasasda');
     setLoad(true);
-    const dados = await api.get('/ConsultarVendas', {
-      params: {id_gds, data, usuario, nivel, mes},
-    });
-
-    console.log(dados, 'testess');
-    setvendas(dados.data);
-    setLoad(false);
+    api
+      .get('/ConsultarVendas', {
+        params: {id_gds, data, usuario, nivel, mes},
+      })
+      .then((dados) => {
+        console.log('aaa');
+        setvendas(dados.data);
+        setLoad(false);
+      });
   };
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || data;
@@ -470,7 +474,7 @@ const ConsultarVendas = memo((props) => {
               refreshControl={
                 <RefreshControl
                   refreshing={refreshing}
-                  onRefresh={getConsulta()}
+                  onRefresh={getConsulta}
                 />
               }>
               <Retorno type="sucess" mensagem="Nenhuma venda encontrada" />
@@ -528,6 +532,6 @@ const ConsultarVendas = memo((props) => {
       </View>
     </>
   );
-});
+};
 
 export default ConsultarVendas;

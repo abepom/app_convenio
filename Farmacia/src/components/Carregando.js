@@ -1,44 +1,42 @@
-import React, {useState} from 'react';
-import {View, Easing, Animated, Image} from 'react-native';
+import React, {useState, useMemo} from 'react';
+import {View, Easing, Animated, Image, Text} from 'react-native';
 import imagens from '../utils/imagens';
 
-export default function Carregando(props) {
-  let {cor, tamanho = 50, tipo = 'padrao', icone = true} = props;
+export default Carregando = (props) => {
+  let {cor, tamanho = 50, icone = true, abepom = false} = props;
 
-  const [giroVerde, setGiroVerde] = useState(new Animated.Value(0));
-  const [giroVermelho, setGiroVermelho] = useState(new Animated.Value(0));
+  const [giroVerde] = useState(new Animated.Value(0));
+  const [giroVermelho] = useState(new Animated.Value(0));
+  const [palavra] = useState(new Animated.Value(0));
 
-  tipo == 'sequencial' &&
+  Animated.loop(
     Animated.sequence([
-      Animated.timing(giroVerde, {
-        toValue: 6000,
-        duration: 1000000,
-        useNativeDriver: true,
-        easing: Easing.linear,
+      Animated.parallel([
+        Animated.timing(giroVerde, {
+          toValue: -6.25,
+          duration: 800,
+          useNativeDriver: false,
+          easing: Easing.linear,
+        }),
+        Animated.timing(giroVermelho, {
+          toValue: 6.31,
+          duration: 800,
+          useNativeDriver: false,
+          easing: Easing.linear,
+        }),
+      ]),
+      Animated.timing(palavra, {
+        toValue: 1,
+        useNativeDriver: false,
+        duration: abepom ? 1000 : 200,
       }),
-      Animated.timing(giroVermelho, {
-        toValue: 6000,
-        duration: 1000000,
-        useNativeDriver: true,
-        easing: Easing.linear,
+      Animated.timing(palavra, {
+        toValue: 0,
+        useNativeDriver: false,
+        duration: abepom ? 1000 : 200,
       }),
-    ]).start();
-
-  tipo == 'padrao' &&
-    Animated.parallel([
-      Animated.timing(giroVerde, {
-        toValue: -6000,
-        duration: 1000000,
-        useNativeDriver: true,
-        easing: Easing.linear,
-      }),
-      Animated.timing(giroVermelho, {
-        toValue: 6000,
-        duration: 1000000,
-        useNativeDriver: true,
-        easing: Easing.linear,
-      }),
-    ]).start();
+    ]),
+  ).start();
 
   return (
     <View
@@ -87,12 +85,32 @@ export default function Carregando(props) {
             style={{
               width: tamanho,
               height: tamanho,
+
               position: 'absolute',
               tintColor: cor ?? null,
             }}
           />
         </>
       )}
+      {abepom && (
+        <Animated.View
+          style={{
+            width: tamanho,
+            height: tamanho,
+            opacity: palavra,
+
+            position: 'absolute',
+          }}>
+          <Image
+            source={imagens.txtabepom}
+            style={{
+              width: tamanho,
+              height: tamanho,
+              tintColor: cor ?? 'white',
+            }}
+          />
+        </Animated.View>
+      )}
     </View>
   );
-}
+};

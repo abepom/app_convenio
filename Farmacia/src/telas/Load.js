@@ -7,6 +7,7 @@ import messaging from '@react-native-firebase/messaging';
 import {useStore} from '../../store';
 import useUsuario from '../../Store/Usuario';
 import useConvenio from './../../Store/Convenio';
+import Carregando from './../components/Carregando';
 
 const Load = (props) => {
   const {navigation} = props;
@@ -24,7 +25,9 @@ const Load = (props) => {
     try {
       let token = await messaging().getToken();
       if (usuario === undefined) {
-        return navigation.navigate('Login');
+        setTimeout(() => {
+          return navigation.navigate('Login');
+        }, 2000);
       }
 
       const {doc, user, pass} = usuario;
@@ -40,7 +43,6 @@ const Load = (props) => {
           user,
           token,
         });
-        console.log(data, 'load');
         let convenio;
         if (!data.erro) {
           convenio = {
@@ -55,17 +57,21 @@ const Load = (props) => {
             cd_convenio: data['cd_convênio'],
             primeiro_acesso: data.primeiro_acesso,
           };
-          setConv(convenio);
-          if (notificacao) {
-            navigation.navigate(notificacao.tela, convenio);
-          } else {
+          setTimeout(() => {
             navigation.navigate('App', convenio);
-          }
+            setConv(convenio);
+          }, 2000);
         } else {
-          navigation.navigate('Login', {
-            ...data,
-            doc,
-            mensagem: 'Senha não confere, digite novamene a sua senha',
+          setTimeout(() => {
+            navigation.navigate(
+              'Login',
+              {
+                ...data,
+                doc,
+                mensagem: 'Senha não confere, digite novamene a sua senha',
+              },
+              3000,
+            );
           });
         }
       }
@@ -82,7 +88,7 @@ const Load = (props) => {
           backgroundColor: primary,
         },
       ]}>
-      <Image source={logo} style={{width: 150, height: 150}} />
+      <Carregando tamanho={150} abepom={true} />
     </View>
   );
 };

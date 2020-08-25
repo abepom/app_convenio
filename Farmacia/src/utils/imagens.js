@@ -30,8 +30,10 @@ import circulo_estrela_vazada from '../assets/img/circulo_estrela_vazada.png';
 import circulo_branco from '../assets/img/circulo_branco.png';
 import cartao_frente from '../assets/img/cartao_frente.png';
 import cartao_verso from '../assets/img/cartao_verso.png';
+import txtabepom from '../assets/img/txtabepom.png';
 
 export default {
+  txtabepom,
   cartao_frente,
   cartao_verso,
   circulo_estrela_vazada,
