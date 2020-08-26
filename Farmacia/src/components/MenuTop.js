@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,16 +8,16 @@ import {
   Image,
   StatusBar,
 } from 'react-native';
-import styless, { primary, background } from '../utils/Style';
+import styless, {primary, background} from '../utils/Style';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 import icone from '../assets/img/abepom.png';
 import getUsuario from '../utils/getUsuario';
-const MenuTop = props => {
-  const { children, drawer, noIcons, imagemConf, funcConfig } = props;
+const MenuTop = (props) => {
+  const {children, drawer, noIcons, imagemConf, funcConfig} = props;
   let iconemenu;
   let _press;
   const _handlerOpemConfig = () => {
-    funcConfig ? funcConfig() : null
+    funcConfig ? funcConfig() : null;
   };
   if (!noIcons) {
     if (drawer) {
@@ -39,29 +39,33 @@ const MenuTop = props => {
   }
 
   useEffect(() => {
-    getUsuario('notificacao').then(dados => console.log(dados, 'itens '));
+    getUsuario('notificacao').then((dados) => console.log(dados, 'itens '));
   }, []);
 
   return (
     <>
       <StatusBar backgroundColor={primary} barStyle="light-content" />
       <View style={styles.container}>
-        <TouchableOpacity style={styles.menu} onPress={() => _press()}>
+        <TouchableOpacity
+          style={styles.menu}
+          onPress={() => _press()}
+          accessibilityLabel="Voltar">
           <Icone style={styles.configItem} name={iconemenu} size={28} />
         </TouchableOpacity>
         <Image
           source={icone}
-          style={{ width: 40, height: 40, marginHorizontal: 10 }}
+          style={{width: 40, height: 40, marginHorizontal: 10}}
         />
         <Text style={[styless.textoG, styless.white]}>{props.title}</Text>
         {!noIcons ? (
           <TouchableOpacity
+            accessibilityLabel="Configuração"
             style={styles.config}
             onPress={() => _handlerOpemConfig()}>
             <Image
               source={imagemConf}
               tintColor={'white'}
-              style={{ width: 25, height: 25 }}
+              style={{width: 25, height: 25}}
             />
           </TouchableOpacity>
         ) : null}
@@ -83,12 +87,12 @@ const MenuTop = props => {
             ? props.backgroundColor
             : background,
         }}>
-        <View style={{ alignItems: 'center', paddingBottom: 20 }}>
+        <View style={{alignItems: 'center', paddingBottom: 20}}>
           {children}
         </View>
       </ScrollView>
       {props.footer && (
-        <View style={{ alignItems: 'center', paddingBottom: 20 }}>
+        <View style={{alignItems: 'center', paddingBottom: 20}}>
           {props.footer}
         </View>
       )}

@@ -1,4 +1,3 @@
-require('react-native').unstable_enableLogBox();
 import React from 'react';
 import {AppRegistry} from 'react-native';
 import messaging from '@react-native-firebase/messaging';

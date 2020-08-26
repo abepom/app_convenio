@@ -38,6 +38,7 @@ const Login = (props) => {
   const [, setUsuario] = useUsuario();
   const [, setConv] = useConvenio();
   useEffect(() => {
+    console.log(props);
     if (state.erro) {
       setTimeout(() => {
         setState({...state, erro: false});
@@ -47,7 +48,9 @@ const Login = (props) => {
 
   useEffect(() => {
     if (props.navigation.state.params) {
-      setIndex(props.navigation.state.params.index);
+      if (props.navigation.state.params.index) {
+        setIndex(props.navigation.state.params.index);
+      }
 
       setState(props.navigation.state.params);
     }

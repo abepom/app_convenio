@@ -11,7 +11,8 @@
     "test": "jest",
     "lint": "eslint .",
     "a": "cd android && gradlew assembleRelease && cd ..",
-    "b": "cd android && gradlew bundleRelease && gradlew assembleRelease && cd .. && react-native run-android",
+    "b": "cd android && gradlew bundleRelease && cd ..",
+    
     "ao": "emulator -avd ao"
   },
   "dependencies": {

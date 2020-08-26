@@ -11,11 +11,12 @@ import Carregando from './../components/Carregando';
 
 const Load = (props) => {
   const {navigation} = props;
-  let notificacao;
+
   const [usuario] = useUsuario();
   const [store] = useStore();
   const [, setConv] = useConvenio();
   useEffect(() => {
+    console.log(store);
     if (store.carregouDados) {
       conectar();
     }
@@ -29,7 +30,6 @@ const Load = (props) => {
           return navigation.navigate('Login');
         }, 2000);
       }
-
       const {doc, user, pass} = usuario;
 
       if (usuario === 'abepom' && senha === 'ab3p0ms3d3' && !pass) {
@@ -43,7 +43,9 @@ const Load = (props) => {
           user,
           token,
         });
+
         let convenio;
+        console.log(data);
         if (!data.erro) {
           convenio = {
             id_gds: data.id_gds,

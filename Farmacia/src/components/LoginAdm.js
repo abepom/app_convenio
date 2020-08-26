@@ -41,6 +41,8 @@ export default function LoginAdm(props) {
   return (
     <View style={{marginTop: 20, width: '100%'}}>
       <TextInput
+        accessibilityLabel="CNPJ"
+        key="cnpj"
         label="CNPJ"
         dense
         mode="outlined"
@@ -57,6 +59,8 @@ export default function LoginAdm(props) {
       />
       {!redefinirSenha && (
         <TextInput
+          accessibilityLabel="senha"
+          key="senha"
           label="senha"
           dense
           mode="outlined"
@@ -116,6 +120,7 @@ export default function LoginAdm(props) {
             <Text style={styles.btnDefaultText}>Esqueceu sua senha?</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            key="entrar"
             style={[
               styles.btnDefault,
               {

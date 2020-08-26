@@ -28,7 +28,7 @@ android {
         applicationId "br.org.abepom.farmacia"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 20
+        versionCode 21
         versionName "1.3.6"
          missingDimensionStrategy 'react-native-camera', 'mlkit'
         multiDexEnabled true
