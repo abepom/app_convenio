@@ -131,7 +131,7 @@ const Login = (props) => {
           convenio = {
             id_gds: data.id_gds,
             nome_parceiro: data.nome_parceiro,
-            caminho_logomarca: data.caminho_logomarca,
+            caminho_logomarca: `${data.caminho_logomarca}?id=${Math.random()}`,
             efetuarVenda: data.efetuarVenda,
             doc: data.doc,
             usuario: data.usuario,

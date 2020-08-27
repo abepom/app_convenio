@@ -50,7 +50,7 @@ const Load = (props) => {
           convenio = {
             id_gds: data.id_gds,
             nome_parceiro: data.nome_parceiro,
-            caminho_logomarca: data.caminho_logomarca,
+            caminho_logomarca: `${data.caminho_logomarca}?id=${Math.random()}`,
             efetuarVenda: data.efetuarVenda,
             doc: data.doc,
             usuario: data.usuario,
@@ -59,6 +59,7 @@ const Load = (props) => {
             cd_convenio: data['cd_convênio'],
             primeiro_acesso: data.primeiro_acesso,
           };
+
           setTimeout(() => {
             navigation.navigate('App', convenio);
             setConv(convenio);
