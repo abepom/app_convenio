@@ -50,7 +50,6 @@ const AlterarSenha = () => {
         mensagem: 'Senhas não coincidem',
         tipo: 'danger',
       });
-      alert(JSON.stringify(state));
     } else if (senhaNova.length > 5) {
       api
         .put('/user/alterarSenha', {

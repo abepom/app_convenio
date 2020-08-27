@@ -132,11 +132,14 @@ export default function AdministrarUsuarios(props) {
     setModal(false);
   };
   const editarUsuario = () => {
+    const {usuario, email, senha} = usuarioSelecionado;
+
     if (!usuario && !email && !senha) {
       return Alert.alert(null, 'Preencha todos os campos');
     }
+
     api
-      .post('/user/editarPDV', {...usuarioSelecionado})
+      .post('/user/editarPDV', {...usuarioSelecionado, doc})
       .then(({data}) => {
         console.log('editar');
         console.log(data);
@@ -326,7 +329,7 @@ export default function AdministrarUsuarios(props) {
                           </Text>
                           <Text style={{color: primary}}> {item.usuario}</Text>
                         </View>
-                        <View style={{marginRight: '20%', width: 60}}>
+                        <View style={{marginRight: '15%', width: 80}}>
                           <Text style={{fontSize: 10, color: primary}}>
                             Status:
                           </Text>

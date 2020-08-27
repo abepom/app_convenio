@@ -151,7 +151,7 @@ const Enderecos = (props) => {
           />
         </View>
       </ScrollView>
-      <View>
+      <View style={{padding: 20}}>
         <Text>Problema com seu(s) endereço(s)?</Text>
         <Text
           onPress={() => {

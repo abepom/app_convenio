@@ -1,21 +1,22 @@
 import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
+import {View, Text, Dimensions} from 'react-native';
 
-const Mensagem = ({ mensagem, tipo }) => {
+const Mensagem = ({mensagem, tipo}) => {
   let fundo;
+  let texto;
   switch (tipo) {
     case 'E':
       fundo = '#d33131';
-      texto = 'white'
+      texto = 'white';
       break;
     case 'A':
       fundo = '#dbcf15';
-      texto = '#000'
+      texto = '#000';
 
       break;
     case 'S':
       fundo = '#008f46';
-      texto = 'white'
+      texto = 'white';
       break;
 
     default:
@@ -33,7 +34,7 @@ const Mensagem = ({ mensagem, tipo }) => {
         marginVertical: 20,
         borderRadius: 5,
       }}>
-      <Text style={{ color: '#fff' }}>{mensagem}</Text>
+      <Text style={{color: texto}}>{mensagem}</Text>
     </View>
   );
 };

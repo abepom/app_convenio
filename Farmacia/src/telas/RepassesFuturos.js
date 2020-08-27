@@ -7,25 +7,32 @@ import {primary} from './../utils/Style';
 import formatCurrency from 'currency-formatter';
 import Carregando from '../components/Carregando';
 import {FlatList} from 'react-native-gesture-handler';
+import Mensagem from './../components/Mensagem';
 
 export default function RepassesFuturos(props) {
+  let mesano = '0';
   const [refreshing, setRefreshing] = useState(false);
   const [{id_gds}] = useConvenio();
   const [repasses, setRepasses] = useState();
   const getRepasse = () => {
     setRepasses(null);
     api.get('/repassesFuturo', {params: {id: id_gds}}).then(({data}) => {
-      let ordenado = data.sort((a, b) => {
-        if (a.Nr_lancamento < b.Nr_lancamento) {
-          return 1;
-        }
-        if (a.Nr_lancamento > b.Nr_lancamento) {
-          return -1;
-        }
-        // a must be equal to b
-        return 0;
-      });
-      setRepasses(ordenado);
+      let ordenado;
+      if (data.length > 0) {
+        ordenado = data.sort((a, b) => {
+          if (a.Nr_lancamento < b.Nr_lancamento) {
+            return 1;
+          }
+          if (a.Nr_lancamento > b.Nr_lancamento) {
+            return -1;
+          }
+          // a must be equal to b
+          return 0;
+        });
+        setRepasses(ordenado);
+      } else {
+        setRepasses([{erro: true}]);
+      }
     });
   };
   useEffect(() => {
@@ -41,6 +48,10 @@ export default function RepassesFuturos(props) {
           data={repasses}
           keyExtractor={(item) => item.Nr_lancamento}
           renderItem={({item}) => {
+            if (item.erro) {
+              return <Mensagem tipo="S" mensagem="Nenhum lancamento " />;
+            }
+
             return (
               <View
                 style={{
@@ -128,75 +139,80 @@ export default function RepassesFuturos(props) {
               </View>
             );
           }}
-          ListEmptyComponent={() => <Carregando />}
+          ListEmptyComponent={(a) => {
+            console.log(a, 'opaaaaa');
+            return <Carregando />;
+          }}
         />
       </MenuTop>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignContent: 'space-between',
-          width: '95%',
-          alignSelf: 'center',
-          marginVertical: 5,
-          marginTop: 10,
-        }}>
+      {repasses && !repasses[0].erro && (
         <View
           style={{
-            width: '20%',
-            marginRight: '2%',
-            alignItems: 'center',
-            backgroundColor: primary,
-            borderRadius: 50,
-            marginBottom: 10,
+            flexDirection: 'row',
+            alignContent: 'space-between',
+            width: '95%',
+            alignSelf: 'center',
+            marginVertical: 5,
+            marginTop: 10,
           }}>
-          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 10}}>
-            VENDAS
-          </Text>
-          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>
-            {repasses ? repasses.length : '0'}
-          </Text>
+          <View
+            style={{
+              width: '20%',
+              marginRight: '2%',
+              alignItems: 'center',
+              backgroundColor: primary,
+              borderRadius: 50,
+              marginBottom: 10,
+            }}>
+            <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 10}}>
+              VENDAS
+            </Text>
+            <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>
+              {repasses ? (repasses[0].Mesano ? repasses.length : '0') : '0'}
+            </Text>
+          </View>
+          <View
+            style={{
+              width: '33%',
+              marginHorizontal: '2%',
+              alignItems: 'center',
+              backgroundColor: primary,
+              borderRadius: 50,
+              marginBottom: 10,
+            }}>
+            <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 10}}>
+              MÊS DE REPASSE
+            </Text>
+            <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>
+              {repasses ? repasses[0].Mesano ?? mesano : ''}
+            </Text>
+          </View>
+          <View
+            style={{
+              width: '39%',
+              marginLeft: '2%',
+              alignItems: 'center',
+              backgroundColor: primary,
+              borderRadius: 50,
+              marginBottom: 10,
+            }}>
+            <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 10}}>
+              TOTAL
+            </Text>
+            <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>
+              {repasses
+                ? formatCurrency.format(
+                    repasses.reduce(
+                      (total, subtotal) => total + Number(subtotal.subtotal),
+                      0,
+                    ),
+                    {code: 'BRL'},
+                  )
+                : 'R$ 0,00'}
+            </Text>
+          </View>
         </View>
-        <View
-          style={{
-            width: '33%',
-            marginHorizontal: '2%',
-            alignItems: 'center',
-            backgroundColor: primary,
-            borderRadius: 50,
-            marginBottom: 10,
-          }}>
-          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 10}}>
-            MÊS DE REPASSE
-          </Text>
-          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>
-            {repasses ? repasses[0].Mesano : '0'}
-          </Text>
-        </View>
-        <View
-          style={{
-            width: '39%',
-            marginLeft: '2%',
-            alignItems: 'center',
-            backgroundColor: primary,
-            borderRadius: 50,
-            marginBottom: 10,
-          }}>
-          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 10}}>
-            TOTAL
-          </Text>
-          <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>
-            {repasses
-              ? formatCurrency.format(
-                  repasses.reduce(
-                    (total, subtotal) => total + Number(subtotal.subtotal),
-                    0,
-                  ),
-                  {code: 'BRL'},
-                )
-              : 'R$ 0,00'}
-          </Text>
-        </View>
-      </View>
+      )}
     </>
   );
 }
