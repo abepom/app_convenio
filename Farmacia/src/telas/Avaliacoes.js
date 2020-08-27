@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   RefreshControl,
+  Dimensions,
 } from 'react-native';
 import api from '../api';
 import imagens from '../utils/imagens';
@@ -32,13 +33,12 @@ export default function telas(props) {
   useEffect(() => {
     if (load !== 'Avaliacoes' && load !== 'todos') {
       consultarAvaliacoes();
-      console.log('primeira');
+
       setLoad(null);
     }
   }, []);
   useEffect(() => {
     if (load == 'Avaliacoes' || load == 'todos') {
-      console.log('segunda');
       consultarAvaliacoes();
       setLoad(null);
     }
@@ -49,11 +49,10 @@ export default function telas(props) {
       const {data} = await api.post(`/user/removerAvaliacao`, {id});
       if (data.retorno) {
         consultarAvaliacoes();
-      } else console.log(data);
+      }
+
       setModalRemover(false);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const consultarAvaliacoes = async () => {
@@ -67,26 +66,26 @@ export default function telas(props) {
       let avaliacoesTemp = [];
 
       data.forEach((dados, i) => {
-        console.log(dados);
         if (dados.votos) {
           votosTemp = dados.votos;
           mediaTemp = dados.media;
-          pendentesTemp = dados.pendentes;
         } else {
-          if (dados.media == 5) {
-            pendentesTemp = dados.pendentes;
-          } else {
+          if (dados.media != 5) {
             avaliacoesTemp.push(dados);
           }
         }
         if (data.length == i + 1) {
           setMedia(mediaTemp ? mediaTemp : 5.0);
-          console.log(avaliacoesTemp);
-          setAvaliacoes(avaliacoesTemp);
+          if (avaliacoesTemp.length == 0) {
+            setAvaliacoes([{erro: true}]);
+          } else {
+            setAvaliacoes(avaliacoesTemp);
+          }
 
           setVotos(votosTemp ? votosTemp : 0);
         }
       });
+
       setCarregando(false);
     } catch (error) {}
   };
@@ -332,97 +331,97 @@ export default function telas(props) {
             </View>
           </View>
         }>
-        {carregando ? (
-          <Carregando />
-        ) : avaliacoes[0] ? (
-          <FlatList
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={consultarAvaliacoes}
-              />
-            }
-            data={avaliacoes}
-            style={{width: '98%'}}
-            keyExtractor={(item) => item.id_avaliacao_convenio}
-            renderItem={({item}) => {
-              console.log({item});
+        <FlatList
+          ListEmptyComponent={() => <Carregando />}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={consultarAvaliacoes}
+            />
+          }
+          data={avaliacoes}
+          style={{width: '98%'}}
+          keyExtractor={(item, index) => index}
+          renderItem={({item}) => {
+            if (item.erro) {
               return (
-                <View style={{width: '100%'}}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      if (!item.avaliacao_solicitada_convenio) {
-                        setModalRemover(true);
-                        setAvaliacao(item);
-                      } else {
-                        setModalRemover(true);
-                        setAvaliacao(false);
-                      }
-                    }}
+                <View style={{height: Dimensions.get('screen').height}}>
+                  <View
                     style={{
-                      backgroundColor: item.avaliacao_solicitada_convenio
-                        ? danverBackground
-                        : 'white',
+                      width: '95%',
+                      backgroundColor: 'white',
                       marginVertical: 5,
                       padding: 15,
                       elevation: 4,
                       borderRadius: 5,
                     }}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        width: '100%',
-                      }}>
-                      <Text
-                        style={[
-                          styles.textoM,
-                          {fontWeight: 'bold', color: primary},
-                        ]}>
-                        {item['Nome do dependente'].split(' ')[0]}{' '}
-                        <Text
-                          style={[styles.textoP, {color: '#999', top: -10}]}>
-                          {item.data_utilizacao}
-                        </Text>
-                      </Text>
-                      <Text>
-                        <Image
-                          source={imagens.star_cheia}
-                          style={{width: 20, height: 20}}
-                        />{' '}
-                        {item.avaliacao}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        width: '100%',
-                      }}>
-                      <Text style={[styles.textoM, {maxWidth: '95%'}]}>
-                        {!item.data_avaliacao_convenio && item.comentario}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
+                    <Text style={{fontWeight: 'bold', color: primary}}>
+                      Nenhuma avaliação foi realizada
+                    </Text>
+                  </View>
                 </View>
               );
-            }}
-          />
-        ) : (
-          <View
-            style={{
-              width: '95%',
-              backgroundColor: 'white',
-              marginVertical: 5,
-              padding: 15,
-              elevation: 4,
-              borderRadius: 5,
-            }}>
-            <Text style={{fontWeight: 'bold', color: primary}}>
-              Nenhuma avaliação foi realizada
-            </Text>
-          </View>
-        )}
+            }
+            return (
+              <View style={{width: '100%'}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (!item.avaliacao_solicitada_convenio) {
+                      setModalRemover(true);
+                      setAvaliacao(item);
+                    } else {
+                      setModalRemover(true);
+                      setAvaliacao(false);
+                    }
+                  }}
+                  style={{
+                    backgroundColor: item.avaliacao_solicitada_convenio
+                      ? danverBackground
+                      : 'white',
+                    marginVertical: 5,
+                    padding: 15,
+                    elevation: 4,
+                    borderRadius: 5,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                    }}>
+                    <Text
+                      style={[
+                        styles.textoM,
+                        {fontWeight: 'bold', color: primary},
+                      ]}>
+                      {item['Nome do dependente'].split(' ')[0]}{' '}
+                      <Text style={[styles.textoP, {color: '#999', top: -10}]}>
+                        {item.data_utilizacao}
+                      </Text>
+                    </Text>
+                    <Text>
+                      <Image
+                        source={imagens.star_cheia}
+                        style={{width: 20, height: 20}}
+                      />{' '}
+                      {item.avaliacao}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                    }}>
+                    <Text style={[styles.textoM, {maxWidth: '95%'}]}>
+                      {!item.data_avaliacao_convenio && item.comentario}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+        />
       </MenuTop>
       <View
         style={{

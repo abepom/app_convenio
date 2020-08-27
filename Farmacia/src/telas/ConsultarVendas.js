@@ -7,6 +7,7 @@ import {
   Image,
   RefreshControl,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import MenuTop from '../components/MenuTop';
@@ -65,18 +66,15 @@ const ConsultarVendas = (props) => {
 
       setCarregando(null);
     }
-    console.log('a');
   }, [carregando]);
 
   const getConsulta = () => {
-    console.log('saasasda');
     setLoad(true);
     api
       .get('/ConsultarVendas', {
         params: {id_gds, data, usuario, nivel, mes},
       })
       .then((dados) => {
-        console.log('aaa');
         setvendas(dados.data);
         setLoad(false);
       });
@@ -185,9 +183,7 @@ const ConsultarVendas = (props) => {
                 <TouchableOpacity
                   onPress={() => {
                     setConteudoModal(null);
-                    excluirVenda(conteudoModal.Nr_lancamento).then((a) =>
-                      console.log(a),
-                    );
+                    excluirVenda(conteudoModal.Nr_lancamento);
                     getConsulta(conteudoModal.Data);
                   }}
                   style={{
@@ -471,6 +467,7 @@ const ConsultarVendas = (props) => {
             />
           ) : (
             <ScrollView
+              style={{height: Dimensions.get('screen').height / 2}}
               refreshControl={
                 <RefreshControl
                   refreshing={refreshing}

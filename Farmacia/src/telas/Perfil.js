@@ -134,7 +134,9 @@ export default function TabViewExample(props) {
                   <Image
                     source={{
                       uri: convenio.caminho_logomarca,
+                      cache: 'reload',
                     }}
+                    ex
                     style={[styles.logoPP, {resizeMode: 'contain'}]}
                   />
 

@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, RefreshControl} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  RefreshControl,
+  Dimensions,
+} from 'react-native';
 import MenuTop from './../components/MenuTop';
 import useConvenio from './../../Store/Convenio';
 import api from './../api';
@@ -49,7 +55,11 @@ export default function RepassesFuturos(props) {
           keyExtractor={(item) => item.Nr_lancamento}
           renderItem={({item}) => {
             if (item.erro) {
-              return <Mensagem tipo="S" mensagem="Nenhum lancamento " />;
+              return (
+                <View style={{height: Dimensions.get('screen').height}}>
+                  <Mensagem tipo="S" mensagem="Nenhum repasse encontrado" />
+                </View>
+              );
             }
 
             return (
@@ -140,7 +150,6 @@ export default function RepassesFuturos(props) {
             );
           }}
           ListEmptyComponent={(a) => {
-            console.log(a, 'opaaaaa');
             return <Carregando />;
           }}
         />
