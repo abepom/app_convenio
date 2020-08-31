@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Dimensions} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import formatCurrency from 'currency-formatter';
 import Modal from 'react-native-modal';
@@ -12,6 +12,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import useLoad from '../../Store/Load';
 import useConvenio from '../../Store/Convenio';
 import Carregando from '../components/Carregando';
+import MenuTop from './../components/MenuTop';
 
 const CadastrarVenda = (props) => {
   const {matricula, dep, nome, id_gds, titular} = props.navigation.state.params;
@@ -168,8 +169,10 @@ const CadastrarVenda = (props) => {
           </View>
         </View>
       </Modal>
-      <ScrollView>
-        <View style={{flex: 1, alignItems: 'center'}}>
+
+      <MenuTop {...props} title="Cadastrar Venda">
+        <View
+          style={{width: Dimensions.get('screen').width, alignItems: 'center'}}>
           <View
             style={{
               marginTop: 20,
@@ -282,7 +285,7 @@ const CadastrarVenda = (props) => {
             )}
           </View>
         </View>
-      </ScrollView>
+      </MenuTop>
     </>
   );
 };

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import {WebView} from 'react-native-webview';
+import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styless, {primary} from './../utils/Style';
 import imagens from '../utils/imagens';
@@ -30,10 +31,7 @@ export default function TermoAdasao(props) {
         <TouchableOpacity
           style={styles.menu}
           onPress={() => props.navigation.toggleDrawer()}>
-          <Image
-            source={imagens.menu}
-            style={{width: 30, height: 30, tintColor: 'white'}}
-          />
+          <Icone style={styles.configItem} name={'menu'} size={28} />
         </TouchableOpacity>
         <Image
           source={imagens.abepom}

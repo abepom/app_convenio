@@ -348,7 +348,6 @@ export default function telas(props) {
                 <View style={{height: Dimensions.get('screen').height}}>
                   <View
                     style={{
-                      width: '95%',
                       backgroundColor: 'white',
                       marginVertical: 5,
                       padding: 15,
@@ -441,7 +440,7 @@ export default function telas(props) {
               elevation: 2,
             },
           ]}>
-          Analise
+          Análise
         </Text>
         <Text
           style={[

@@ -34,8 +34,11 @@ const venda = createStackNavigator(
     CadastrarVenda: {
       screen: CadastrarVenda,
       navigationOptions: {
-        headerShown: true,
+        headerShown: false,
         title: 'Cadastrar Venda',
+        headerTruncatedBackTitle: (props) => (
+          <ItemDrawer {...props} icone={imagem.abepom} />
+        ),
       },
     },
   },
@@ -74,7 +77,7 @@ const App = createDrawerNavigator(
       navigationOptions: {
         drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.pay} />,
         drawerLabel: () => {
-          return 'Consultar Cartao';
+          return 'Consultar Cartão';
         },
       },
     },
