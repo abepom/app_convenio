@@ -1,14 +1,14 @@
 {
-  "name": "apps",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/Thiagodenirramos/abepom.git",
-  "author": "Thiago-ABEPOM <thiago.denir.ramos@hotmail.com>",
-  "license": "MIT",
-  "scripts": {
-    "android": "cd Mobile && react-native run-android"
-  },
-  "dependencies": {
-    "react-native-image-picker": "^2.3.1"
-  }
+	"name": "apps",
+	"version": "1.0.0",
+	"main": "index.js",
+	"repository": "https://github.com/abepom/app_convenios",
+	"author": "Thiago Denir Ramos - ABEPOM <thiago.ramos@abepom.org.br>",
+	"license": "MIT",
+	"scripts": {
+		"android": "cd Mobile && react-native run-android"
+	},
+	"dependencies": {
+		"react-native-image-picker": "^2.3.1"
+	}
 }
