@@ -10,7 +10,6 @@ import styles, {
   sucess,
   background,
 } from '../utils/Style';
-import {set} from 'react-native-reanimated';
 import Carregando from './Carregando';
 export default function LoginPDV(props) {
   const {

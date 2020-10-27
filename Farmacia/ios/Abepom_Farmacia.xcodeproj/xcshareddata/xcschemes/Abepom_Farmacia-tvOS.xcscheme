@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "Abepom_Farmacia-tvOS.app"
-               BlueprintName = "Abepom_Farmacia-tvOS"
-               ReferencedContainer = "container:Abepom_Farmacia.xcodeproj">
+               BuildableName = "abepom_farmacia-tvOS.app"
+               BlueprintName = "abepom_farmacia-tvOS"
+               ReferencedContainer = "container:abepom_farmacia.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "Abepom_Farmacia-tvOSTests.xctest"
-               BlueprintName = "Abepom_Farmacia-tvOSTests"
-               ReferencedContainer = "container:Abepom_Farmacia.xcodeproj">
+               BuildableName = "abepom_farmacia-tvOSTests.xctest"
+               BlueprintName = "abepom_farmacia-tvOSTests"
+               ReferencedContainer = "container:abepom_farmacia.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "Abepom_Farmacia-tvOS.app"
-            BlueprintName = "Abepom_Farmacia-tvOS"
-            ReferencedContainer = "container:Abepom_Farmacia.xcodeproj">
+            BuildableName = "abepom_farmacia-tvOS.app"
+            BlueprintName = "abepom_farmacia-tvOS"
+            ReferencedContainer = "container:abepom_farmacia.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "Abepom_Farmacia-tvOS.app"
-            BlueprintName = "Abepom_Farmacia-tvOS"
-            ReferencedContainer = "container:Abepom_Farmacia.xcodeproj">
+            BuildableName = "abepom_farmacia-tvOS.app"
+            BlueprintName = "abepom_farmacia-tvOS"
+            ReferencedContainer = "container:abepom_farmacia.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

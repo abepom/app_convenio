@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "Abepom_Farmacia.app"
-               BlueprintName = "Abepom_Farmacia"
-               ReferencedContainer = "container:Abepom_Farmacia.xcodeproj">
+               BuildableName = "abepom_farmacia.app"
+               BlueprintName = "abepom_farmacia"
+               ReferencedContainer = "container:abepom_farmacia.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "Abepom_FarmaciaTests.xctest"
-               BlueprintName = "Abepom_FarmaciaTests"
-               ReferencedContainer = "container:Abepom_Farmacia.xcodeproj">
+               BuildableName = "abepom_farmaciaTests.xctest"
+               BlueprintName = "abepom_farmaciaTests"
+               ReferencedContainer = "container:abepom_farmacia.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Abepom_Farmacia.app"
-            BlueprintName = "Abepom_Farmacia"
-            ReferencedContainer = "container:Abepom_Farmacia.xcodeproj">
+            BuildableName = "abepom_farmacia.app"
+            BlueprintName = "abepom_farmacia"
+            ReferencedContainer = "container:abepom_farmacia.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Abepom_Farmacia.app"
-            BlueprintName = "Abepom_Farmacia"
-            ReferencedContainer = "container:Abepom_Farmacia.xcodeproj">
+            BuildableName = "abepom_farmacia.app"
+            BlueprintName = "abepom_farmacia"
+            ReferencedContainer = "container:abepom_farmacia.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

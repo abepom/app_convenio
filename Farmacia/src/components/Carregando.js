@@ -3,7 +3,7 @@ import {View, Easing, Animated, Image, Text} from 'react-native';
 import imagens from '../utils/imagens';
 
 export default Carregando = (props) => {
-  let {cor, tamanho = 50, icone = true, abepom = false} = props;
+  let {cor, tamanho = 50, icone = true, abepom = false, slow = false} = props;
 
   const [giroVerde] = useState(new Animated.Value(0));
   const [giroVermelho] = useState(new Animated.Value(0));
@@ -28,12 +28,12 @@ export default Carregando = (props) => {
       Animated.timing(palavra, {
         toValue: 1,
         useNativeDriver: false,
-        duration: abepom ? 1000 : 200,
+        duration: slow ? 3000 : abepom ? 1000 : 200,
       }),
       Animated.timing(palavra, {
         toValue: 0,
         useNativeDriver: false,
-        duration: abepom ? 1000 : 200,
+        duration: slow ? 3000 : abepom ? 1000 : 200,
       }),
     ]),
   ).start();

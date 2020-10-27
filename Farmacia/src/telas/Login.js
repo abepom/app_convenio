@@ -96,26 +96,6 @@ const Login = (props) => {
     const {doc, user, pass} = imput;
     let token = await getToken();
 
-    if (
-      (doc === 'abepom' && pass === 'ab3p0ms3d3' && !user) ||
-      (doc === 'Abepom' && pass === 'ab3p0ms3d3' && !user)
-    ) {
-      setUsuario(imput);
-      convenio = {
-        id_gds: '',
-        nome_parceiro: 'ADMINISTRADOR',
-        caminho_logomarca: 'http://abepom.org.br/images/logomarca.png',
-        efetuarVenda: true,
-        doc: '',
-        usuario: 'abepom',
-        nivel: 0,
-        token,
-      };
-
-      setConv(convenio);
-      props.navigation.navigate('Administrador');
-    }
-
     if (doc.length > 1 && pass) {
       try {
         const {data} = await api.post('/Login', {

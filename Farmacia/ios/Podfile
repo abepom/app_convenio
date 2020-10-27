@@ -44,8 +44,8 @@ def flipper_post_install(installer)
   end
 end
 
-target 'Abepom_Farmacia' do
-  # Pods for Abepom_Farmacia
+target 'abepom_farmacia' do
+  # Pods for abepom_farmacia
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -81,7 +81,7 @@ target 'Abepom_Farmacia' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  target 'Abepom_FarmaciaTests' do
+  target 'abepom_farmaciaTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -98,10 +98,10 @@ target 'Abepom_Farmacia' do
   end
 end
 
-target 'Abepom_Farmacia-tvOS' do
-  # Pods for Abepom_Farmacia-tvOS
+target 'abepom_farmacia-tvOS' do
+  # Pods for abepom_farmacia-tvOS
 
-  target 'Abepom_Farmacia-tvOSTests' do
+  target 'abepom_farmacia-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

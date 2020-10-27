@@ -21,7 +21,6 @@ import EfetuarVenda from './telas/EfetuarVenda';
 import {createStackNavigator} from 'react-navigation-stack';
 import ConsultarVendas from './telas/ConsultarVendas';
 import Avaliacao from './telas/Avaliacoes';
-import Administrador from './telas/Administrador';
 
 import RepassesFuturos from './telas/RepassesFuturos';
 import Notificacoes from './telas/Notificacoes';
@@ -192,7 +191,6 @@ const Routes = createAppContainer(
       Login,
       RestartPass,
       App,
-      Administrador,
     },
     {
       initialRouteName: 'Load',

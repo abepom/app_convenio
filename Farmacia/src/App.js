@@ -1,9 +1,15 @@
-import React, { useEffect } from 'react';
-import { StatusBar, View } from 'react-native';
+/* https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow strict-local
+ */
 
-import messaging, { firebase } from '@react-native-firebase/messaging';
+import React, {useEffect} from 'react';
+import {StatusBar, View} from 'react-native';
+
+import messaging, {firebase} from '@react-native-firebase/messaging';
 import Routes from './Routes';
-import { primary } from './utils/Style';
+import {primary} from './utils/Style';
 
 const App = () => {
   async function registerAppWithFCM() {
@@ -19,7 +25,7 @@ const App = () => {
     firebase
       .messaging()
       .hasPermission()
-      .then(enabled => {
+      .then((enabled) => {
         if (!enabled) {
           requestUserPermission();
         }
@@ -30,7 +36,7 @@ const App = () => {
 
   return (
     <>
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <StatusBar backgroundColor={primary} barStyle="light-content" />
         <Routes />
       </View>

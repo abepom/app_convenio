@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface Abepom_FarmaciaTests : XCTestCase
+@interface abepom_farmaciaTests : XCTestCase
 
 @end
 
-@implementation Abepom_FarmaciaTests
+@implementation abepom_farmaciaTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL(^)(UIView *view))test
 {
