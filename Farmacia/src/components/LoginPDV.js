@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import themeDark from '../utils/theme';
-import TextInputMask from 'react-native-text-input-mask';
+// import TextInputMask from 'react-native-text-input-mask';
 import styles, {
   danger,
   danverBackground,
@@ -48,11 +48,11 @@ export default function LoginPDV(props) {
         value={imput.doc}
         onChangeText={(text) => setImput({...imput, doc: text})}
         keyboardType={'numeric'}
-        render={(prop) => {
-          return (
-            <TextInputMask {...prop} mask={'[00].[000].[000]/[0000]-[00]'} />
-          );
-        }}
+        // render={(prop) => {
+        //   return (
+        //     <TextInputMask {...prop} mask={'[00].[000].[000]/[0000]-[00]'} />
+        //   );
+        // }}
         style={[styles.imput]}
       />
       <TextInput

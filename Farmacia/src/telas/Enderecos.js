@@ -1,25 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {
-  Picker,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-  Linking,
-} from 'react-native';
+import {Text, View, ScrollView, Linking} from 'react-native';
 
-import {TextInput} from 'react-native-paper';
-import TextInputMask from 'react-native-text-input-mask';
-import styles, {white, primary, danger} from '../utils/Style';
-import {themeLight} from '../utils/theme';
-
-import MC from 'react-native-vector-icons/MaterialCommunityIcons';
+import {white, primary} from '../utils/Style';
 
 import api from '../api';
 
 import Retorno from '../components/Retorno';
-import imagens from '../utils/imagens';
+
 import useConvenio from '../../Store/Convenio';
 const Enderecos = (props) => {
   const info = {
