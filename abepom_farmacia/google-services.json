@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "419737657344",
+    "firebase_url": "https://mobile-associados.firebaseio.com",
+    "project_id": "mobile-associados",
+    "storage_bucket": "mobile-associados.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:419737657344:android:30dde54e5c67208fbd78e5",
+        "android_client_info": {
+          "package_name": "br.com.abepom.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "419737657344-3l5bj9r0elmg2l56r08dh79r6p5j8bpf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNobcE78L_3eNiD_5Op9pvpkSy_UQYUaQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "419737657344-3l5bj9r0elmg2l56r08dh79r6p5j8bpf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
