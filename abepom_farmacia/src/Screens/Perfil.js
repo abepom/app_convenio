@@ -71,6 +71,38 @@ export default function TabViewExample(props) {
     "3": AlterarSenha,
   });
 
+  const salvarImagem = async (imagem) => {
+    let nome = {
+      name: `logomarca-${convenio.id_gds}.${
+        imagem.uri.split(".")[imagem.uri.split(".").length - 1]
+      }`,
+    };
+    const { uri } = imagem;
+    const type = `image/${
+      imagem.uri.split(".")[imagem.uri.split(".").length - 1]
+    }`;
+    console.log({ uri, type, ...nome });
+    const data = new FormData();
+    data.append("id_gds", `${convenio.id_gds}`);
+    data.append("file", { uri, type, ...nome });
+    setCarregandoIMG(true);
+
+    await api
+      .post("/user/upload", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((a) => {
+        setConvenio({
+          ...convenio,
+          caminho_logomarca: a.data.caminho_logomarca,
+        });
+        setCarregandoIMG(false);
+      })
+      .catch((e) => console.log(e));
+  };
+
   const enviarImagem = async () => {
     const options = {
       title: "Selecione sua Logomarca",
@@ -102,12 +134,14 @@ export default function TabViewExample(props) {
                 alert("Você não forneceu permissão para acessar a GALERIA.");
                 return;
               }
-              await ImagePicker.launchImageLibraryAsync({
+              const imagemSel = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
                 aspect: [4, 3],
                 quality: 0.8,
               });
+
+              await salvarImagem(imagemSel);
             } catch (error) {
               Alert.alert(
                 "Alerta",
@@ -128,12 +162,13 @@ export default function TabViewExample(props) {
                 alert("Você não forneceu permissão para acessar a GALERIA.");
                 return;
               }
-              await ImagePicker.launchCameraAsync({
+              const imagem = await ImagePicker.launchCameraAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
                 aspect: [4, 3],
                 quality: 0.8,
               });
+              await salvarImagem(imagem);
             } catch (error) {
               Alert.alert(
                 "Alerta",
@@ -157,21 +192,7 @@ export default function TabViewExample(props) {
     //     data.append("file", { uri, type, ...nome });
     //     setCarregandoIMG(true);
 
-    //     api
-    //       .post("/user/upload", data, {
-    //         headers: {
-    //           "Content-Type": "multipart/form-data",
-    //         },
-    //       })
-    //       .then((a) => {
-    //         setConvenio({
-    //           ...convenio,
-    //           caminho_logomarca: a.data.caminho_logomarca,
-    //         });
-    //         setCarregandoIMG(false);
-    //       })
-    //       .catch((e) => console.log(e));
-    //   }
+    // }
     // });
   };
 

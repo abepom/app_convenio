@@ -17,25 +17,26 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+   
     "ios": {
       "bundleIdentifier": "br.org.abepom.farmacia",
 			"buildNumber": "1.0.0",
-			"backgroundColor": "#03254E",
-			"icon": "./assets/img/icon.png",
+			"backgroundColor": "#f1f1f1",
+			"icon": "./assets/img/abepom_playStore.png",
 			"supportsTablet": true,
 			"infoPlist": {
 				"NSCameraUsageDescription": "A permissão da câmera é necessária para capturar a imagem de perfil do usuário.",
 				"NSPhotoLibraryUsageDescription": "A permissão da galeria é necessária para acessar as imagens para o perfil do usuário."
 			},
 			"splash": {
-				"image": "./assets/img/splash_screen.png",
+				"image": "./assets/img/abepom_playStore.png",
 				"backgroundColor": "#03254E",
-				"resizeMode": "cover"
+				"resizeMode": "contain"
 			}
     },
     "notification": {
 			"icon": "./assets/img/abepom_playStore.png",
-			"color": "#fff",
+			"color": "#f1f1f1",
 			"iosDisplayInForeground": true,
 			"androidMode": "default",
 			"androidCollapsedTitle": "ABEPOM"
