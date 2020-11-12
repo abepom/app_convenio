@@ -27,11 +27,6 @@
 			"infoPlist": {
 				"NSCameraUsageDescription": "A permissão da câmera é necessária para capturar a imagem de perfil do usuário.",
 				"NSPhotoLibraryUsageDescription": "A permissão da galeria é necessária para acessar as imagens para o perfil do usuário."
-			},
-			"splash": {
-				"image": "./assets/img/abepom_playStore.png",
-				"backgroundColor": "#03254E",
-				"resizeMode": "contain"
 			}
     },
     "notification": {

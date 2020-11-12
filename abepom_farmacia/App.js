@@ -10,15 +10,18 @@ import * as SplashScreen from "expo-splash-screen";
 import Routes from "./src/Routes";
 import { primary } from "./src/utils/Style";
 import { StorePrivider } from "./src/Data/store";
+import  Constants  from "expo-constants";
 const App = () => {
   useEffect(() => {
-    SplashScreen.hide();
+    SplashScreen.hideAsync()
   }, []);
   return (
     <>
       <StorePrivider>
         <View style={{ flex: 1 }}>
           <StatusBar backgroundColor={primary} barStyle="light-content" />
+        {Platform.OS =="ios" &&  <View style={{ height: Constants.statusBarHeight, backgroundColor: primary}}/>}
+
           <Routes />
         </View>
       </StorePrivider>

@@ -16,6 +16,8 @@ import icone from "../../assets/img/abepom.png";
 import imagens, { menu } from "../utils/imagens";
 import useConvenio from "../Data/Convenio";
 import api from "../api";
+
+import Constants from 'expo-constants'
 import useLoad from "../Data/Load";
 import { WebView } from "react-native-webview";
 import Carregando from "../components/Carregando";
@@ -164,7 +166,8 @@ export default (props) => {
           )}
         </View>
       </Modal>
-      <View style={{ width: "100%", backgroundColor: background }}>
+            
+      <View style={{ width: "100%", backgroundColor: background}}>
         <View style={styless.container}>
           <TouchableOpacity
             style={styless.menu}
