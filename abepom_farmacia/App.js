@@ -19,7 +19,7 @@ const App = () => {
     <>
       <StorePrivider>
         <View style={{ flex: 1 }}>
-          <StatusBar backgroundColor={primary} barStyle="light-content" />
+          <StatusBar backgroundColor={primary} barStyle="light-content"  />
         {Platform.OS =="ios" &&  <View style={{ height: Constants.statusBarHeight, backgroundColor: primary}}/>}
 
           <Routes />
