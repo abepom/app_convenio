@@ -1,57 +1,55 @@
 {
-  "expo": {
-    "name": "Abepom Farmacia",
-    "slug": "abepom_farmacia",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/img/abepom_playStore.png",
-    "backgroundColor": "#F1F1F1",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#f1f1f1"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-   
-    "ios": {
-      "bundleIdentifier": "br.org.abepom.farmacia",
+	"expo": {
+		"name": "Abepom Farmacia",
+		"slug": "abepom_farmacia",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./assets/icon.png",
+		"backgroundColor": "#F1F1F1",
+		"splash": {
+			"image": "./assets/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#f1f1f1"
+		},
+		"updates": {
+			"fallbackToCacheTimeout": 0
+		},
+		"assetBundlePatterns": ["**/*"],
+
+		"ios": {
+			"bundleIdentifier": "br.org.abepom.farmacia",
 			"buildNumber": "1.0.0",
 			"backgroundColor": "#f1f1f1",
-			"icon": "./assets/img/abepom_playStore.png",
+			"icon": "./assets/icon.png",
 			"supportsTablet": true,
 			"infoPlist": {
 				"NSCameraUsageDescription": "A permissão da câmera é necessária para capturar a imagem de perfil do usuário.",
 				"NSPhotoLibraryUsageDescription": "A permissão da galeria é necessária para acessar as imagens para o perfil do usuário."
 			}
-    },
-    "notification": {
-			"icon": "./assets/img/abepom_playStore.png",
+		},
+		"notification": {
+			"icon": "./assets/icon.png",
 			"color": "#f1f1f1",
 			"iosDisplayInForeground": true,
 			"androidMode": "default",
 			"androidCollapsedTitle": "ABEPOM"
-    },
-    "androidStatusBar": {
+		},
+		"androidStatusBar": {
 			"barStyle": "light-content",
 			"backgroundColor": "#03254E",
 			"hidden": false,
 			"translucent": false
 		},
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/img/abepom_playStore.png",
-        "backgroundColor": "#F1F1F1"
-      },
-      "googleServicesFile": "./google-services.json",
-      "package": "br.org.abepom.farmacia"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
-  }
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/icon.png",
+				"backgroundColor": "#F1F1F1"
+			},
+			"googleServicesFile": "./google-services.json",
+			"package": "br.org.abepom.farmacia"
+		},
+		"web": {
+			"favicon": "./assets/favicon.png"
+		}
+	}
 }
