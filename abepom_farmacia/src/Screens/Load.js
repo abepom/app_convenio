@@ -25,7 +25,8 @@ const Load = (props) => {
   const conectar = async () => {
     try {
       await Permissions.getAsync(Permissions.NOTIFICATIONS);
-      const token = await (await Notifications.getExpoPushTokenAsync()).data;
+      
+      const token = 'teste'//await (await Notifications.getExpoPushTokenAsync()).data;
       console.log(token);
       if (usuario === undefined) {
         setTimeout(() => {

@@ -20,7 +20,7 @@
 			"bundleIdentifier": "br.org.abepom.farmacia",
 			"buildNumber": "1.0.0",
 			"backgroundColor": "#f1f1f1",
-			"icon": "./assets/icon.png",
+			"icon": "./assets/icon-ios.png",
 			"supportsTablet": true,
 			"splash": {
 				"image": "./assets/splash.png",

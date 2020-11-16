@@ -57,8 +57,7 @@ const Login = (props) => {
   }, []);
 
   const getToken = async () => {
-    const token = await Notifications.getExpoPushTokenAsync();
-    console.log(token, "token");
+      const token = 'teste'//await (await Notifications.getExpoPushTokenAsync()).data;
     return token.data;
   };
 
