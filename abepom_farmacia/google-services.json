@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "419737657344",
-    "firebase_url": "https://mobile-associados.firebaseio.com",
-    "project_id": "mobile-associados",
-    "storage_bucket": "mobile-associados.appspot.com"
+    "project_number": "1093477989295",
+    "firebase_url": "https://mobile-farmacia.firebaseio.com",
+    "project_id": "mobile-farmacia",
+    "storage_bucket": "mobile-farmacia.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:419737657344:android:30dde54e5c67208fbd78e5",
+        "mobilesdk_app_id": "1:1093477989295:android:e689a3232a4c1631a00d5a",
         "android_client_info": {
-          "package_name": "br.com.abepom.mobile"
+          "package_name": "br.org.abepom.farmacia"
         }
       },
       "oauth_client": [
         {
-          "client_id": "419737657344-3l5bj9r0elmg2l56r08dh79r6p5j8bpf.apps.googleusercontent.com",
+          "client_id": "1093477989295-shpbosbpu6t45r4a5fgmac8t521pp73s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.org.abepom.farmacia",
+            "certificate_hash": "9097842e80f71f8ea3e14e8def5ea3898167b8ff"
+          }
+        },
+        {
+          "client_id": "1093477989295-8hsbn6arolru534pubjs9halfqeag6h6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDNobcE78L_3eNiD_5Op9pvpkSy_UQYUaQ"
+          "current_key": "AIzaSyBp3GQejgrmPoSOPv7mlQV17R-ajHQ3I34"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "419737657344-3l5bj9r0elmg2l56r08dh79r6p5j8bpf.apps.googleusercontent.com",
+              "client_id": "1093477989295-8hsbn6arolru534pubjs9halfqeag6h6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
