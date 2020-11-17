@@ -2,7 +2,7 @@
 	"expo": {
 		"name": "Abepom Farmacia",
 		"slug": "abepom_farmacia",
-		"version": "1.0.0",
+		"version": "1.3.8",
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
 		"backgroundColor": "#F1F1F1",
@@ -18,7 +18,7 @@
 
 		"ios": {
 			"bundleIdentifier": "br.org.abepom.farmacia",
-			"buildNumber": "1.0.0",
+			"buildNumber": "1.0.3",
 			"backgroundColor": "#f1f1f1",
 			"icon": "./assets/icon-ios.png",
 			"supportsTablet": true,
@@ -52,7 +52,7 @@
 			},
 			"googleServicesFile": "./google-services.json",
 			"package": "br.org.abepom.farmacia",
-			"versionCode": 1,
+			"versionCode": 30,
 			"backgroundColor": "#03254E"
 		},
 		"web": {
