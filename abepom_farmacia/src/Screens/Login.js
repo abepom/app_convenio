@@ -3,13 +3,12 @@ import { View, Image, Text, StyleSheet, Dimensions } from "react-native";
 // import messaging from '@react-native-firebase/messaging';
 import StatusBar from "../components/StatusBar";
 import logo from "../../assets/img/logo_abepom_branca.png";
-
+import Constants from "expo-constants";
 import styles, {
 	danger,
 	danverBackground,
 	primary,
 	sucess,
-	background,
 } from "../utils/Style";
 import api from "./../api";
 import { ScrollView } from "react-native-gesture-handler";
@@ -73,10 +72,10 @@ const Login = (props) => {
 				console.log("Ocorreu falha para capturar o push token notification.");
 				return;
 			}
-			token = await Notifications.getExpoPushTokenAsync();
+			token = await (await Notifications.getExpoPushTokenAsync()).data;
 		} else {
 			if (Platform.OS == "ios") {
-				token = { data: "simuladorIOS" };
+				token = "simuladorIOS";
 			} else {
 				token = await (await Notifications.getExpoPushTokenAsync()).data;
 			}

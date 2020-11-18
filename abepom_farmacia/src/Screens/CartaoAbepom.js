@@ -101,6 +101,19 @@ export default function CartaoAbepom(props) {
 								Titular: {associado.Nome}
 							</Text>
 						)}
+						<Text
+							style={[
+								styles.textoM,
+								{
+									color: primary,
+									margin: 5,
+									position: "absolute",
+									top: 70,
+									alignSelf: "center",
+								},
+							]}>
+							Status: ATIVO
+						</Text>
 					</ImageBackground>
 				</Animated.View>
 			</Animated.View>

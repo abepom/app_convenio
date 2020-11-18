@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Image, Text, Platform } from "react-native";
+import { View, Easing, Animated, Platform } from "react-native";
 import logo from "./../../assets/img/logo_abepom_branca.png";
 import styles, { primary } from "./../utils/Style";
 import api from "../api";
@@ -10,6 +10,7 @@ import useUsuario from "../Data/Usuario";
 import useConvenio from "../Data/Convenio";
 import Carregando from "../components/Carregando";
 import * as Permissions from "expo-permissions";
+import Constants from "expo-constants";
 const Load = (props) => {
 	const { navigation } = props;
 
@@ -40,12 +41,12 @@ const Load = (props) => {
 					console.log("Ocorreu falha para capturar o push token notification.");
 					return;
 				}
-				token = await Notifications.getExpoPushTokenAsync();
+				token = await (await Notifications.getExpoPushTokenAsync()).data;
 			} else {
 				if (Platform.OS == "ios") {
-					token = { data: "simuladorIOS" };
+					token = "simuladorIOS";
 				} else {
-					token = await (await Notifications.getExpoPushTokenAsync()).data;
+					token = "simuladorAndroid";
 				}
 			}
 
@@ -83,7 +84,7 @@ const Load = (props) => {
 					setTimeout(() => {
 						navigation.navigate("App", convenio);
 						setConv(convenio);
-					}, 2000);
+					}, 3000);
 					console.log("data");
 				} else {
 					setTimeout(() => {
@@ -103,19 +104,32 @@ const Load = (props) => {
 			console.log(error);
 		}
 	};
+	const [mudarCor] = useState(new Animated.Value(0));
+
+	Animated.timing(mudarCor, {
+		toValue: 1,
+		duration: 3000,
+		useNativeDriver: false,
+		easing: Easing.linear,
+	}).start();
+
+	const spinV = mudarCor.interpolate({
+		inputRange: [0, 1],
+		outputRange: ["#f1f1f1", primary],
+	});
 
 	return (
-		<View
+		<Animated.View
 			style={{
 				width: "100%",
 				height: "100%",
 				alignItems: "center",
 				justifyContent: "center",
-				backgroundColor: primary,
+				backgroundColor: spinV,
 			}}>
 			<StatusBar />
 			<Carregando tamanho={150} cor={"white"} />
-		</View>
+		</Animated.View>
 	);
 };
 
