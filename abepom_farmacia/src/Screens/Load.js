@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { View, Easing, Animated, Platform } from "react-native";
-import logo from "./../../assets/img/logo_abepom_branca.png";
-import styles, { primary } from "./../utils/Style";
+import { Easing, Animated, Platform } from "react-native";
+import { primary } from "./../utils/Style";
 import api from "../api";
 import StatusBar from "../components/StatusBar";
 import * as Notifications from "expo-notifications";
