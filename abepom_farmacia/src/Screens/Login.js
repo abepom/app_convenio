@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Image, Text, StyleSheet, Dimensions, Alert } from "react-native";
 // import messaging from '@react-native-firebase/messaging';
 import StatusBar from "../components/StatusBar";
 import logo from "../../assets/img/logo_abepom_branca.png";
@@ -11,13 +11,15 @@ import styles, {
 	sucess,
 } from "../utils/Style";
 import api from "./../api";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import useUsuario from "../Data/Usuario";
 import useConvenio from "../Data/Convenio";
 import LoginAdm from "../components/LoginAdm";
 import LoginPDV from "../components/LoginPDV";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
+import Axios from "axios";
 
 const initialLayout = { width: Dimensions.get("window").width };
 
@@ -167,10 +169,20 @@ const Login = (props) => {
         <Text>teste</Text> */}
 			<ScrollView
 				style={{ width: "100%", height: "100%", backgroundColor: primary }}>
-				<Image
-					style={[styles.logo, { marginTop: "10%", alignSelf: "center" }]}
-					source={logo}
-				/>
+				<TouchableOpacity
+					onPress={() => {
+						Axios.get(
+							"http://187.94.98.194:3917/listaranuncios?id_tela=1"
+						).then(({ data }) => {
+							console.log(data);
+							alert(data[0].caminho_imagem);
+						});
+					}}>
+					<Image
+						style={[styles.logo, { marginTop: "10%", alignSelf: "center" }]}
+						source={logo}
+					/>
+				</TouchableOpacity>
 				<View style={{ alignItems: "center" }}>
 					<Text style={[styles.white, styles.textoGG]}>ABEPOM</Text>
 					<Text style={[styles.white, styles.textoM]}>FARMÁCIA</Text>

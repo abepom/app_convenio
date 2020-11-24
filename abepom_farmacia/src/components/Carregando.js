@@ -55,7 +55,11 @@ export default Carregando = (props) => {
 				}}>
 				<Image
 					source={imagens.linha_verde}
-					style={{ width: tamanho, height: tamanho, tintColor: cor ?? null }}
+					style={{
+						width: tamanho,
+						height: tamanho,
+						tintColor: cor ?? "#00A758",
+					}}
 				/>
 			</Animated.View>
 			<Animated.View
@@ -67,7 +71,11 @@ export default Carregando = (props) => {
 				}}>
 				<Image
 					source={imagens.linha_vermelha}
-					style={{ width: tamanho, height: tamanho, tintColor: cor ?? null }}
+					style={{
+						width: tamanho,
+						height: tamanho,
+						tintColor: cor ?? "#EE2E32",
+					}}
 				/>
 			</Animated.View>
 			{icone && (
@@ -85,7 +93,7 @@ export default Carregando = (props) => {
 							height: tamanho,
 
 							position: "absolute",
-							tintColor: cor ?? null,
+							tintColor: cor ?? "#3D3F94",
 						}}
 					/>
 				</>

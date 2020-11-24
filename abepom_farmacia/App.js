@@ -12,9 +12,6 @@ import { primary } from "./src/utils/Style";
 import { StorePrivider } from "./src/Data/store";
 import Constants from "expo-constants";
 const App = () => {
-	useEffect(() => {
-		SplashScreen.hideAsync();
-	}, []);
 	return (
 		<>
 			<StorePrivider>

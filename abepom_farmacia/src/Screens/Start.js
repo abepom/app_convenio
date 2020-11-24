@@ -211,7 +211,6 @@ export default (props) => {
 							<Image
 								source={require("../../assets/img/pay.png")}
 								style={styless.imgMenu}
-								tintColor={primary}
 							/>
 							<Text style={styles.textMenu}>Consultar Cartão</Text>
 						</TouchableOpacity>
@@ -227,7 +226,6 @@ export default (props) => {
 								<Image
 									source={require("../../assets/img/money.png")}
 									style={styless.imgMenu}
-									tintColor={primary}
 								/>
 								<Text style={[styles.textMenu]}>Efetuar Venda</Text>
 							</TouchableOpacity>
@@ -241,7 +239,6 @@ export default (props) => {
 								<Image
 									source={require("../../assets/img/bill.png")}
 									style={styless.imgMenu}
-									tintColor={primary}
 								/>
 								<Text style={[styles.textMenu]}>Consultar Vendas</Text>
 							</TouchableOpacity>
@@ -258,7 +255,6 @@ export default (props) => {
 							<Image
 								source={require("../../assets/img/portfolio.png")}
 								style={styless.imgMenu}
-								tintColor={primary}
 							/>
 							<Text style={styles.textMenu}>Perfil</Text>
 						</TouchableOpacity>
@@ -272,7 +268,6 @@ export default (props) => {
 							<Image
 								source={require("../../assets/img/review.png")}
 								style={styless.imgMenu}
-								tintColor={primary}
 							/>
 							<Text style={styles.textMenu}>AVALIAÇÕES</Text>
 						</TouchableOpacity>
@@ -287,7 +282,6 @@ export default (props) => {
 								<Image
 									source={require("../../assets/img/statistics.png")}
 									style={styless.imgMenu}
-									tintColor={primary}
 								/>
 								<Text style={styles.textMenu}>Repasses Futuros</Text>
 							</TouchableOpacity>
