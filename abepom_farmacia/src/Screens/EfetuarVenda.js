@@ -67,17 +67,12 @@ export default (props) => {
 					}
 					setErro("");
 					setDependentes(validado.data);
-					console.log(validado.data, "b");
 					setcarregando(false);
 				} else {
-					console.log(validado.data, "a");
-
 					if (validado.data.avancar == 1) {
-						console.log(validado.data);
 						setErro("");
 						setAvancar(true);
 						setMensagem(validado.data.mensagem);
-						console.log(validado, "teste");
 						setassociado({
 							cartao: imput,
 							matricula: imput.substring(0, 6),
@@ -205,7 +200,6 @@ export default (props) => {
 											);
 										}
 									} else {
-										console.log("nada");
 									}
 								}}
 								style={{
@@ -345,7 +339,6 @@ export default (props) => {
 						elevation: 2,
 						borderRadius: 3,
 					}}>
-					{console.log(associado, "associado")}
 					{associado.titular != associado.nome ? (
 						<>
 							<Text>

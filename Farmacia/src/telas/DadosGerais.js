@@ -44,7 +44,6 @@ const Perfil = () => {
     }
   }, [retorno]);
   const alterarStado = async (valor, campo) => {
-    console.log(valor);
     try {
       let valorAlterado = {...input, value: valor};
       await setState({...state, [campo]: valorAlterado});

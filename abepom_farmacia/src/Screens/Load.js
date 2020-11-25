@@ -49,54 +49,55 @@ const Load = (props) => {
 				}
 			}
 
-			if (usuario === undefined) {
+			if (!usuario) {
 				setTimeout(() => {
 					return navigation.navigate("Login");
 				}, 2000);
-			}
+			} else {
+				const { doc, user, pass } = usuario;
 
-			const { doc, user, pass } = usuario;
-
-			if (!!doc && !!pass) {
-				const { data } = await api.post("/Login", {
-					doc: doc,
-					senha: pass,
-					user,
-					token,
-				});
-
-				let convenio;
-				if (!data.erro) {
-					convenio = {
-						id_gds: data.id_gds,
-						nome_parceiro: data.nome_parceiro,
-						caminho_logomarca: `${data.caminho_logomarca}?id=${Math.random()}`,
-						efetuarVenda: data.efetuarVenda,
-						doc: data.doc,
-						usuario: data.usuario,
-						nivel: data.nivel,
+				if (!!doc && !!pass) {
+					const { data } = await api.post("/Login", {
+						doc: doc,
+						senha: pass,
+						user,
 						token,
-						cd_convenio: data["cd_convênio"],
-						primeiro_acesso: data.primeiro_acesso,
-					};
-
-					setTimeout(() => {
-						navigation.navigate("App", convenio);
-						setConv(convenio);
-					}, 3000);
-					console.log("data");
-				} else {
-					setTimeout(() => {
-						navigation.navigate(
-							"Login",
-							{
-								...data,
-								doc,
-								mensagem: "Senha não confere, digite novamene a sua senha",
-							},
-							3000
-						);
 					});
+
+					let convenio;
+					if (!data.erro) {
+						convenio = {
+							id_gds: data.id_gds,
+							nome_parceiro: data.nome_parceiro,
+							caminho_logomarca: `${
+								data.caminho_logomarca
+							}?id=${Math.random()}`,
+							efetuarVenda: data.efetuarVenda,
+							doc: data.doc,
+							usuario: data.usuario,
+							nivel: data.nivel,
+							token,
+							cd_convenio: data["cd_convênio"],
+							primeiro_acesso: data.primeiro_acesso,
+						};
+
+						setTimeout(() => {
+							navigation.navigate("App", convenio);
+							setConv(convenio);
+						}, 3000);
+					} else {
+						setTimeout(() => {
+							navigation.navigate(
+								"Login",
+								{
+									...data,
+									doc,
+									mensagem: "Senha não confere, digite novamene a sua senha",
+								},
+								3000
+							);
+						});
+					}
 				}
 			}
 		} catch (error) {

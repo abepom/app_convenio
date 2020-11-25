@@ -81,7 +81,6 @@ export default function TabViewExample(props) {
 		const type = `image/${
 			imagem.uri.split(".")[imagem.uri.split(".").length - 1]
 		}`;
-		console.log({ uri, type, ...nome });
 		const data = new FormData();
 		data.append("id_gds", `${convenio.id_gds}`);
 		data.append("file", { uri, type, ...nome });
@@ -216,7 +215,6 @@ export default function TabViewExample(props) {
 						convenio.nivel < 2 ? (
 							<>
 								<TouchableOpacity onPress={enviarImagem}>
-									{console.log(convenio.caminho_logomarca)}
 									<Image
 										source={{
 											uri: convenio.caminho_logomarca,

@@ -42,11 +42,9 @@ export default function AdministrarUsuarios(props) {
 	}, [usuarioSelecionado]);
 
 	const bloquearUsuario = (id, status) => {
-		console.log(status);
 		api
 			.post("/user/alterarStatusPDV", { id, status })
 			.then(({ data }) => {
-				console.log(data);
 				if (!data.error) {
 					getPDV();
 				}
@@ -118,13 +116,11 @@ export default function AdministrarUsuarios(props) {
 		api
 			.post("/user/criarPDV", { cd_convenio, doc, usuario, email, senha })
 			.then(({ data }) => {
-				console.log(data);
 				if (!data.error) {
 					Alert.alert(null, data.mensagem);
 					getPDV();
 					SetUsuarioSelecionado(false);
 				} else {
-					console.log(data.error);
 					Alert.alert(null, JSON.stringify(data.error));
 				}
 			})
@@ -141,8 +137,6 @@ export default function AdministrarUsuarios(props) {
 		api
 			.post("/user/editarPDV", { ...usuarioSelecionado, doc })
 			.then(({ data }) => {
-				console.log("editar");
-				console.log(data);
 				if (!data.error) {
 					Alert.alert(null, "Usuario Alterado com sucesso");
 					getPDV();
@@ -154,7 +148,7 @@ export default function AdministrarUsuarios(props) {
 	};
 	const modalEditarUsuario = (edicao) => {
 		setModal(true);
-		console.log(edicao);
+
 		SetConteudoModal(() => (
 			<View style={{ backgroundColor: "white", borderRadius: 5 }}>
 				<Text

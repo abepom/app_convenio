@@ -58,7 +58,7 @@ const Home = (props) => {
 		});
 
 		const { erro, socio, mensagem } = req.data;
-		console.log(socio);
+
 		if (card.length === 11) {
 			if (erro) {
 				setCarregando(false);
@@ -322,7 +322,6 @@ const Home = (props) => {
 							<BarCodeScanner
 								barCodeTypes="qr"
 								onBarCodeScanned={(dados) => {
-									console.log(dados);
 									if (dados.data) {
 										let { data } = dados;
 										let dataqrcode =

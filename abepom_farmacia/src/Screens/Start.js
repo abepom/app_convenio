@@ -94,7 +94,6 @@ export default (props) => {
 	};
 
 	const aprovarTermo = async () => {
-		console.log("aceitou", termo.T_id_termo);
 		api.post("/AceitarTermo", {
 			token: convenio.token,
 			termo: termo.T_id_termo,

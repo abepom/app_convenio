@@ -42,11 +42,9 @@ export default function AdministrarUsuarios(props) {
   }, [usuarioSelecionado]);
 
   const bloquearUsuario = (id, status) => {
-    console.log(status);
     api
       .post('/user/alterarStatusPDV', {id, status})
       .then(({data}) => {
-        console.log(data);
         if (!data.error) {
           getPDV();
         }
@@ -118,7 +116,6 @@ export default function AdministrarUsuarios(props) {
     api
       .post('/user/criarPDV', {cd_convenio, doc, usuario, email, senha})
       .then(({data}) => {
-        console.log(data);
         if (!data.error) {
           Alert.alert(null, data.mensagem);
           getPDV();
