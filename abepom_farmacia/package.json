@@ -21,6 +21,7 @@
 		"expo-constants": "^9.2.0",
 		"expo-image-picker": "~9.1.0",
 		"expo-notifications": "~0.7.2",
+		"expo-optimize": "^0.1.62",
 		"expo-permissions": "~9.3.0",
 		"expo-splash-screen": "~0.6.1",
 		"expo-status-bar": "~1.0.2",
