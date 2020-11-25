@@ -150,7 +150,7 @@ export default function AdministrarUsuarios(props) {
 		setModal(true);
 
 		SetConteudoModal(() => (
-			<View style={{ backgroundColor: "white", borderRadius: 5 }}>
+			<View style={{ backgroundColor: "white", borderRadius: 5, width: "90%" }}>
 				<Text
 					style={{
 						alignSelf: "center",

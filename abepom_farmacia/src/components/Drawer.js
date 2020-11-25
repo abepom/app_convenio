@@ -118,9 +118,11 @@ const Drawer = memo((props) => {
 						<View style={{ marginHorizontal: 10, maxWidth: "60%" }}>
 							<Text style={{}}>{[convenio.nome_parceiro]}</Text>
 							<Text style={{ fontSize: 10 }}>
-								{convenio.doc && convenio.doc.length > 15
-									? `CNPF: ${convenio.doc}`
-									: `CPF: ${convenio.doc}`}
+								{convenio.doc != ""
+									? convenio.doc.length > 15
+										? `CNPF: ${convenio.doc}`
+										: `CPF: ${convenio.doc}`
+									: ""}
 							</Text>
 						</View>
 					</View>
