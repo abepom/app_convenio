@@ -64,7 +64,6 @@ const MenuTop = (props) => {
 						onPress={() => _handlerOpemConfig()}>
 						<Image
 							source={imagemConf}
-							tintColor={"white"}
 							style={{ width: 25, height: 25, tintColor: "white" }}
 						/>
 					</TouchableOpacity>

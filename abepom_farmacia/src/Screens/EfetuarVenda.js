@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 //import {RNCamera} from 'react-native-camera';
-import { Camera } from "expo-camera";
+// import { Camera } from "expo-camera";
 
 import Icone from "@expo/vector-icons/MaterialCommunityIcons";
 import {
@@ -42,7 +42,7 @@ export default (props) => {
 
 	const _abrirCamera = () => {
 		setImput("");
-		setCamera(true);
+		// setCamera(true);
 	};
 
 	const consultarCartao = async (cartao) => {
@@ -141,18 +141,18 @@ export default (props) => {
 									justifyContent: "center",
 								}}>
 								<TextInputrn {...props} />
-								<TouchableOpacity onPress={_abrirCamera}>
+								{/* <TouchableOpacity onPress={_abrirCamera}>
 									<Icone
 										name="camera"
 										style={{ width: "100%", color: "#1f4ba4" }}
 										size={40}
 									/>
-								</TouchableOpacity>
+								</TouchableOpacity> */}
 							</View>
 						</>
 					)}
 				/>
-				{camera ? (
+				{/* {camera ? (
 					<View>
 						<Modal visible={camera}>
 							<Camera
@@ -227,7 +227,7 @@ export default (props) => {
 							</View>
 						</Modal>
 					</View>
-				) : null}
+				) : null} */}
 
 				{!carregando ? (
 					<TouchableOpacity
