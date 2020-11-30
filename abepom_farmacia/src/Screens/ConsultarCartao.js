@@ -19,10 +19,9 @@ import Retorno from "../components/Retorno";
 import { themeLight } from "../utils/theme";
 import useConvenio from "../Data/Convenio";
 // import { RNCamera } from "react-native-camera";
-import { BarCodeScanner } from "expo-barcode-scanner";
 
+import { Camera } from "expo-camera";
 import Carregando from "../components/Carregando";
-import imagens from "../utils/imagens";
 import CartaoAbepom from "../components/CartaoAbepom";
 
 const Home = (props) => {
@@ -35,9 +34,26 @@ const Home = (props) => {
 	const [carregando, setCarregando] = useState(false);
 	useEffect(() => {
 		(async () => {
-			const { status } = await BarCodeScanner.requestPermissionsAsync();
+			const { status } = await Camera.requestPermissionsAsync();
+			if (status !== "granted") {
+				setCamera(false);
+				Alert.alert(
+					"Permissão negada!",
+					"É necessario conceder permissao para utilizar a camera",
+					[
+						{
+							text: "Solicitar permissao novamente.",
+							onPress: async () => await Camera.requestPermissionsAsync(),
+						},
+						{
+							text: "Cancel",
+							onPress: () => {},
+						},
+					]
+				);
+			}
 		})();
-	}, []);
+	}, [camera]);
 	useEffect(() => {
 		if (erro) {
 			setTimeout(() => {
@@ -147,7 +163,7 @@ const Home = (props) => {
 
 					{carregando ? (
 						<View style={{ marginTop: 7 }}>
-							<Carregando  />
+							<Carregando />
 						</View>
 					) : (
 						<TouchableOpacity
@@ -319,8 +335,8 @@ const Home = (props) => {
 				{camera ? (
 					<View>
 						<Modal visible={camera}>
-							<BarCodeScanner
-								barCodeTypes="qr"
+							<Camera
+								captureAudio={false}
 								onBarCodeScanned={(dados) => {
 									if (dados.data) {
 										let { data } = dados;
