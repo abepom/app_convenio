@@ -156,7 +156,7 @@ export default (props) => {
 							</View>
 						</>
 					) : (
-						<Carregando cor={false} />
+						<Carregando  />
 					)}
 				</View>
 			</Modal>

@@ -346,7 +346,7 @@ export default function telas(props) {
 					</View>
 				}>
 				<FlatList
-					ListEmptyComponent={() => <Carregando cor={false} />}
+					ListEmptyComponent={() => <Carregando  />}
 					refreshControl={
 						<RefreshControl
 							refreshing={refreshing}

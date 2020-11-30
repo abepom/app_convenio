@@ -224,7 +224,7 @@ const ConsultarVendas = (props) => {
 									paddingHorizontal: 5,
 									width: "90%",
 								}}>
-								<Carregando cor={false} />
+								<Carregando  />
 							</View>
 							<TouchableOpacity
 								onPress={() => setModal(false)}
@@ -353,7 +353,7 @@ const ConsultarVendas = (props) => {
 				}>
 				<View style={{ width: "95%" }}>
 					{load ? (
-						<Carregando cor={false} />
+						<Carregando  />
 					) : vendas.length > 0 ? (
 						<FlatList
 							refreshControl={

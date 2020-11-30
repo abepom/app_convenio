@@ -253,7 +253,7 @@ export default (props) => {
 						/>
 					</TouchableOpacity>
 				) : (
-					<Carregando cor={false} style={{ margin: 30 }} size={30} />
+					<Carregando  style={{ margin: 30 }} size={30} />
 				)}
 			</View>
 			{retorno.retorno && (

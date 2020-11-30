@@ -302,7 +302,7 @@ export default function AdministrarUsuarios(props) {
 						keyExtractor={(item, index) => index}
 						ListEmptyComponent={
 							<View>
-								<Carregando cor={false} />
+								<Carregando />
 							</View>
 						}
 						renderItem={({ item }) => {

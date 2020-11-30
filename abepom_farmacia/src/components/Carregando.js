@@ -3,7 +3,7 @@ import { View, Easing, Animated, Image, Text } from "react-native";
 import imagens from "../utils/imagens";
 
 export default Carregando = (props) => {
-	let { cor, tamanho = 50, icone = true, abepom = false, slow = false } = props;
+	let { cor, tamanho = 50, icone = true, abepom = false} = props;
 
 	const [giroVerde] = useState(new Animated.Value(0));
 	const [giroVermelho] = useState(new Animated.Value(0));

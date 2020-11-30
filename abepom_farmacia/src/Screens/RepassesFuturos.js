@@ -158,7 +158,7 @@ export default function RepassesFuturos(props) {
             );
           }}
           ListEmptyComponent={(a) => {
-            return <Carregando cor={false} />;
+            return <Carregando  />;
           }}
         />
       </MenuTop>

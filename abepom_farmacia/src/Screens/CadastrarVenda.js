@@ -295,7 +295,7 @@ const CadastrarVenda = (props) => {
 								<Text style={{ color: "white" }}>INFORMAR VENDA</Text>
 							</TouchableOpacity>
 						) : (
-							<Carregando cor={false} style={{ marginTop: 30 }} />
+							<Carregando  style={{ marginTop: 30 }} />
 						)}
 					</View>
 				</View>

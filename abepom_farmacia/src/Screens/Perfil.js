@@ -282,7 +282,7 @@ export default function TabViewExample(props) {
 						/>
 					)
 				) : (
-					<Carregando cor={false} size={50} />
+					<Carregando  size={50} />
 				)}
 
 				<View>
@@ -296,7 +296,7 @@ export default function TabViewExample(props) {
 					</Text>
 				</View>
 				{avaliacao.carregando ? (
-					<Carregando cor={false} />
+					<Carregando  />
 				) : (
 					<TouchableOpacity
 						onPress={() => consultarAvaliacoes(convenio.id_gds)}

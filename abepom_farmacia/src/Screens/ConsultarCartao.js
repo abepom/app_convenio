@@ -147,7 +147,7 @@ const Home = (props) => {
 
 					{carregando ? (
 						<View style={{ marginTop: 7 }}>
-							<Carregando cor={false} />
+							<Carregando  />
 						</View>
 					) : (
 						<TouchableOpacity

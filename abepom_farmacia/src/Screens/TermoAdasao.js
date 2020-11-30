@@ -47,7 +47,7 @@ export default function TermoAdasao(props) {
 					style={{ height: "100%", borderRadius: 5, margin: 10 }}
 				/>
 			) : (
-				<Carregando cor={false} />
+				<Carregando  />
 			)}
 			<View style={{ flexDirection: "row", justifyContent: "space-around" }}>
 				<Text>Nº Termo: {termo.T_id_termo}</Text>

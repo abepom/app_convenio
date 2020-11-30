@@ -70,7 +70,7 @@ export default function Notificacoes(props) {
 								alignItems: "center",
 								justifyContent: "center",
 							}}>
-							<Carregando cor={false} size={48} />
+							<Carregando  size={48} />
 						</View>
 					)}
 					data={notificacoes}

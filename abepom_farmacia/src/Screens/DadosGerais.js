@@ -309,7 +309,7 @@ const Perfil = () => {
 					}}
 				/>
 				{carregando ? (
-					<Carregando cor={false} style={{ marginTop: 20 }} size={32} />
+					<Carregando  style={{ marginTop: 20 }} size={32} />
 				) : convenio.nivel == 1 ? (
 					<TouchableOpacity
 						onPress={() => atualizarDados()}
