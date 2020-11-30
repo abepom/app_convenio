@@ -19,7 +19,7 @@ import Retorno from "../components/Retorno";
 import { themeLight } from "../utils/theme";
 import useConvenio from "../Data/Convenio";
 // import { RNCamera } from "react-native-camera";
-//import { BarCodeScanner } from "expo-barcode-scanner";
+import { BarCodeScanner } from "expo-barcode-scanner";
 
 import Carregando from "../components/Carregando";
 import imagens from "../utils/imagens";
@@ -33,11 +33,11 @@ const Home = (props) => {
 	const [mensagens, setMensagens] = React.useState("");
 	const [camera, setCamera] = useState(false);
 	const [carregando, setCarregando] = useState(false);
-	// useEffect(() => {
-	// 	(async () => {
-	// 		const { status } = await BarCodeScanner.requestPermissionsAsync();
-	// 	})();
-	// }, []);
+	useEffect(() => {
+		(async () => {
+			const { status } = await BarCodeScanner.requestPermissionsAsync();
+		})();
+	}, []);
 	useEffect(() => {
 		if (erro) {
 			setTimeout(() => {
@@ -129,7 +129,7 @@ const Home = (props) => {
 										onChangeText={setCartao}
 										onSubmitEditing={() => _handlerConsultaCartao()}
 									/>
-									{/* <TouchableOpacity
+									<TouchableOpacity
 										style={{ width: "15%" }}
 										onPress={() => {
 											_abrirCamera();
@@ -139,7 +139,7 @@ const Home = (props) => {
 											style={{ width: "100%", color: "#1f4ba4" }}
 											size={40}
 										/>
-									</TouchableOpacity> */}
+									</TouchableOpacity>
 								</View>
 							)}
 						/>
@@ -316,7 +316,7 @@ const Home = (props) => {
 				//   </View>
 				// </>
 				null}
-				{/* {camera ? (
+				{camera ? (
 					<View>
 						<Modal visible={camera}>
 							<BarCodeScanner
@@ -374,7 +374,7 @@ const Home = (props) => {
 							</View>
 						</Modal>
 					</View>
-				) : null} */}
+				) : null}
 			</Menu>
 		</>
 	);
