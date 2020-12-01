@@ -11,6 +11,8 @@ import Routes from "./src/Routes";
 import { primary } from "./src/utils/Style";
 import { StorePrivider } from "./src/Data/store";
 import Constants from "expo-constants";
+
+//Teste
 const App = () => {
 	return (
 		<>
