@@ -47,10 +47,15 @@
 		},
 
 		"android": {
+			"useNextNotificationsApi": true,
 			"permissions": [
 				"CAMERA",
 				"READ_EXTERNAL_STORAGE",
-				"WRITE_EXTERNAL_STORAGE"
+				"WRITE_EXTERNAL_STORAGE",
+				"RECEIVE",
+				"READ_GSERVICES",
+				"com.google.android.c2dm.permission.RECEIVE",
+				"com.google.android.providers.gsf.permission.READ_GSERVICES"
 			],
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/adaptive-icon.png",
@@ -59,8 +64,7 @@
 			"googleServicesFile": "./google-services.json",
 			"package": "br.org.abepom.farmacia",
 			"versionCode": 42,
-			"backgroundColor": "#f1f1f1",
-			"useNextNotificationsApi": true
+			"backgroundColor": "#f1f1f1"
 		},
 		"web": {
 			"favicon": "./assets/favicon.png"
