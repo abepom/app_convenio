@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { DrawerNavigatorItems } from "react-navigation-drawer";
 import styles, { primaryBack, primary, danger } from "../utils/Style";
+import { expo } from "../../app.json";
 
 import imagens from "../utils/imagens";
 //import ItemDrawer from "./ItemDrawer";
@@ -130,6 +131,21 @@ const Drawer = memo((props) => {
 						{...menu}
 						itensConteinerStyles={{ width: "100%", backgroundColor: "blue" }}
 					/>
+					<View
+						style={{
+							alignItems: "center",
+							justifyContent: "center",
+							flexDirection: "row",
+							marginTop: 20,
+						}}>
+						<Image
+							source={imagens.abepom}
+							style={{ tintColor: primary, width: 15, height: 15 }}
+						/>
+						<Text style={{ color: primary, fontSize: 10 }}>
+							Versão: {expo.version}
+						</Text>
+					</View>
 				</SafeAreaView>
 			</ScrollView>
 		</>
