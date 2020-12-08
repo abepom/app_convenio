@@ -3,7 +3,7 @@ import { Easing, Animated, Platform } from "react-native";
 import { primary } from "./../utils/Style";
 import api from "../api";
 import StatusBar from "../components/StatusBar";
-import * as Notifications from "expo-notifications";
+//import * as Notifications from "expo-notifications";
 import { useStore } from "../Data/store";
 import useUsuario from "../Data/Usuario";
 import useConvenio from "../Data/Convenio";
@@ -25,29 +25,29 @@ const Load = (props) => {
 	const conectar = async () => {
 		try {
 			let token;
-			if (Constants.isDevice) {
-				const { status: existingStatus } = await Permissions.getAsync(
-					Permissions.NOTIFICATIONS
-				);
-				let finalStatus = existingStatus;
-				if (existingStatus !== "granted") {
-					const { status } = await Permissions.askAsync(
-						Permissions.NOTIFICATIONS
-					);
-					finalStatus = status;
-				}
-				if (finalStatus !== "granted") {
-					console.log("Ocorreu falha para capturar o push token notification.");
-					return;
-				}
-				token = await (await Notifications.getExpoPushTokenAsync()).data;
+			// if (Constants.isDevice) {
+			// 	const { status: existingStatus } = await Permissions.getAsync(
+			// 		Permissions.NOTIFICATIONS
+			// 	);
+			// 	let finalStatus = existingStatus;
+			// 	if (existingStatus !== "granted") {
+			// 		const { status } = await Permissions.askAsync(
+			// 			Permissions.NOTIFICATIONS
+			// 		);
+			// 		finalStatus = status;
+			// 	}
+			// 	if (finalStatus !== "granted") {
+			// 		console.log("Ocorreu falha para capturar o push token notification.");
+			// 		return;
+			// 	}
+			// 	token = await (await Notifications.getExpoPushTokenAsync()).data;
+			// } else {
+			if (Platform.OS == "ios") {
+				token = "simuladorIOS";
 			} else {
-				if (Platform.OS == "ios") {
-					token = "simuladorIOS";
-				} else {
-					token = "simuladorAndroid";
-				}
+				token = "simuladorAndroid";
 			}
+			// }
 
 			if (!usuario) {
 				setTimeout(() => {

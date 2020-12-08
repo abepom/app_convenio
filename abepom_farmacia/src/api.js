@@ -1,4 +1,9 @@
 import axios from "axios";
+// Local
+// const api = axios.create({
+// 	baseURL: "http://192.168.1.61:3334/convenios",
+// });
+
 // TESTE;
 const api = axios.create({
 	baseURL: "http://187.94.98.194:3917/convenios",

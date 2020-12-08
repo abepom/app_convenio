@@ -16,9 +16,9 @@ import useConvenio from "../Data/Convenio";
 import LoginAdm from "../components/LoginAdm";
 import LoginPDV from "../components/LoginPDV";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-import * as Notifications from "expo-notifications";
+//import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
-
+import { expo } from "../../app.json";
 const initialLayout = { width: Dimensions.get("window").width };
 
 const Login = (props) => {
@@ -58,26 +58,26 @@ const Login = (props) => {
 	const getToken = async () => {
 		let token;
 		if (Constants.isDevice) {
-			const { status: existingStatus } = await Permissions.getAsync(
-				Permissions.NOTIFICATIONS
-			);
+			// const { status: existingStatus } = await Permissions.getAsync(
+			// 	Permissions.NOTIFICATIONS
+			// );
 			let finalStatus = existingStatus;
-			if (existingStatus !== "granted") {
-				const { status } = await Permissions.askAsync(
-					Permissions.NOTIFICATIONS
-				);
-				finalStatus = status;
-			}
+			// if (existingStatus !== "granted") {
+			// 	const { status } = await Permissions.askAsync(
+			// 		Permissions.NOTIFICATIONS
+			// 	);
+			// 	finalStatus = status;
+			// }
 			if (finalStatus !== "granted") {
 				console.log("Ocorreu falha para capturar o push token notification.");
 				return;
 			}
-			token = await (await Notifications.getExpoPushTokenAsync()).data;
+			token = "push"; //await (await Notifications.getExpoPushTokenAsync()).data;
 		} else {
 			if (Platform.OS == "ios") {
 				token = "simuladorIOS";
 			} else {
-				token = await (await Notifications.getExpoPushTokenAsync()).data;
+				token = "push"; //await (await Notifications.getExpoPushTokenAsync()).data;
 			}
 		}
 
@@ -195,6 +195,15 @@ const Login = (props) => {
 						/>
 					)}
 				/>
+				<View
+					style={{
+						alignItems: "center",
+
+						width: "100%",
+						bottom: 0,
+					}}>
+					<Text style={{ color: "white" }}>Versão: {expo.version}</Text>
+				</View>
 			</ScrollView>
 			{/* </View> */}
 		</>
