@@ -55,15 +55,17 @@ const Load = (props) => {
 				}, 2000);
 			} else {
 				const { doc, user, pass } = usuario;
-
+				console.log('tentou login')
+				
 				if (!!doc && !!pass) {
+					console.log(!!doc && !!pass)
 					const { data } = await api.post("/Login", {
 						doc: doc,
 						senha: pass,
 						user,
 						token,
 					});
-
+					console.log(data,"opa")
 					let convenio;
 					if (!data.erro) {
 						convenio = {
@@ -98,6 +100,11 @@ const Load = (props) => {
 							);
 						});
 					}
+					console.log('aaa')
+
+				}else{
+					console.log('bbb')
+					navigation.navigate("Login");
 				}
 			}
 		} catch (error) {

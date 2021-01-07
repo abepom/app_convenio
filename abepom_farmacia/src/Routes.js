@@ -65,13 +65,13 @@ const App = createDrawerNavigator(
 				drawerLabel: "ABEPOM",
 			},
 		},
-		Notificacoes: {
-			screen: Notificacoes,
-			navigationOptions: {
-				drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.bell} />,
-				drawerLabel: "Mensagens",
-			},
-		},
+		// Notificacoes: {
+		// 	screen: Notificacoes,
+		// 	navigationOptions: {
+		// 		drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.bell} />,
+		// 		drawerLabel: "Mensagens",
+		// 	},
+		// },
 		ConsultarCartao: {
 			screen: ConsultarCartao,
 			navigationOptions: {
