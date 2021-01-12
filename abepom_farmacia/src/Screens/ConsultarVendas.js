@@ -44,7 +44,7 @@ for (let i = new Date().getFullYear(); i >= new Date().getFullYear() - 5; i--) {
 
 const ConsultarVendas = (props) => {
 	const [refreshing, setRefreshing] = useState(false);
-	const [{ id_gds, nivel, usuario }] = useConvenio();
+	const [{ id_gds, nivel, usuario, token }] = useConvenio();
 	const [mes, setMes] = useState(false);
 	const [data, setData] = useState(new Date());
 	const [show, setShow] = useState(false);
@@ -68,16 +68,16 @@ const ConsultarVendas = (props) => {
 		}
 	}, [carregando]);
 
-	const getConsulta = () => {
+	const getConsulta = async () => {
 		setLoad(true);
-		api
-			.get("/ConsultarVendas", {
-				params: { id_gds, data, usuario, nivel, mes },
-			})
-			.then((dados) => {
-				setvendas(dados.data);
-				setLoad(false);
-			});
+		const dados = await api({
+			method: "get",
+			url: "/ConsultarVendas",
+			params: { id_gds, data, usuario, nivel, mes },
+			headers: { "x-access-token": token },
+		});
+		setvendas(dados.data);
+		setLoad(false);
 	};
 	const onChange = (event, selectedDate) => {
 		const currentDate = selectedDate || data;
@@ -224,7 +224,7 @@ const ConsultarVendas = (props) => {
 									paddingHorizontal: 5,
 									width: "90%",
 								}}>
-								<Carregando  />
+								<Carregando />
 							</View>
 							<TouchableOpacity
 								onPress={() => setModal(false)}
@@ -353,7 +353,7 @@ const ConsultarVendas = (props) => {
 				}>
 				<View style={{ width: "95%" }}>
 					{load ? (
-						<Carregando  />
+						<Carregando />
 					) : vendas.length > 0 ? (
 						<FlatList
 							refreshControl={

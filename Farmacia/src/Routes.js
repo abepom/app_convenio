@@ -1,4 +1,5 @@
-import React, {useEffect} from 'react';
+/* eslint-disable prettier/prettier */
+import React from 'react';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import Login from './telas/Login';
 import Load from './telas/Load';
@@ -7,10 +8,9 @@ import CadastrarVenda from './telas/CadastrarVenda';
 import RestartPass from './telas/RestartPass';
 
 import {createDrawerNavigator} from 'react-navigation-drawer';
-import Sair from './telas/Sair';
+
 import Trocar from './telas/Trocar';
 
-import ConsultarCartao from './telas/ConsultarCartao';
 import Endereco from './telas/Enderecos';
 import Perfil from './telas/Perfil';
 import Drawer from './components/Drawer';
@@ -71,15 +71,6 @@ const App = createDrawerNavigator(
         drawerLabel: 'Mensagens',
       },
     },
-    ConsultarCartao: {
-      screen: ConsultarCartao,
-      navigationOptions: {
-        drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.pay} />,
-        drawerLabel: () => {
-          return 'Consultar Cartão';
-        },
-      },
-    },
 
     EfetuarVenda: {
       screen: venda,
@@ -108,6 +99,7 @@ const App = createDrawerNavigator(
       navigationOptions: {
         drawerLabel: () => 'Perfil',
         drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.review} />,
+        // eslint-disable-next-line no-dupe-keys
         drawerLabel: 'Avaliações',
       },
     },
@@ -125,6 +117,7 @@ const App = createDrawerNavigator(
         drawerIcon: (props) => (
           <ItemDrawer {...props} icone={imagem.portfolio} />
         ),
+        // eslint-disable-next-line no-dupe-keys
         drawerLabel: 'Perfil',
       },
     },
@@ -149,12 +142,6 @@ const App = createDrawerNavigator(
       navigationOptions: {
         drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.add} />,
         drawerLabel: 'Administrar Usuários',
-      },
-    },
-    Sair: {
-      screen: Sair,
-      navigationOptions: {
-        drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.off} />,
       },
     },
     TermoAdasao: {

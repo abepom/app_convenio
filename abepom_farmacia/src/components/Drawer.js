@@ -1,43 +1,16 @@
 import React, { useState, useEffect, memo } from "react";
-import {
-	View,
-	Text,
-	ScrollView,
-	SafeAreaView,
-	Image,
-	Alert,
-	TouchableOpacity,
-} from "react-native";
+import { View, Text, ScrollView, SafeAreaView, Image } from "react-native";
 import { DrawerNavigatorItems } from "react-navigation-drawer";
 import styles, { primaryBack, primary, danger } from "../utils/Style";
 import { expo } from "../../app.json";
-
 import imagens from "../utils/imagens";
-//import ItemDrawer from "./ItemDrawer";
-
-// import messaging from '@react-native-firebase/messaging';
 import useConvenio from "../Data/Convenio";
 import useLoad from "../Data/Load";
 import useUsuario from "../Data/Usuario";
 
 const Drawer = memo((props) => {
-	const [load, setLoad] = useLoad();
 	const [user] = useUsuario();
 	const [convenio] = useConvenio();
-
-	// useEffect(() => {
-	//   messaging().onMessage(async (remoteMessage) => {
-	//     try {
-	//       let {title, body} = remoteMessage.notification;
-	//       let teste;
-
-	//       teste = {title, body, messageId: remoteMessage.messageId};
-
-	//       Alert.alert(title, body, [{text: 'FECHAR', onPress: () => {}}]);
-	//     } catch (error) {}
-	//   });
-	// }, []);
-
 	const [menu, setMenu] = useState(props);
 	let itens = [];
 
