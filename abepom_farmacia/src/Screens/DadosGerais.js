@@ -52,22 +52,25 @@ const Perfil = () => {
 		}
 	};
 
-	const getDados = () => {
-		api.get("/user/dados_gerais", { params: { id_gds } }).then(({ data }) => {
-			setState({
-				...state,
-				nome_fachada: { value: data.nome_fachada, erro: false },
-				email: { value: data.email, erro: false },
-				tel_comercial: { value: data.tel_comercial, erro: false },
-				tel_contato: { value: data.tel_contato, erro: false },
-				representante: { value: data.representante, erro: false },
-				cargo: { value: data.cargo, erro: false },
-				site: { value: data.site, erro: false },
-				whatsapp: {
-					value: data.whatsapp == "undefined" ? "" : data.whatsapp,
-					erro: false,
-				},
-			});
+	const getDados = async () => {
+		const { data } = await api({
+			method: "GET",
+			url: "/user/dados_gerais",
+			headers: { "x-access-token": convenio.token },
+		});
+		setState({
+			...state,
+			nome_fachada: { value: data.nome_fachada, erro: false },
+			email: { value: data.email, erro: false },
+			tel_comercial: { value: data.tel_comercial, erro: false },
+			tel_contato: { value: data.tel_contato, erro: false },
+			representante: { value: data.representante, erro: false },
+			cargo: { value: data.cargo, erro: false },
+			site: { value: data.site, erro: false },
+			whatsapp: {
+				value: data.whatsapp == "undefined" ? "" : data.whatsapp,
+				erro: false,
+			},
 		});
 	};
 
@@ -111,8 +114,10 @@ const Perfil = () => {
 				site,
 				whatsapp,
 			} = state;
-			api
-				.put("/user/edit", {
+			const { data } = await api({
+				method: "put",
+				url: "/user/edit",
+				data: {
 					nome_fachada,
 					email,
 					tel_comercial,
@@ -121,29 +126,28 @@ const Perfil = () => {
 					cargo,
 					site,
 					whatsapp,
-					id_gds,
-				})
-				.then(({ data }) => {
-					setRetorno({ erro: !data.retorno, mensagem: data.mensagem });
-					setCarregando(false);
-					if (data.retorno) {
-						setState({
-							...state,
-							nome_fachada: { value: data.nome_fachada, erro: false },
-							email: { value: data.email, erro: false },
-							tel_comercial: { value: data.tel_comercial, erro: false },
-							tel_contato: { value: data.tel_contato, erro: false },
-							representante: { value: data.representante, erro: false },
-							cargo: { value: data.cargo, erro: false },
-							site: { value: data.site, erro: false },
-							whatsapp: {
-								value: data.whatsapp == "undefined" ? "" : data.whatsapp,
-								erro: false,
-							},
-						});
-					}
-				})
-				.catch((error) => setCarregando(false));
+				},
+				headers: { "x-access-token": convenio.token },
+			});
+
+			setRetorno({ erro: !data.retorno, mensagem: data.mensagem });
+			setCarregando(false);
+			if (data.retorno) {
+				setState({
+					...state,
+					nome_fachada: { value: data.nome_fachada, erro: false },
+					email: { value: data.email, erro: false },
+					tel_comercial: { value: data.tel_comercial, erro: false },
+					tel_contato: { value: data.tel_contato, erro: false },
+					representante: { value: data.representante, erro: false },
+					cargo: { value: data.cargo, erro: false },
+					site: { value: data.site, erro: false },
+					whatsapp: {
+						value: data.whatsapp == "undefined" ? "" : data.whatsapp,
+						erro: false,
+					},
+				});
+			}
 		}
 	};
 	return (
@@ -309,7 +313,7 @@ const Perfil = () => {
 					}}
 				/>
 				{carregando ? (
-					<Carregando  style={{ marginTop: 20 }} size={32} />
+					<Carregando style={{ marginTop: 20 }} size={32} />
 				) : convenio.nivel == 1 ? (
 					<TouchableOpacity
 						onPress={() => atualizarDados()}

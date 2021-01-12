@@ -71,6 +71,7 @@ const Home = (props) => {
 			url: "/VerificarCartao",
 			params: { cartao: card, id_gds: convenio.id_gds },
 			method: "GET",
+			headers: { "x-access-token": convenio.token },
 		});
 
 		const { erro, socio, mensagem } = req.data;

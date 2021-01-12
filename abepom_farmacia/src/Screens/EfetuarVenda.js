@@ -53,12 +53,14 @@ export default (props) => {
 
 		if (!!cartao) {
 			try {
+				console.log("teste");
 				const validado = await api({
 					url: "/ConsultarCartao",
 					method: "post",
 					data: {
 						cartao,
 					},
+					headers: { "x-access-token": state.token },
 				});
 
 				if (validado.data.length) {
@@ -253,7 +255,7 @@ export default (props) => {
 						/>
 					</TouchableOpacity>
 				) : (
-					<Carregando  style={{ margin: 30 }} size={30} />
+					<Carregando style={{ margin: 30 }} size={30} />
 				)}
 			</View>
 			{retorno.retorno && (

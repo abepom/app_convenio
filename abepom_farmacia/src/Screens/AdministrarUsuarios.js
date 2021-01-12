@@ -20,15 +20,20 @@ import Carregando from "../components/Carregando";
 import { FlatList } from "react-native-gesture-handler";
 
 export default function AdministrarUsuarios(props) {
-	const [refreshing, setRefreshing] = useState(false);
-	const [{ cd_convenio, doc }] = useConvenio();
+	const [refreshing] = useState(false);
+	const [{ token }] = useConvenio();
 	const [state, setstate] = useState([]);
-	const [pesquisa, setPesquisa] = useState("");
 	const [modal, setModal] = useState(false);
 	const [usuarioSelecionado, SetUsuarioSelecionado] = useState(false);
 	const [ConteudoModal, SetConteudoModal] = useState(() => {});
-	const getPDV = () => {
-		api.post("/user/pdv", { cd_convenio }).then(({ data }) => setstate(data));
+	const getPDV = async () => {
+		const { data } = await api({
+			method: "POST",
+			url: "/user/pdv",
+			headers: { "x-access-token": token },
+		});
+		console.log(data);
+		setstate(data);
 	};
 	useEffect(() => {
 		getPDV();
@@ -41,15 +46,18 @@ export default function AdministrarUsuarios(props) {
 			: null;
 	}, [usuarioSelecionado]);
 
-	const bloquearUsuario = (id, status) => {
-		api
-			.post("/user/alterarStatusPDV", { id, status })
-			.then(({ data }) => {
-				if (!data.error) {
-					getPDV();
-				}
-			})
-			.catch((e) => console.log(e));
+	const bloquearUsuario = async (id, status) => {
+		const { data } = await api({
+			method: "POST",
+			url: "/user/alterarStatusPDV",
+			data: { id, status },
+			headers: { "x-access-token": token },
+		});
+
+		if (!data.error) {
+			getPDV();
+		}
+
 		setModal(false);
 	};
 	const modalbloquearUsuario = (id, status) => {
@@ -108,42 +116,47 @@ export default function AdministrarUsuarios(props) {
 		));
 	};
 
-	const criarUsuario = () => {
+	const criarUsuario = async () => {
 		const { usuario, email, senha } = usuarioSelecionado;
 		if (!usuario && !email && !senha) {
 			return Alert.alert(null, "Preencha todos os campos");
 		}
-		api
-			.post("/user/criarPDV", { cd_convenio, doc, usuario, email, senha })
-			.then(({ data }) => {
-				if (!data.error) {
-					Alert.alert(null, data.mensagem);
-					getPDV();
-					SetUsuarioSelecionado(false);
-				} else {
-					Alert.alert(null, JSON.stringify(data.error));
-				}
-			})
-			.catch((e) => console.log(e));
+		const { data } = await api({
+			method: "POST",
+			url: "/user/criarPDV",
+			data: { usuario, email, senha },
+			headers: { "x-access-token": token },
+		});
+		console.log(data);
+		if (!data.error) {
+			Alert.alert(null, data.mensagem);
+			getPDV();
+			SetUsuarioSelecionado(false);
+		} else {
+			Alert.alert(null, JSON.stringify(data.error));
+		}
+
 		setModal(false);
 	};
-	const editarUsuario = () => {
+	const editarUsuario = async () => {
 		const { usuario, email, senha } = usuarioSelecionado;
 
 		if (!usuario && !email && !senha) {
 			return Alert.alert(null, "Preencha todos os campos");
 		}
+		const { data } = await api({
+			method: "PUT",
+			url: "/user/PDV",
+			data: usuarioSelecionado,
+			headers: { "x-access-token": token },
+		});
+		console.log(data);
+		if (!data.error) {
+			Alert.alert(null, "Usuario Alterado com sucesso");
+			getPDV();
+			SetUsuarioSelecionado(false);
+		}
 
-		api
-			.post("/user/editarPDV", { ...usuarioSelecionado, doc })
-			.then(({ data }) => {
-				if (!data.error) {
-					Alert.alert(null, "Usuario Alterado com sucesso");
-					getPDV();
-					SetUsuarioSelecionado(false);
-				}
-			})
-			.catch((e) => console.log(e, "erro"));
 		setModal(false);
 	};
 	const modalEditarUsuario = (edicao) => {

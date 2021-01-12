@@ -8,6 +8,7 @@ import {
 	ScrollView,
 	Alert,
 	Modal,
+	Platform,
 } from "react-native";
 import styles, { primary, background, danger } from "../utils/Style";
 import Icone from "@expo/vector-icons/MaterialCommunityIcons";
@@ -55,15 +56,19 @@ export default (props) => {
 				params: { cd_convenio: convenio.cd_convenio },
 			})
 			.then(({ data }) => {
-				setNaoLida(
-					data.filter((item) => {
-						if (!item.ACMI_lido) {
-							return item;
-						}
-					}).length
-				);
+				if (Platform.OS != "ios") {
+					setNaoLida(
+						data.filter((item) => {
+							console.log(item)
+							if (!item.ACMI_lido) {
+								return item;
+							}
+						}).length
+					);
+				}
 				setNotificacoes(data);
-				if (data.length) {
+				console.log(data.length, data[0])
+				if (data[0]) {
 					let ultima = data[0].ACM_mensagem.replace(/<[^>]*>?/gm, "").replace(
 						/&[^;]*;?/gm,
 						""

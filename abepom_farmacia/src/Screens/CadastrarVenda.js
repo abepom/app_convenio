@@ -21,7 +21,7 @@ const CadastrarVenda = (props) => {
 		id_gds,
 		titular,
 	} = props.navigation.state.params;
-	const [{ usuario }] = useConvenio();
+	const [{ usuario, token }] = useConvenio();
 	const [data, setData] = useState(new Date());
 	const [show, setShow] = useState(false);
 	const [valor, setValor] = useState("");
@@ -46,7 +46,8 @@ const CadastrarVenda = (props) => {
 			const dados = await api({
 				url: "/efetuarVendas",
 				method: "POST",
-				data: { matricula, dep, id_gds, valor, cupom, data, usuario },
+				data: { matricula, dep, valor, cupom, data },
+				headers: { "x-access-token": token },
 			});
 
 			setModal(true);
@@ -57,22 +58,18 @@ const CadastrarVenda = (props) => {
 			setCarregando(false);
 		}
 	};
-	//
-	// useEffect(() => {
-	//   console.log(msnModal);
-	//   if (modal) {
-	//     setTimeout(() => {
-	//       setModal(false);
-	//       if (!msnModal.erro) {
-	//         props.navigation.goBack();
-	//       }
-	//     }, 2000);
-	//   }
-	// }, [modal]);
+
+	const consultarLimite = async () => {
+		let { data } = await api({
+			url: `/limite/${matricula}`,
+			method: "post",
+			headers: { "x-access-token": token },
+		});
+
+		setLimiteAtual(data.limite);
+	};
 	useEffect(() => {
-		api
-			.post(`/limite/${matricula}`)
-			.then(({ data }) => setLimiteAtual(data.limite));
+		consultarLimite();
 	}, []);
 
 	return (
@@ -295,7 +292,7 @@ const CadastrarVenda = (props) => {
 								<Text style={{ color: "white" }}>INFORMAR VENDA</Text>
 							</TouchableOpacity>
 						) : (
-							<Carregando  style={{ marginTop: 30 }} />
+							<Carregando style={{ marginTop: 30 }} />
 						)}
 					</View>
 				</View>

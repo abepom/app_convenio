@@ -146,6 +146,7 @@ const Login = (props) => {
 					};
 
 					setConv(convenio);
+					console.log(convenio);
 					props.navigation.navigate("App");
 				} else {
 					setCarregando(false);
@@ -153,10 +154,12 @@ const Login = (props) => {
 					setState({ erro: true, mensagem: "Usuário ou Senha incorretos" });
 				}
 			} catch (error) {
-				alert(`${error}  	`);
+				setState({ erro: true, mensagem: "Usuário ou Senha incorretos" });
+				setCarregando(false);
 			}
 		} else {
 			setState({ erro: true, mensagem: "Usuário ou Senha incorretos" });
+			setCarregando(false);
 		}
 	};
 
