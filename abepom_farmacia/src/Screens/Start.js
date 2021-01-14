@@ -24,9 +24,8 @@ import { WebView } from "react-native-webview";
 import Carregando from "../components/Carregando";
 export default (props) => {
 	const [convenio] = useConvenio();
-	const [notificacoes, setNotificacoes] = useState([]);
-	const [load, setload] = useLoad();
-	const [naoLida, setNaoLida] = useState(0);
+	const [notificacoes] = useState([]);
+	const [naoLida] = useState(0);
 	const [modal, setModal] = useState(false);
 	const [termo, setTermo] = useState({});
 	useEffect(() => {
@@ -36,79 +35,30 @@ export default (props) => {
 				setTermo(data);
 			});
 		}
-		if (load !== "notificacao" && load !== "todos") {
-			api.get("/termoAdesao", null).then(({ data }) => {
-				setTermo(data);
-			});
-			carregar(true);
-		}
 	}, []);
-	useEffect(() => {
-		if (load == "notificacao" || load == "todos") {
-			carregar();
-
-			setload(null);
-		}
-	}, [load]);
-	const carregar = (primeiro) => {
-		api
-			.get("/user/notificacoes", {
-				params: { cd_convenio: convenio.cd_convenio },
-			})
-			.then(({ data }) => {
-				if (Platform.OS != "ios") {
-					setNaoLida(
-						data.filter((item) => {
-							console.log(item)
-							if (!item.ACMI_lido) {
-								return item;
-							}
-						}).length
-					);
-				}
-				setNotificacoes(data);
-				console.log(data.length, data[0])
-				if (data[0]) {
-					let ultima = data[0].ACM_mensagem.replace(/<[^>]*>?/gm, "").replace(
-						/&[^;]*;?/gm,
-						""
-					);
-					if (!data[0].ACMI_lido && primeiro) {
-						return Alert.alert(data[0].ACM_titulo, ultima, [
-							{
-								text: "Ok",
-								onPress: () => {
-									setNotificacoes([]);
-									api
-										.post("/user/LerNotificacoes", {
-											id: data[0].ACMI_id_itens,
-										})
-										.then((a) => carregar())
-										.catch((e) => console.log(e));
-								},
-							},
-							{
-								text: "Fechar",
-								onPress: () => {},
-							},
-						]);
-					}
-				}
-			})
-			.catch((a) => console.log(a));
-	};
 
 	const aprovarTermo = async () => {
-		api.post("/AceitarTermo", {
-			token: convenio.token,
-			termo: termo.T_id_termo,
+		await api({
+			method: "POST",
+			url: "/AceitarTermo",
+			data: {
+				termo: termo.T_id_termo,
+			},
+			headers: { "x-access-token": convenio.token },
 		});
 		setModal(false);
 	};
 	const reprovarTermo = async () => {
-		api.post("/RecusarTermo", { token: convenio.token }).then(() => {
-			props.navigation.navigate("Sair");
+		await api({
+			method: "POST",
+			url: "/RecusarTermo",
+			data: {
+				termo: termo.T_id_termo,
+			},
+			headers: { "x-access-token": convenio.token },
 		});
+
+		props.navigation.navigate("Sair");
 	};
 	return (
 		<View>
@@ -161,7 +111,7 @@ export default (props) => {
 							</View>
 						</>
 					) : (
-						<Carregando  />
+						<Carregando />
 					)}
 				</View>
 			</Modal>

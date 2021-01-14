@@ -10,7 +10,6 @@ import {
 	Dimensions,
 	Modal,
 } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import MenuTop from "../components/MenuTop";
 import styles, {
 	primary,
@@ -30,6 +29,7 @@ import useLoad from "../Data/Load";
 import imagens from "../utils/imagens";
 import Carregando from "./../components/Carregando";
 import { FlatList } from "react-native-gesture-handler";
+import { TextInputMask } from "react-native-masked-text";
 
 const meses = [];
 
@@ -46,15 +46,22 @@ const ConsultarVendas = (props) => {
 	const [refreshing, setRefreshing] = useState(false);
 	const [{ id_gds, nivel, usuario, token }] = useConvenio();
 	const [mes, setMes] = useState(false);
-	const [data, setData] = useState(new Date());
-	const [show, setShow] = useState(false);
+	const [data, setData] = useState(
+		`${new Date().getDate()}/${
+			new Date().getMonth() < 9
+				? `0${new Date().getMonth() + 1}`
+				: `${new Date().getMonth() + 1}`
+		}/${new Date().getFullYear()}`
+	);
 	const [vendas, setvendas] = useState([]);
 	const [load, setLoad] = useState(false);
 	const [modal, setModal] = useState(false);
 	const [conteudoModal, setConteudoModal] = useState(null);
 	const [retornoExclusao, setRetornoExclusao] = useState("");
 	const [carregando, setCarregando] = useLoad();
-
+	useEffect(() => {
+		getConsulta();
+	}, [retornoExclusao]);
 	useEffect(() => {
 		if (carregando !== "ConsultarVendas" && carregando !== "todos") {
 			getConsulta();
@@ -70,26 +77,37 @@ const ConsultarVendas = (props) => {
 
 	const getConsulta = async () => {
 		setLoad(true);
-		const dados = await api({
-			method: "get",
-			url: "/ConsultarVendas",
-			params: { id_gds, data, usuario, nivel, mes },
-			headers: { "x-access-token": token },
-		});
-		setvendas(dados.data);
-		setLoad(false);
+		try {
+			const dados = await api({
+				method: "get",
+				url: "/ConsultarVendas",
+				params: { id_gds, data, usuario, nivel, mes },
+				headers: { "x-access-token": token },
+			});
+
+			setvendas(dados.data);
+		} catch (error) {
+			console.log(error, "erro");
+			setvendas([]);
+		} finally {
+			setLoad(false);
+		}
 	};
-	const onChange = (event, selectedDate) => {
-		const currentDate = selectedDate || data;
-		setShow(Platform.OS === "ios");
-		setData(currentDate);
-	};
+
 	const excluirVenda = async (Nr_lancamento) => {
-		const dados = await api.delete("/removerVendas", {
-			data: { Nr_lancamento },
-		});
-		setRetornoExclusao(dados.data.mensagem);
+		try {
+			const dados = await api({
+				method: "DELETE",
+				url: "/removerVendas",
+				data: { Nr_lancamento },
+				headers: { "x-access-token": token },
+			});
+
+			setRetornoExclusao(dados.data.mensagem);
+		} finally {
+		}
 	};
+
 	return (
 		<>
 			<Modal visible={modal} transparent {...props}>
@@ -288,35 +306,20 @@ const ConsultarVendas = (props) => {
 								dense
 								value={data}
 								mode="outlined"
-								onChange={onChange}
+								onChangeText={setData}
+								keyboardType={"phone-pad"}
 								theme={themeLight}
 								style={{ width: "80%" }}
-								render={(props) => {
-									if (show) {
-										return (
-											<DateTimePicker
-												{...props}
-												mode={"date"}
-												display="default"
-											/>
-										);
-									} else {
-										return (
-											<Text
-												onPress={() => setShow(true)}
-												style={{
-													textAlignVertical: "center",
-													flex: 1,
-													marginLeft: 10,
-												}}>
-												{`${data.getDate()}`}/
-												{data.getMonth() < 9
-													? `0${data.getMonth() + 1}`
-													: `${data.getMonth() + 1}`}
-												/{`${data.getFullYear()}`}
-											</Text>
-										);
-									}
+								render={(prop) => {
+									return (
+										<TextInputMask
+											{...prop}
+											type={"custom"}
+											options={{
+												mask: "99/99/9999",
+											}}
+										/>
+									);
 								}}
 							/>
 							<TouchableOpacity

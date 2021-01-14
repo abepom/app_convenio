@@ -1,15 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import Login from "./Screens/Login";
 import Load from "./Screens/Load";
 import Start from "./Screens/Start";
 import CadastrarVenda from "./Screens/CadastrarVenda";
 import RestartPass from "./Screens/RestartPass";
-
 import { createDrawerNavigator } from "react-navigation-drawer";
 import Sair from "./Screens/Sair";
-import Trocar from "./Screens/Trocar";
-
 import ConsultarCartao from "./Screens/ConsultarCartao";
 import Endereco from "./Screens/Enderecos";
 import Perfil from "./Screens/Perfil";
@@ -22,9 +19,7 @@ import EfetuarVenda from "./Screens/EfetuarVenda";
 import { createStackNavigator } from "react-navigation-stack";
 import ConsultarVendas from "./Screens/ConsultarVendas";
 import Avaliacao from "./Screens/Avaliacoes";
-
 import RepassesFuturos from "./Screens/RepassesFuturos";
-import Notificacoes from "./Screens/Notificacoes";
 import TermoAdasao from "./Screens/TermoAdasao";
 import AdministrarUsuarios from "./Screens/AdministrarUsuarios";
 
@@ -129,13 +124,7 @@ const App = createDrawerNavigator(
 				drawerLabel: "Perfil",
 			},
 		},
-		Trocar: {
-			screen: Trocar,
-			navigationOptions: {
-				drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.contact} />,
-				drawerLabel: "Trocar Farmácia",
-			},
-		},
+
 		RepassesFuturos: {
 			screen: RepassesFuturos,
 			navigationOptions: {

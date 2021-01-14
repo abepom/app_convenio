@@ -25,29 +25,6 @@ const Load = (props) => {
 	const conectar = async () => {
 		try {
 			let token;
-			// if (Constants.isDevice) {
-			// 	const { status: existingStatus } = await Permissions.getAsync(
-			// 		Permissions.NOTIFICATIONS
-			// 	);
-			// 	let finalStatus = existingStatus;
-			// 	if (existingStatus !== "granted") {
-			// 		const { status } = await Permissions.askAsync(
-			// 			Permissions.NOTIFICATIONS
-			// 		);
-			// 		finalStatus = status;
-			// 	}
-			// 	if (finalStatus !== "granted") {
-			// 		console.log("Ocorreu falha para capturar o push token notification.");
-			// 		return;
-			// 	}
-			// 	token = await (await Notifications.getExpoPushTokenAsync()).data;
-			// } else {
-			if (Platform.OS == "ios") {
-				token = "simuladorIOS";
-			} else {
-				token = "simuladorAndroid";
-			}
-			// }
 
 			if (!usuario) {
 				setTimeout(() => {
@@ -58,14 +35,14 @@ const Load = (props) => {
 				console.log("tentou login");
 
 				if (!!doc && !!pass) {
-					console.log(!!doc && !!pass);
 					const { data } = await api.post("/Login", {
 						doc: doc,
 						senha: pass,
 						user,
-						token,
+						token: Platform.OS,
 					});
-					console.log(data, "opa");
+					console.log(data);
+
 					let convenio;
 					if (!data.erro) {
 						convenio = {
@@ -83,9 +60,10 @@ const Load = (props) => {
 							primeiro_acesso: data.primeiro_acesso,
 						};
 
+						await setConv(convenio);
+
 						setTimeout(() => {
-							navigation.navigate("App", convenio);
-							setConv(convenio);
+							navigation.navigate("App");
 						}, 3000);
 					} else {
 						setTimeout(() => {
