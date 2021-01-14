@@ -5,48 +5,14 @@ import styles, { primaryBack, primary, danger } from "../utils/Style";
 import { expo } from "../../app.json";
 import imagens from "../utils/imagens";
 import useConvenio from "../Data/Convenio";
-import useLoad from "../Data/Load";
-import useUsuario from "../Data/Usuario";
 
-const Drawer = memo((props) => {
-	const [user] = useUsuario();
+const Drawer = (props) => {
 	const [convenio] = useConvenio();
 	const [menu, setMenu] = useState(props);
 	let itens = [];
 
 	//verifica o tipo do usuario
 	useEffect(() => {
-		//se nao for usuario adm remove o menu do drawer trocar
-		if (user.usuario != "abepom") {
-			menu.items.map((item) => {
-				switch (item.key) {
-					case "Trocar":
-						break;
-
-					default:
-						itens.push({ ...item });
-						break;
-				}
-			});
-			//se nao for usuario principal da farmacia nao mostra os intens no case
-			if (convenio.nivel != 1) {
-				let items = [];
-				itens.map((item) => {
-					switch (item.key) {
-						case "RepassesFuturos":
-						case "AdministrarUsuarios":
-							break;
-
-						default:
-							items.push({ ...item });
-							break;
-					}
-				});
-				itens = items;
-			}
-			return setMenu({ ...props, items: itens });
-		}
-
 		if (convenio.nivel != 1) {
 			menu.items.map((item) => {
 				switch (item.key) {
@@ -57,8 +23,11 @@ const Drawer = memo((props) => {
 						break;
 				}
 			});
-			return setMenu({ ...props, items: itens });
+			setMenu({ ...props, items: itens });
+		} else {
+			setMenu({ ...props });
 		}
+		console.log("drawer");
 	}, [props]);
 
 	return (
@@ -123,6 +92,6 @@ const Drawer = memo((props) => {
 			</ScrollView>
 		</>
 	);
-});
+};
 
-export default Drawer;
+export default memo(Drawer);

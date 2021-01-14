@@ -42,6 +42,7 @@ const CadastrarVenda = (props) => {
 
 	const InformarVenda = async () => {
 		setCarregando(true);
+		console.log({ matricula, dep, valor, cupom, data, token });
 		if (valor) {
 			const dados = await api({
 				url: "/efetuarVendas",

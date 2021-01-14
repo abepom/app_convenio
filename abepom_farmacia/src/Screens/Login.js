@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, Text, StyleSheet, Dimensions } from "react-native";
+import {
+	View,
+	Image,
+	Text,
+	StyleSheet,
+	Dimensions,
+	Platform,
+} from "react-native";
 import StatusBar from "../components/StatusBar";
 import logo from "../../assets/img/logo_abepom_branca.png";
 import Constants from "expo-constants";
@@ -55,35 +62,6 @@ const Login = (props) => {
 		}
 	}, []);
 
-	const getToken = async () => {
-		let token;
-		if (Constants.isDevice) {
-			// const { status: existingStatus } = await Permissions.getAsync(
-			// 	Permissions.NOTIFICATIONS
-			// );
-			let finalStatus = existingStatus;
-			// if (existingStatus !== "granted") {
-			// 	const { status } = await Permissions.askAsync(
-			// 		Permissions.NOTIFICATIONS
-			// 	);
-			// 	finalStatus = status;
-			// }
-			if (finalStatus !== "granted") {
-				console.log("Ocorreu falha para capturar o push token notification.");
-				return;
-			}
-			token = "push"; //await (await Notifications.getExpoPushTokenAsync()).data;
-		} else {
-			if (Platform.OS == "ios") {
-				token = "simuladorIOS";
-			} else {
-				token = "push"; //await (await Notifications.getExpoPushTokenAsync()).data;
-			}
-		}
-
-		return token.data;
-	};
-
 	const [routes] = useState([
 		{ key: "1", title: "Administrador" },
 		{ key: "2", title: "Ponto de venda" },
@@ -115,21 +93,20 @@ const Login = (props) => {
 	});
 
 	const conectar = async (imput) => {
-		setCarregando(true);
+		//setCarregando(true);
 
 		const { doc, user, pass } = imput;
-		let token = await getToken();
 
-		if (doc.length > 1 && pass) {
+		if (doc.length == 18 && pass) {
 			try {
 				const { data } = await api.post("/Login", {
 					doc: doc,
 					senha: pass,
 					user,
-					token,
 				});
 
 				let convenio;
+
 				if (!data.erro) {
 					setUsuario(imput);
 					convenio = {
@@ -140,13 +117,13 @@ const Login = (props) => {
 						doc: data.doc,
 						usuario: data.usuario,
 						nivel: data.nivel,
-						token,
+						token: data.token,
 						cd_convenio: data["cd_convênio"],
 						primeiro_acesso: data.primeiro_acesso,
 					};
 
-					setConv(convenio);
-					console.log(convenio);
+					await setConv(convenio);
+
 					props.navigation.navigate("App");
 				} else {
 					setCarregando(false);
@@ -154,6 +131,7 @@ const Login = (props) => {
 					setState({ erro: true, mensagem: "Usuário ou Senha incorretos" });
 				}
 			} catch (error) {
+				console.log(error);
 				setState({ erro: true, mensagem: "Usuário ou Senha incorretos" });
 				setCarregando(false);
 			}
