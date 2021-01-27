@@ -37,7 +37,7 @@ const Perfil = () => {
   const [state, setState] = useState(initialState);
   const [retorno, setRetorno] = useState(false);
   useEffect(() => {
-    if (!!retorno) {
+    if (retorno) {
       setTimeout(() => {
         setRetorno(false);
       }, 5000);
@@ -317,7 +317,7 @@ const Perfil = () => {
               styles.btnDefault,
               {marginTop: 12, width: '40%', alignSelf: 'center'},
             ]}>
-            <Text style={{color: `white`}}>SALVAR</Text>
+            <Text style={{color: 'white'}}>SALVAR</Text>
           </TouchableOpacity>
         ) : null}
         <View style={{height: 100}} />
