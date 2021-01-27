@@ -18,7 +18,7 @@ import Mensagem from "./../components/Mensagem";
 export default function RepassesFuturos(props) {
 	let mesano = "0";
 	const [refreshing, setRefreshing] = useState(false);
-	const [{ id_gds, token }] = useConvenio();
+	const [{ token }] = useConvenio();
 	const [repasses, setRepasses] = useState();
 	const getRepasse = async () => {
 		setRepasses(null);
