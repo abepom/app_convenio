@@ -11,6 +11,17 @@ import Carregando from "../components/Carregando";
 import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
 const Load = (props) => {
+	async function updateApp() {
+		const { isAvailable } = await Updates.checkForUpdateAsync();
+		if (isAvailable) {
+			await Updates.fetchUpdateAsync();
+			await Updates.reloadAsync(); // depende da sua estratégia
+		}
+		conectar();
+	}
+	useEffect(() => {
+		updateApp();
+	}, []);
 	const { navigation } = props;
 
 	const [usuario] = useUsuario();
@@ -18,7 +29,7 @@ const Load = (props) => {
 	const [, setConv] = useConvenio();
 	useEffect(() => {
 		if (!!store.carregouDados) {
-			conectar();
+			updateApp();
 		}
 	}, [store.carregouDados]);
 
