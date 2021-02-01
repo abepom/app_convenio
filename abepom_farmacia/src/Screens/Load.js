@@ -10,14 +10,16 @@ import useConvenio from "../Data/Convenio";
 import Carregando from "../components/Carregando";
 import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
+import Updates from "expo-updates";
+
 const Load = (props) => {
 	async function updateApp() {
 		const { isAvailable } = await Updates.checkForUpdateAsync();
+
 		if (isAvailable) {
 			await Updates.fetchUpdateAsync();
 			await Updates.reloadAsync(); // depende da sua estratégia
 		}
-		conectar();
 	}
 	useEffect(() => {
 		updateApp();
@@ -29,14 +31,12 @@ const Load = (props) => {
 	const [, setConv] = useConvenio();
 	useEffect(() => {
 		if (!!store.carregouDados) {
-			updateApp();
+			conectar();
 		}
 	}, [store.carregouDados]);
 
 	const conectar = async () => {
 		try {
-			let token;
-
 			if (!usuario) {
 				setTimeout(() => {
 					return navigation.navigate("Login");
