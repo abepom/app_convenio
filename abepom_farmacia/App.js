@@ -11,9 +11,20 @@ import Routes from "./src/Routes";
 import { primary } from "./src/utils/Style";
 import { StorePrivider } from "./src/Data/store";
 import Constants from "expo-constants";
+import Updates from "expo-updates";
 
 //Teste
 const App = () => {
+	useEffect(() => {
+		async function updateApp() {
+			const { isAvailable } = await Updates.checkForUpdateAsync();
+			if (isAvailable) {
+				await Updates.fetchUpdateAsync();
+				await Updates.reloadAsync(); // depende da sua estratégia
+			}
+		}
+		updateApp();
+	}, []);
 	return (
 		<>
 			<StorePrivider>
