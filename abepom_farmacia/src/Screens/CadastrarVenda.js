@@ -42,7 +42,7 @@ const CadastrarVenda = (props) => {
 
 	const InformarVenda = async () => {
 		setCarregando(true);
-		console.log({ matricula, dep, valor, cupom, data, token });
+
 		if (valor) {
 			const dados = await api({
 				url: "/efetuarVendas",
@@ -290,7 +290,7 @@ const CadastrarVenda = (props) => {
 							<TouchableOpacity
 								style={[styles.btnDefault, { marginTop: 30 }]}
 								onPress={() => InformarVenda()}>
-								<Text style={{ color: "white" }}>INFORMAR VENDA</Text>
+								<Text style={{ color: "white" }}>CADASTRAR VENDA</Text>
 							</TouchableOpacity>
 						) : (
 							<Carregando style={{ marginTop: 30 }} />

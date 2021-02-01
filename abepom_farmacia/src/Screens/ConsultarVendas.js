@@ -9,6 +9,7 @@ import {
 	ScrollView,
 	Dimensions,
 	Modal,
+	Linking,
 } from "react-native";
 import MenuTop from "../components/MenuTop";
 import styles, {
@@ -23,7 +24,6 @@ import api from "../api";
 import { themeLight } from "../utils/theme";
 import formatCurrency from "currency-formatter";
 import Retorno from "../components/Retorno";
-import { Checkbox } from "react-native-paper";
 import useConvenio from "../Data/Convenio";
 import useLoad from "../Data/Load";
 import imagens from "../utils/imagens";
@@ -56,6 +56,7 @@ const ConsultarVendas = (props) => {
 	const [vendas, setvendas] = useState([]);
 	const [load, setLoad] = useState(false);
 	const [modal, setModal] = useState(false);
+	const [contato, setContato] = useState({});
 	const [conteudoModal, setConteudoModal] = useState(null);
 	const [retornoExclusao, setRetornoExclusao] = useState("");
 	const [carregando, setCarregando] = useLoad();
@@ -84,8 +85,16 @@ const ConsultarVendas = (props) => {
 				params: { id_gds, data, usuario, nivel, mes },
 				headers: { "x-access-token": token },
 			});
-
 			setvendas(dados.data);
+
+			// const [contatoConvenio] = await api({
+			// 	method: "get",
+			// 	url: "/contato",
+			// 	params: { setor: "15" },
+			// 	headers: { "x-access-token": token },
+			// });
+
+			// setContato(contatoConvenio);
 		} catch (error) {
 			console.log(error, "erro");
 			setvendas([]);
@@ -266,11 +275,33 @@ const ConsultarVendas = (props) => {
 									backgroundColor: `white`,
 									paddingVertical: 10,
 									paddingHorizontal: 5,
-									width: "100%",
+									width: "95%",
 								}}>
 								<Text style={{ fontSize: 20, textAlign: "justify" }}>
 									{retornoExclusao}
 								</Text>
+								{retornoExclusao.indexOf(
+									"Essa cobrança já foi efetuada pela abepom,"
+								) >= 0 && (
+									<TouchableOpacity
+										onPress={() => {
+											Linking.openURL(`https://wa.me/5548999080294`);
+										}}>
+										<View
+											style={{
+												flexDirection: "row",
+												alignItems: "center",
+												justifyContent: "center",
+												margin: 10,
+											}}>
+											<Image
+												source={imagens.whatsapp}
+												style={{ height: 30, width: 30 }}
+											/>
+											<Text>(48) 99908-0294</Text>
+										</View>
+									</TouchableOpacity>
+								)}
 							</View>
 							<TouchableOpacity
 								onPress={() => setModal(false)}
@@ -279,7 +310,7 @@ const ConsultarVendas = (props) => {
 									borderBottomLeftRadius: 4,
 									backgroundColor: sucessBack,
 									padding: 10,
-									width: "100%",
+									width: "95%",
 									alignItems: "center",
 								}}>
 								<Text style={{ color: sucess }}>FECHAR</Text>
@@ -338,20 +369,35 @@ const ConsultarVendas = (props) => {
 								/>
 							</TouchableOpacity>
 						</View>
-						<View style={{ flexDirection: "row" }}>
-							<Checkbox
-								status={mes ? "checked" : "unchecked"}
-								onPress={() => {
-									setMes(!mes);
-								}}
-								color={primary}
-							/>
-							<Text
-								style={{ paddingTop: 10, color: primary }}
-								onPress={() => setMes(!mes)}>
+						<TouchableOpacity
+							onPress={() => setMes(!mes)}
+							style={{ flexDirection: "row" }}>
+							{mes ? (
+								<Image
+									source={imagens.check}
+									style={{
+										width: 25,
+										height: 25,
+										margin: 7,
+										tintColor: primary,
+									}}
+								/>
+							) : (
+								<Image
+									source={imagens.unchecked}
+									style={{
+										width: 25,
+										height: 25,
+										margin: 7,
+										tintColor: primary,
+									}}
+								/>
+							)}
+
+							<Text style={{ paddingTop: 10, color: primary }}>
 								Consulta mês inteiro
 							</Text>
-						</View>
+						</TouchableOpacity>
 					</View>
 				}>
 				<View style={{ width: "95%" }}>
@@ -375,7 +421,7 @@ const ConsultarVendas = (props) => {
 											if (item.Processado_desconto) {
 												setConteudoModal(null);
 												setRetornoExclusao(
-													"Essa cobrança já foi efetuada pela abepom entre em contato com nosso setor de Convenior para saber mais informações"
+													"Essa cobrança já foi efetuada pela abepom, entre em contato com nosso setor de Convênios para mais informações"
 												);
 											} else {
 												setConteudoModal(item);
@@ -486,7 +532,10 @@ const ConsultarVendas = (props) => {
 									onRefresh={getConsulta}
 								/>
 							}>
-							<Retorno type="sucess" mensagem="Nenhuma venda encontrada" />
+							<Retorno
+								type="sucess"
+								mensagem="Não há registro de venda para o seu usuário"
+							/>
 						</ScrollView>
 					)}
 				</View>

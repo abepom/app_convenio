@@ -11,6 +11,6 @@ import axios from "axios";
 
 // OFICIAL
 const api = axios.create({
-  baseURL: 'http://api.abepom.org.br:3972/convenios',
+	baseURL: "http://api.abepom.org.br:3972/convenios",
 });
 export default api;

@@ -5,11 +5,12 @@ import {
 	Text,
 	StyleSheet,
 	Dimensions,
+	KeyboardAvoidingView,
 	Platform,
 } from "react-native";
 import StatusBar from "../components/StatusBar";
 import logo from "../../assets/img/logo_abepom_branca.png";
-import Constants from "expo-constants";
+
 import styles, {
 	danger,
 	danverBackground,
@@ -23,14 +24,14 @@ import useConvenio from "../Data/Convenio";
 import LoginAdm from "../components/LoginAdm";
 import LoginPDV from "../components/LoginPDV";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-//import * as Notifications from "expo-notifications";
-import * as Permissions from "expo-permissions";
+
 import { expo } from "../../app.json";
 const initialLayout = { width: Dimensions.get("window").width };
 
 const Login = (props) => {
 	const [index, setIndex] = useState(0);
 	const [carregando, setCarregando] = useState(false);
+	const [teclado, setTeclado] = useState(false);
 
 	const [reset, setReset] = useState(
 		props.navigation.state.params
@@ -146,47 +147,54 @@ const Login = (props) => {
 			<StatusBar />
 			{/* <View style={estilos.conteiner}>
         <Text>teste</Text> */}
-			<ScrollView
-				style={{ width: "100%", height: "100%", backgroundColor: primary }}>
-				<Image
-					style={[styles.logo, { marginTop: "10%", alignSelf: "center" }]}
-					source={logo}
-				/>
+			<KeyboardAvoidingView
+				behavior={Platform.OS == "ios" ? "padding" : "height"}
+				style={{
+					flex: 1,
+				}}>
+				<ScrollView
+					style={{ width: "100%", height: "100%", backgroundColor: primary }}>
+					<Image
+						style={[styles.logo, { marginTop: "10%", alignSelf: "center" }]}
+						source={logo}
+					/>
 
-				<View style={{ alignItems: "center" }}>
-					<Text style={[styles.white, styles.textoGG]}>ABEPOM</Text>
-					<Text style={[styles.white, styles.textoM]}>FARMÁCIA</Text>
-				</View>
+					<View style={{ alignItems: "center" }}>
+						<Text style={[styles.white, styles.textoGG]}>ABEPOM</Text>
+						<Text style={[styles.white, styles.textoM]}>FARMÁCIA</Text>
+					</View>
 
-				<TabView
-					navigationState={{ index, routes }}
-					renderScene={renderScene}
-					onIndexChange={setIndex}
-					style={{
-						marginTop: 20,
-						flex: 1,
-					}}
-					initialLayout={initialLayout}
-					renderTabBar={(props) => (
-						<TabBar
-							{...props}
-							indicatorStyle={{ backgroundColor: "white" }}
-							style={{ backgroundColor: primary, elevation: 1 }}
-							labelStyle={styles.textoM}
-						/>
-					)}
-				/>
-				<View
-					style={{
-						alignItems: "center",
+					<TabView
+						navigationState={{ index, routes }}
+						renderScene={renderScene}
+						onIndexChange={setIndex}
+						style={{
+							marginTop: 20,
+							flex: 1,
+						}}
+						initialLayout={initialLayout}
+						renderTabBar={(props) => (
+							<TabBar
+								{...props}
+								indicatorStyle={{ backgroundColor: "white" }}
+								style={{ backgroundColor: primary, elevation: 1 }}
+								labelStyle={styles.textoM}
+							/>
+						)}
+					/>
+					<View
+						style={{
+							alignItems: "center",
 
-						width: "100%",
-						bottom: 0,
-					}}>
-					<Text style={{ color: "white" }}>Versão: {expo.version}</Text>
-				</View>
-			</ScrollView>
-			{/* </View> */}
+							width: "100%",
+							bottom: 0,
+						}}>
+						<Text style={{ color: "white" }}>Versão: {expo.version}</Text>
+					</View>
+					{teclado && <View style={{ height: 200 }}></View>}
+				</ScrollView>
+				{/* </View> */}
+			</KeyboardAvoidingView>
 		</>
 	);
 };
