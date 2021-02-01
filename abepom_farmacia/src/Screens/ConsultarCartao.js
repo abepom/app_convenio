@@ -6,7 +6,7 @@ import {
 	TextInput,
 	Alert,
 	Modal,
-	ImageBackground,
+	Platform,
 } from "react-native";
 import { TextInput as Imput } from "react-native-paper";
 //import QRCodeScanner from 'react-native-qrcode-scanner';
@@ -34,26 +34,41 @@ const Home = (props) => {
 	const [carregando, setCarregando] = useState(false);
 	useEffect(() => {
 		(async () => {
-			const { status } = await Camera.requestPermissionsAsync();
-			if (status !== "granted") {
-				setCamera(false);
-				Alert.alert(
-					"Permissão negada!",
-					"É necessario conceder permissao para utilizar a camera",
-					[
-						{
-							text: "Solicitar permissao novamente.",
-							onPress: async () => await Camera.requestPermissionsAsync(),
-						},
-						{
-							text: "Cancel",
-							onPress: () => {},
-						},
-					]
-				);
+			try {
+				const { status } = await Camera.requestPermissionsAsync();
+				if (status !== "granted") {
+					Alert.alert(
+						"Permissão negada!",
+						"É necessario conceder permissao para utilizar a camera",
+						[
+							{
+								text: "Solicitar permissao novamente.",
+								onPress: async () => {
+									await Camera.requestPermissionsAsync();
+									if (Platform.OS == "android") {
+										await Camera.getAvailableCameraTypesAsync();
+									} else {
+										await Camera.requestPermissionsAsync();
+										console.log(status);
+									}
+									setCamera(false);
+								},
+							},
+							{
+								text: "Cancel",
+								onPress: () => {
+									setCamera(false);
+								},
+							},
+						]
+					);
+				}
+			} catch (error) {
+				console.log(error, "teste");
+				//setCamera(false);
 			}
 		})();
-	}, [camera]);
+	}, [camera == true]);
 	useEffect(() => {
 		if (erro) {
 			setTimeout(() => {

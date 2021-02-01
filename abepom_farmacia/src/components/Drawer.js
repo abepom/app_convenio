@@ -17,6 +17,7 @@ const Drawer = (props) => {
 			menu.items.map((item) => {
 				switch (item.key) {
 					case "RepassesFuturos":
+					case "AdministrarUsuarios":
 						break;
 					default:
 						itens.push({ ...item });
