@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Easing, Animated, Platform } from "react-native";
+import { Easing, Animated, Platform, Alert } from "react-native";
 import { primary } from "./../utils/Style";
 import api from "../api";
 import StatusBar from "../components/StatusBar";
@@ -13,17 +13,6 @@ import Constants from "expo-constants";
 import Updates from "expo-updates";
 
 const Load = (props) => {
-	async function updateApp() {
-		const { isAvailable } = await Updates.checkForUpdateAsync();
-
-		if (isAvailable) {
-			await Updates.fetchUpdateAsync();
-			await Updates.reloadAsync(); // depende da sua estratégia
-		}
-	}
-	useEffect(() => {
-		updateApp();
-	}, []);
 	const { navigation } = props;
 
 	const [usuario] = useUsuario();

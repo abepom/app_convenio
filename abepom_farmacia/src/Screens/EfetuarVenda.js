@@ -112,7 +112,7 @@ export default (props) => {
 					color: primary,
 					marginVertical: 30,
 				}}>
-				Informe a Matrícula ou o Cartão do assocado para iniciar a venda.
+				Informe a Matrícula ou o Cartão do associado para iniciar a venda.
 			</Text>
 
 			<View style={{ width: "100%", flexDirection: "row" }}>

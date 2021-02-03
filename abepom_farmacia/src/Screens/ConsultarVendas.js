@@ -47,7 +47,11 @@ const ConsultarVendas = (props) => {
 	const [{ id_gds, nivel, usuario, token }] = useConvenio();
 	const [mes, setMes] = useState(false);
 	const [data, setData] = useState(
-		`${new Date().getDate()}/${
+		`${
+			new Date().getDate() < 9
+				? `0${new Date().getDate()}`
+				: `${new Date().getDate()}`
+		}/${
 			new Date().getMonth() < 9
 				? `0${new Date().getMonth() + 1}`
 				: `${new Date().getMonth() + 1}`
