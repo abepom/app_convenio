@@ -43,9 +43,15 @@ const Update = (props) => {
 				{atualizando}
 			</Text>
 			{novaAtualizacao && (
-				<Text style={{ color: primary, fontSize: 18, fontWeight: "bold" }}>
-					Versão: {json.expo.version} para {novaAtualizacao}
-				</Text>
+				<>
+					<Text style={{ color: primary, fontSize: 18, fontWeight: "bold" }}>
+						Versão: {json.expo.version} para {novaAtualizacao}
+					</Text>
+					<Text style={{ color: primary, fontSize: 18, fontWeight: "bold" }}>
+						Ao concluir a atualização iremos reiniciar o aplicativo
+						automaticamente.
+					</Text>
+				</>
 			)}
 		</Animated.View>
 	);

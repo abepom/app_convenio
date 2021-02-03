@@ -41,7 +41,6 @@ const Drawer = (props) => {
 						paddingVertical: 20,
 
 						elevation: 4,
-						backgroundColor: primary,
 					},
 					Platform.OS == "ios" && {
 						paddingVertical: 20,
@@ -49,8 +48,6 @@ const Drawer = (props) => {
 						shadowOffset: { width: 0, height: 4 },
 						shadowOpacity: 0.8,
 						shadowRadius: 4,
-
-						backgroundColor: primary,
 					},
 				]}>
 				{convenio.caminho_logomarca ? (
@@ -72,15 +69,15 @@ const Drawer = (props) => {
 						}}>
 						<Image
 							source={imagens.camera}
-							style={[styles.logoPP, { tintColor: "white" }]}
+							style={[styles.logoPP, { tintColor: primary }]}
 						/>
 					</View>
 				)}
 				<View style={{ marginHorizontal: 10, maxWidth: "60%" }}>
-					<Text style={{ color: "white", fontWeight: "bold" }}>
+					<Text style={{ color: primary, fontWeight: "bold" }}>
 						{[convenio.nome_parceiro]}
 					</Text>
-					<Text style={{ fontSize: 10, color: "white", fontWeight: "bold" }}>
+					<Text style={{ fontSize: 10, color: primary, fontWeight: "bold" }}>
 						{convenio.doc != ""
 							? convenio.doc.length > 15
 								? `CNPF: ${convenio.doc}`
@@ -105,13 +102,12 @@ const Drawer = (props) => {
 					justifyContent: "center",
 					flexDirection: "row",
 					padding: 10,
-					backgroundColor: primary,
 				}}>
 				<Image
 					source={imagens.abepom}
-					style={{ tintColor: "white", width: 25, height: 25 }}
+					style={{ tintColor: primary, width: 25, height: 25 }}
 				/>
-				<Text style={{ color: "white", fontWeight: "bold", fontSize: 14 }}>
+				<Text style={{ color: primary, fontWeight: "bold", fontSize: 14 }}>
 					Versão: {expo.version}
 				</Text>
 			</View>
