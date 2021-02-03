@@ -22,6 +22,7 @@ import Avaliacao from "./Screens/Avaliacoes";
 import RepassesFuturos from "./Screens/RepassesFuturos";
 import TermoAdasao from "./Screens/TermoAdasao";
 import AdministrarUsuarios from "./Screens/AdministrarUsuarios";
+import Update from "./Screens/Update";
 
 const venda = createStackNavigator(
 	{
@@ -177,6 +178,7 @@ const App = createDrawerNavigator(
 const Routes = createAppContainer(
 	createSwitchNavigator(
 		{
+			Update,
 			Load,
 			Login,
 			RestartPass,
@@ -184,7 +186,7 @@ const Routes = createAppContainer(
 			Teste,
 		},
 		{
-			initialRouteName: "Load",
+			initialRouteName: "Update",
 		}
 	)
 );

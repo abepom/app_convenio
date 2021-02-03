@@ -33,64 +33,88 @@ const Drawer = (props) => {
 
 	return (
 		<>
-			<ScrollView style={styles.flex}>
-				<SafeAreaView style={styles.flex}>
-					<View style={[styles.row, styles.center, { marginVertical: 20 }]}>
-						{convenio.caminho_logomarca ? (
-							<>
-								<View>
-									<Image
-										source={{ uri: convenio.caminho_logomarca }}
-										style={[styles.logoP, { resizeMode: "contain" }]}
-									/>
-								</View>
-							</>
-						) : (
-							<View
-								style={{
-									borderWidth: 2,
-									borderColor: primary,
-									borderRadius: 50,
-									padding: 10,
-								}}>
-								<Image
-									source={imagens.camera}
-									style={[styles.logoPP, { tintColor: primary }]}
-								/>
-							</View>
-						)}
-						<View style={{ marginHorizontal: 10, maxWidth: "60%" }}>
-							<Text style={{}}>{[convenio.nome_parceiro]}</Text>
-							<Text style={{ fontSize: 10 }}>
-								{convenio.doc != ""
-									? convenio.doc.length > 15
-										? `CNPF: ${convenio.doc}`
-										: `CPF: ${convenio.doc}`
-									: ""}
-							</Text>
+			<View
+				style={[
+					styles.row,
+					styles.center,
+					{
+						paddingVertical: 20,
+
+						elevation: 4,
+						backgroundColor: primary,
+					},
+					Platform.OS == "ios" && {
+						paddingVertical: 20,
+						shadowColor: primary,
+						shadowOffset: { width: 0, height: 4 },
+						shadowOpacity: 0.8,
+						shadowRadius: 4,
+
+						backgroundColor: primary,
+					},
+				]}>
+				{convenio.caminho_logomarca ? (
+					<>
+						<View>
+							<Image
+								source={{ uri: convenio.caminho_logomarca }}
+								style={[styles.logoP, { resizeMode: "cover" }]}
+							/>
 						</View>
+					</>
+				) : (
+					<View
+						style={{
+							borderWidth: 2,
+							borderColor: primary,
+							borderRadius: 50,
+							padding: 10,
+						}}>
+						<Image
+							source={imagens.camera}
+							style={[styles.logoPP, { tintColor: "white" }]}
+						/>
 					</View>
+				)}
+				<View style={{ marginHorizontal: 10, maxWidth: "60%" }}>
+					<Text style={{ color: "white", fontWeight: "bold" }}>
+						{[convenio.nome_parceiro]}
+					</Text>
+					<Text style={{ fontSize: 10, color: "white", fontWeight: "bold" }}>
+						{convenio.doc != ""
+							? convenio.doc.length > 15
+								? `CNPF: ${convenio.doc}`
+								: `CPF: ${convenio.doc}`
+							: ""}
+					</Text>
+				</View>
+			</View>
+
+			<ScrollView>
+				<SafeAreaView>
 					<DrawerNavigatorItems
 						{...menu}
 						itensConteinerStyles={{ width: "100%", backgroundColor: "blue" }}
+						labelStyle={{ fontSize: 16 }}
 					/>
-					<View
-						style={{
-							alignItems: "center",
-							justifyContent: "center",
-							flexDirection: "row",
-							marginTop: 20,
-						}}>
-						<Image
-							source={imagens.abepom}
-							style={{ tintColor: primary, width: 15, height: 15 }}
-						/>
-						<Text style={{ color: primary, fontSize: 10 }}>
-							Versão: {expo.version}
-						</Text>
-					</View>
 				</SafeAreaView>
 			</ScrollView>
+			<View
+				style={{
+					alignItems: "center",
+					justifyContent: "center",
+					flexDirection: "row",
+					padding: 10,
+					backgroundColor: primary,
+				}}>
+				<Image
+					source={imagens.abepom}
+					style={{ tintColor: "white", width: 25, height: 25 }}
+				/>
+				<Text style={{ color: "white", fontWeight: "bold", fontSize: 14 }}>
+					Versão: {expo.version}
+				</Text>
+			</View>
 		</>
 	);
 };
