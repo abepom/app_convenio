@@ -41,8 +41,9 @@ const Drawer = (props) => {
 						paddingVertical: 20,
 
 						elevation: 4,
+						zIndex: 10,
 					},
-					Platform.OS == "ios" && {
+					{
 						paddingVertical: 20,
 						shadowColor: primary,
 						shadowOffset: { width: 0, height: 4 },
@@ -52,7 +53,7 @@ const Drawer = (props) => {
 				]}>
 				{convenio.caminho_logomarca ? (
 					<>
-						<View>
+						<View style={{ elevation: 4, zIndex: 10 }}>
 							<Image
 								source={{ uri: convenio.caminho_logomarca }}
 								style={[styles.logoP, { resizeMode: "cover" }]}
@@ -66,6 +67,8 @@ const Drawer = (props) => {
 							borderColor: primary,
 							borderRadius: 50,
 							padding: 10,
+							elevation: 4,
+							zIndex: 10,
 						}}>
 						<Image
 							source={imagens.camera}
@@ -74,10 +77,23 @@ const Drawer = (props) => {
 					</View>
 				)}
 				<View style={{ marginHorizontal: 10, maxWidth: "60%" }}>
-					<Text style={{ color: primary, fontWeight: "bold" }}>
+					<Text
+						style={{
+							color: primary,
+							fontWeight: "bold",
+							elevation: 4,
+							zIndex: 10,
+						}}>
 						{[convenio.nome_parceiro]}
 					</Text>
-					<Text style={{ fontSize: 10, color: primary, fontWeight: "bold" }}>
+					<Text
+						style={{
+							fontSize: 10,
+							color: primary,
+							fontWeight: "bold",
+							elevation: 4,
+							zIndex: 10,
+						}}>
 						{convenio.doc != ""
 							? convenio.doc.length > 15
 								? `CNPF: ${convenio.doc}`

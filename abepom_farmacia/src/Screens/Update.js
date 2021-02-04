@@ -9,20 +9,25 @@ import Constants from "expo-constants";
 const Update = (props) => {
 	const [atualizando, setAtualizando] = useState("Verificando atualização");
 	const [novaAtualizacao, setNovaAtualizacao] = useState(false);
+	const [description, setDescription] = useState("");
 	const { navigation } = props;
 	async function updateApp() {
 		if (Constants.isDevice) {
 			const { isAvailable, manifest } = await Updates.checkForUpdateAsync();
-
+			alert(manifest);
 			if (isAvailable) {
 				setNovaAtualizacao(manifest.version);
 				setAtualizando("Baixando atualização");
-
+				setDescription(manifest.description);
 				await Updates.fetchUpdateAsync();
-				await Updates.reloadAsync();
+				//await Updates.reloadAsync();
+				//navigation.navigate("Load");
+			} else {
+				navigation.navigate("Load");
 			}
+		} else {
+			navigation.navigate("Load");
 		}
-		navigation.navigate("Load");
 	}
 	useEffect(() => {
 		updateApp();
@@ -47,9 +52,14 @@ const Update = (props) => {
 					<Text style={{ color: primary, fontSize: 18, fontWeight: "bold" }}>
 						Versão: {json.expo.version} para {novaAtualizacao}
 					</Text>
-					<Text style={{ color: primary, fontSize: 18, fontWeight: "bold" }}>
-						Ao concluir a atualização iremos reiniciar o aplicativo
-						automaticamente.
+					<Text
+						style={{
+							color: primary,
+							fontSize: 16,
+							fontWeight: "bold",
+							padding: "5%",
+						}}>
+						{description}
 					</Text>
 				</>
 			)}

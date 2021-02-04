@@ -4,12 +4,13 @@
 		"start": "expo start -c",
 		"android": "expo start --android",
 		"ba": "expo build:android -t app-bundle",
-		"apk": "expo build:android -t apk",
+		"apk": "expo build:android -t apk --release-channel teste",
 		"op": "expo optimize",
 		"ios": "expo start --ios",
 		"web": "expo start --web",
 		"eject": "expo eject",
-		"update": "expo publish"
+		"update": "expo publish",
+		"teste": "expo publish --release-channel teste"
 	},
 	"dependencies": {
 		"@react-native-community/async-storage": "~1.12.0",

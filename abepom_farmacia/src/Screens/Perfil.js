@@ -221,7 +221,7 @@ export default function TabViewExample(props) {
 											cache: "reload",
 										}}
 										ex
-										style={[styles.logoPP, { resizeMode: "contain" }]}
+										style={[styles.logoPP, { resizeMode: "cover" }]}
 									/>
 
 									<Image
@@ -282,7 +282,7 @@ export default function TabViewExample(props) {
 						/>
 					)
 				) : (
-					<Carregando  size={50} />
+					<Carregando size={50} />
 				)}
 
 				<View>
@@ -296,7 +296,7 @@ export default function TabViewExample(props) {
 					</Text>
 				</View>
 				{avaliacao.carregando ? (
-					<Carregando  />
+					<Carregando />
 				) : (
 					<TouchableOpacity
 						onPress={() => consultarAvaliacoes(convenio.id_gds)}
