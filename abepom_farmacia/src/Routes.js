@@ -186,7 +186,7 @@ const Routes = createAppContainer(
 			Teste,
 		},
 		{
-			initialRouteName: "Update",
+			initialRouteName: "Load",
 		}
 	)
 );

@@ -1308,6 +1308,11 @@
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
+"@expo-google-fonts/dancing-script@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/dancing-script/-/dancing-script-0.1.0.tgz#3ea156d406a7e9ed0b8dc1ba490da9f47aa787cc"
+  integrity sha512-MJi/kkPB+uWzoLDbd0G7F107DKAyWf8z+88JxrgSfGYZr+hpp1cFB3FgmXm7ZvuaNEqOgsOHxRnxZuReb+XyiQ==
+
 "@expo/babel-preset-cli@0.2.18":
   version "0.2.18"
   resolved "https://registry.yarnpkg.com/@expo/babel-preset-cli/-/babel-preset-cli-0.2.18.tgz#136acf8a0efe259e29ebc614b68552e5acb47d86"

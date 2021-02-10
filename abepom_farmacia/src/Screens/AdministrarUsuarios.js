@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -24,8 +24,14 @@ export default function AdministrarUsuarios(props) {
 	const [{ token }] = useConvenio();
 	const [state, setstate] = useState([]);
 	const [modal, setModal] = useState(false);
-	const [usuarioSelecionado, SetUsuarioSelecionado] = useState(false);
-	const [ConteudoModal, SetConteudoModal] = useState(() => {});
+	const [usuario, setUsuario] = useState("");
+	const [email, setEmail] = useState("");
+	const [senha, setSenha] = useState("");
+	const [id, setId] = useState(false);
+	const [idStatus, setIdStatus] = useState(0);
+	const [ConteudoModal, SetConteudoModal] = useState(false);
+	const [editarcriarPDV, setEditarcriarPDV] = useState(true);
+	const [statusPDV, setStatusPDV] = useState(true);
 	const getPDV = async () => {
 		const { data } = await api({
 			method: "POST",
@@ -39,21 +45,22 @@ export default function AdministrarUsuarios(props) {
 		getPDV();
 	}, []);
 	useEffect(() => {
-		usuarioSelecionado
-			? usuarioSelecionado.id != 0
-				? modalEditarUsuario(true)
-				: modalEditarUsuario(false)
+		id
+			? id != "0"
+				? modalEditarUsuario("editar")
+				: modalEditarUsuario("criar")
 			: null;
-	}, [usuarioSelecionado]);
+	}, [id]);
 
 	const bloquearUsuario = async (id, status) => {
+		console.log(id, status, token);
 		const { data } = await api({
 			method: "POST",
 			url: "/user/alterarStatusPDV",
-			data: { id, status },
+			data: { id, status: !status },
 			headers: { "x-access-token": token },
 		});
-
+		console.log(data);
 		if (!data.error) {
 			getPDV();
 		}
@@ -62,62 +69,12 @@ export default function AdministrarUsuarios(props) {
 	};
 	const modalbloquearUsuario = (id, status) => {
 		setModal(true);
-		SetConteudoModal(() => (
-			<View style={{ backgroundColor: "white", borderRadius: 5 }}>
-				<Text
-					style={{
-						alignSelf: "center",
-						margin: 5,
-						fontSize: 20,
-						fontWeight: "bold",
-					}}>
-					{status ? "Bloquear usuário?" : "Desbloquear usuário?"}
-				</Text>
-				<Text style={{ marginBottom: 50, marginHorizontal: 20, fontSize: 16 }}>
-					{status
-						? " Essa ação ira BLOQUEAR o acesso do ponto de Venda ao sistema."
-						: " Essa ação ira DESBLOQUEAR o acesso do ponto de Venda ao sistema."}
-				</Text>
-				<View
-					style={{
-						position: "absolute",
-						bottom: 0,
-						left: 0,
-						right: 0,
-
-						flexDirection: "row",
-					}}>
-					<TouchableOpacity
-						style={{
-							padding: 10,
-							backgroundColor: danger,
-							borderBottomLeftRadius: 5,
-							flex: 1,
-							alignItems: "center",
-						}}
-						onPress={() => bloquearUsuario(id, status)}>
-						<Text style={{ color: "white" }}>
-							{status ? "Bloquear" : "Desbloquear"}
-						</Text>
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={{
-							padding: 10,
-							alignItems: "center",
-							backgroundColor: primary,
-							flex: 1,
-							borderBottomRightRadius: 5,
-						}}
-						onPress={() => setModal(false)}>
-						<Text style={{ color: "white" }}>Fechar</Text>
-					</TouchableOpacity>
-				</View>
-			</View>
-		));
+		SetConteudoModal(true);
+		setIdStatus(id);
+		setStatusPDV(status);
 	};
 
 	const criarUsuario = async () => {
-		const { usuario, email, senha } = usuarioSelecionado;
 		if (!usuario && !email && !senha) {
 			return Alert.alert(null, "Preencha todos os campos");
 		}
@@ -127,11 +84,11 @@ export default function AdministrarUsuarios(props) {
 			data: { usuario, email, senha },
 			headers: { "x-access-token": token },
 		});
-		console.log(data);
+
 		if (!data.error) {
 			Alert.alert(null, data.mensagem);
 			getPDV();
-			SetUsuarioSelecionado(false);
+			setId(false);
 		} else {
 			Alert.alert(null, JSON.stringify(data.error));
 		}
@@ -139,123 +96,28 @@ export default function AdministrarUsuarios(props) {
 		setModal(false);
 	};
 	const editarUsuario = async () => {
-		const { usuario, email, senha } = usuarioSelecionado;
-
 		if (!usuario && !email && !senha) {
 			return Alert.alert(null, "Preencha todos os campos");
 		}
 		const { data } = await api({
 			method: "PUT",
 			url: "/user/PDV",
-			data: usuarioSelecionado,
+			data: { usuario, senha, email, id },
 			headers: { "x-access-token": token },
 		});
 		console.log(data);
 		if (!data.error) {
 			Alert.alert(null, "Usuario Alterado com sucesso");
 			getPDV();
-			SetUsuarioSelecionado(false);
+			setId(false);
 		}
 
 		setModal(false);
 	};
 	const modalEditarUsuario = (edicao) => {
 		setModal(true);
-
-		SetConteudoModal(() => (
-			<View style={{ backgroundColor: "white", borderRadius: 5, width: "90%" }}>
-				<Text
-					style={{
-						alignSelf: "center",
-						margin: 5,
-						fontSize: 20,
-						fontWeight: "bold",
-					}}>
-					{edicao ? "Editar PDV" : "Criar PDV"}
-				</Text>
-				<TextInput
-					label="Usuario"
-					maxLength={14}
-					dense
-					mode="outlined"
-					theme={themeLight}
-					value={usuarioSelecionado.usuario}
-					onChangeText={(texto) =>
-						SetUsuarioSelecionado({ ...usuarioSelecionado, usuario: texto })
-					}
-					keyboardType="default"
-					style={[styles.textoM, { marginHorizontal: 10 }]}
-				/>
-				<TextInput
-					label="E-mail"
-					dense
-					mode="outlined"
-					theme={themeLight}
-					value={usuarioSelecionado.email}
-					onChangeText={(texto) =>
-						SetUsuarioSelecionado({ ...usuarioSelecionado, email: texto })
-					}
-					keyboardType="email-address"
-					style={[styles.textoM, { marginHorizontal: 10 }]}
-				/>
-				<TextInput
-					label="Senha"
-					secureTextEntry
-					dense
-					mode="outlined"
-					theme={themeLight}
-					value={usuarioSelecionado.senha}
-					onChangeText={(texto) =>
-						SetUsuarioSelecionado({ ...usuarioSelecionado, senha: texto })
-					}
-					keyboardType="default"
-					style={[styles.textoM, { marginHorizontal: 10 }]}
-				/>
-				<Text
-					style={{
-						marginBottom: 30,
-						marginHorizontal: 20,
-						color: primary,
-					}}></Text>
-				<View
-					style={{
-						position: "absolute",
-						bottom: 0,
-						left: 0,
-						right: 0,
-
-						flexDirection: "row",
-					}}>
-					<TouchableOpacity
-						style={{
-							padding: 10,
-							backgroundColor: sucess,
-							borderBottomLeftRadius: 5,
-							flex: 1,
-							alignItems: "center",
-						}}
-						onPress={edicao ? editarUsuario : criarUsuario}>
-						<Text style={{ color: "white" }}>
-							{edicao ? "Salvar Alteração" : "Criar PDV"}
-						</Text>
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={{
-							padding: 10,
-							alignItems: "center",
-							backgroundColor: primary,
-							flex: 1,
-							borderBottomRightRadius: 5,
-						}}
-						onPress={() => {
-							SetUsuarioSelecionado(false);
-							setModal(false);
-						}}>
-						<Text style={{ color: "white" }}>Cancelar</Text>
-					</TouchableOpacity>
-				</View>
-			</View>
-		));
+		SetConteudoModal(false);
+		edicao ? setEditarcriarPDV(true) : setEditarcriarPDV(false);
 	};
 	return (
 		<>
@@ -267,7 +129,155 @@ export default function AdministrarUsuarios(props) {
 						justifyContent: "center",
 						backgroundColor: "rgba(0, 0, 0, 0.5)",
 					}}>
-					{ConteudoModal}
+					{!ConteudoModal ? (
+						<View
+							style={{
+								backgroundColor: "white",
+								borderRadius: 5,
+								width: "90%",
+							}}>
+							<Text
+								style={{
+									alignSelf: "center",
+									margin: 5,
+									fontSize: 20,
+									fontWeight: "bold",
+								}}>
+								{editarcriarPDV ? "Editar PDV" : "Criar PDV"}
+							</Text>
+							<TextInput
+								label="Usuario"
+								maxLength={14}
+								dense
+								mode="outlined"
+								theme={themeLight}
+								value={usuario}
+								onChangeText={setUsuario}
+								keyboardType="default"
+								style={[styles.textoM, { marginHorizontal: 10 }]}
+							/>
+							<TextInput
+								label="E-mail"
+								dense
+								mode="outlined"
+								theme={themeLight}
+								value={email}
+								onChangeText={(texto) => setEmail(texto)}
+								keyboardType="email-address"
+								style={[styles.textoM, { marginHorizontal: 10 }]}
+							/>
+							<TextInput
+								label="Senha"
+								secureTextEntry
+								dense
+								mode="outlined"
+								theme={themeLight}
+								value={senha}
+								onChangeText={(texto) => setSenha(texto)}
+								keyboardType="default"
+								style={[styles.textoM, { marginHorizontal: 10 }]}
+							/>
+							<Text
+								style={{
+									marginBottom: 30,
+									marginHorizontal: 20,
+									color: primary,
+								}}></Text>
+							<View
+								style={{
+									position: "absolute",
+									bottom: 0,
+									left: 0,
+									right: 0,
+
+									flexDirection: "row",
+								}}>
+								<TouchableOpacity
+									style={{
+										padding: 10,
+										backgroundColor: sucess,
+										borderBottomLeftRadius: 5,
+										flex: 1,
+										alignItems: "center",
+									}}
+									onPress={editarcriarPDV ? editarUsuario : criarUsuario}>
+									<Text style={{ color: "white" }}>
+										{editarcriarPDV ? "Salvar Alteração" : "Criar PDV"}
+									</Text>
+								</TouchableOpacity>
+								<TouchableOpacity
+									style={{
+										padding: 10,
+										alignItems: "center",
+										backgroundColor: primary,
+										flex: 1,
+										borderBottomRightRadius: 5,
+									}}
+									onPress={() => {
+										setId(false);
+										setModal(false);
+									}}>
+									<Text style={{ color: "white" }}>Cancelar</Text>
+								</TouchableOpacity>
+							</View>
+						</View>
+					) : (
+						<View style={{ backgroundColor: "white", borderRadius: 5 }}>
+							<Text
+								style={{
+									alignSelf: "center",
+									margin: 5,
+									fontSize: 20,
+									fontWeight: "bold",
+								}}>
+								{statusPDV ? "Bloquear usuário?" : "Desbloquear usuário?"}
+							</Text>
+							<Text
+								style={{
+									marginBottom: 50,
+									marginHorizontal: 20,
+									fontSize: 16,
+								}}>
+								{statusPDV
+									? " Essa ação ira BLOQUEAR o acesso do ponto de Venda ao sistema."
+									: " Essa ação ira DESBLOQUEAR o acesso do ponto de Venda ao sistema."}
+							</Text>
+							<View
+								style={{
+									position: "absolute",
+									bottom: 0,
+									left: 0,
+									right: 0,
+
+									flexDirection: "row",
+								}}>
+								<TouchableOpacity
+									style={{
+										padding: 10,
+										backgroundColor: danger,
+										borderBottomLeftRadius: 5,
+										flex: 1,
+										alignItems: "center",
+									}}
+									onPress={() => bloquearUsuario(idStatus, statusPDV)}>
+									<Text style={{ color: "white" }}>
+										{statusPDV ? "Bloquear" : "Desbloquear"}
+									</Text>
+								</TouchableOpacity>
+								<TouchableOpacity
+									style={{
+										padding: 10,
+										alignItems: "center",
+										backgroundColor: primary,
+										flex: 1,
+										borderBottomRightRadius: 5,
+									}}
+									onPress={() => setModal(false)}>
+									<Text style={{ color: "white" }}>Fechar</Text>
+								</TouchableOpacity>
+							</View>
+						</View>
+					)}
 				</View>
 			</Modal>
 			<MenuTop
@@ -286,14 +296,12 @@ export default function AdministrarUsuarios(props) {
 								alignItems: "center",
 								borderRadius: 5,
 							}}
-							onPress={() =>
-								SetUsuarioSelecionado({
-									id: 0,
-									usuario: "",
-									email: "",
-									senha: "",
-								})
-							}>
+							onPress={() => {
+								setId("0");
+								setEmail("");
+								setSenha("");
+								setUsuario("");
+							}}>
 							<Text style={{ color: "white" }}>Criar PDV</Text>
 						</TouchableOpacity>
 					</View>
@@ -371,9 +379,10 @@ export default function AdministrarUsuarios(props) {
 												flex: 1,
 											}}>
 											<TouchableOpacity
-												onPress={() =>
-													modalbloquearUsuario(item.id, item.ativo)
-												}>
+												onPress={() => {
+													console.log(item.id, item.ativo);
+													modalbloquearUsuario(item.id, item.ativo);
+												}}>
 												{!item.ativo ? (
 													<Icone
 														name={"lock-outline"}
@@ -391,7 +400,10 @@ export default function AdministrarUsuarios(props) {
 											<TouchableOpacity
 												disabled={!item.ativo}
 												onPress={async () => {
-													await SetUsuarioSelecionado(item);
+													setId(item.id);
+													setUsuario(item.usuario);
+													setEmail(item.email);
+													setSenha(item.senha);
 												}}>
 												<Icone
 													name={"pencil"}

@@ -13,6 +13,7 @@
 		"teste": "expo publish --release-channel teste"
 	},
 	"dependencies": {
+		"@expo-google-fonts/dancing-script": "^0.1.0",
 		"@react-native-community/async-storage": "~1.12.0",
 		"@react-native-community/datetimepicker": "3.0.4",
 		"@react-native-community/masked-view": "0.1.10",

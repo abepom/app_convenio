@@ -96,7 +96,7 @@ const Drawer = (props) => {
 						}}>
 						{convenio.doc != ""
 							? convenio.doc.length > 15
-								? `CNPF: ${convenio.doc}`
+								? `CNPJ: ${convenio.doc}`
 								: `CPF: ${convenio.doc}`
 							: ""}
 					</Text>

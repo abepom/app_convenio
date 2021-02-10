@@ -26,6 +26,7 @@ import add from "../../assets/img/add.png";
 import linha_verde from "../../assets/img/linha_verde.png";
 import linha_vermelha from "../../assets/img/linha_vermelha.png";
 import logo_circulo from "../../assets/img/logo_circulo.png";
+import logo_abepom_branca from "../../assets/img/logo_abepom_branca.png";
 import circulo_estrela_vazada from "../../assets/img/circulo_estrela_vazada.png";
 import circulo_branco from "../../assets/img/circulo_branco.png";
 import cartao_frente from "../../assets/img/cartao_frente.png";
@@ -34,8 +35,12 @@ import txtabepom from "../../assets/img/txtabepom.png";
 import check from "../../assets/img/check.png";
 import unchecked from "../../assets/img/unchecked.png";
 import whatsapp from "../../assets/img/whatsapp.png";
-
+import playStore from "../../assets/img/abepom_playStore.png";
+import coracao from "../../assets/img/coracao.png";
 export default {
+	coracao,
+	logo_abepom_branca,
+	playStore,
 	whatsapp,
 	unchecked,
 	check,

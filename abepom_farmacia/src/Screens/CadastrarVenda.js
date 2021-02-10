@@ -221,7 +221,7 @@ const CadastrarVenda = (props) => {
 						mode="outlined"
 						onChange={onChange}
 						theme={theme}
-						style={[styles.imput]}
+						style={[styles.imput, { height: 55 }]}
 						onFocus={() => alert(teste)}
 						render={(props) => {
 							if (show) {

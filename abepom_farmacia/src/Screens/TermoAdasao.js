@@ -24,7 +24,7 @@ export default function TermoAdasao(props) {
 		});
 	}, []);
 	return (
-		<>
+		<View style={{ flex: 1, backgroundColor: "#f1f1f1" }}>
 			<StatusBar backgroundColor={primary} barStyle="light-content" />
 			<View style={styles.container}>
 				<TouchableOpacity
@@ -47,13 +47,13 @@ export default function TermoAdasao(props) {
 					style={{ height: "100%", borderRadius: 5, margin: 10 }}
 				/>
 			) : (
-				<Carregando  />
+				<Carregando />
 			)}
 			<View style={{ flexDirection: "row", justifyContent: "space-around" }}>
 				<Text>Nº Termo: {termo.T_id_termo}</Text>
 				<Text>Data da leitura: {termo.ACTU_data_leitura_termo}</Text>
 			</View>
-		</>
+		</View>
 	);
 }
 const styles = StyleSheet.create({

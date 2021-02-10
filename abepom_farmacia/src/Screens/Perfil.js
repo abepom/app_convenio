@@ -196,8 +196,8 @@ export default function TabViewExample(props) {
 	};
 
 	return (
-		<>
-			<View style={styless.container}>
+		<View style={{ flex: 1, backgroundColor: "#f1f1f1" }}>
+			<View style={[styless.container]}>
 				<TouchableOpacity
 					style={styless.menu}
 					onPress={() => props.navigation.toggleDrawer()}>
@@ -209,7 +209,12 @@ export default function TabViewExample(props) {
 				/>
 				<Text style={styless.titulo}>PERFIL</Text>
 			</View>
-			<View style={[styles.row, styles.center, { marginVertical: 20 }]}>
+			<View
+				style={[
+					styles.row,
+					styles.center,
+					{ marginVertical: 20, backgroundColor: "#f1f1f1" },
+				]}>
 				{!carregandoIMG ? (
 					convenio.caminho_logomarca ? (
 						convenio.nivel < 2 ? (
@@ -343,7 +348,7 @@ export default function TabViewExample(props) {
 					/>
 				)}
 			/>
-		</>
+		</View>
 	);
 }
 
