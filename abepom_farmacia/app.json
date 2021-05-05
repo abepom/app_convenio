@@ -67,6 +67,9 @@
 			"package": "br.org.abepom.farmacia",
 			"versionCode": 57,
 			"backgroundColor": "#03254E"
+		},
+		"packagerOpts": {
+			"port": 8081
 		}
 	}
 }

@@ -35,6 +35,7 @@ const Load = (props) => {
 	const [mostrarSlogan2, setMostrarSlogan2] = useState(false);
 	const [sloganFade] = useState(new Animated.Value(1));
 	const [opacity] = useState(new Animated.Value(0));
+	const [opacityLoad] = useState(new Animated.Value(0));
 	const [opacidadeA] = useState(new Animated.Value(0));
 	const [opacidadeB] = useState(new Animated.Value(0));
 	const [opacidadeE] = useState(new Animated.Value(0));
@@ -125,6 +126,11 @@ const Load = (props) => {
 			duration: 850,
 			useNativeDriver: true,
 		}).start();
+		Animated.timing(opacityLoad, {
+			toValue: 0,
+			duration: 850,
+			useNativeDriver: true,
+		}).start();
 	};
 	let barraProgresso = load.interpolate({
 		inputRange: [0, 1, 2],
@@ -144,7 +150,7 @@ const Load = (props) => {
 					}),
 					Animated.timing(load, {
 						toValue: 2,
-						duration: 3000,
+						duration: 4000,
 						useNativeDriver: false,
 					}),
 				]).start();
@@ -154,14 +160,14 @@ const Load = (props) => {
 			} else {
 				Animated.timing(load, {
 					toValue: 2,
-					duration: 1000,
+					duration: 4500,
 					useNativeDriver: false,
 				}).start();
 			}
 		} else {
 			Animated.timing(load, {
 				toValue: 2,
-				duration: 4000,
+				duration: 4500,
 				useNativeDriver: false,
 			}).start();
 			conectar();
@@ -169,11 +175,16 @@ const Load = (props) => {
 
 		Animated.timing(opacity, {
 			toValue: 1,
-			duration: 1250,
+			duration: 550,
 			useNativeDriver: true,
 		}).start();
 
 		setTimeout(() => {
+			Animated.timing(opacityLoad, {
+				toValue: 1,
+				duration: 1250,
+				useNativeDriver: true,
+			}).start();
 			Animated.timing(opacidadeA, {
 				toValue: 1,
 				duration: 650,
@@ -456,48 +467,61 @@ const Load = (props) => {
 						</Animated.View>
 					</View>
 				)}
-				<View style={[styles.center, { bottom: 20 }]}>
-					<View style={{ flexDirection: "row" }}>
-						<Text style={{ color: "#fff", fontSize: 12, marginRight: 10 }}>
-							FAMÍLIA ABEPOM
-						</Text>
-						<Image source={imagens.coracao} style={{ width: 15, height: 15 }} />
+				<Animated.View style={{ opacity: opacityLoad }}>
+					<View style={[styles.center, { bottom: 50 }]}>
+						<View style={{ flexDirection: "row" }}>
+							<Text style={{ color: "#fff", fontSize: 12, marginRight: 10 }}>
+								FAMÍLIA ABEPOM
+							</Text>
+							<Image
+								source={imagens.coracao}
+								style={{ width: 15, height: 15 }}
+							/>
+						</View>
+						<Text style={{ color: "#fff" }}>Versão: {app.expo.version}</Text>
 					</View>
-					<Text style={{ color: "#fff" }}>Versão: {app.expo.version}</Text>
-				</View>
-				<View style={[{ width: "80%", alignSelf: "center", bottom: 80 }]}>
-					<Text
-						style={{
-							color: "white",
-							zIndex: 30,
-							position: "absolute",
-							marginHorizontal: 20,
-						}}>
-						{atualizando}
-					</Text>
-					<Animated.View
-						style={{
-							borderRadius: 15,
+					<View
+						style={[
+							{
+								width: "80%",
+								alignSelf: "center",
+								bottom: 40,
+							},
+						]}>
+						<Text
+							style={{
+								color: "white",
+								zIndex: 30,
+								position: "absolute",
+								marginHorizontal: 20,
+								alignSelf: "center",
+							}}>
+							{atualizando}
+						</Text>
+						<Animated.View
+							style={{
+								borderRadius: 15,
 
-							borderColor: "white",
-							borderWidth: 1,
-							position: "absolute",
-							width: "100%",
-							height: 20,
-							zIndex: 10,
-						}}
-					/>
-					<Animated.View
-						style={{
-							borderRadius: 15,
-							backgroundColor: "#4da5db",
-							position: "absolute",
-							width: barraProgresso,
-							height: 20,
-							zIndex: 11,
-						}}
-					/>
-				</View>
+								borderColor: "white",
+								borderWidth: 1,
+								position: "absolute",
+								width: "100%",
+								height: 20,
+								zIndex: 10,
+							}}
+						/>
+						<Animated.View
+							style={{
+								borderRadius: 15,
+								backgroundColor: "#4da5db",
+								position: "absolute",
+								width: barraProgresso,
+								height: 20,
+								zIndex: 11,
+							}}
+						/>
+					</View>
+				</Animated.View>
 			</ImageBackground>
 		</View>
 	);

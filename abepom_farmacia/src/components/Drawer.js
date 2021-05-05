@@ -1,7 +1,7 @@
 import React, { useState, useEffect, memo } from "react";
 import { View, Text, ScrollView, SafeAreaView, Image } from "react-native";
 import { DrawerNavigatorItems } from "react-navigation-drawer";
-import styles, { primaryBack, primary, danger } from "../utils/Style";
+import styles, { primary } from "../utils/Style";
 import { expo } from "../../app.json";
 import imagens from "../utils/imagens";
 import useConvenio from "../Data/Convenio";
@@ -28,7 +28,6 @@ const Drawer = (props) => {
 		} else {
 			setMenu({ ...props });
 		}
-		console.log("drawer");
 	}, [props]);
 
 	return (

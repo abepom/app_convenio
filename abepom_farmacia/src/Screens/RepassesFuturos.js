@@ -50,7 +50,7 @@ export default function RepassesFuturos(props) {
 	}, []);
 	return (
 		<>
-			<MenuTop drawer {...props} title={"Repasses Futuro"}>
+			<MenuTop drawer {...props} title={"Repasses Futuros"}>
 				<FlatList
 					refreshControl={
 						<RefreshControl refreshing={refreshing} onRefresh={getRepasse} />
