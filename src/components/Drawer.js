@@ -11,6 +11,8 @@ const Drawer = (props) => {
 	const [menu, setMenu] = useState(props);
 	let itens = [];
 
+	console.log(convenio);
+
 	//verifica o tipo do usuario
 	useEffect(() => {
 		if (convenio.nivel != 1) {

@@ -62,11 +62,11 @@ const CadastrarVenda = (props) => {
 
 	const consultarLimite = async () => {
 		let { data } = await api({
-			url: `/limite/${matricula}`,
-			method: "post",
+			url: `/limite?cartao=${matricula}`,
+			method: "get",
 			headers: { "x-access-token": token },
 		});
-
+		console.log(data);
 		setLimiteAtual(data.limite);
 	};
 	useEffect(() => {

@@ -53,7 +53,6 @@ export default (props) => {
 
 		if (!!cartao) {
 			try {
-				console.log("teste");
 				const validado = await api({
 					url: "/ConsultarCartao",
 					method: "post",
@@ -62,6 +61,7 @@ export default (props) => {
 					},
 					headers: { "x-access-token": state.token },
 				});
+				console.log("teste", validado);
 
 				if (validado.data.length) {
 					if (validado.data.retorno == 1) {

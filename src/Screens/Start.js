@@ -12,30 +12,87 @@ import {
 } from "react-native";
 import styles, { primary, background, danger } from "../utils/Style";
 import Icone from "@expo/vector-icons/MaterialCommunityIcons";
-
 import icone from "../../assets/img/abepom.png";
 import imagens, { menu } from "../utils/imagens";
 import useConvenio from "../Data/Convenio";
 import api from "../api";
-
+import * as Updates from "expo-updates";
 import Constants from "expo-constants";
-import useLoad from "../Data/Load";
 import { WebView } from "react-native-webview";
 import Carregando from "../components/Carregando";
+import useUsuario from "../Data/Usuario";
 export default (props) => {
-	const [convenio] = useConvenio();
+	const [convenio, setConv] = useConvenio();
+	const [user] = useUsuario();
+
 	const [notificacoes] = useState([]);
 	const [naoLida] = useState(0);
 	const [modal, setModal] = useState(false);
 	const [termo, setTermo] = useState({});
 	useEffect(() => {
-		if (convenio.primeiro_acesso) {
+		conectar(user);
+		if (Constants.isDevice && Platform.OS != "web") {
+			Updates.checkForUpdateAsync().then(({ isAvailable }) => {
+				if (isAvailable) {
+					Updates.fetchUpdateAsync();
+				}
+			});
+		}
+		if (!!convenio?.primeiro_acesso) {
 			setModal(true);
 			api.get("/termoAdesao", null).then(({ data }) => {
 				setTermo(data);
 			});
+		} else {
+			setModal(false);
 		}
 	}, []);
+	const conectar = async (imput) => {
+		//setCarregando(true);
+		const { doc, user, pass } = imput;
+		if (doc.length == 18 && pass) {
+			try {
+				const { data } = await api.post("/Login", {
+					doc: doc,
+					senha: pass,
+					user,
+				});
+				console.log(data, "efetuou o logim");
+
+				let conv;
+				if (!data.erro) {
+					conv = {
+						id_gds: data.id_gds,
+						nome_parceiro: data.nome_parceiro,
+						caminho_logomarca: data.caminho_logomarca
+							? `${data.caminho_logomarca}?id=${Math.random()}`
+							: null,
+						efetuarVenda: data.efetuarVenda,
+						doc: data.doc,
+						usuario: data.usuario,
+						nivel: data.nivel,
+						token: data.token,
+						cd_convenio: data["cd_convênio"],
+						primeiro_acesso: data.primeiro_acesso,
+					};
+					await setConv(conv);
+					console.log("tentou alterar o setConv", conv);
+				}
+			} catch (error) {
+				props.navigation.navigate("Sair");
+				Alert.alert(
+					"ATENÇÃO",
+					"Usuário ou Senha incorretos.\n EFETUE NOVAMENTE O LOGIN!!"
+				);
+			}
+		} else {
+			props.navigation.navigate("Sair");
+			Alert.alert(
+				"ATENÇÃO",
+				"Usuário ou Senha incorretos.\n EFETUE NOVAMENTE O LOGIN!!"
+			);
+		}
+	};
 
 	const aprovarTermo = async () => {
 		await api({
@@ -46,8 +103,10 @@ export default (props) => {
 			},
 			headers: { "x-access-token": convenio.token },
 		});
+		setConv({ ...convenio, primeiro_acesso: false });
 		setModal(false);
 	};
+
 	const reprovarTermo = async () => {
 		await api({
 			method: "POST",
@@ -62,59 +121,65 @@ export default (props) => {
 	};
 	return (
 		<View>
-			<Modal visible={modal} transparent>
-				<View
-					style={{
-						height: "100%",
-						width: "100%",
-						backgroundColor: "white",
-						borderRadius: 5,
-						padding: 10,
-					}}>
-					{termo ? (
-						<>
-							<WebView
-								source={{
-									html: termo.T_descricao,
-								}}
-								textZoom={250}
-								style={{ flex: 19, borderRadius: 5 }}
-							/>
-							<View
-								style={{
-									flex: 0.1,
+			{modal && (
+				<Modal visible={modal} transparent>
+					<View
+						style={{
+							height: "100%",
+							width: "100%",
+							backgroundColor: "white",
+							borderRadius: 5,
+							padding: 10,
+						}}>
+						{termo ? (
+							<>
+								<WebView
+									source={{
+										html: termo.T_descricao,
+									}}
+									textZoom={250}
+									style={{ flex: 19, borderRadius: 5 }}
+								/>
+								<View
+									style={{
+										flex: 0.1,
 
-									alignItems: "center",
-									justifyContent: "space-around",
-									flexDirection: "row",
-								}}>
-								<TouchableOpacity
-									style={{
-										backgroundColor: primary,
-										padding: 10,
-										borderRadius: 5,
-										paddingHorizontal: 20,
-									}}
-									onPress={aprovarTermo}>
-									<Text style={{ fontSize: 24, color: "white" }}>ACEITAR</Text>
-								</TouchableOpacity>
-								<TouchableOpacity
-									style={{
-										backgroundColor: danger,
-										padding: 10,
-										borderRadius: 5,
-										paddingHorizontal: 20,
-									}}
-									onPress={() => reprovarTermo()}>
-									<Text style={{ fontSize: 24, color: "white" }}>RECUSAR</Text>
-								</TouchableOpacity>
-							</View>
-						</>
-					) : (
-						<Carregando />
-					)}
-				</View>
-			</Modal>
+										alignItems: "center",
+										justifyContent: "space-around",
+										flexDirection: "row",
+									}}>
+									<TouchableOpacity
+										style={{
+											backgroundColor: primary,
+											padding: 10,
+											borderRadius: 5,
+											paddingHorizontal: 20,
+										}}
+										onPress={aprovarTermo}>
+										<Text style={{ fontSize: 24, color: "white" }}>
+											ACEITAR
+										</Text>
+									</TouchableOpacity>
+									<TouchableOpacity
+										style={{
+											backgroundColor: danger,
+											padding: 10,
+											borderRadius: 5,
+											paddingHorizontal: 20,
+										}}
+										onPress={() => reprovarTermo()}>
+										<Text style={{ fontSize: 24, color: "white" }}>
+											RECUSAR
+										</Text>
+									</TouchableOpacity>
+								</View>
+							</>
+						) : (
+							<Carregando />
+						)}
+					</View>
+				</Modal>
+			)}
 
 			<View
 				style={{ width: "100%", height: "100%", backgroundColor: background }}>

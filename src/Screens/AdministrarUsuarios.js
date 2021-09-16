@@ -38,7 +38,6 @@ export default function AdministrarUsuarios(props) {
 			url: "/user/pdv",
 			headers: { "x-access-token": token },
 		});
-		console.log(data);
 		setstate(data);
 	};
 	useEffect(() => {
@@ -117,7 +116,7 @@ export default function AdministrarUsuarios(props) {
 	const modalEditarUsuario = (edicao) => {
 		setModal(true);
 		SetConteudoModal(false);
-		edicao ? setEditarcriarPDV(true) : setEditarcriarPDV(false);
+		edicao != "criar" ? setEditarcriarPDV(true) : setEditarcriarPDV(false);
 	};
 	return (
 		<>
@@ -380,7 +379,6 @@ export default function AdministrarUsuarios(props) {
 											}}>
 											<TouchableOpacity
 												onPress={() => {
-													console.log(item.id, item.ativo);
 													modalbloquearUsuario(item.id, item.ativo);
 												}}>
 												{!item.ativo ? (

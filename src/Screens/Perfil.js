@@ -12,7 +12,7 @@ import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import DadosGerais from "./DadosGerais";
 import Enderecos from "./Enderecos";
 import AlterarSenha from "./AlterarSenha";
-import styles, { primary, background } from "../utils/Style";
+import styles, { primary } from "../utils/Style";
 import imagens from "../utils/imagens";
 import * as Permissions from "expo-permissions";
 import Icone from "@expo/vector-icons/MaterialCommunityIcons";
@@ -136,7 +136,7 @@ export default function TabViewExample(props) {
 							const imagemSel = await ImagePicker.launchImageLibraryAsync({
 								mediaTypes: ImagePicker.MediaTypeOptions.Images,
 								allowsEditing: true,
-								aspect: [4, 3],
+								aspect: [4, 4],
 								quality: 0.8,
 							});
 
@@ -164,7 +164,7 @@ export default function TabViewExample(props) {
 							const imagem = await ImagePicker.launchCameraAsync({
 								mediaTypes: ImagePicker.MediaTypeOptions.Images,
 								allowsEditing: true,
-								aspect: [4, 3],
+								aspect: [4, 4],
 								quality: 0.8,
 							});
 							await salvarImagem(imagem);
@@ -178,21 +178,6 @@ export default function TabViewExample(props) {
 				},
 			]
 		);
-		// ImagePicker.showImagePicker(options, (resp) => {
-		//   if (!resp.didCancel) {
-		//     let nome = {
-		//       name: `logomarca-${convenio.id_gds}.${
-		//         resp.fileName.split(".")[resp.fileName.split(".").length - 1]
-		//       }`,
-		//     };
-		//     const { uri, type } = resp;
-		//     const data = new FormData();
-		//     data.append("id_gds", `${convenio.id_gds}`);
-		//     data.append("file", { uri, type, ...nome });
-		//     setCarregandoIMG(true);
-
-		// }
-		// });
 	};
 
 	return (

@@ -28,6 +28,7 @@ import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import Constants from "expo-constants";
 
 import { expo } from "../../app.json";
+import * as Updates from "expo-updates";
 const initialLayout = { width: Dimensions.get("window").width };
 
 const Login = (props) => {
@@ -62,6 +63,13 @@ const Login = (props) => {
 			}
 
 			setState(props.navigation.state.params);
+		}
+		if (Constants.isDevice && Platform.OS != "web") {
+			Updates.checkForUpdateAsync().then(async ({ isAvailable }) => {
+				if (isAvailable) {
+					await Updates.fetchUpdateAsync();
+				}
+			});
 		}
 	}, []);
 
@@ -115,7 +123,9 @@ const Login = (props) => {
 					convenio = {
 						id_gds: data.id_gds,
 						nome_parceiro: data.nome_parceiro,
-						caminho_logomarca: `${data.caminho_logomarca}?id=${Math.random()}`,
+						caminho_logomarca: data.caminho_logomarca
+							? `${data.caminho_logomarca}?id=${Math.random()}`
+							: null,
 						efetuarVenda: data.efetuarVenda,
 						doc: data.doc,
 						usuario: data.usuario,

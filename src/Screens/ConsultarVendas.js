@@ -289,7 +289,7 @@ const ConsultarVendas = (props) => {
 								) >= 0 && (
 									<TouchableOpacity
 										onPress={() => {
-											Linking.openURL(`https://wa.me/5548999080294`);
+											Linking.openURL(`https://wa.me/5548911440708`);
 										}}>
 										<View
 											style={{

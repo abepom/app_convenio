@@ -18,19 +18,16 @@ import useConvenio from "../Data/Convenio";
 import Carregando from "../components/Carregando";
 import app from "../../app.json";
 import Constants from "expo-constants";
-import * as Updates from "expo-updates";
+import TextAnimator from "../components/TextAnimator";
+import imagens from "../utils/imagens";
 import {
 	useFonts,
 	DancingScript_400Regular,
 } from "@expo-google-fonts/dancing-script";
-import TextAnimator from "../components/TextAnimator";
-import imagens from "../utils/imagens";
 const Load = (props) => {
 	const [usuario] = useUsuario();
-	const [store] = useStore();
-	const [, setConv] = useConvenio();
+	const [conv, setConv] = useConvenio();
 	const { navigation } = props;
-	const [atualizando, setAtualizando] = useState("Verificando atualização");
 	const [mostrarSlogan1, setMostrarSlogan1] = useState(false);
 	const [mostrarSlogan2, setMostrarSlogan2] = useState(false);
 	const [sloganFade] = useState(new Animated.Value(1));
@@ -47,7 +44,6 @@ const Load = (props) => {
 	let [fontsLoaded] = useFonts({
 		DancingScript_400Regular,
 	});
-
 	let fonteSlogan = "DancingScript_400Regular";
 
 	const habilitarSloganFinal = () => {
@@ -55,6 +51,7 @@ const Load = (props) => {
 	};
 
 	const conectar = async () => {
+		setConv({ ...conv, aut: false });
 		try {
 			if (!usuario) {
 				return navigation.navigate("Login");
@@ -84,43 +81,6 @@ const Load = (props) => {
 		outputRange: ["0%", "80%", "100%"],
 	});
 	const onLoad = async () => {
-		console.log(Constants.isDevice);
-		if (Constants.isDevice && Platform.OS != "web") {
-			const { isAvailable } = await Updates.checkForUpdateAsync();
-			if (isAvailable) {
-				await Updates.fetchUpdateAsync();
-				setAtualizando("Baixando Atualização");
-				Animated.sequence([
-					Animated.timing(load, {
-						toValue: 1,
-						duration: 500,
-						useNativeDriver: false,
-					}),
-					Animated.timing(load, {
-						toValue: 2,
-						duration: 4000,
-						useNativeDriver: false,
-					}),
-				]).start();
-				setTimeout(async () => {
-					await Updates.reloadAsync();
-				}, 3500);
-			} else {
-				Animated.timing(load, {
-					toValue: 2,
-					duration: 4500,
-					useNativeDriver: false,
-				}).start();
-			}
-		} else {
-			Animated.timing(load, {
-				toValue: 2,
-				duration: 4500,
-				useNativeDriver: false,
-			}).start();
-			conectar();
-		}
-
 		Animated.timing(opacity, {
 			toValue: 1,
 			duration: 550,
@@ -186,15 +146,15 @@ const Load = (props) => {
 			apagarSlogan();
 		}, 3800);
 
-		setTimeout(() => {
-			setCarregando(true);
+		if (usuario) {
+			return navigation.navigate("Start");
+		} else {
+			setTimeout(() => {
+				setCarregando(true);
 
-			if (usuario) {
-				conectar();
-			} else {
 				navigation.navigate("Login");
-			}
-		}, 4250);
+			}, 4250);
+		}
 	};
 
 	return (
@@ -416,7 +376,7 @@ const Load = (props) => {
 					</View>
 				)}
 				<Animated.View style={{ opacity: opacityLoad }}>
-					<View style={[styles.center, { bottom: 50 }]}>
+					<View style={[styles.center, { bottom: 10 }]}>
 						<View style={{ flexDirection: "row" }}>
 							<Text style={{ color: "#fff", fontSize: 12, marginRight: 10 }}>
 								FAMÍLIA ABEPOM
@@ -428,7 +388,7 @@ const Load = (props) => {
 						</View>
 						<Text style={{ color: "#fff" }}>Versão: {app.expo.version}</Text>
 					</View>
-					<View
+					{/* <View
 						style={[
 							{
 								width: "80%",
@@ -468,7 +428,7 @@ const Load = (props) => {
 								zIndex: 11,
 							}}
 						/>
-					</View>
+					</View> */}
 				</Animated.View>
 			</ImageBackground>
 		</View>

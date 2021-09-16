@@ -81,6 +81,17 @@ const Home = (props) => {
 		setCarregando(true);
 		if (!card) {
 			card = cartao;
+		} else {
+			if (card.length < 11) {
+				setErro(true);
+				setCarregando(false);
+				setMensagens({
+					descricao: "Cartão deve conter 11 dígitos.",
+					tipo: "danger",
+				});
+				setAssociado("");
+				return;
+			}
 		}
 		let req = await api({
 			url: "/VerificarCartao",
