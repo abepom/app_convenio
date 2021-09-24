@@ -66,9 +66,10 @@ const CadastrarVenda = (props) => {
 			method: "get",
 			headers: { "x-access-token": token },
 		});
-		console.log(data);
+
 		setLimiteAtual(data.limite);
 	};
+	refreshing;
 	useEffect(() => {
 		consultarLimite();
 	}, []);

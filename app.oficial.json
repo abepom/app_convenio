@@ -2,7 +2,7 @@
 	"expo": {
 		"name": "Farmácia",
 		"slug": "abepom_farmacia",
-		"version": "1.3.38",
+		"version": "1.3.36",
 		"description": "Ao concluir a atualização iremos reiniciar\n o aplicativo Automaticamente. Aguarde...",
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
@@ -56,7 +56,7 @@
 				"com.google.android.providers.gsf.permission.READ_GSERVICES"
 			],
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/adaptive-icon-Teste.png",
+				"foregroundImage": "./assets/adaptive-icon.png",
 				"backgroundColor": "#F1F1F1"
 			},
 			"splash": {
@@ -64,8 +64,8 @@
 				"backgroundColor": "#03254E",
 				"resizeMode": "cover"
 			},
-			"package": "br.org.abepom.farmacia.teste",
-			"versionCode": 58,
+			"package": "br.org.abepom.farmacia",
+			"versionCode": 59,
 			"backgroundColor": "#03254E"
 		},
 		"packagerOpts": {

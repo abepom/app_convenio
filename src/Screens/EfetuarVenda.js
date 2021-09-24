@@ -61,8 +61,6 @@ export default (props) => {
 					},
 					headers: { "x-access-token": state.token },
 				});
-				console.log("teste", validado);
-
 				if (validado.data.length) {
 					if (validado.data.retorno == 1) {
 						setMensagem(validado.data.mensagem);
@@ -94,7 +92,11 @@ export default (props) => {
 					setcarregando(false);
 				}
 			} catch (error) {
-				console.log(error);
+				setErro(
+					"Cartão do associado com inconsistência, favor instruí-lo para entrar em contato com a ABEPOM. Telefone: (48) 2107-0200 ou 0800 725 0200."
+				);
+				setAvancar(false);
+				setcarregando(false);
 			}
 		} else {
 			setErro("Informe um cartão");
@@ -112,7 +114,7 @@ export default (props) => {
 					color: primary,
 					marginVertical: 30,
 				}}>
-				Informe a Matrícula ou o Cartão do associado para iniciar a venda.
+				Informe a matrícula ou o cartão do associado para iniciar a venda.
 			</Text>
 
 			<View style={{ width: "100%", flexDirection: "row" }}>

@@ -7,6 +7,7 @@ import {
 	ImageBackground,
 	Image,
 	Dimensions,
+	Alert,
 } from "react-native";
 import styles, { primary } from "./../utils/Style";
 import api from "../api";
@@ -150,9 +151,8 @@ const Load = (props) => {
 			return navigation.navigate("Start");
 		} else {
 			setTimeout(() => {
-				setCarregando(true);
-
 				navigation.navigate("Login");
+				return navigation.navigate("Login");
 			}, 4250);
 		}
 	};

@@ -315,38 +315,40 @@ export default function telas(props) {
 					consultarAvaliacoes();
 				}}
 				header={
-					<View style={{ width: "80%", alignItems: "center" }}>
-						<View
-							style={{
-								marginTop: 20,
-								width: "100%",
-								flexDirection: "row",
-								justifyContent: "space-between",
-								marginTop: 10,
-							}}>
-							<View style={{ alignItems: "center", width: "100%" }}>
-								<Rating
-									type="custom"
-									ratingImage={imagens.star}
-									ratingColor="#ff0"
-									ratingCount={5}
-									imageSize={30}
-									readonly={true}
-									startingValue={media}
-								/>
-								{votos > 1 ? (
-									<Text style={styles.textoP}>{`${votos}`} AVALIAÇÕES</Text>
-								) : (
-									<Text style={styles.textoP}>{`${votos}`} AVALIAÇÃO</Text>
-								)}
-								<Text style={styles.textoM}> Media: {media.toFixed(2)}</Text>
-								{/* <Text style={styles.textoP}> Pendentes: {pendentes}</Text> */}
+					votos > 0 ? (
+						<View style={{ width: "80%", alignItems: "center" }}>
+							<View
+								style={{
+									marginTop: 20,
+									width: "100%",
+									flexDirection: "row",
+									justifyContent: "space-between",
+									marginTop: 10,
+								}}>
+								<View style={{ alignItems: "center", width: "100%" }}>
+									<Rating
+										type="custom"
+										ratingImage={imagens.star}
+										ratingColor="#ff0"
+										ratingCount={5}
+										imageSize={30}
+										readonly={true}
+										startingValue={media}
+									/>
+									{votos > 1 ? (
+										<Text style={styles.textoP}>{`${votos}`} AVALIAÇÕES</Text>
+									) : (
+										<Text style={styles.textoP}>{`${votos}`} AVALIAÇÃO</Text>
+									)}
+									<Text style={styles.textoM}> Media: {media.toFixed(2)}</Text>
+									{/* <Text style={styles.textoP}> Pendentes: {pendentes}</Text> */}
+								</View>
 							</View>
 						</View>
-					</View>
+					) : null
 				}>
 				<FlatList
-					ListEmptyComponent={() => <Carregando  />}
+					ListEmptyComponent={() => <Carregando />}
 					refreshControl={
 						<RefreshControl
 							refreshing={refreshing}

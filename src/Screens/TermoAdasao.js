@@ -36,7 +36,7 @@ export default function TermoAdasao(props) {
 					source={imagens.abepom}
 					style={{ width: 40, height: 40, marginHorizontal: 10 }}
 				/>
-				<Text style={[styless.textoG, styless.white]}>TERMO DE ADESÃO</Text>
+				<Text style={[styless.textoG, styless.white]}>Termo de utilização</Text>
 			</View>
 			{termo ? (
 				<WebView

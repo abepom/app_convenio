@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import {
 	View,
 	Text,
-	TouchableOpacity,
 	RefreshControl,
 	Dimensions,
+	TouchableOpacity,
 } from "react-native";
 import MenuTop from "./../components/MenuTop";
 import useConvenio from "./../Data/Convenio";
@@ -14,12 +14,27 @@ import formatCurrency from "currency-formatter";
 import Carregando from "../components/Carregando";
 import { FlatList } from "react-native-gesture-handler";
 import Mensagem from "./../components/Mensagem";
-
+import Icone from "@expo/vector-icons/MaterialCommunityIcons";
+import useLoad from "../Data/Load";
 export default function RepassesFuturos(props) {
 	let mesano = "0";
 	const [refreshing, setRefreshing] = useState(false);
 	const [{ token }] = useConvenio();
 	const [repasses, setRepasses] = useState();
+	const [carregando, setCarregando] = useLoad();
+
+	useEffect(() => {
+		if (carregando !== "ConsultarVendas" && carregando !== "todos") {
+			getRepasse();
+		}
+	}, []);
+	useEffect(() => {
+		if (carregando == "ConsultarVendas" || carregando == "todos") {
+			getRepasse();
+
+			setCarregando(null);
+		}
+	}, [carregando]);
 	const getRepasse = async () => {
 		setRepasses(null);
 		const { data } = await api({
@@ -27,7 +42,6 @@ export default function RepassesFuturos(props) {
 			url: "/repassesFuturo",
 			headers: { "x-access-token": token },
 		});
-
 		let ordenado;
 		if (data.length > 0) {
 			ordenado = data.sort((a, b) => {
@@ -50,7 +64,19 @@ export default function RepassesFuturos(props) {
 	}, []);
 	return (
 		<>
-			<MenuTop drawer {...props} title={"Repasses Futuros"}>
+			<MenuTop
+				drawer
+				{...props}
+				title={"Repasses Futuros"}
+				btnEsquerdo={
+					<TouchableOpacity onPress={getRepasse}>
+						<Icone
+							style={{ height: 30, width: 30, color: "white" }}
+							name={"refresh"}
+							size={28}
+						/>
+					</TouchableOpacity>
+				}>
 				<FlatList
 					refreshControl={
 						<RefreshControl refreshing={refreshing} onRefresh={getRepasse} />
@@ -58,7 +84,6 @@ export default function RepassesFuturos(props) {
 					data={repasses}
 					keyExtractor={(item) => item.Nr_lancamento}
 					renderItem={({ item }) => {
-						console.log(item);
 						if (item.erro) {
 							return (
 								<View style={{ height: Dimensions.get("screen").height }}>

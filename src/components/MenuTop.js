@@ -13,7 +13,14 @@ import Icone from "@expo/vector-icons/MaterialCommunityIcons";
 import icone from "../../assets/img/abepom.png";
 import getUsuario from "../utils/getUsuario";
 const MenuTop = (props) => {
-	const { children, drawer, noIcons, imagemConf, funcConfig } = props;
+	const {
+		children,
+		drawer,
+		noIcons,
+		imagemConf,
+		funcConfig,
+		btnEsquerdo,
+	} = props;
 	let iconemenu;
 	let _press;
 	const _handlerOpemConfig = () => {
@@ -38,10 +45,6 @@ const MenuTop = (props) => {
 		}
 	}
 
-	// useEffect(() => {
-	//   getUsuario("notificacao").then((dados) => console.log(dados, "itens "));
-	// }, []);
-
 	return (
 		<>
 			<StatusBar backgroundColor={primary} barStyle="light-content" />
@@ -57,17 +60,13 @@ const MenuTop = (props) => {
 					style={{ width: 40, height: 40, marginHorizontal: 10 }}
 				/>
 				<Text style={[styless.textoG, styless.white]}>{props.title}</Text>
-				{!noIcons ? (
-					<TouchableOpacity
-						accessibilityLabel="Configuração"
-						style={styles.config}
-						onPress={() => _handlerOpemConfig()}>
-						<Image
-							source={imagemConf}
-							style={{ width: 25, height: 25, tintColor: "white" }}
-						/>
-					</TouchableOpacity>
-				) : null}
+				{btnEsquerdo && (
+					<View style={{ position: "absolute", right: 10 }}>
+						<Text style={[styless.textoG, styless.white]}>
+							{btnEsquerdo && btnEsquerdo}
+						</Text>
+					</View>
+				)}
 			</View>
 			{props.header && (
 				<View

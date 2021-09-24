@@ -49,7 +49,6 @@ const Home = (props) => {
 										await Camera.getAvailableCameraTypesAsync();
 									} else {
 										await Camera.requestPermissionsAsync();
-										console.log(status);
 									}
 									setCamera(false);
 								},
@@ -64,8 +63,7 @@ const Home = (props) => {
 					);
 				}
 			} catch (error) {
-				console.log(error, "teste");
-				//setCamera(false);
+				setCamera(false);
 			}
 		})();
 	}, [camera == true]);

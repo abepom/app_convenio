@@ -46,6 +46,7 @@ const ConsultarVendas = (props) => {
 	const [refreshing, setRefreshing] = useState(false);
 	const [{ id_gds, nivel, usuario, token }] = useConvenio();
 	const [mes, setMes] = useState(false);
+	const [dataOld, setDataOld] = useState("");
 	const [data, setData] = useState(
 		`${
 			new Date().getDate() < 9
@@ -60,7 +61,8 @@ const ConsultarVendas = (props) => {
 	const [vendas, setvendas] = useState([]);
 	const [load, setLoad] = useState(false);
 	const [modal, setModal] = useState(false);
-	const [contato, setContato] = useState({});
+	const [msn, setMsn] = useState("");
+
 	const [conteudoModal, setConteudoModal] = useState(null);
 	const [retornoExclusao, setRetornoExclusao] = useState("");
 	const [carregando, setCarregando] = useLoad();
@@ -81,6 +83,34 @@ const ConsultarVendas = (props) => {
 	}, [carregando]);
 
 	const getConsulta = async () => {
+		setMsn("");
+		if (data.length == 10) {
+			let dataajustada = `${data.substr(6, 4)}-${data.substr(
+				3,
+				2
+			)}-${data.substr(0, 2)}`;
+
+			if (!new Date(dataajustada).toJSON()) {
+				setLoad(true);
+				setTimeout(() => {
+					setvendas("");
+					setMsn("Informe uma data válida");
+
+					setLoad(false);
+				}, 500);
+				return;
+			}
+		} else {
+			setLoad(true);
+			setTimeout(() => {
+				setMsn("Informe uma data válida. (DD/MM/AAAA)");
+				setvendas("");
+				setLoad(false);
+			}, 500);
+
+			return;
+		}
+
 		setLoad(true);
 		try {
 			const dados = await api({
@@ -100,7 +130,6 @@ const ConsultarVendas = (props) => {
 
 			// setContato(contatoConvenio);
 		} catch (error) {
-			console.log(error, "erro");
 			setvendas([]);
 		} finally {
 			setLoad(false);
@@ -337,9 +366,20 @@ const ConsultarVendas = (props) => {
 								marginTop: 10,
 							}}>
 							<TextInput
-								label="Selecione uma Data"
+								label="Informe uma data"
 								dense
 								value={data}
+								onFocus={() => {
+									setDataOld(data);
+									setData("");
+								}}
+								onBlur={() => {
+									if (data == "") {
+										setData(dataOld);
+									} else {
+										setDataOld(data);
+									}
+								}}
 								mode="outlined"
 								onChangeText={setData}
 								keyboardType={"phone-pad"}
@@ -538,7 +578,9 @@ const ConsultarVendas = (props) => {
 							}>
 							<Retorno
 								type="sucess"
-								mensagem="Não há registro de venda para o seu usuário"
+								mensagem={
+									msn ? msn : "Não há registro de venda para o seu usuário"
+								}
 							/>
 						</ScrollView>
 					)}

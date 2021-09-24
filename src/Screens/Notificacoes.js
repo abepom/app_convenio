@@ -37,8 +37,7 @@ export default function Notificacoes(props) {
 					}
 				}).length;
 				setLoad("notificacao");
-			})
-			.catch((a) => console.log(a));
+			});
 	}
 
 	useEffect(() => {
@@ -47,10 +46,7 @@ export default function Notificacoes(props) {
 
 	function lerNotificacao(id) {
 		setNotificacoes([]);
-		api
-			.post("/user/LerNotificacoes", { id })
-			.then((a) => getNotificacoes())
-			.catch((e) => console.log(e));
+		api.post("/user/LerNotificacoes", { id }).then((a) => getNotificacoes());
 	}
 	return (
 		<View>
@@ -70,7 +66,7 @@ export default function Notificacoes(props) {
 								alignItems: "center",
 								justifyContent: "center",
 							}}>
-							<Carregando  size={48} />
+							<Carregando size={48} />
 						</View>
 					)}
 					data={notificacoes}

@@ -11,8 +11,6 @@ const Drawer = (props) => {
 	const [menu, setMenu] = useState(props);
 	let itens = [];
 
-	console.log(convenio);
-
 	//verifica o tipo do usuario
 	useEffect(() => {
 		if (convenio.nivel != 1) {
@@ -46,6 +44,7 @@ const Drawer = (props) => {
 					},
 					{
 						paddingVertical: 20,
+						backgroundColor: "white",
 						shadowColor: primary,
 						shadowOffset: { width: 0, height: 4 },
 						shadowOpacity: 0.8,
@@ -57,7 +56,10 @@ const Drawer = (props) => {
 						<View style={{ elevation: 4, zIndex: 10 }}>
 							<Image
 								source={{ uri: convenio.caminho_logomarca }}
-								style={[styles.logoP, { resizeMode: "cover" }]}
+								style={[
+									styles.logoPP,
+									{ resizeMode: "contain", borderRadius: 200 },
+								]}
 							/>
 						</View>
 					</>
@@ -73,7 +75,10 @@ const Drawer = (props) => {
 						}}>
 						<Image
 							source={imagens.camera}
-							style={[styles.logoPP, { tintColor: primary }]}
+							style={[
+								styles.logoPP,
+								{ tintColor: primary, resizeMode: "contain" },
+							]}
 						/>
 					</View>
 				)}

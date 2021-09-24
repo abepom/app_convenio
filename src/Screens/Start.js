@@ -57,7 +57,6 @@ export default (props) => {
 					senha: pass,
 					user,
 				});
-				console.log(data, "efetuou o logim");
 
 				let conv;
 				if (!data.erro) {
@@ -76,7 +75,6 @@ export default (props) => {
 						primeiro_acesso: data.primeiro_acesso,
 					};
 					await setConv(conv);
-					console.log("tentou alterar o setConv", conv);
 				}
 			} catch (error) {
 				props.navigation.navigate("Sair");
@@ -194,31 +192,6 @@ export default (props) => {
 						style={{ width: 40, height: 40, marginHorizontal: 10 }}
 					/>
 					<Text style={styless.titulo}>ABEPOM</Text>
-					<TouchableOpacity
-						style={{ position: "absolute", right: 20 }}
-						onPress={() =>
-							props.navigation.navigate("Notificacoes", notificacoes)
-						}>
-						<Image
-							source={imagens.bell}
-							style={{ tintColor: "white", width: 28, height: 28 }}
-						/>
-						{naoLida > 0 && (
-							<View
-								style={{
-									backgroundColor: "red",
-									borderRadius: 50,
-									width: 15,
-									height: 15,
-									alignItems: "center",
-									position: "absolute",
-								}}>
-								<Text style={{ color: "white", fontSize: 10 }}>
-									{`${naoLida > 9 ? "+9" : naoLida}`}
-								</Text>
-							</View>
-						)}
-					</TouchableOpacity>
 				</View>
 				<ScrollView>
 					<View style={styles.linhaMenu}>

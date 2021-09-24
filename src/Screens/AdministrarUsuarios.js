@@ -52,14 +52,13 @@ export default function AdministrarUsuarios(props) {
 	}, [id]);
 
 	const bloquearUsuario = async (id, status) => {
-		console.log(id, status, token);
 		const { data } = await api({
 			method: "POST",
 			url: "/user/alterarStatusPDV",
 			data: { id, status: !status },
 			headers: { "x-access-token": token },
 		});
-		console.log(data);
+
 		if (!data.error) {
 			getPDV();
 		}
@@ -104,7 +103,7 @@ export default function AdministrarUsuarios(props) {
 			data: { usuario, senha, email, id },
 			headers: { "x-access-token": token },
 		});
-		console.log(data);
+
 		if (!data.error) {
 			Alert.alert(null, "Usuario Alterado com sucesso");
 			getPDV();

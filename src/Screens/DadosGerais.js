@@ -47,9 +47,7 @@ const Perfil = () => {
 		try {
 			let valorAlterado = { ...input, value: valor };
 			await setState({ ...state, [campo]: valorAlterado });
-		} catch (error) {
-			console.log(error);
-		}
+		} catch (error) {}
 	};
 
 	const getDados = async () => {
@@ -164,8 +162,9 @@ const Perfil = () => {
 				</View>
 				<TextInput
 					ref={(ref) => null}
-					label="Nome de Fachada"
+					label="Nome de fachada"
 					editable={convenio.nivel == "1" ? true : false}
+					disabled={convenio.nivel != "1" ? true : false}
 					dense
 					mode="outlined"
 					theme={themeLight}
@@ -187,6 +186,7 @@ const Perfil = () => {
 				<TextInput
 					onFocus={null}
 					editable={convenio.nivel == "1" ? true : false}
+					disabled={convenio.nivel != "1" ? true : false}
 					onBlur={null}
 					label="E-mail"
 					dense
@@ -218,6 +218,7 @@ const Perfil = () => {
 						label="Tel. Comercial"
 						dense
 						editable={convenio.nivel == "1" ? true : false}
+						disabled={convenio.nivel != "1" ? true : false}
 						mode="outlined"
 						theme={themeLight}
 						value={state.tel_comercial.value}
@@ -241,6 +242,7 @@ const Perfil = () => {
 					<TextInput
 						label="Tel. Contato"
 						dense
+						disabled={convenio.nivel != "1" ? true : false}
 						mode="outlined"
 						editable={convenio.nivel == "1" ? true : false}
 						theme={themeLight}
@@ -270,6 +272,7 @@ const Perfil = () => {
 					label="Representante"
 					dense
 					mode="outlined"
+					disabled={convenio.nivel != "1" ? true : false}
 					theme={themeLight}
 					editable={convenio.nivel == "1" ? true : false}
 					value={state.representante.value}
@@ -282,6 +285,7 @@ const Perfil = () => {
 					dense
 					editable={convenio.nivel == "1" ? true : false}
 					mode="outlined"
+					disabled={convenio.nivel != "1" ? true : false}
 					theme={themeLight}
 					value={state.site.value}
 					onChangeText={(texto) => alterarStado(texto, "site")}
@@ -293,6 +297,7 @@ const Perfil = () => {
 					dense
 					editable={convenio.nivel == "1" ? true : false}
 					mode="outlined"
+					disabled={convenio.nivel != "1" ? true : false}
 					theme={themeLight}
 					value={state.whatsapp.value}
 					onChangeText={(texto) => alterarStado(texto, "whatsapp")}
@@ -323,7 +328,16 @@ const Perfil = () => {
 						]}>
 						<Text style={{ color: `white` }}>SALVAR</Text>
 					</TouchableOpacity>
-				) : null}
+				) : (
+					<Text
+						style={{
+							textAlign: "center",
+							marginTop: 10,
+						}}>
+						Para alterar os dados gerais solicite {"\n"} ao administrado da
+						conta.
+					</Text>
+				)}
 				<View style={{ height: 100 }} />
 			</ScrollView>
 		</>

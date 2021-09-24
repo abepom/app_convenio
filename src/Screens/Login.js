@@ -29,6 +29,7 @@ import Constants from "expo-constants";
 
 import { expo } from "../../app.json";
 import * as Updates from "expo-updates";
+import { SafeAreaView } from "react-native-safe-area-context";
 const initialLayout = { width: Dimensions.get("window").width };
 
 const Login = (props) => {
@@ -104,7 +105,7 @@ const Login = (props) => {
 	});
 
 	const conectar = async (imput) => {
-		//setCarregando(true);
+		setCarregando(true);
 
 		const { doc, user, pass } = imput;
 
@@ -144,7 +145,6 @@ const Login = (props) => {
 					setState({ erro: true, mensagem: "Usuário ou Senha incorretos" });
 				}
 			} catch (error) {
-				console.log(error);
 				setState({ erro: true, mensagem: "Usuário ou Senha incorretos" });
 				setCarregando(false);
 			}
@@ -164,63 +164,65 @@ const Login = (props) => {
 				style={{
 					flex: 1,
 				}}>
-				<ScrollView
-					style={{
-						width: "100%",
-						height: Dimensions.get("window").height,
-						backgroundColor: primary,
-					}}>
-					<ImageBackground
-						source={backgroundAnimado}
-						resizeMode="cover"
-						resizeMethod="scale"
+				<SafeAreaView>
+					<ScrollView
 						style={{
-							flex: 1,
-							resizeMode: "repeat",
-
+							width: "100%",
 							height: Dimensions.get("window").height,
-							width: Dimensions.get("window").width,
+							backgroundColor: primary,
 						}}>
-						<Image
-							style={[styles.logo, { marginTop: "10%", alignSelf: "center" }]}
-							source={logo}
-						/>
-
-						<View style={{ alignItems: "center" }}>
-							<Text style={[styles.white, styles.textoGG]}>ABEPOM</Text>
-							<Text style={[styles.white, styles.textoM]}>FARMÁCIA</Text>
-						</View>
-
-						<TabView
-							navigationState={{ index, routes }}
-							renderScene={renderScene}
-							onIndexChange={setIndex}
+						<ImageBackground
+							source={backgroundAnimado}
+							resizeMode="cover"
+							resizeMethod="scale"
 							style={{
-								marginTop: 20,
 								flex: 1,
-							}}
-							initialLayout={initialLayout}
-							renderTabBar={(props) => (
-								<TabBar
-									{...props}
-									indicatorStyle={{ backgroundColor: "white" }}
-									style={{ backgroundColor: primary, elevation: 1 }}
-									labelStyle={styles.textoM}
-								/>
-							)}
-						/>
-						<View
-							style={{
-								alignItems: "center",
+								resizeMode: "repeat",
 
-								width: "100%",
-								bottom: 20,
+								height: Dimensions.get("window").height,
+								width: Dimensions.get("window").width,
 							}}>
-							<Text style={{ color: "white" }}>Versão: {expo.version}</Text>
-						</View>
-						{teclado && <View style={{ height: 200 }}></View>}
-					</ImageBackground>
-				</ScrollView>
+							<Image
+								style={[styles.logo, { marginTop: "10%", alignSelf: "center" }]}
+								source={logo}
+							/>
+
+							<View style={{ alignItems: "center" }}>
+								<Text style={[styles.white, styles.textoGG]}>ABEPOM</Text>
+								<Text style={[styles.white, styles.textoM]}>FARMÁCIA</Text>
+							</View>
+
+							<TabView
+								navigationState={{ index, routes }}
+								renderScene={renderScene}
+								onIndexChange={setIndex}
+								style={{
+									marginTop: 20,
+									flex: 1,
+								}}
+								initialLayout={initialLayout}
+								renderTabBar={(props) => (
+									<TabBar
+										{...props}
+										indicatorStyle={{ backgroundColor: "white" }}
+										style={{ backgroundColor: primary, elevation: 1 }}
+										labelStyle={styles.textoM}
+									/>
+								)}
+							/>
+							<View
+								style={{
+									alignItems: "center",
+
+									width: "100%",
+									bottom: 20,
+								}}>
+								<Text style={{ color: "white" }}>Versão: {expo.version}</Text>
+							</View>
+							{teclado && <View style={{ height: 200 }}></View>}
+						</ImageBackground>
+					</ScrollView>
+				</SafeAreaView>
 				{/* </View> */}
 			</KeyboardAvoidingView>
 		</>

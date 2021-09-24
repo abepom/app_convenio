@@ -16,7 +16,6 @@ import Updates from "expo-updates";
 //Teste
 const App = () => {
 	useEffect(() => {
-		console.log(Platform.OS);
 		if (Platform.OS != "web") {
 			async function updateApp() {
 				const { isAvailable } = await Updates.checkForUpdateAsync();
