@@ -17,9 +17,9 @@ let txtP;
 let txtG;
 
 if (Dimensions.get("screen").width < 380) {
-	txtM = 11;
-	txtP = 9;
-	txtG = 14;
+	txtM = 10;
+	txtP = 8;
+	txtG = 12;
 } else {
 	txtM = 14;
 	txtP = 12;

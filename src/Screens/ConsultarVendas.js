@@ -144,7 +144,7 @@ const ConsultarVendas = (props) => {
 				data: { Nr_lancamento },
 				headers: { "x-access-token": token },
 			});
-
+			setCarregando("ConsultarVendas");
 			setRetornoExclusao(dados.data.mensagem);
 		} finally {
 		}

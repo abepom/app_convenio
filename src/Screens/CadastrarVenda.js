@@ -69,7 +69,7 @@ const CadastrarVenda = (props) => {
 
 		setLimiteAtual(data.limite);
 	};
-	refreshing;
+
 	useEffect(() => {
 		consultarLimite();
 	}, []);

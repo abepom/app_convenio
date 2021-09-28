@@ -8,6 +8,8 @@ import {
 	KeyboardAvoidingView,
 	Platform,
 	ImageBackground,
+	Animated,
+	Keyboard,
 } from "react-native";
 import StatusBar from "../components/StatusBar";
 import logo from "../../assets/img/logo_abepom_branca.png";
@@ -27,16 +29,13 @@ import LoginPDV from "../components/LoginPDV";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import Constants from "expo-constants";
 
-import { expo } from "../../app.json";
 import * as Updates from "expo-updates";
-import { SafeAreaView } from "react-native-safe-area-context";
+
 const initialLayout = { width: Dimensions.get("window").width };
 
 const Login = (props) => {
 	const [index, setIndex] = useState(0);
 	const [carregando, setCarregando] = useState(false);
-	const [teclado, setTeclado] = useState(false);
-
 	const [reset, setReset] = useState(
 		props.navigation.state.params
 			? props.navigation.state.params.resetSenha
@@ -73,6 +72,36 @@ const Login = (props) => {
 			});
 		}
 	}, []);
+	const window = Dimensions.get("window");
+	const IMAGE_HEIGHT = window.width / 3;
+	const IMAGE_HEIGHT_SMALL = window.width / 7;
+	const [alturaLogo] = useState(new Animated.Value(IMAGE_HEIGHT));
+
+	useEffect(() => {
+		Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
+		Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
+
+		// LIMPAR EVENTOS DO TECLADO
+		return () => {
+			Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
+			Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+		};
+	}, []);
+	const _keyboardDidShow = () => {
+		Animated.timing(alturaLogo, {
+			duration: 200,
+			toValue: IMAGE_HEIGHT_SMALL,
+			useNativeDriver: false,
+		}).start();
+	};
+
+	const _keyboardDidHide = () => {
+		Animated.timing(alturaLogo, {
+			duration: 200,
+			toValue: IMAGE_HEIGHT,
+			useNativeDriver: false,
+		}).start();
+	};
 
 	const [routes] = useState([
 		{ key: "1", title: "Administrador" },
@@ -160,69 +189,77 @@ const Login = (props) => {
 			{/* <View style={estilos.conteiner}>
         <Text>teste</Text> */}
 			<KeyboardAvoidingView
-				behavior={Platform.OS == "ios" ? "padding" : "height"}
+				behavior={Platform.OS == "ios" ? "padding" : ""}
 				style={{
 					flex: 1,
 				}}>
-				<SafeAreaView>
-					<ScrollView
+				<ScrollView
+					style={{
+						width: "100%",
+						height: Dimensions.get("window").height,
+						backgroundColor: primary,
+					}}>
+					<ImageBackground
+						source={backgroundAnimado}
+						resizeMode="cover"
+						resizeMethod="scale"
 						style={{
-							width: "100%",
+							flex: 1,
+							resizeMode: "repeat",
+
 							height: Dimensions.get("window").height,
-							backgroundColor: primary,
+							width: Dimensions.get("window").width,
 						}}>
-						<ImageBackground
-							source={backgroundAnimado}
-							resizeMode="cover"
-							resizeMethod="scale"
+						<Animated.Image
 							style={{
+								marginTop: "10%",
+								alignSelf: "center",
+
+								height: alturaLogo,
+								resizeMode: "contain",
+							}}
+							source={logo}
+						/>
+
+						<View style={{ alignItems: "center" }}>
+							<Text style={[styles.white, styles.textoGG]}>ABEPOM</Text>
+							<Text style={[styles.white, styles.textoM]}>FARMÁCIA</Text>
+						</View>
+
+						<TabView
+							navigationState={{ index, routes }}
+							renderScene={renderScene}
+							onIndexChange={setIndex}
+							style={{
+								marginTop: 20,
 								flex: 1,
-								resizeMode: "repeat",
+							}}
+							initialLayout={initialLayout}
+							renderTabBar={(props) => (
+								<TabBar
+									{...props}
+									indicatorStyle={{ backgroundColor: "white" }}
+									style={{ backgroundColor: primary, elevation: 1 }}
+									labelStyle={styles.textoM}
+								/>
+							)}
+						/>
+						{/* <SafeAreaView>
+							{alturaLogo > 100 && (
+								<View
+									style={{
+										alignItems: "center",
 
-								height: Dimensions.get("window").height,
-								width: Dimensions.get("window").width,
-							}}>
-							<Image
-								style={[styles.logo, { marginTop: "10%", alignSelf: "center" }]}
-								source={logo}
-							/>
+										width: "100%",
+										bottom: 20,
+									}}>
+									<Text style={{ color: "white" }}>Versão: {expo.version}</Text>
+								</View>
+							)}
+						</SafeAreaView> */}
+					</ImageBackground>
+				</ScrollView>
 
-							<View style={{ alignItems: "center" }}>
-								<Text style={[styles.white, styles.textoGG]}>ABEPOM</Text>
-								<Text style={[styles.white, styles.textoM]}>FARMÁCIA</Text>
-							</View>
-
-							<TabView
-								navigationState={{ index, routes }}
-								renderScene={renderScene}
-								onIndexChange={setIndex}
-								style={{
-									marginTop: 20,
-									flex: 1,
-								}}
-								initialLayout={initialLayout}
-								renderTabBar={(props) => (
-									<TabBar
-										{...props}
-										indicatorStyle={{ backgroundColor: "white" }}
-										style={{ backgroundColor: primary, elevation: 1 }}
-										labelStyle={styles.textoM}
-									/>
-								)}
-							/>
-							<View
-								style={{
-									alignItems: "center",
-
-									width: "100%",
-									bottom: 20,
-								}}>
-								<Text style={{ color: "white" }}>Versão: {expo.version}</Text>
-							</View>
-							{teclado && <View style={{ height: 200 }}></View>}
-						</ImageBackground>
-					</ScrollView>
-				</SafeAreaView>
 				{/* </View> */}
 			</KeyboardAvoidingView>
 		</>

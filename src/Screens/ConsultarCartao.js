@@ -63,6 +63,7 @@ const Home = (props) => {
 					);
 				}
 			} catch (error) {
+				console.log(error);
 				setCamera(false);
 			}
 		})();
@@ -359,7 +360,7 @@ const Home = (props) => {
 				null}
 				{camera ? (
 					<View>
-						<Modal visible={camera}>
+						<Modal visible={camera} style={{ backgroundColor: "blue" }}>
 							<Camera
 								captureAudio={false}
 								onBarCodeScanned={(dados) => {
@@ -390,7 +391,6 @@ const Home = (props) => {
 								}}
 								style={{
 									flex: 1,
-									width: "100%",
 								}}
 							/>
 
