@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-//import {RNCamera} from 'react-native-camera';
+import React, { useState, useEffect, useRef } from "react";
+
 import { Camera } from "expo-camera";
 
 import Icone from "@expo/vector-icons/MaterialCommunityIcons";
@@ -21,12 +21,20 @@ import Retorno from "../components/Retorno";
 import useConvenio from "../Data/Convenio";
 import Carregando from "../components/Carregando";
 
-export default (props) => {
+export default EfetuarVendas = (props) => {
+	const refInput = useRef(null);
+	function focusInput() {
+		refInput.current.focus();
+	}
+	useEffect(() => {
+		focusInput();
+	}, [props]);
 	const vaziu = {
 		cartao: "",
 		matricula: "",
 		dep: "",
 	};
+
 	const retornopadrao = { retorno: false, mensagem: "" };
 	const [state] = useConvenio();
 
@@ -119,7 +127,8 @@ export default (props) => {
 
 			<View style={{ width: "100%", flexDirection: "row" }}>
 				<TextInput
-					label="Cartão / Matricula"
+					ref={refInput}
+					label="Cartão / Matriculaa"
 					dense
 					mode="outlined"
 					value={imput}
@@ -132,6 +141,7 @@ export default (props) => {
 							placeholder: primary,
 						},
 					}}
+					autoFocus={true}
 					maxLength={11}
 					keyboardType="numeric"
 					style={[styles.imput, { width: "70%", fontSize: 26, color: primary }]}

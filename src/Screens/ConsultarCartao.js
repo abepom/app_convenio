@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
 	View,
 	Text,
@@ -9,22 +9,20 @@ import {
 	Platform,
 } from "react-native";
 import { TextInput as Imput } from "react-native-paper";
-//import QRCodeScanner from 'react-native-qrcode-scanner';
 import Menu from "../components/MenuTop";
 import Icone from "@expo/vector-icons/MaterialCommunityIcons";
-import Permissions from "expo-permissions";
 import styles, { primary, alertBack } from "../utils/Style";
 import api from "../api";
 import Retorno from "../components/Retorno";
 import { themeLight } from "../utils/theme";
 import useConvenio from "../Data/Convenio";
-// import { RNCamera } from "react-native-camera";
-
 import { Camera } from "expo-camera";
 import Carregando from "../components/Carregando";
 import CartaoAbepom from "../components/CartaoAbepom";
 
 const Home = (props) => {
+	const refInput = useRef(null);
+
 	const [cartao, setCartao] = React.useState("");
 	const [erro, setErro] = React.useState(false);
 	const [convenio] = useConvenio();
@@ -32,6 +30,13 @@ const Home = (props) => {
 	const [mensagens, setMensagens] = React.useState("");
 	const [camera, setCamera] = useState(false);
 	const [carregando, setCarregando] = useState(false);
+
+	useEffect(() => {
+		focusInput();
+	}, [props.navigation.state.params]);
+	function focusInput() {
+		refInput.current.focus();
+	}
 	useEffect(() => {
 		(async () => {
 			try {
@@ -146,12 +151,14 @@ const Home = (props) => {
 					<View
 						style={[styles.input, { borderWidth: 0, backgroundColor: null }]}>
 						<Imput
+							ref={refInput}
 							label="Cartão"
 							dense
 							mode="outlined"
 							theme={themeLight}
 							onChangeText={setCartao}
 							value={cartao}
+							autoFocus={true}
 							style={[
 								{
 									width: "100%",

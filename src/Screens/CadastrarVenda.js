@@ -18,7 +18,7 @@ const CadastrarVenda = (props) => {
 		matricula,
 		dep,
 		nome,
-		id_gds,
+
 		titular,
 	} = props.navigation.state.params;
 	const [{ usuario, token }] = useConvenio();

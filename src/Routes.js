@@ -61,15 +61,10 @@ const App = createDrawerNavigator(
 				drawerLabel: "ABEPOM",
 			},
 		},
-		// Notificacoes: {
-		// 	screen: Notificacoes,
-		// 	navigationOptions: {
-		// 		drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.bell} />,
-		// 		drawerLabel: "Mensagens",
-		// 	},
-		// },
 		ConsultarCartao: {
 			screen: ConsultarCartao,
+			params: { open: new Date().toJSON() },
+
 			navigationOptions: {
 				drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.pay} />,
 				drawerLabel: () => {
@@ -80,6 +75,7 @@ const App = createDrawerNavigator(
 
 		EfetuarVenda: {
 			screen: venda,
+			params: { open: new Date().toJSON() },
 			navigationOptions: {
 				drawerIcon: (props) => {
 					return <ItemDrawer {...props} icone={imagem.money} />;

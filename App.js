@@ -6,7 +6,6 @@
 
 import React, { useEffect } from "react";
 import { StatusBar, View, Text, Platform } from "react-native";
-import * as SplashScreen from "expo-splash-screen";
 import Routes from "./src/Routes";
 import { primary } from "./src/utils/Style";
 import { StorePrivider } from "./src/Data/store";

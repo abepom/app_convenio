@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	View,
 	Text,
@@ -145,7 +145,7 @@ const ConsultarVendas = (props) => {
 				headers: { "x-access-token": token },
 			});
 			setCarregando("ConsultarVendas");
-			setRetornoExclusao(dados.data.mensagem);
+			setRetornoExclusao(dados.data.mensagem.replace("abepom", "ABEPOM"));
 		} finally {
 		}
 	};
@@ -169,7 +169,7 @@ const ConsultarVendas = (props) => {
 									backgroundColor: `white`,
 									paddingVertical: 10,
 									paddingHorizontal: 5,
-									width: "100%",
+									width: "90%",
 								}}>
 								<View
 									style={{
@@ -245,6 +245,7 @@ const ConsultarVendas = (props) => {
 								style={{
 									flexDirection: "row",
 									justifyContent: "space-between",
+									width: "90%",
 								}}>
 								<TouchableOpacity
 									onPress={() => {
@@ -308,13 +309,13 @@ const ConsultarVendas = (props) => {
 									backgroundColor: `white`,
 									paddingVertical: 10,
 									paddingHorizontal: 5,
-									width: "95%",
+									width: "90%",
 								}}>
 								<Text style={{ fontSize: 20, textAlign: "justify" }}>
 									{retornoExclusao}
 								</Text>
 								{retornoExclusao.indexOf(
-									"Essa cobrança já foi efetuada pela abepom,"
+									"Essa cobrança já foi efetuada pela ABEPOM,"
 								) >= 0 && (
 									<TouchableOpacity
 										onPress={() => {
@@ -465,7 +466,7 @@ const ConsultarVendas = (props) => {
 											if (item.Processado_desconto) {
 												setConteudoModal(null);
 												setRetornoExclusao(
-													"Essa cobrança já foi efetuada pela abepom, entre em contato com nosso setor de Convênios para mais informações"
+													"Essa cobrança já foi efetuada pela ABEPOM, entre em contato com nosso setor de convênios para mais informações."
 												);
 											} else {
 												setConteudoModal(item);

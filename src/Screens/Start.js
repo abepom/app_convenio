@@ -13,7 +13,6 @@ import {
 import styles, { primary, background, danger } from "../utils/Style";
 import Icone from "@expo/vector-icons/MaterialCommunityIcons";
 import icone from "../../assets/img/abepom.png";
-import imagens, { menu } from "../utils/imagens";
 import useConvenio from "../Data/Convenio";
 import api from "../api";
 import * as Updates from "expo-updates";
@@ -24,9 +23,6 @@ import useUsuario from "../Data/Usuario";
 export default (props) => {
 	const [convenio, setConv] = useConvenio();
 	const [user] = useUsuario();
-
-	const [notificacoes] = useState([]);
-	const [naoLida] = useState(0);
 	const [modal, setModal] = useState(false);
 	const [termo, setTermo] = useState({});
 	useEffect(() => {
@@ -198,7 +194,10 @@ export default (props) => {
 						<TouchableOpacity
 							style={styles.itemMenu}
 							onPress={() =>
-								props.navigation.navigate("ConsultarCartao", convenio)
+								props.navigation.navigate("ConsultarCartao", {
+									...convenio,
+									open: new Date().toJSON(),
+								})
 							}>
 							<Image
 								source={require("../../assets/img/pay.png")}
@@ -213,7 +212,10 @@ export default (props) => {
 							<TouchableOpacity
 								style={[styles.itemMenu]}
 								onPress={() =>
-									props.navigation.navigate("EfetuarVenda", convenio)
+									props.navigation.navigate("EfetuarVenda", {
+										...convenio,
+										open: new Date().toJSON(),
+									})
 								}>
 								<Image
 									source={require("../../assets/img/money.png")}
