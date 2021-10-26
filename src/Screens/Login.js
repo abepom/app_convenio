@@ -1,0 +1,255 @@
+import React, { useState, useEffect } from "react";
+import {
+	View,
+	Image,
+	Text,
+	StyleSheet,
+	Dimensions,
+	KeyboardAvoidingView,
+	Platform,
+	ImageBackground,
+	Animated,
+	Keyboard,
+} from "react-native";
+import StatusBar from "../components/StatusBar";
+import logo from "../../assets/img/logo_abepom_branca.png";
+import backgroundAnimado from "../../assets/splash.png";
+import styles, {
+	danger,
+	danverBackground,
+	primary,
+	sucess,
+} from "../utils/Style";
+import api from "./../api";
+import { ScrollView } from "react-native-gesture-handler";
+import useUsuario from "../Data/Usuario";
+import useConvenio from "../Data/Convenio";
+import LoginAdm from "../components/LoginAdm";
+import LoginPDV from "../components/LoginPDV";
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import Constants from "expo-constants";
+
+import * as Updates from "expo-updates";
+
+const initialLayout = { width: Dimensions.get("window").width };
+
+const Login = (props) => {
+	const [index, setIndex] = useState(0);
+	const [carregando, setCarregando] = useState(false);
+	const [reset, setReset] = useState(
+		props.navigation.state.params
+			? props.navigation.state.params.resetSenha
+			: false
+	);
+	const [state, setState] = useState({
+		erro: false,
+		mensagem: "",
+	});
+	const [, setUsuario] = useUsuario();
+	const [, setConv] = useConvenio();
+	useEffect(() => {
+		if (state.erro) {
+			setTimeout(() => {
+				setState({ ...state, erro: false });
+			}, 6000);
+		}
+	}, [state.erro]);
+
+	useEffect(() => {
+		if (props.navigation.state.params) {
+			if (props.navigation.state.params.index) {
+				setIndex(props.navigation.state.params.index);
+			}
+
+			setState(props.navigation.state.params);
+		}
+		if (Constants.isDevice && Platform.OS != "web") {
+			Updates.checkForUpdateAsync().then(async ({ isAvailable }) => {
+				if (isAvailable) {
+					await Updates.fetchUpdateAsync();
+				}
+			});
+		}
+	}, []);
+	const window = Dimensions.get("window");
+	const IMAGE_HEIGHT = window.width / 3;
+	const IMAGE_HEIGHT_SMALL = window.width / 7;
+	const [alturaLogo] = useState(new Animated.Value(IMAGE_HEIGHT));
+
+	useEffect(() => {
+		Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
+		Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
+
+		// LIMPAR EVENTOS DO TECLADO
+		return () => {
+			Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
+			Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+		};
+	}, []);
+	const _keyboardDidShow = () => {
+		Animated.timing(alturaLogo, {
+			duration: 200,
+			toValue: IMAGE_HEIGHT_SMALL,
+			useNativeDriver: false,
+		}).start();
+	};
+
+	const _keyboardDidHide = () => {
+		Animated.timing(alturaLogo, {
+			duration: 200,
+			toValue: IMAGE_HEIGHT,
+			useNativeDriver: false,
+		}).start();
+	};
+
+	const [routes] = useState([
+		{ key: "1", title: "Administrador" },
+		{ key: "2", title: "Ponto de venda" },
+	]);
+
+	const renderScene = SceneMap({
+		2: () => (
+			<LoginPDV
+				{...props}
+				carregando={carregando}
+				setState={setState}
+				state={state}
+				reset={reset}
+				func={conectar}
+				setReset={setReset}
+			/>
+		),
+		1: () => (
+			<LoginAdm
+				{...props}
+				carregando={carregando}
+				setState={setState}
+				state={state}
+				reset={reset}
+				func={conectar}
+				setReset={setReset}
+			/>
+		),
+	});
+
+	const conectar = async (imput) => {
+		setCarregando(true);
+		const { doc, pass } = imput;
+		if (doc.length == 18 && pass) {
+			try {
+				const { data } = await api.post("/Login", {
+					doc: doc,
+					senha: pass,
+					convenios: true,
+				});
+				let convenio;
+				if (!data.erro) {
+					setUsuario(imput);
+					convenio = {
+						id_gds: data.id_gds,
+						nome_parceiro: data.nome_parceiro,
+						caminho_logomarca: data.caminho_logomarca
+							? `${data.caminho_logomarca}?id=${Math.random()}`
+							: null,
+						efetuarVenda: data.efetuarVenda,
+						doc: data.doc,
+						usuario: data.usuario,
+						nivel: data.nivel,
+						token: data.token,
+						cd_convenio: data["cd_convênio"],
+						primeiro_acesso: data.primeiro_acesso,
+					};
+					await setConv(convenio);
+					props.navigation.navigate("App");
+				} else {
+					setCarregando(false);
+
+					setState({ erro: true, mensagem: "Usuário ou Senha incorretos" });
+				}
+			} catch (error) {
+				setState({ erro: true, mensagem: "Usuário ou Senha incorretos" });
+				setCarregando(false);
+			}
+		} else {
+			setState({ erro: true, mensagem: "Usuário ou Senha incorretos" });
+			setCarregando(false);
+		}
+	};
+
+	return (
+		<>
+			<StatusBar />
+			<KeyboardAvoidingView
+				behavior={Platform.OS == "ios" ? "padding" : ""}
+				style={{
+					flex: 1,
+				}}>
+				<ScrollView
+					style={{
+						width: "100%",
+						height: Dimensions.get("window").height,
+						backgroundColor: primary,
+					}}>
+					<ImageBackground
+						source={backgroundAnimado}
+						resizeMode="cover"
+						resizeMethod="scale"
+						style={{
+							flex: 1,
+							resizeMode: "repeat",
+
+							height: Dimensions.get("window").height,
+							width: Dimensions.get("window").width,
+						}}>
+						<Animated.Image
+							style={{
+								marginTop: "10%",
+								alignSelf: "center",
+
+								height: alturaLogo,
+								resizeMode: "contain",
+							}}
+							source={logo}
+						/>
+
+						<View style={{ alignItems: "center" }}>
+							<Text style={[styles.white, styles.textoGG]}>ABEPOM</Text>
+						</View>
+						<LoginAdm
+							{...props}
+							carregando={carregando}
+							setState={setState}
+							state={state}
+							reset={reset}
+							func={conectar}
+							setReset={setReset}
+						/>
+
+						{/* <TabView
+							navigationState={{ index, routes }}
+							renderScene={renderScene}
+							onIndexChange={setIndex}
+							style={{
+								marginTop: 20,
+								flex: 1,
+							}}
+							initialLayout={initialLayout}
+							renderTabBar={(props) => (
+								<TabBar
+									{...props}
+									indicatorStyle={{ backgroundColor: "white" }}
+									style={{ backgroundColor: primary, elevation: 1 }}
+									labelStyle={styles.textoM}
+								/>
+							)}
+						/> */}
+					</ImageBackground>
+				</ScrollView>
+
+				{/* </View> */}
+			</KeyboardAvoidingView>
+		</>
+	);
+};
+
+export default Login;
