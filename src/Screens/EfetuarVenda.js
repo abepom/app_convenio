@@ -23,6 +23,7 @@ import Carregando from "../components/Carregando";
 
 export default EfetuarVendas = (props) => {
 	const refInput = useRef(null);
+	const [state] = useConvenio();
 	function focusInput() {
 		refInput.current.focus();
 	}
@@ -36,10 +37,9 @@ export default EfetuarVendas = (props) => {
 	};
 
 	const retornopadrao = { retorno: false, mensagem: "" };
-	const [state] = useConvenio();
 
 	const [associado, setassociado] = useState(vaziu);
-	const [imput, setImput] = useState("");
+	const [imput, setImput] = useState("47820100001");
 	const [dependentes, setDependentes] = useState([]);
 	const [mensagem, setMensagem] = useState("");
 	const [avancar, setAvancar] = useState(false);
@@ -112,7 +112,7 @@ export default EfetuarVendas = (props) => {
 		setcarregando(false);
 	};
 	return (
-		<MenuTop {...props} drawer title="Efetuar Vendas">
+		<MenuTop {...props} drawer title="Lançar">
 			<Text
 				style={{
 					fontWeight: "bold",
@@ -122,7 +122,7 @@ export default EfetuarVendas = (props) => {
 					color: primary,
 					marginVertical: 30,
 				}}>
-				Informe a matrícula ou o cartão do associado para iniciar a venda.
+				Informe a matrícula ou o cartão do associado para iniciar o lancamento.
 			</Text>
 
 			<View style={{ width: "100%", flexDirection: "row" }}>

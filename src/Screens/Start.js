@@ -56,6 +56,12 @@ export default (props) => {
 
 				let conv;
 				if (!data.erro) {
+					const procedimentos = await api({
+						method: "POST",
+						url: "/procedimentos",
+						headers: { "x-access-token": convenio.token },
+					});
+
 					conv = {
 						id_gds: data.id_gds,
 						nome_parceiro: data.nome_parceiro,

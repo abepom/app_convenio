@@ -37,7 +37,9 @@ import unchecked from "../../assets/img/unchecked.png";
 import whatsapp from "../../assets/img/whatsapp.png";
 import playStore from "../../assets/img/abepom_playStore.png";
 import coracao from "../../assets/img/coracao.png";
+import edit from "../../assets/img/pencil.png";
 export default {
+	edit,
 	coracao,
 	logo_abepom_branca,
 	playStore,

@@ -107,35 +107,10 @@ const Login = (props) => {
 		{ key: "2", title: "Ponto de venda" },
 	]);
 
-	const renderScene = SceneMap({
-		2: () => (
-			<LoginPDV
-				{...props}
-				carregando={carregando}
-				setState={setState}
-				state={state}
-				reset={reset}
-				func={conectar}
-				setReset={setReset}
-			/>
-		),
-		1: () => (
-			<LoginAdm
-				{...props}
-				carregando={carregando}
-				setState={setState}
-				state={state}
-				reset={reset}
-				func={conectar}
-				setReset={setReset}
-			/>
-		),
-	});
-
 	const conectar = async (imput) => {
 		setCarregando(true);
 		const { doc, pass } = imput;
-		if (doc.length == 18 && pass) {
+		if (doc.length > 12 && pass) {
 			try {
 				const { data } = await api.post("/Login", {
 					doc: doc,
@@ -163,15 +138,18 @@ const Login = (props) => {
 					props.navigation.navigate("App");
 				} else {
 					setCarregando(false);
+					console.log(error.message);
 
 					setState({ erro: true, mensagem: "Usuário ou Senha incorretos" });
 				}
 			} catch (error) {
+				console.log(error.message);
 				setState({ erro: true, mensagem: "Usuário ou Senha incorretos" });
 				setCarregando(false);
 			}
 		} else {
 			setState({ erro: true, mensagem: "Usuário ou Senha incorretos" });
+			console.log(error.message);
 			setCarregando(false);
 		}
 	};
@@ -224,25 +202,6 @@ const Login = (props) => {
 							func={conectar}
 							setReset={setReset}
 						/>
-
-						{/* <TabView
-							navigationState={{ index, routes }}
-							renderScene={renderScene}
-							onIndexChange={setIndex}
-							style={{
-								marginTop: 20,
-								flex: 1,
-							}}
-							initialLayout={initialLayout}
-							renderTabBar={(props) => (
-								<TabBar
-									{...props}
-									indicatorStyle={{ backgroundColor: "white" }}
-									style={{ backgroundColor: primary, elevation: 1 }}
-									labelStyle={styles.textoM}
-								/>
-							)}
-						/> */}
 					</ImageBackground>
 				</ScrollView>
 

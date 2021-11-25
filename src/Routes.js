@@ -2,7 +2,7 @@ import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import Login from "./Screens/Login";
 import Load from "./Screens/Load";
-import Start from "./Screens/Start";
+import Inicio from "./Screens/Inicio";
 import CadastrarVenda from "./Screens/CadastrarVenda";
 import RestartPass from "./Screens/RestartPass";
 import { createDrawerNavigator } from "react-navigation-drawer";
@@ -31,7 +31,7 @@ const venda = createStackNavigator(
 			screen: CadastrarVenda,
 			navigationOptions: {
 				headerShown: false,
-				title: "Cadastrar Venda",
+				title: "Lançar",
 				headerTruncatedBackTitle: (props) => (
 					<ItemDrawer {...props} icone={imagem.abepom} />
 				),
@@ -54,7 +54,7 @@ const venda = createStackNavigator(
 const App = createDrawerNavigator(
 	{
 		Start: {
-			screen: Start,
+			screen: Inicio,
 
 			navigationOptions: {
 				drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.abepom} />,
@@ -73,7 +73,7 @@ const App = createDrawerNavigator(
 			},
 		},
 
-		EfetuarVenda: {
+		Lancar: {
 			screen: venda,
 			params: { open: new Date().toJSON() },
 			navigationOptions: {
@@ -81,7 +81,7 @@ const App = createDrawerNavigator(
 					return <ItemDrawer {...props} icone={imagem.money} />;
 				},
 				drawerLabel: () => {
-					return "Efetuar Vendas";
+					return "Lançar";
 				},
 			},
 		},
@@ -92,7 +92,7 @@ const App = createDrawerNavigator(
 					return <ItemDrawer {...props} icone={imagem.bill} />;
 				},
 				drawerLabel: () => {
-					return "Consultar Vendas";
+					return "Consultar";
 				},
 			},
 		},

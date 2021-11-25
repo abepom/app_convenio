@@ -28,22 +28,22 @@ export default function LoginAdm(props) {
 			  props.navigation.state.params.index == 0
 				? props.navigation.state.params.imput
 				: {
-						doc: "",
+						doc: "83.466.037/0001-37",
 						user: "",
-						pass: "",
+						pass: "cor123",
 				  }
 			: {
-					doc: "",
+					doc: "83.466.037/0001-37",
 					user: "",
-					pass: "",
+					pass: "cor123",
 			  }
 	);
 	return (
 		<View style={{ marginTop: 20, width: "100%" }}>
 			<TextInput
-				accessibilityLabel="CNPJ"
-				key="cnpj"
-				label="CNPJ"
+				accessibilityLabel="CPF/CNPJ"
+				key="CPF/CNPJ"
+				label="CPF/CNPJ"
 				dense
 				mode="flat"
 				theme={themeLight}
@@ -51,7 +51,18 @@ export default function LoginAdm(props) {
 				onChangeText={(text) => setImput({ ...imput, doc: text })}
 				keyboardType={"numeric"}
 				render={(prop) => {
-					return <TextInputMask {...prop} type={"cnpj"} />;
+					return (
+						<TextInputMask
+							{...prop}
+							type={"custom"}
+							options={{
+								mask:
+									imput.doc.length < 15
+										? "999.999.999-999"
+										: "99.999.999/9999-99",
+							}}
+						/>
+					);
 				}}
 				style={[styles.imput]}
 			/>
