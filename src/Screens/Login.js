@@ -66,7 +66,20 @@ const Login = (props) => {
 		if (Constants.isDevice && Platform.OS != "web") {
 			Updates.checkForUpdateAsync().then(async ({ isAvailable }) => {
 				if (isAvailable) {
-					await Updates.fetchUpdateAsync();
+					Updates.fetchUpdateAsync();
+					Alert.alert(
+						"ATUALIZAÇÃO",
+						"O aplicativo ABEPOM Convênios foi atualizado com sucesso, estamos reiniciando o aplicativo.",
+						[
+							{
+								text: "CONFIRMAR",
+								onPress: () => Updates.reloadAsync(),
+							},
+							{
+								text: "MANTER ABERTO",
+							},
+						]
+					);
 				}
 			});
 		}
@@ -119,6 +132,12 @@ const Login = (props) => {
 				});
 				let convenio;
 				if (!data.erro) {
+					const procedimentos = await api({
+						method: "POST",
+						url: "/procedimentos",
+						data: { cd_da_area: data["cd_convênio"] },
+						headers: { "x-access-token": data.token },
+					});
 					setUsuario(imput);
 					convenio = {
 						id_gds: data.id_gds,
@@ -133,6 +152,11 @@ const Login = (props) => {
 						token: data.token,
 						cd_convenio: data["cd_convênio"],
 						primeiro_acesso: data.primeiro_acesso,
+						tipo_lancamento: data.tipo_lancamento,
+						cd_da_area: data.Cd_da_area,
+						efetuarVenda: data.efetuarVenda,
+
+						procedimentos: procedimentos.data,
 					};
 					await setConv(convenio);
 					props.navigation.navigate("App");

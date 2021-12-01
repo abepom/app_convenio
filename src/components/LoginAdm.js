@@ -28,14 +28,14 @@ export default function LoginAdm(props) {
 			  props.navigation.state.params.index == 0
 				? props.navigation.state.params.imput
 				: {
-						doc: "83.466.037/0001-37",
+						doc: "375.190.429-87",
 						user: "",
-						pass: "cor123",
+						pass: "08041954",
 				  }
 			: {
-					doc: "83.466.037/0001-37",
+					doc: "375.190.429-87",
 					user: "",
-					pass: "cor123",
+					pass: "08041954",
 			  }
 	);
 	return (

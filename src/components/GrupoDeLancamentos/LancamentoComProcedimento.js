@@ -36,7 +36,14 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 			data: { cd_da_area: convenio.cd_da_area },
 			headers: { "x-access-token": convenio.token },
 		});
-		setConvenio({ ...convenio, procedimentos: data });
+		const proced = data.filter((item) => {
+			if (item.desabilitado) {
+				return false;
+			} else {
+				return true;
+			}
+		});
+		setConvenio({ ...convenio, procedimentos: proced });
 	};
 	useEffect(() => {
 		if (!procedimentos.length) {

@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import MenuTop from "../components/MenuTop";
 import { TextInput } from "react-native-paper";
-import styles, { primary, danger } from "../utils/Style";
+import styles, { primary, danger, danverBackground } from "../utils/Style";
 import imagens from "../utils/imagens";
 import api from "../api";
 import Retorno from "../components/Retorno";
@@ -54,6 +54,20 @@ export default EfetuarVendas = (props) => {
 	};
 
 	const consultarCartao = async (cartao) => {
+		let verificaProcedimento = state.procedimentos.filter((item) => {
+			if (!item.desabilitado) {
+				return true;
+			} else {
+				return false;
+			}
+		});
+		if (verificaProcedimento.length == 0) {
+			Alert.alert(
+				"ATENÇÃO",
+				"É necessario possuir pelo menos um procedimento ative.\n\nAtive um procedimento no menu procedimento ou solicite ao setor de convenios que cadastre pelo menos um procedimento."
+			);
+			return props.navigation.navigate("Start");
+		}
 		setAvancar(false);
 		setcarregando(true);
 		setDependentes([]);
@@ -69,6 +83,7 @@ export default EfetuarVendas = (props) => {
 					},
 					headers: { "x-access-token": state.token },
 				});
+				console.log(validado.data);
 				if (validado.data.length) {
 					if (validado.data.retorno == 1) {
 						setMensagem(validado.data.mensagem);
@@ -279,7 +294,12 @@ export default EfetuarVendas = (props) => {
 			)}
 			{erro ? (
 				<View style={{ width: "85%", marginTop: 30 }}>
-					<Retorno type="danger" mensagem={erro} fechar={() => setErro("")} />
+					<Retorno
+						type="danger"
+						mensagem={erro}
+						title="ATENÇÃO"
+						fechar={() => setErro("")}
+					/>
 				</View>
 			) : null}
 
@@ -302,26 +322,34 @@ export default EfetuarVendas = (props) => {
 												"Este associado já possui o CARTÃO DO ASSOCIADO, é indispensável a apresentação deste para efetuar o lançamento"
 											);
 										} else {
-											setImput("");
-											props.navigation.navigate("CadastrarVenda", {
-												cartao: imput,
-												matricula: item.Matricula,
-												dep: item.Cd_dependente,
-												nome: item.NOME,
-												id_gds: state.id_gds,
-												titular: item.titular,
-											});
-											setRetorno(retornopadrao);
-											setDependentes([]);
-											setassociado(vaziu);
-											setAvancar(false);
+											if (item.permissao == "1") {
+												Alert.alert(
+													"",
+													"Este dependente não possui permissao para esse tipo de atendimento. É necessario solicitar ao titular da conta essa permissão."
+												);
+											} else {
+												setImput("");
+												props.navigation.navigate("CadastrarVenda", {
+													cartao: imput,
+													matricula: item.Matricula,
+													dep: item.Cd_dependente,
+													nome: item.NOME,
+													id_gds: state.id_gds,
+													titular: item.titular,
+												});
+												setRetorno(retornopadrao);
+												setDependentes([]);
+												setassociado(vaziu);
+												setAvancar(false);
+											}
 										}
 									}}
 									style={{
 										marginTop: 20,
 										padding: 10,
 										width: "100%",
-										backgroundColor: "white",
+										backgroundColor:
+											item.permissao == "1" ? "white" : danverBackground,
 										elevation: 2,
 										borderRadius: 5,
 									}}>

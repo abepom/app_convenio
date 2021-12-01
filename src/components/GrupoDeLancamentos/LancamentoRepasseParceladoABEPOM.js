@@ -46,32 +46,39 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 			data: { cd_da_area: convenio.cd_da_area },
 			headers: { "x-access-token": convenio.token },
 		});
-		setConvenio({ ...convenio, procedimentos: data });
+		const proced = data.filter((item) => {
+			if (item.desabilitado) {
+				return false;
+			} else {
+				return true;
+			}
+		});
+		setConvenio({ ...convenio, procedimentos: proced });
 	};
 	useLayoutEffect(() => {
-		console.log("procediemntos ", procedimentos, procedimentos.length);
-		if (procedimentos.length == 0) {
-			carregarProcedimentos();
-		}
+		carregarProcedimentos();
 	}, []);
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (procedimento.Name != "") {
 			setBtnvisivel(true);
 		} else {
 			setBtnvisivel(false);
 		}
 	}, [procedimento]);
-	useEffect(() => {
-		if (proceAdd.length > 0) {
+	useLayoutEffect(() => {
+		if (proceAdd?.length) {
 			let total = proceAdd.reduce(
 				(total, item) => total + item.Valor_convenio,
 				0
 			);
-			let parc = [];
-			for (let index = 0; index < parseInt(total / 85); index++) {
-				parc.push(index + 1);
-				setQuantidade(parc);
+			let parc = [1];
+
+			for (let index = 0; index < (total / 85).toFixed(); index++) {
+				if (index) {
+					parc.push(index + 1);
+				}
 			}
+			setQuantidade(parc);
 		}
 	}, [proceAdd]);
 	const AdicionarProcedimento = async () => {
@@ -100,9 +107,9 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 			},
 			headers: { "x-access-token": token },
 		});
-		if (data.retorno == 1) {
-			setMsnModal(data);
-		}
+
+		setMsnModal(data);
+
 		setModal(true);
 
 		setTimeout(() => {
@@ -124,7 +131,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 						style={{
 							backgroundColor: "#fff",
 							width: "90%",
-							height: msnModal.limite ? 270 : msnModal.data ? 250 : "30%",
+							height: msnModal.limite ? 130 : msnModal.data ? 250 : "30%",
 							alignItems: "center",
 
 							borderRadius: 5,
@@ -135,7 +142,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 								fontSize: 18,
 								color: primary,
 								paddingHorizontal: 20,
-								marginTop: 10,
+								marginTop: msnModal.limite ? 20 : 10,
 
 								textAlign: "center",
 							}}>
@@ -240,7 +247,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 											title={"Visualizar!"}
 											onPress={showModal}>
 											<Text style={{ fontSize: 18, color: primary }}>
-												{procedimento.Name.length > 20
+												{procedimento?.Name?.length > 20
 													? procedimento.Name.substr(0, 20) + "..."
 													: procedimento.Name}{" "}
 												{procedimento.Name
@@ -357,11 +364,23 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 										)}
 									/>
 									<TouchableOpacity
-										onPress={() =>
+										onPress={() => {
+											let achouUm = 0;
 											setProceAdd(
-												proceAdd.filter((a) => a.Value != proced.Value)
-											)
-										}
+												proceAdd.filter((a) => {
+													if (a.Value == proced.Value) {
+														achouUm++;
+														if (achouUm > 1) {
+															return false;
+														} else {
+															return true;
+														}
+													} else {
+														return true;
+													}
+												})
+											);
+										}}
 										style={{
 											backgroundColor: primary,
 											padding: 8,
@@ -401,36 +420,19 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 												mode="dropdown"
 												selectedValue={selectedValue}
 												onValueChange={(itemValue, itemIndex) => {
-													console.log(
-														itemValue,
-														itemIndex,
-														"altera parcelamento"
-													);
+													console.log(itemValue);
 													setSelectedValue(itemValue);
 												}}>
-												<Picker.Item
-													key={0}
-													label={`1 x R$ ${total.toFixed(2)}`}
-													value={1}
-												/>
 												{quantidade.map((a, b) => {
-													if (b > 1)
-														return (
-															<Picker.Item
-																key={b}
-																label={`${a} x R$ ${(total / a).toFixed(2)}`}
-																value={a}
-															/>
-														);
+													return (
+														<Picker.Item
+															key={b}
+															label={`${a} x R$ ${(total / a).toFixed(2)}`}
+															value={a}
+														/>
+													);
 												})}
 											</Picker>
-
-											// <Text style={{ padding: 10 }}>
-											// 	R${" "}
-											// 	{proceAdd
-											// 		.reduce((total, item) => total + item.Valor_convenio, 0)
-											// 		.toFixed(2)}
-											// </Text>
 										);
 									}}
 								/>

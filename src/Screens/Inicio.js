@@ -31,11 +31,25 @@ export default (props) => {
 
 	useEffect(() => {
 		conectar(user);
-		console.log(convenio);
+
 		if (Constants.isDevice && Platform.OS != "web") {
 			Updates.checkForUpdateAsync().then(({ isAvailable }) => {
 				if (isAvailable) {
 					Updates.fetchUpdateAsync();
+					Alert.alert(
+						"ATUALIZAÇÃO",
+						"O aplicativo ABEPOM Convênios foi atualizado com sucesso, estamos reiniciando o aplicativo.",
+						[
+							{
+								text: "CONFIRMAR",
+								onPress: () => Updates.reloadAsync(),
+							},
+							{
+								text: "MANTER ABERTO",
+							},
+						]
+					);
+					Updates.reloadAsync();
 				}
 			});
 		}
@@ -353,6 +367,7 @@ export default (props) => {
 							/>
 							<Text style={styles.textMenu}>Perfil</Text>
 						</TouchableOpacity>
+
 						<TouchableOpacity
 							style={styles.itemMenu}
 							onPress={() => {
@@ -379,6 +394,19 @@ export default (props) => {
 									style={styless.imgMenu}
 								/>
 								<Text style={styles.textMenu}>Repasses Futuros</Text>
+							</TouchableOpacity>
+							<TouchableOpacity
+								style={[styles.itemMenu]}
+								onPress={() =>
+									props.navigation.navigate("Procedimentos", {
+										load: new Date(),
+									})
+								}>
+								<Image
+									source={require("../../assets/img/list.png")}
+									style={styless.imgMenu}
+								/>
+								<Text style={[styles.textMenu]}>PROCEDIMENTOS</Text>
 							</TouchableOpacity>
 						</View>
 					)}

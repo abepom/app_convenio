@@ -44,7 +44,7 @@ for (let i = new Date().getFullYear(); i >= new Date().getFullYear() - 5; i--) {
 
 const ConsultarVendas = (props) => {
 	const [refreshing, setRefreshing] = useState(false);
-	const [{ id_gds, nivel, usuario, token }] = useConvenio();
+	const [{ id_gds, usuario, token }] = useConvenio();
 	const [mes, setMes] = useState(false);
 	const [dataOld, setDataOld] = useState("");
 	const [data, setData] = useState(
@@ -116,11 +116,11 @@ const ConsultarVendas = (props) => {
 			const dados = await api({
 				method: "get",
 				url: "/ConsultarVendas",
-				params: { id_gds, data, usuario, nivel, mes },
+				params: { id_gds, data, usuario, nivel: 1, mes },
 				headers: { "x-access-token": token },
 			});
 			setvendas(dados.data);
-
+			console.log(dados);
 			// const [contatoConvenio] = await api({
 			// 	method: "get",
 			// 	url: "/contato",
@@ -359,7 +359,7 @@ const ConsultarVendas = (props) => {
 			<MenuTop
 				drawer
 				{...props}
-				title={"Consultar Vendas"}
+				title={"Consultar Lançamentos"}
 				header={
 					<View>
 						<View

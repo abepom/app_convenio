@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
 	View,
 	Text,
@@ -6,6 +6,7 @@ import {
 	Modal,
 	Image,
 	FlatList,
+	Alert,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import { themeLight as theme } from "../../utils/theme";
@@ -50,7 +51,14 @@ const LancamentoComProntuario = (props) => {
 			data: { cd_da_area: convenio.cd_da_area },
 			headers: { "x-access-token": convenio.token },
 		});
-		setConvenio({ ...convenio, procedimentos: data });
+		const proced = data.filter((item) => {
+			if (item.desabilitado) {
+				return false;
+			} else {
+				return true;
+			}
+		});
+		setConvenio({ ...convenio, procedimentos: proced });
 	};
 	const carregarProntuarios = async () => {
 		const { data } = await api({
@@ -59,14 +67,13 @@ const LancamentoComProntuario = (props) => {
 			data: { matricula, dep, procedimento: `${procedimento.Value}` },
 			headers: { "x-access-token": convenio.token },
 		});
+		console.log(data, "dados do prontuaro");
 		return data;
 	};
-	useEffect(() => {
-		if (!procedimentos.length) {
-			carregarProcedimentos();
-		}
+	useLayoutEffect(() => {
+		carregarProcedimentos();
 	}, []);
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (
 			(quantidade * procedimento.Valor_convenio).toFixed(2).toString() != "0.00"
 		) {
@@ -92,15 +99,21 @@ const LancamentoComProntuario = (props) => {
 					setModalProntuario(true);
 				} else {
 					await ContinuarLancamento();
+					console.log(1);
 				}
+			} else {
+				console.log(2);
+				await ContinuarLancamento();
+				props.navigation.goBack();
 			}
 		} else {
+			console.log(3);
 			await ContinuarLancamento();
 		}
 	};
 	async function ContinuarLancamento() {
 		const { data } = await api({
-			url: "/efetuarVendas",
+			url: "/LancarVenda",
 			method: "POST",
 			data: {
 				tipo_lancamento,
@@ -113,7 +126,7 @@ const LancamentoComProntuario = (props) => {
 			},
 			headers: { "x-access-token": token },
 		});
-		console.log("data", data);
+
 		setModal(true);
 		if (data.retorno == 1) {
 			setMsnModal(data);
@@ -176,6 +189,10 @@ const LancamentoComProntuario = (props) => {
 								onPress={async () => {
 									setMostrarItens(true);
 									setModalProntuario(false);
+									Alert.alert(
+										"ATENÇÃO",
+										"Não foi lançado o procedimento no prontuario, para adicionar selecione o botão Adicionar ao prontuario."
+									);
 								}}>
 								<Text style={{ color: "white" }}>
 									VISUALIZAR PRONTUARIO EM ABERTO
@@ -200,9 +217,6 @@ const LancamentoComProntuario = (props) => {
 									alignItems: "center",
 								}}
 								onPress={async () => {
-									setMostrarItens(true);
-									setModalProntuario(false);
-
 									await ContinuarLancamento();
 								}}>
 								<Text style={{ color: "white" }}>LANÇAR </Text>
@@ -320,14 +334,7 @@ const LancamentoComProntuario = (props) => {
 								setModal(false);
 
 								if (msnModal.retorno) {
-									// props.navigation.goBack();
-									setCarregando(false);
-									setDescricao("");
-									let prontuarios = await carregarProntuarios();
-
-									if (prontuarios.status == 1) {
-										setProntuarioAnterior(prontuarios);
-									}
+									props.navigation.goBack();
 								} else {
 									setCarregando(false);
 								}
@@ -370,16 +377,14 @@ const LancamentoComProntuario = (props) => {
 									);
 								}}
 								onSelected={(a) => setProcedimento({ ...a })}
-								onClosed={console.log}
-								onBackButtonPressed={console.log}
 								items={procedimentos}
 								showToTopButton={true}
 								selected={procedimento}
 								showAlphabeticalIndex={true}
 								autoGenerateAlphabeticalIndex={true}
-								selectPlaceholderText={"Choose one..."}
-								searchPlaceholderText={"Search..."}
-								requireSelection={false}
+								selectPlaceholderText={"Selecione um..."}
+								searchPlaceholderText={"Buscar..."}
+								requireSelection={true}
 								autoSort={false}
 								renderListItem={(a, item) => (
 									<View
@@ -554,6 +559,7 @@ const LancamentoComProntuario = (props) => {
 							))}
 
 							<TouchableOpacity
+								onPress={() => props.navigation.goBack()}
 								style={{
 									marginTop: 20,
 									backgroundColor: sucess,
@@ -562,6 +568,58 @@ const LancamentoComProntuario = (props) => {
 									borderRadius: 5,
 								}}>
 								<Text style={{ color: "white" }}>SAIR DO PRONTUARIO</Text>
+							</TouchableOpacity>
+
+							<TouchableOpacity
+								onPress={() => {
+									Alert.alert(
+										"ATENÇÃO",
+										"Você deseja realmente finalizar esse prontuario? Não será mais possivel adicionar atendimentos a esse prontuario.",
+										[
+											{
+												text: "CONFIRMAR",
+												onPress: async () => {
+													console.log("item", prontuarioAnterior.ID_Prontuario);
+													const { data } = await api({
+														url: "/finalizarProntuario",
+														method: "POST",
+														data: {
+															prontuario: prontuarioAnterior.ID_Prontuario,
+														},
+														headers: { "x-access-token": token },
+													});
+													console.log(data);
+													if (data.status) {
+														Alert.alert(
+															"SUCESSO",
+															"Prontuario foi finalizado com sucesso."
+														);
+														props.navigation.goBack();
+													} else {
+														Alert.alert(
+															"ATENÇÃO",
+															"Ocorreu um erro ao finalizar o prontuario."
+														);
+													}
+												},
+												style: "succes",
+											},
+											{
+												text: "CANCELAR",
+												onPress: () => {},
+												style: "cancel",
+											},
+										]
+									);
+								}}
+								style={{
+									marginTop: 20,
+									backgroundColor: danger,
+									padding: 20,
+									alignItems: "center",
+									borderRadius: 5,
+								}}>
+								<Text style={{ color: "white" }}>FINALIZAR PRONTUARIO</Text>
 							</TouchableOpacity>
 						</View>
 					)}

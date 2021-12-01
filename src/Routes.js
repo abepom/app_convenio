@@ -10,7 +10,7 @@ import Sair from "./Screens/Sair";
 import ConsultarCartao from "./Screens/ConsultarCartao";
 import Endereco from "./Screens/Enderecos";
 import Perfil from "./Screens/Perfil";
-import Teste from "./Screens/Teste";
+import Procedimentos from "./Screens/Procedimentos";
 import Drawer from "./components/Drawer";
 import { primary, white } from "./utils/Style";
 import ItemDrawer from "./components/ItemDrawer";
@@ -138,6 +138,18 @@ const App = createDrawerNavigator(
 				drawerLabel: "Administrar Usuários",
 			},
 		},
+		Procedimentos: {
+			screen: Procedimentos,
+			params: { open: new Date().toJSON() },
+			navigationOptions: {
+				drawerIcon: (props) => {
+					return <ItemDrawer {...props} icone={imagem.list} />;
+				},
+				drawerLabel: () => {
+					return "Procedimentos";
+				},
+			},
+		},
 		Sair: {
 			screen: Sair,
 			navigationOptions: {
@@ -179,7 +191,6 @@ const Routes = createAppContainer(
 			Login,
 			RestartPass,
 			App,
-			Teste,
 		},
 		{
 			initialRouteName: "Load",
