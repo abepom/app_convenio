@@ -294,7 +294,7 @@ const ConsultarVendas = (props) => {
 									borderBottomLeftRadius: 4,
 									backgroundColor: sucessBack,
 									padding: 10,
-									width: "100%",
+									width: "90%",
 									alignItems: "center",
 								}}>
 								<Text style={{ color: sucess }}>FECHAR</Text>
@@ -311,7 +311,7 @@ const ConsultarVendas = (props) => {
 									paddingHorizontal: 5,
 									width: "90%",
 								}}>
-								<Text style={{ fontSize: 20, textAlign: "justify" }}>
+								<Text style={{ fontSize: 20, textAlign: "center" }}>
 									{retornoExclusao}
 								</Text>
 								{retornoExclusao.indexOf(
@@ -319,7 +319,7 @@ const ConsultarVendas = (props) => {
 								) >= 0 && (
 									<TouchableOpacity
 										onPress={() => {
-											Linking.openURL(`https://wa.me/5548911440708`);
+											Linking.openURL(`https://wa.me/5548991440708`);
 										}}>
 										<View
 											style={{
@@ -332,19 +332,22 @@ const ConsultarVendas = (props) => {
 												source={imagens.whatsapp}
 												style={{ height: 30, width: 30 }}
 											/>
-											<Text>(48) 99908-0294</Text>
+											<Text>(48) 99144-0708</Text>
 										</View>
 									</TouchableOpacity>
 								)}
 							</View>
 							<TouchableOpacity
-								onPress={() => setModal(false)}
+								onPress={() => {
+									setModal(false);
+									setRetornoExclusao("");
+								}}
 								style={{
 									borderBottomRightRadius: 4,
 									borderBottomLeftRadius: 4,
 									backgroundColor: sucessBack,
 									padding: 10,
-									width: "95%",
+									width: "90%",
 									alignItems: "center",
 								}}>
 								<Text style={{ color: sucess }}>FECHAR</Text>

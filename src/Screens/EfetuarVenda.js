@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import MenuTop from "../components/MenuTop";
 import { TextInput } from "react-native-paper";
-import styles, { primary, danger } from "../utils/Style";
+import styles, { primary, danger, danverBackground } from "../utils/Style";
 import imagens from "../utils/imagens";
 import api from "../api";
 import Retorno from "../components/Retorno";
@@ -128,7 +128,7 @@ export default EfetuarVendas = (props) => {
 			<View style={{ width: "100%", flexDirection: "row" }}>
 				<TextInput
 					ref={refInput}
-					label="Cartão / Matriculaa"
+					label="Cartão / Matricula"
 					dense
 					mode="outlined"
 					value={imput}
@@ -292,55 +292,65 @@ export default EfetuarVendas = (props) => {
 							</Text>
 						)}
 						<View style={{ width: "80%" }}>
-							{dependentes.map((item) => (
-								<TouchableOpacity
-									key={item.Cd_dependente}
-									onPress={() => {
-										if (item.Cartao_Recebido) {
-											Alert.alert(
-												"",
-												"Este associado já possui o CARTÃO DO ASSOCIADO, é indispensável a apresentação deste para efetuar o lançamento"
-											);
-										} else {
-											setImput("");
-											props.navigation.navigate("CadastrarVenda", {
-												cartao: imput,
-												matricula: item.Matricula,
-												dep: item.Cd_dependente,
-												nome: item.NOME,
-												id_gds: state.id_gds,
-												titular: item.titular,
-											});
-											setRetorno(retornopadrao);
-											setDependentes([]);
-											setassociado(vaziu);
-											setAvancar(false);
-										}
-									}}
-									style={{
-										marginTop: 20,
-										padding: 10,
-										width: "100%",
-										backgroundColor: "white",
-										elevation: 2,
-										borderRadius: 5,
-									}}>
-									<Text style={{ fontWeight: "bold", color: primary }}>
-										{" "}
-										Nome:{" "}
-										<Text style={{ fontWeight: "100", color: primary }}>
-											{item.NOME}
-										</Text>{" "}
-									</Text>
-									<Text style={{ fontWeight: "bold", color: primary }}>
-										Dependencia:{" "}
-										<Text style={{ fontWeight: "100", color: primary }}>
-											{item.descri}
+							{dependentes.map((item) => {
+								return (
+									<TouchableOpacity
+										key={item.Cd_dependente}
+										onPress={() => {
+											if (item.permissao != "1") {
+												Alert.alert(
+													"",
+													"Este dependente não possui permissao para esse tipo de atendimento. É necessario solicitar ao titular da conta essa permissão."
+												);
+											} else {
+												if (item.Cartao_Recebido) {
+													Alert.alert(
+														"",
+														"Este associado já possui o CARTÃO DO ASSOCIADO, é indispensável a apresentação deste para efetuar o lançamento"
+													);
+												} else {
+													setImput("");
+													props.navigation.navigate("CadastrarVenda", {
+														cartao: imput,
+														matricula: item.Matricula,
+														dep: item.Cd_dependente,
+														nome: item.NOME,
+														id_gds: state.id_gds,
+														titular: item.titular,
+													});
+													setRetorno(retornopadrao);
+													setDependentes([]);
+													setassociado(vaziu);
+													setAvancar(false);
+												}
+											}
+										}}
+										style={{
+											marginTop: 20,
+											padding: 10,
+											width: "100%",
+											backgroundColor:
+												item.permissao == "1" ? "white" : danverBackground,
+											elevation: 2,
+											borderRadius: 5,
+										}}>
+										<Text style={{ fontWeight: "bold", color: primary }}>
+											{" "}
+											Nome:{" "}
+											<Text style={{ fontWeight: "100", color: primary }}>
+												{item.NOME}
+											</Text>{" "}
 										</Text>
-										{/* Dep: <Text style={{ fontWeight: "100", color: primary }}>{item.Cd_dependente}</Text> */}
-									</Text>
-								</TouchableOpacity>
-							))}
+										<Text style={{ fontWeight: "bold", color: primary }}>
+											Dependencia:{" "}
+											<Text style={{ fontWeight: "100", color: primary }}>
+												{item.descri}
+											</Text>
+											{/* Dep: <Text style={{ fontWeight: "100", color: primary }}>{item.Cd_dependente}</Text> */}
+										</Text>
+									</TouchableOpacity>
+								);
+							})}
 						</View>
 					</>
 				)
@@ -371,7 +381,7 @@ export default EfetuarVendas = (props) => {
 						</Text>
 					)}
 
-					<Text>Cartao: {mensagem}</Text>
+					<Text>Cartão: {mensagem}</Text>
 				</View>
 			)}
 			{avancar && (

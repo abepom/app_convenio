@@ -45,7 +45,7 @@ const CadastrarVenda = (props) => {
 
 		if (valor) {
 			const dados = await api({
-				url: "/efetuarVendas",
+				url: "/LancarVenda",
 				method: "POST",
 				data: { matricula, dep, valor, cupom, data },
 				headers: { "x-access-token": token },

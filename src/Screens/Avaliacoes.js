@@ -356,7 +356,7 @@ export default function telas(props) {
 						/>
 					}
 					data={avaliacoes}
-					style={{ width: "98%" }}
+					style={{ width: "90%" }}
 					keyExtractor={(item, index) => index}
 					renderItem={({ item }) => {
 						if (item.erro) {
