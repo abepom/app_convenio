@@ -24,9 +24,32 @@ const Drawer = (props) => {
 						break;
 				}
 			});
+
 			setMenu({ ...props, items: itens });
 		} else {
-			setMenu({ ...props });
+			if (convenio.tipo_lancamento == 3) {
+				menu.items.map((item) => {
+					switch (item.key) {
+						case "AdministrarUsuarios":
+						case "Procedimentos":
+							break;
+						default:
+							itens.push({ ...item });
+							break;
+					}
+				});
+			} else {
+				menu.items.map((item) => {
+					switch (item.key) {
+						case "AdministrarUsuarios":
+							break;
+						default:
+							itens.push({ ...item });
+							break;
+					}
+				});
+			}
+			setMenu({ ...props, items: itens });
 		}
 	}, [props]);
 

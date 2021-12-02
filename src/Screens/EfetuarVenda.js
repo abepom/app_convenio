@@ -39,7 +39,7 @@ export default EfetuarVendas = (props) => {
 	const retornopadrao = { retorno: false, mensagem: "" };
 
 	const [associado, setassociado] = useState(vaziu);
-	const [imput, setImput] = useState("47820100001");
+	const [imput, setImput] = useState("");
 	const [dependentes, setDependentes] = useState([]);
 	const [mensagem, setMensagem] = useState("");
 	const [avancar, setAvancar] = useState(false);
@@ -54,19 +54,21 @@ export default EfetuarVendas = (props) => {
 	};
 
 	const consultarCartao = async (cartao) => {
-		let verificaProcedimento = state.procedimentos.filter((item) => {
-			if (!item.desabilitado) {
-				return true;
-			} else {
-				return false;
+		if (state.tipo_lancamento != "3") {
+			let verificaProcedimento = state.procedimentos.filter((item) => {
+				if (!item.desabilitado) {
+					return true;
+				} else {
+					return false;
+				}
+			});
+			if (verificaProcedimento.length == 0) {
+				Alert.alert(
+					"ATENÇÃO",
+					"É necessario possuir pelo menos um procedimento ativol.\n\nAtive um procedimento no menu procedimento ou solicite ao setor de convênios que cadastre pelo menos um procedimento."
+				);
+				return props.navigation.navigate("Start");
 			}
-		});
-		if (verificaProcedimento.length == 0) {
-			Alert.alert(
-				"ATENÇÃO",
-				"É necessario possuir pelo menos um procedimento ative.\n\nAtive um procedimento no menu procedimento ou solicite ao setor de convenios que cadastre pelo menos um procedimento."
-			);
-			return props.navigation.navigate("Start");
 		}
 		setAvancar(false);
 		setcarregando(true);
@@ -83,7 +85,7 @@ export default EfetuarVendas = (props) => {
 					},
 					headers: { "x-access-token": state.token },
 				});
-				console.log(validado.data);
+
 				if (validado.data.length) {
 					if (validado.data.retorno == 1) {
 						setMensagem(validado.data.mensagem);
@@ -316,16 +318,16 @@ export default EfetuarVendas = (props) => {
 								<TouchableOpacity
 									key={item.Cd_dependente}
 									onPress={() => {
-										if (item.Cartao_Recebido) {
+										if (item.permissao != "1") {
 											Alert.alert(
 												"",
-												"Este associado já possui o CARTÃO DO ASSOCIADO, é indispensável a apresentação deste para efetuar o lançamento"
+												"Este dependente não possui permissao para esse tipo de atendimento. É necessario solicitar ao titular da conta essa permissão."
 											);
 										} else {
-											if (item.permissao == "1") {
+											if (item.Cartao_Recebido) {
 												Alert.alert(
 													"",
-													"Este dependente não possui permissao para esse tipo de atendimento. É necessario solicitar ao titular da conta essa permissão."
+													"Este associado já possui o CARTÃO DO ASSOCIADO, é indispensável a apresentação deste para efetuar o lançamento"
 												);
 											} else {
 												setImput("");

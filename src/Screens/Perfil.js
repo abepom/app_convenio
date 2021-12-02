@@ -60,7 +60,7 @@ export default function TabViewExample(props) {
 	const [routes] = useState([
 		{ key: "1", title: "Dados Gerais" },
 		{ key: "2", title: "Endereços" },
-		{ key: "3", title: "Alterar Senha" },
+		{ key: "3", title: "Senha" },
 	]);
 
 	const renderScene = SceneMap({

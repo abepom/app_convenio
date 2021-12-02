@@ -10,6 +10,7 @@ import {
 	ImageBackground,
 	Animated,
 	Keyboard,
+	Alert,
 } from "react-native";
 import StatusBar from "../components/StatusBar";
 import logo from "../../assets/img/logo_abepom_branca.png";
@@ -64,7 +65,7 @@ const Login = (props) => {
 			setState(props.navigation.state.params);
 		}
 		if (Constants.isDevice && Platform.OS != "web") {
-			Updates.checkForUpdateAsync().then(async ({ isAvailable }) => {
+			Updates.checkForUpdateAsync().then(({ isAvailable }) => {
 				if (isAvailable) {
 					Updates.fetchUpdateAsync();
 					Alert.alert(

@@ -120,7 +120,7 @@ const ConsultarVendas = (props) => {
 				headers: { "x-access-token": token },
 			});
 			setvendas(dados.data);
-			console.log(dados);
+
 			// const [contatoConvenio] = await api({
 			// 	method: "get",
 			// 	url: "/contato",

@@ -128,7 +128,7 @@ const App = createDrawerNavigator(
 				drawerIcon: (props) => (
 					<ItemDrawer {...props} icone={imagem.statistics} />
 				),
-				drawerLabel: "Repasses Futuros",
+				drawerLabel: "Repasses",
 			},
 		},
 		AdministrarUsuarios: {

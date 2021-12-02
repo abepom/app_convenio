@@ -46,9 +46,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 		setConvenio({ ...convenio, procedimentos: proced });
 	};
 	useEffect(() => {
-		if (!procedimentos.length) {
-			carregarProcedimentos();
-		}
+		carregarProcedimentos();
 	}, []);
 	useEffect(() => {
 		if (
@@ -67,9 +65,18 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 
 	const Lancar = async () => {
 		let valor = quantidade * procedimento.Valor_convenio;
-
+		console.log({
+			tipo_lancamento,
+			cd_da_area,
+			matricula,
+			dep,
+			data: dataSel,
+			procedimento: procedimento.Value,
+			quantidade,
+			valor,
+		});
 		const { data } = await api({
-			url: "/efetuarVendas",
+			url: "/LancarVenda",
 			method: "POST",
 
 			data: {
@@ -275,9 +282,9 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 							selected={procedimento}
 							showAlphabeticalIndex={true}
 							autoGenerateAlphabeticalIndex={true}
-							selectPlaceholderText={"Choose one..."}
-							searchPlaceholderText={"Search..."}
-							requireSelection={false}
+							selectPlaceholderText={"Selecione um..."}
+							searchPlaceholderText={"Buscar..."}
+							requireSelection={true}
 							autoSort={false}
 							renderListItem={(a, item) => (
 								<View

@@ -39,7 +39,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 			.replace("R$ ", "");
 
 		const { data } = await api({
-			url: "/efetuarVendas",
+			url: "/LancarVenda",
 			method: "POST",
 
 			data: {

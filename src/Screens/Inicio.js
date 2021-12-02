@@ -38,7 +38,7 @@ export default (props) => {
 					Updates.fetchUpdateAsync();
 					Alert.alert(
 						"ATUALIZAÇÃO",
-						"O aplicativo ABEPOM Convênios foi atualizado com sucesso, estamos reiniciando o aplicativo.",
+						"O aplicativo ABEPOM Convênios foi atualizado com sucesso.\n\n Recomendamos que reiniciando o aplicativo.",
 						[
 							{
 								text: "CONFIRMAR",
@@ -49,7 +49,6 @@ export default (props) => {
 							},
 						]
 					);
-					Updates.reloadAsync();
 				}
 			});
 		}
@@ -143,6 +142,21 @@ export default (props) => {
 		setConv({ ...convenio, primeiro_acesso: false });
 		setModal(false);
 	};
+	const BtnProcedimentos = () => (
+		<TouchableOpacity
+			style={[styles.itemMenu]}
+			onPress={() =>
+				props.navigation.navigate("Procedimentos", {
+					load: new Date(),
+				})
+			}>
+			<Image
+				source={require("../../assets/img/list.png")}
+				style={styless.imgMenu}
+			/>
+			<Text style={[styles.textMenu]}>PROCEDIMENTOS</Text>
+		</TouchableOpacity>
+	);
 
 	const reprovarTermo = async () => {
 		await api({
@@ -302,7 +316,7 @@ export default (props) => {
 						source={icone}
 						style={{ width: 40, height: 40, marginHorizontal: 10 }}
 					/>
-					<Text style={styless.titulo}>ABEPOM {convenio.tipo_lancamento}</Text>
+					<Text style={styless.titulo}>ABEPOM </Text>
 				</View>
 				<ScrollView>
 					<View style={styles.linhaMenu}>
@@ -393,21 +407,11 @@ export default (props) => {
 									source={require("../../assets/img/statistics.png")}
 									style={styless.imgMenu}
 								/>
-								<Text style={styles.textMenu}>Repasses Futuros</Text>
+								<Text style={styles.textMenu}>Repasses</Text>
 							</TouchableOpacity>
-							<TouchableOpacity
-								style={[styles.itemMenu]}
-								onPress={() =>
-									props.navigation.navigate("Procedimentos", {
-										load: new Date(),
-									})
-								}>
-								<Image
-									source={require("../../assets/img/list.png")}
-									style={styless.imgMenu}
-								/>
-								<Text style={[styles.textMenu]}>PROCEDIMENTOS</Text>
-							</TouchableOpacity>
+							{convenio.tipo_lancamento == 1 && <BtnProcedimentos />}
+							{convenio.tipo_lancamento == 2 && <BtnProcedimentos />}
+							{convenio.tipo_lancamento == 4 && <BtnProcedimentos />}
 						</View>
 					)}
 				</ScrollView>

@@ -91,7 +91,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 	};
 	const Lancar = async () => {
 		const { data } = await api({
-			url: "/efetuarVendas",
+			url: "/LancarVenda",
 			method: "POST",
 
 			data: {
@@ -265,9 +265,9 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 								selected={procedimento}
 								showAlphabeticalIndex={true}
 								autoGenerateAlphabeticalIndex={true}
-								selectPlaceholderText={"Selecione um procedimento..."}
-								searchPlaceholderText={"Busca..."}
-								requireSelection={false}
+								selectPlaceholderText={"Selecione um..."}
+								searchPlaceholderText={"Buscar..."}
+								requireSelection={true}
 								autoSort={false}
 								renderListItem={(a, item) => {
 									return (
