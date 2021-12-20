@@ -317,6 +317,15 @@ export default (props) => {
 						style={{ width: 40, height: 40, marginHorizontal: 10 }}
 					/>
 					<Text style={styless.titulo}>ABEPOM </Text>
+					<TouchableOpacity
+						style={[styless.menu, { left: null, right: 20 }]}
+						onPress={() => props.navigation.navigate("Notificacoes")}>
+						<Icone
+							style={{ color: "white" }}
+							name={"message-text-outline"}
+							size={28}
+						/>
+					</TouchableOpacity>
 				</View>
 				<ScrollView>
 					<View style={styles.linhaMenu}>

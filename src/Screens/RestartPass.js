@@ -2,14 +2,11 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Dimensions, Text } from "react-native";
 import styles, { danger, danverBackground, primary } from "../utils/Style";
 import LoginAdm from "../components/LoginAdm";
-import LoginPDV from "../components/LoginPDV";
-import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 
 import api from "../api";
 
 import MenuTop from "../components/MenuTop";
 import { ScrollView } from "react-native-gesture-handler";
-const initialLayout = { width: Dimensions.get("window").width };
 const Login = (props) => {
 	const [carregando, setCarregando] = useState(false);
 
@@ -34,7 +31,7 @@ const Login = (props) => {
 		if (doc) {
 			const { data } = await api({
 				url: "/user/resetPass",
-				data: imput,
+				data: { ...imput, convenios: true },
 				method: "post",
 			});
 
@@ -66,28 +63,6 @@ const Login = (props) => {
 		{ key: "2", title: "Ponto de venda" },
 	]);
 
-	const renderScene = SceneMap({
-		"2": () => (
-			<LoginPDV
-				{...props}
-				setState={setState}
-				state={state}
-				func={resetSenha}
-				redefinirSenha
-				carregando={carregando}
-			/>
-		),
-		"1": () => (
-			<LoginAdm
-				{...props}
-				carregando={carregando}
-				setState={setState}
-				state={state}
-				func={resetSenha}
-				redefinirSenha
-			/>
-		),
-	});
 	return (
 		<>
 			<View
@@ -109,23 +84,13 @@ const Login = (props) => {
 								Você receberá um e-mail com a nova senha.
 							</Text>
 						</View>
-						<TabView
-							navigationState={{ index, routes }}
-							renderScene={renderScene}
-							onIndexChange={setIndex}
-							style={{
-								marginTop: 20,
-							}}
-							initialLayout={initialLayout}
-							lazy={true}
-							renderTabBar={(props) => (
-								<TabBar
-									{...props}
-									indicatorStyle={{ backgroundColor: "white" }}
-									style={{ backgroundColor: primary, elevation: 1 }}
-									labelStyle={styles.textoM}
-								/>
-							)}
+						<LoginAdm
+							{...props}
+							carregando={carregando}
+							setState={setState}
+							state={state}
+							func={resetSenha}
+							redefinirSenha
 						/>
 					</ScrollView>
 				</MenuTop>
@@ -133,38 +98,5 @@ const Login = (props) => {
 		</>
 	);
 };
-
-const estilos = StyleSheet.create({
-	buttonView: {
-		position: "relative",
-		width: "100%",
-		justifyContent: "space-around",
-
-		marginHorizontal: "10%",
-		marginVertical: 10,
-		flexDirection: "row",
-	},
-	retornoBackend: {
-		backgroundColor: danverBackground,
-		width: "80%",
-		borderRadius: 5,
-		alignItems: "center",
-		margin: 5,
-		padding: 10,
-		borderColor: danger,
-	},
-	cabecalho: {
-		color: "white",
-		width: "80%",
-		marginTop: 20,
-		textAlign: "justify",
-	},
-	conteiner: {
-		width: "100%",
-
-		backgroundColor: primary,
-		alignItems: "center",
-	},
-});
 
 export default Login;

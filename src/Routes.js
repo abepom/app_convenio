@@ -23,6 +23,8 @@ import RepassesFuturos from "./Screens/RepassesFuturos";
 import TermoAdasao from "./Screens/TermoAdasao";
 import AdministrarUsuarios from "./Screens/AdministrarUsuarios";
 import Update from "./Screens/Update";
+import Notificacoes from "./Screens/Notificacoes";
+import Icone from "@expo/vector-icons/MaterialCommunityIcons";
 
 const venda = createStackNavigator(
 	{
@@ -129,6 +131,19 @@ const App = createDrawerNavigator(
 					<ItemDrawer {...props} icone={imagem.statistics} />
 				),
 				drawerLabel: "Repasses",
+			},
+		},
+		Notificacoes: {
+			screen: Notificacoes,
+			navigationOptions: {
+				drawerIcon: (props) => (
+					<Icone
+						style={{ color: primary }}
+						name={"message-text-outline"}
+						size={27}
+					/>
+				),
+				drawerLabel: "Notificacões",
 			},
 		},
 		AdministrarUsuarios: {

@@ -11,14 +11,13 @@ import {
 import { TextInput } from "react-native-paper";
 import { themeLight as theme } from "../../utils/theme";
 import styles, { primary, sucess, danger } from "../../utils/Style";
-import { TextInputMask } from "react-native-masked-text";
+
 import PickerModal from "react-native-picker-modal-view";
 import useConvenio from "../../Data/Convenio";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Carregando from "../../components/Carregando";
 import api from "../../api";
 import formatCurrency from "currency-formatter";
-import imagens from "../../utils/imagens";
 const LancamentoComProntuario = (props) => {
 	const { associado } = props;
 	const { matricula, dep } = associado;
@@ -31,7 +30,7 @@ const LancamentoComProntuario = (props) => {
 	const [descricao, setDescricao] = useState("");
 	const [modal, setModal] = useState(false);
 	const [modalProntuario, setModalProntuario] = useState(false);
-	const [prontuario, setProntuario] = useState([]);
+
 	const [msnModal, setMsnModal] = useState({
 		erro: true,
 		mensagem: "",
@@ -102,8 +101,8 @@ const LancamentoComProntuario = (props) => {
 					console.log(1);
 				}
 			} else {
-				console.log(2);
 				await ContinuarLancamento();
+				Alert.alert("SUCESSO", "O prontuario foi criado com sucesso.");
 				props.navigation.goBack();
 			}
 		} else {
@@ -479,9 +478,7 @@ const LancamentoComProntuario = (props) => {
 								]}
 								onPress={Lancar}>
 								<Text style={{ color: "white" }}>
-									{mostrarItens
-										? "ADICIONAR AO PRONTUARIO"
-										: "CRIAR PRONTUARIO"}
+									{mostrarItens ? "ADICIONAR AO PRONTUARIO" : "PROSSEGUIR"}
 								</Text>
 							</TouchableOpacity>
 						) : (

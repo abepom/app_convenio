@@ -321,13 +321,13 @@ export default EfetuarVendas = (props) => {
 										if (item.permissao != "1") {
 											Alert.alert(
 												"",
-												"Este dependente não possui permissao para esse tipo de atendimento. É necessario solicitar ao titular da conta essa permissão."
+												"Este dependente não possui permissão para esse tipo de atendimento. É necessário solicitar ao titular da conta essa permissão."
 											);
 										} else {
 											if (item.Cartao_Recebido) {
 												Alert.alert(
 													"",
-													"Este associado já possui o CARTÃO DO ASSOCIADO, é indispensável a apresentação deste para efetuar o lançamento"
+													"Este associado já possui o CARTÃO DO ASSOCIADO, é indispensável a apresentação deste para efetuar o lançamento."
 												);
 											} else {
 												setImput("");
@@ -401,7 +401,7 @@ export default EfetuarVendas = (props) => {
 						</Text>
 					)}
 
-					<Text>Cartao: {mensagem}</Text>
+					<Text>Cartão: {mensagem}</Text>
 				</View>
 			)}
 			{avancar && (
@@ -422,7 +422,7 @@ export default EfetuarVendas = (props) => {
 						styles.btnDefault,
 						{ paddingHorizontal: 30 },
 					]}>
-					<Text style={styles.btnDefaultText}>EFETUAR VENDA</Text>
+					<Text style={styles.btnDefaultText}>EFETUAR LANÇAMENTO</Text>
 				</TouchableOpacity>
 			)}
 		</MenuTop>

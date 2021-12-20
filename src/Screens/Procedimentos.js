@@ -49,7 +49,7 @@ const Screens = (props) => {
 		await carregarProcedimentos();
 	};
 	return (
-		<MenuTop {...props} drawer title="Lançar">
+		<MenuTop {...props} drawer title="Procedimentos">
 			<View style={{ width: "100%" }}>
 				<Text
 					style={{

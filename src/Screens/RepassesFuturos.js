@@ -105,7 +105,7 @@ export default function RepassesFuturos(props) {
 			<MenuTop drawer {...props} title={"Repasses"}>
 				<View style={{ flexDirection: "row", padding: 10 }}>
 					<TextInput
-						label="MES"
+						label="MÊS"
 						style={{ flex: 1, margin: 5 }}
 						dense
 						value
@@ -295,7 +295,7 @@ export default function RepassesFuturos(props) {
 												fontSize: 10,
 												color: primary,
 											}}>
-											Matricula:{" "}
+											Matrícula:{" "}
 										</Text>
 										<Text> {item.Matricula}</Text>
 										<Text

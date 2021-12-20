@@ -51,20 +51,6 @@ const Load = (props) => {
 		setMostrarSlogan2(true);
 	};
 
-	const conectar = async () => {
-		setConv({ ...conv, aut: false });
-		try {
-			if (!usuario) {
-				return navigation.navigate("Login");
-			} else {
-				return navigation.navigate("Start");
-			}
-		} catch (error) {
-			navigation.navigate("Login");
-		}
-	};
-	const [mudarCor] = useState(new Animated.Value(0));
-
 	const apagarSlogan = () => {
 		Animated.timing(sloganFade, {
 			toValue: 0,
@@ -77,10 +63,7 @@ const Load = (props) => {
 			useNativeDriver: true,
 		}).start();
 	};
-	let barraProgresso = load.interpolate({
-		inputRange: [0, 1, 2],
-		outputRange: ["0%", "80%", "100%"],
-	});
+
 	const onLoad = async () => {
 		Animated.timing(opacity, {
 			toValue: 1,
@@ -388,47 +371,6 @@ const Load = (props) => {
 						</View>
 						<Text style={{ color: "#fff" }}>Versão: {app.expo.version}</Text>
 					</View>
-					{/* <View
-						style={[
-							{
-								width: "80%",
-								alignSelf: "center",
-								bottom: 40,
-							},
-						]}>
-						<Text
-							style={{
-								color: "white",
-								zIndex: 30,
-								position: "absolute",
-								marginHorizontal: 20,
-								alignSelf: "center",
-							}}>
-							{atualizando}
-						</Text>
-						<Animated.View
-							style={{
-								borderRadius: 15,
-
-								borderColor: "white",
-								borderWidth: 1,
-								position: "absolute",
-								width: "100%",
-								height: 20,
-								zIndex: 10,
-							}}
-						/>
-						<Animated.View
-							style={{
-								borderRadius: 15,
-								backgroundColor: "#4da5db",
-								position: "absolute",
-								width: barraProgresso,
-								height: 20,
-								zIndex: 11,
-							}}
-						/>
-					</View> */}
 				</Animated.View>
 			</ImageBackground>
 		</View>

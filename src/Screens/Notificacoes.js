@@ -23,34 +23,44 @@ export default function Notificacoes(props) {
 	const [notificacoes, setNotificacoes] = useState(
 		props.navigation.state.params
 	);
-	function getNotificacoes() {
-		setNotificacoes(null);
-		api
-			.get("/user/notificacoes", {
+	async function getNotificacoes() {
+		setNotificacoes([]);
+		try {
+			const { data } = await api({
+				url: "/user/notificacoes",
 				params: { cd_convenio: convenio.cd_convenio },
-			})
-			.then(({ data }) => {
-				setNotificacoes(data);
-				let msns = data.filter((item) => {
-					if (!item.ACMI_lido) {
-						return item;
-					}
-				}).length;
-				setLoad("notificacao");
+				headers: { "x-access-token": convenio.token },
+				method: "GET",
 			});
+			setNotificacoes(data);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	useEffect(() => {
 		getNotificacoes();
 	}, []);
 
-	function lerNotificacao(id) {
-		setNotificacoes([]);
-		api.post("/user/LerNotificacoes", { id }).then((a) => getNotificacoes());
+	async function lerNotificacao(id) {
+		await api({
+			url: "/user/LerNotificacoes",
+			data: { id },
+			headers: { "x-access-token": convenio.token },
+			method: "POST",
+		});
+		getNotificacoes();
 	}
 	return (
-		<View>
-			<MenuTop drawer {...props} title={"Mensagens"}>
+		<View
+			style={{
+				width: "100%",
+				height: "100%",
+
+				justifyContent: "center",
+				backgroundColor: "#f1f1f1",
+			}}>
+			<MenuTop drawer {...props} title={"Notificações"}>
 				<FlatList
 					refreshControl={
 						<RefreshControl
@@ -61,6 +71,7 @@ export default function Notificacoes(props) {
 					ListEmptyComponent={() => (
 						<View
 							style={{
+								flex: 1,
 								width: "100%",
 								height: "100%",
 								alignItems: "center",
@@ -74,7 +85,7 @@ export default function Notificacoes(props) {
 					keyExtractor={(item) => item.Nr_lancamento}
 					renderItem={({ item }) => {
 						return (
-							<View style={styles.item}>
+							<View style={styles.item} key={item.Nr_lancamento}>
 								<View
 									style={{
 										borderTopLeftRadius: 5,
