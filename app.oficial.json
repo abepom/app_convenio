@@ -2,7 +2,7 @@
 	"expo": {
 		"name": "Farmácia",
 		"slug": "abepom_farmacia",
-		"version": "1.3.36",
+		"version": "0.1",
 		"description": "Ao concluir a atualização iremos reiniciar\n o aplicativo Automaticamente. Aguarde...",
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
@@ -16,7 +16,7 @@
 
 		"ios": {
 			"bundleIdentifier": "br.org.abepom.farmacia",
-			"buildNumber": "1.3.34",
+			"buildNumber": "0.1",
 			"backgroundColor": "#f1f1f1",
 			"icon": "./assets/icon-ios.png",
 			"supportsTablet": true,
@@ -65,7 +65,7 @@
 				"resizeMode": "cover"
 			},
 			"package": "br.org.abepom.farmacia",
-			"versionCode": 59,
+			"versionCode": 1,
 			"backgroundColor": "#03254E"
 		},
 		"packagerOpts": {

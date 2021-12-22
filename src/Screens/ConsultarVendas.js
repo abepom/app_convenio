@@ -311,7 +311,7 @@ const ConsultarVendas = (props) => {
 									paddingHorizontal: 5,
 									width: "90%",
 								}}>
-								<Text style={{ fontSize: 20, textAlign: "justify" }}>
+								<Text style={{ fontSize: 20, textAlign: "center" }}>
 									{retornoExclusao}
 								</Text>
 								{retornoExclusao.indexOf(
