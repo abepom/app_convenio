@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
 	View,
 	Text,
@@ -44,7 +44,7 @@ for (let i = new Date().getFullYear(); i >= new Date().getFullYear() - 5; i--) {
 
 const ConsultarVendas = (props) => {
 	const [refreshing, setRefreshing] = useState(false);
-	const [{ id_gds, usuario, token }] = useConvenio();
+	const [{ id_gds, tipo_lancamento, usuario, token }] = useConvenio();
 	const [mes, setMes] = useState(false);
 	const [dataOld, setDataOld] = useState("");
 	const [data, setData] = useState(
@@ -61,11 +61,15 @@ const ConsultarVendas = (props) => {
 	const [vendas, setvendas] = useState([]);
 	const [load, setLoad] = useState(false);
 	const [modal, setModal] = useState(false);
+	const [modalVisualizar, setModalVisualizar] = useState(false);
 	const [msn, setMsn] = useState("");
 
 	const [conteudoModal, setConteudoModal] = useState(null);
 	const [retornoExclusao, setRetornoExclusao] = useState("");
 	const [carregando, setCarregando] = useLoad();
+	const [carregandoItemVenda, setCarregandoItemVenda] = useState(false);
+	const [ItensVenda, setItensVenda] = useState([]);
+
 	useEffect(() => {
 		getConsulta();
 	}, [retornoExclusao]);
@@ -74,6 +78,35 @@ const ConsultarVendas = (props) => {
 			getConsulta();
 		}
 	}, []);
+	useLayoutEffect(() => {
+		if (modalVisualizar) {
+			setCarregandoItemVenda(true);
+			console.log(conteudoModal);
+			if (tipo_lancamento != "1") {
+				api({
+					method: "get",
+					url: "/ConsultarItemVenda",
+					params: { ...conteudoModal },
+					headers: { "x-access-token": token },
+				}).then(({ data }) => {
+					console.log(data);
+					if (tipo_lancamento == "3" && data[0].Valor == 0) {
+						data[0].Valor = conteudoModal.Valor;
+					}
+					setItensVenda(data);
+					setCarregandoItemVenda(false);
+				});
+			} else {
+				setItensVenda([
+					{
+						Valor: conteudoModal.Valor,
+						descricao_procedimento: conteudoModal.Obs,
+					},
+				]);
+				setCarregandoItemVenda(false);
+			}
+		}
+	}, [modalVisualizar]);
 	useEffect(() => {
 		if (carregando == "ConsultarVendas" || carregando == "todos") {
 			getConsulta();
@@ -356,6 +389,180 @@ const ConsultarVendas = (props) => {
 					)}
 				</View>
 			</Modal>
+			<Modal visible={modalVisualizar} transparent {...props}>
+				<View
+					style={{
+						flex: 1,
+						alignItems: "center",
+						justifyContent: "center",
+						backgroundColor: "rgba(0, 0, 0, 0.5)",
+					}}>
+					{conteudoModal && (
+						<View
+							style={{
+								borderTopRightRadius: 4,
+								borderTopLeftRadius: 4,
+								backgroundColor: `white`,
+								paddingVertical: 10,
+								paddingHorizontal: 5,
+								width: "90%",
+							}}>
+							<View
+								style={{
+									flexDirection: "row",
+									justifyContent: "space-between",
+								}}>
+								<Text
+									style={[
+										styles.textoM,
+										{ fontWeight: "bold", marginVertical: 2 },
+									]}>
+									Lançamento:{" "}
+									<Text style={{ fontWeight: "100" }}>
+										{conteudoModal.Nr_lancamento}
+									</Text>
+								</Text>
+								<Text
+									style={[
+										styles.textoM,
+										{ fontWeight: "bold", marginVertical: 2 },
+									]}>
+									Matricula:
+									<Text style={{ fontWeight: "100" }}>
+										{" "}
+										{conteudoModal.Matricula}
+									</Text>
+								</Text>
+							</View>
+							<Text
+								style={[
+									styles.textoM,
+									{ fontWeight: "bold", marginVertical: 2 },
+								]}>
+								Associado:{" "}
+								<Text style={{ fontWeight: "100" }}>
+									{conteudoModal["Nome do dependente"]}
+								</Text>
+							</Text>
+
+							<View
+								style={{
+									flexDirection: "row",
+									justifyContent: "space-between",
+								}}>
+								<Text
+									style={[
+										styles.textoM,
+										{ fontWeight: "bold", marginVertical: 2 },
+									]}>
+									Parcelamento:
+									<Text style={{ fontWeight: "100" }}>
+										{" "}
+										{conteudoModal.quantidade_parcela ?? "1"} x{" "}
+										{formatCurrency.format(
+											conteudoModal.Valor_parcela ?? conteudoModal.Valor,
+											{
+												code: "BRL",
+											}
+										)}
+									</Text>
+								</Text>
+								<Text
+									style={[
+										styles.textoM,
+										{ fontWeight: "bold", marginVertical: 2 },
+									]}>
+									Data:
+									<Text style={{ fontWeight: "100" }}>
+										{" "}
+										{conteudoModal.Data}
+									</Text>
+								</Text>
+							</View>
+							{carregandoItemVenda ? (
+								<Carregando />
+							) : (
+								<>
+									<View style={{ flexDirection: "row", marginTop: 20 }}>
+										<Text style={{ width: "75%" }}>
+											<Text
+												style={{
+													color: primary,
+													fontSize: 10,
+													fontWeight: "bold",
+												}}>
+												Procedimento
+											</Text>
+										</Text>
+										<Text>
+											<Text
+												style={{
+													color: primary,
+													fontSize: 10,
+													fontWeight: "bold",
+												}}>
+												Valor
+											</Text>
+										</Text>
+									</View>
+									<View
+										style={{
+											flex: 1,
+											marginVertical: 5,
+											borderBottomColor: primary,
+											borderBottomWidth: 2,
+										}}
+									/>
+									<FlatList
+										data={ItensVenda}
+										style={{ maxHeight: 400 }}
+										keyExtractor={({ index }) => index}
+										renderItem={({ item, index }) => {
+											return (
+												<>
+													<View key={index} style={{ flexDirection: "row" }}>
+														<Text style={{ width: "75%" }}>
+															{item.descricao_procedimento}
+														</Text>
+														<Text>
+															{formatCurrency.format(item.Valor, {
+																code: "BRL",
+															})}
+														</Text>
+													</View>
+													<View
+														style={{
+															flex: 1,
+															marginVertical: 5,
+															borderBottomColor: primary,
+															borderBottomWidth: 2,
+														}}
+													/>
+												</>
+											);
+										}}
+									/>
+								</>
+							)}
+						</View>
+					)}
+					<TouchableOpacity
+						onPress={() => {
+							setModalVisualizar(false);
+						}}
+						style={{
+							borderBottomRightRadius: 4,
+							borderBottomLeftRadius: 4,
+							backgroundColor: sucessBack,
+							padding: 10,
+							width: "90%",
+							alignItems: "center",
+						}}>
+						<Text style={{ color: sucess }}>FECHAR</Text>
+					</TouchableOpacity>
+				</View>
+			</Modal>
+
 			<MenuTop
 				drawer
 				{...props}
@@ -417,6 +624,7 @@ const ConsultarVendas = (props) => {
 								/>
 							</TouchableOpacity>
 						</View>
+
 						<TouchableOpacity
 							onPress={() => setMes(!mes)}
 							style={{ flexDirection: "row" }}>
@@ -463,19 +671,7 @@ const ConsultarVendas = (props) => {
 							keyExtractor={({ index }) => index}
 							renderItem={({ item, index }) => {
 								return (
-									<TouchableOpacity
-										key={index}
-										onPress={() => {
-											if (item.Processado_desconto) {
-												setConteudoModal(null);
-												setRetornoExclusao(
-													"Essa cobrança já foi efetuada pela ABEPOM, entre em contato com nosso setor de convênios para mais informações."
-												);
-											} else {
-												setConteudoModal(item);
-											}
-											setModal(true);
-										}}>
+									<View key={index}>
 										<View
 											style={{
 												elevation: 2,
@@ -526,16 +722,6 @@ const ConsultarVendas = (props) => {
 														{item["Nome do dependente"]}
 													</Text>
 												</Text>
-												<Image
-													source={imagens.trash}
-													style={{
-														width: 20,
-														height: 20,
-														position: "absolute",
-														right: 0,
-														tintColor: danger,
-													}}
-												/>
 											</View>
 
 											<View
@@ -566,8 +752,74 @@ const ConsultarVendas = (props) => {
 													</Text>
 												</Text>
 											</View>
+											<View
+												style={{
+													flexDirection: "row",
+													justifyContent: "space-around",
+												}}>
+												{tipo_lancamento != "4" ? (
+													<>
+														<TouchableOpacity
+															onPress={() => {
+																setModalVisualizar(true);
+																setConteudoModal(item);
+															}}
+															style={{
+																backgroundColor: primary,
+																flex: 1,
+																alignItems: "center",
+																borderBottomLeftRadius: 5,
+																borderTopLeftRadius: 5,
+															}}>
+															<Text style={{ color: "white" }}>Visualizar</Text>
+														</TouchableOpacity>
+														<TouchableOpacity
+															onPress={() => {
+																if (item.Processado_desconto) {
+																	setConteudoModal(null);
+																	setRetornoExclusao(
+																		"Essa cobrança já foi efetuada pela ABEPOM, entre em contato com nosso setor de convênios para mais informações."
+																	);
+																} else {
+																	setConteudoModal(item);
+																}
+																setModal(true);
+															}}
+															style={{
+																backgroundColor: danger,
+																flex: 1,
+																alignItems: "center",
+																borderBottomRightRadius: 5,
+																borderTopRightRadius: 5,
+															}}>
+															<Text style={{ color: "white" }}>Cancelar</Text>
+														</TouchableOpacity>
+													</>
+												) : (
+													<TouchableOpacity
+														onPress={() => {
+															if (item.Processado_desconto) {
+																setConteudoModal(null);
+																setRetornoExclusao(
+																	"Essa cobrança já foi efetuada pela ABEPOM, entre em contato com nosso setor de convênios para mais informações."
+																);
+															} else {
+																setConteudoModal(item);
+															}
+															setModal(true);
+														}}
+														style={{
+															backgroundColor: danger,
+															flex: 1,
+															alignItems: "center",
+															borderRadius: 5,
+														}}>
+														<Text style={{ color: "white" }}>Cancelar</Text>
+													</TouchableOpacity>
+												)}
+											</View>
 										</View>
-									</TouchableOpacity>
+									</View>
 								);
 							}}
 						/>

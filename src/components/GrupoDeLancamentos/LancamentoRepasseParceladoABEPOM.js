@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import { themeLight as theme } from "../../utils/theme";
-import styles, { primary } from "../../utils/Style";
+import styles, { primary, danger } from "../../utils/Style";
 import PickerModal from "react-native-picker-modal-view";
 import useConvenio from "../../Data/Convenio";
 import Carregando from "../Carregando";
@@ -31,6 +31,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 		mensagem: "",
 	});
 	const [carregando, setCarregando] = useState(false);
+	const [parcelar, setParcelar] = useState(false);
 	const [selectedValue, setSelectedValue] = useState(1);
 
 	const [proceAdd, setProceAdd] = useState([]);
@@ -319,131 +320,142 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 				<View style={{ width: "100%", paddingHorizontal: "10%" }}>
 					<>
 						{proceAdd.map((proced, i) => (
-							<View
-								key={i}
-								style={{
-									width: "100%",
-									marginVertical: 2,
-									backgroundColor: "white",
-									borderRadius: 5,
-									padding: 5,
-									marginTop: 10,
-								}}>
-								<TextInput
-									label="Procedimentos"
-									dense
-									mode="outlined"
-									keyboardType="numeric"
-									theme={theme}
-									value
-									render={() => (
-										<Text style={{ fontSize: 10, padding: 10 }}>
-											{proced.Name}
-										</Text>
-									)}
-								/>
+							<View key={i}>
 								<View
 									style={{
+										marginVertical: 2,
+										backgroundColor: "white",
+										borderTopLeftRadius: 5,
+										borderTopRightRadius: 5,
+										padding: 10,
+										marginTop: 10,
 										flexDirection: "row",
-										justifyContent: "space-between",
-										elevation: 5,
-										shadowColor: "#ddd",
 									}}>
-									<TextInput
-										label="Valor"
-										dense
-										mode="outlined"
-										keyboardType="numeric"
-										theme={theme}
-										style={{ flex: 1 }}
-										value
-										render={() => (
-											<Text style={{ padding: 10 }}>
-												R$ {proced.Valor_convenio.toFixed(2)}
-											</Text>
-										)}
-									/>
-									<TouchableOpacity
-										onPress={() => {
-											let achouUm = 0;
-											setProceAdd(
-												proceAdd.filter((a) => {
-													if (a.Value == proced.Value) {
-														achouUm++;
-														if (achouUm > 1) {
-															return false;
-														} else {
-															return true;
-														}
-													} else {
-														return true;
-													}
-												})
-											);
-										}}
-										style={{
-											backgroundColor: primary,
-											padding: 8,
-											borderRadius: 50,
-											margin: 10,
-										}}>
-										<Image
-											source={imagens.trash}
+									<View style={{ width: "70%" }}>
+										<Text style={{ fontSize: 10 }}>PROCEDIMENTOS: </Text>
+										<Text
 											style={{
-												width: 15,
-												height: 15,
-												resizeMode: "contain",
-												tintColor: "white",
-											}}
-										/>
-									</TouchableOpacity>
+												fontSize: 10,
+												paddingHorizontal: 10,
+												paddingBottom: 10,
+											}}>
+											{proced.Name}
+										</Text>
+									</View>
+									<View
+										style={{
+											flexDirection: "row",
+											justifyContent: "space-between",
+											elevation: 5,
+											shadowColor: "#ddd",
+										}}>
+										<Text
+											style={{
+												fontSize: 16,
+												paddingHorizontal: 10,
+												paddingBottom: 10,
+											}}>
+											R$ {proced.Valor_convenio.toFixed(2)}
+										</Text>
+									</View>
 								</View>
+								<TouchableOpacity
+									onPress={() => {
+										let achouUm = 0;
+										setProceAdd(
+											proceAdd.filter((a) => {
+												if (a.Value == proced.Value) {
+													achouUm++;
+													if (achouUm > 1) {
+														return true;
+													} else {
+														return false;
+													}
+												} else {
+													return true;
+												}
+											})
+										);
+									}}
+									style={{
+										backgroundColor: danger,
+										height: 20,
+										borderBottomLeftRadius: 5,
+										borderBottomRightRadius: 5,
+										alignItems: "center",
+										justifyContent: "center",
+										flexDirection: "row",
+									}}>
+									<Image
+										source={imagens.trash}
+										style={{
+											width: 15,
+											height: 15,
+											resizeMode: "contain",
+											tintColor: "white",
+											paddingHorizontal: 10,
+										}}
+									/>
+									<Text style={{ color: "white", fontSize: 10 }}>EXCLUIR</Text>
+								</TouchableOpacity>
 							</View>
 						))}
 						{proceAdd.length > 0 && (
 							<>
-								<TextInput
-									label="PARCELAMENTO"
-									dense
-									mode="outlined"
-									keyboardType="numeric"
-									theme={theme}
-									style={{ flex: 1, marginTop: 30 }}
-									value
-									render={() => {
-										let total = proceAdd.reduce(
-											(total, item) => total + item.Valor_convenio,
-											0
-										);
-										return (
-											<Picker
-												mode="dropdown"
-												selectedValue={selectedValue}
-												onValueChange={(itemValue, itemIndex) => {
-													console.log(itemValue);
-													setSelectedValue(itemValue);
-												}}>
-												{quantidade.map((a, b) => {
-													return (
-														<Picker.Item
-															key={b}
-															label={`${a} x R$ ${(total / a).toFixed(2)}`}
-															value={a}
-														/>
-													);
-												})}
-											</Picker>
-										);
-									}}
-								/>
-								{!carregando ? (
-									<TouchableOpacity
-										style={[styles.btnDefault, { marginTop: 10 }]}
-										onPress={Lancar}>
-										<Text style={{ color: "white" }}>CADASTRAR LANÇAMENTO</Text>
-									</TouchableOpacity>
+								{parcelar ? (
+									<>
+										<TextInput
+											label="PARCELAMENTO"
+											dense
+											mode="outlined"
+											keyboardType="numeric"
+											theme={theme}
+											style={{ flex: 1, marginTop: 30 }}
+											value
+											render={() => {
+												let total = proceAdd.reduce(
+													(total, item) => total + item.Valor_convenio,
+													0
+												);
+												return (
+													<Picker
+														mode="dropdown"
+														selectedValue={selectedValue}
+														onValueChange={(itemValue, itemIndex) => {
+															console.log(itemValue);
+															setSelectedValue(itemValue);
+														}}>
+														{quantidade.map((a, b) => {
+															return (
+																<Picker.Item
+																	key={b}
+																	label={`${a} x R$ ${(total / a).toFixed(2)}`}
+																	value={a}
+																/>
+															);
+														})}
+													</Picker>
+												);
+											}}
+										/>
+										{!carregando ? (
+											<TouchableOpacity
+												style={[styles.btnDefault, { marginTop: 10 }]}
+												onPress={Lancar}>
+												<Text style={{ color: "white" }}>
+													CADASTRAR LANÇAMENTO
+												</Text>
+											</TouchableOpacity>
+										) : (
+											<Carregando style={{ marginTop: 30 }} />
+										)}
+									</>
 								) : (
-									<Carregando style={{ marginTop: 30 }} />
+									<TouchableOpacity
+										style={[styles.btnDefault, { marginTop: 30 }]}
+										onPress={() => setParcelar(true)}>
+										<Text style={{ color: "white" }}>PARCELAR</Text>
+									</TouchableOpacity>
 								)}
 							</>
 						)}
