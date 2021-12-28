@@ -25,6 +25,7 @@ import AdministrarUsuarios from "./Screens/AdministrarUsuarios";
 import Update from "./Screens/Update";
 import Notificacoes from "./Screens/Notificacoes";
 import Icone from "@expo/vector-icons/MaterialCommunityIcons";
+import Prontuarios from "./Screens/Prontuarios";
 
 const venda = createStackNavigator(
 	{
@@ -96,6 +97,14 @@ const App = createDrawerNavigator(
 				drawerLabel: () => {
 					return "Consultar";
 				},
+			},
+		},
+		Prontuarios: {
+			screen: Prontuarios,
+			navigationOptions: {
+				drawerLabel: () => "Consultar Prontuários",
+				drawerIcon: (props) => <ItemDrawer {...props} icone={imagem.paper} />,
+				drawerLabel: "Prontuários",
 			},
 		},
 		Avaliacao: {

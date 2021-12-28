@@ -1,0 +1,327 @@
+import React, { useEffect, useState } from "react";
+import {
+	View,
+	Text,
+	TouchableOpacity,
+	FlatList,
+	StyleSheet,
+	Modal,
+	ImageBackground,
+} from "react-native";
+import formatCurrency from "currency-formatter";
+import { TextInput } from "react-native-paper";
+import api from "../api";
+import MenuTop from "../components/MenuTop";
+import useConvenio from "../Data/Convenio";
+import styles, {
+	alert,
+	alertBack,
+	danger,
+	danverBackground,
+	primary,
+	sucess,
+	sucessBack,
+} from "../utils/Style";
+import { themeLight } from "../utils/theme";
+import Carregando from "../components/Carregando";
+import imagens from "../utils/imagens";
+
+export default (props) => {
+	const { state } = props.navigation;
+	const [matricula, setMatricula] = useState("");
+	const [carregarBotao, setCarregarBotao] = useState(false);
+	const [consulta, setConsulta] = useState(false);
+	const [modal, setModal] = useState(false);
+	const [listaProntuarios, setListaProntuarios] = useState([]);
+	const [prontuario, setProntuario] = useState({});
+	const [{ token }] = useConvenio();
+
+	const _ConsultarProntuario = async () => {
+		setConsulta(true);
+		setCarregarBotao(true);
+		const { data } = await api({
+			method: "get",
+			url: "/prontuarios",
+			params: { matricula },
+			headers: { "x-access-token": token },
+		});
+		setListaProntuarios(data);
+		setCarregarBotao(false);
+	};
+
+	const _ConsultarItensProntuario = async (item) => {
+		setModal(true);
+		console.log({ ...item, itens: JSON.parse(item.itens) });
+		setProntuario({ ...item, itens: JSON.parse(item.itens) });
+	};
+	return (
+		<>
+			<Modal visible={modal} transparent {...props}>
+				<View
+					style={{
+						flex: 1,
+						alignItems: "center",
+						justifyContent: "center",
+						backgroundColor: "rgba(0, 0, 0, 0.5)",
+					}}>
+					<View style={[style.modalConteiner, style.flexContainer]}>
+						<View>
+							<View style={style.row}>
+								<Text style={style.textoEsquerdo}>
+									<Text style={style.titulo}>Paciente{"\n"}</Text>{" "}
+									{prontuario.nome}
+								</Text>
+								<Text style={style.textoEsquerdo}>
+									<Text style={style.titulo}>Prontuario{"\n"}</Text>{" "}
+									{prontuario.ID_Prontuario}
+								</Text>
+							</View>
+							<View style={style.row}>
+								<Text style={style.textoEsquerdo}>
+									<Text style={style.titulo}>Primeiro Atendimento{"\n"}</Text>{" "}
+									{prontuario.Data_Inicio_Atendimento}
+								</Text>
+								<Text style={style.textoEsquerdo}>
+									<Text style={style.titulo}>Valor{"\n"}</Text>{" "}
+									{formatCurrency.format(
+										prontuario.Valor * prontuario.Quantidade_Atendimento,
+										{
+											code: "BRL",
+										}
+									)}
+								</Text>
+							</View>
+							<View style={style.row}>
+								<Text style={style.textoEsquerdo}>
+									<Text style={style.titulo}>Procedimento{"\n"}</Text>{" "}
+									{prontuario.desc_procedimento}
+								</Text>
+								<Text style={style.textoEsquerdo}>
+									<Text style={style.titulo}>Sessões{"\n"}</Text>{" "}
+									{prontuario.Quantidade_Atendimento}/
+									{prontuario.Previsao_Atendimento}
+								</Text>
+							</View>
+							<View style={style.row}>
+								<Text style={style.titulo}>Atendimentos</Text>
+							</View>
+							<FlatList
+								data={prontuario.itens}
+								style={{ maxHeight: 400 }}
+								keyExtractor={({ index }) => index}
+								renderItem={({ item, index }) => {
+									return (
+										<View
+											key={index}
+											style={{
+												flexDirection: "row",
+												borderWidth: 1,
+												padding: 3,
+												margin: 3,
+												borderRadius: 5,
+											}}>
+											<Text>
+												<Text style={style.titulo}>
+													{item.data_atendimento}
+													{"\n"}
+												</Text>
+
+												{item.Descricao}
+											</Text>
+										</View>
+									);
+								}}
+							/>
+						</View>
+					</View>
+					<TouchableOpacity
+						onPress={() => {
+							setModal(false);
+						}}
+						style={[
+							style.botao,
+							{ backgroundColor: danger, width: "80%", padding: 10 },
+						]}>
+						<Text style={style.textoBotao}>FECHAR</Text>
+					</TouchableOpacity>
+				</View>
+			</Modal>
+			<MenuTop title={state.routeName} drawer {...props}>
+				<Text style={{ marginTop: 10, fontSize: 18, color: primary }}>
+					Informe a matrícula do associado.
+				</Text>
+				<View
+					style={{
+						width: "80%",
+						justifyContent: "center",
+						flexDirection: "row",
+						marginVertical: 10,
+					}}>
+					<TextInput
+						accessibilityLabel="Matrícula"
+						key="Matrícula"
+						label="Matrícula"
+						dense
+						onChangeText={setMatricula}
+						maxLength={6}
+						mode="outlined"
+						style={{ width: "60%" }}
+						theme={themeLight}
+						keyboardType={"numeric"}
+						value={matricula}
+					/>
+					{carregarBotao ? (
+						<Carregando tamanho={40} />
+					) : (
+						<TouchableOpacity
+							style={[styles.btnDefault, { margin: 5 }]}
+							onPress={_ConsultarProntuario}>
+							<Text style={styles.btnDefaultText}> BUSCAR</Text>
+						</TouchableOpacity>
+					)}
+				</View>
+				<View
+					style={{
+						width: "80%",
+						justifyContent: "center",
+						flexDirection: "row",
+						marginVertical: 10,
+					}}>
+					{carregarBotao ? (
+						<Carregando />
+					) : (
+						<>
+							{consulta && (
+								<FlatList
+									data={listaProntuarios}
+									style={{ maxHeight: 600 }}
+									keyExtractor={({ index }) => index}
+									ListEmptyComponent={() => {
+										return (
+											<View
+												style={[
+													style.flexContainer,
+													style.botao,
+													{ backgroundColor: danger },
+												]}>
+												<View style={style.row}>
+													<Text style={style.textoBotao}>
+														Nenhum prontuário encontrado.
+													</Text>
+												</View>
+											</View>
+										);
+									}}
+									renderItem={({ item, index }) => {
+										return (
+											<>
+												<ImageBackground
+													source={
+														item.Finalizou_Atendimento
+															? imagens.check
+															: imagens.question
+													}
+													resizeMode="contain"
+													key={index}
+													style={[
+														style.flexContainer,
+														{
+															backgroundColor: item.Finalizou_Atendimento
+																? sucessBack
+																: "white",
+															zIndex: 1,
+															tintColor: item.Finalizou_Atendimento
+																? "#284c2622"
+																: "#7f693722",
+														},
+													]}
+													tintColor={
+														item.Finalizou_Atendimento
+															? "#284c2622"
+															: "#7f693722"
+													}>
+													<View style={style.row}>
+														<Text style={style.textoEsquerdo}>
+															<Text style={style.titulo}>Paciente{"\n"}</Text>
+															{item.nome}
+														</Text>
+														<Text style={style.textoEsquerdo}>
+															<Text style={style.titulo}>Prontuario{"\n"}</Text>
+															{item.ID_Prontuario}
+														</Text>
+													</View>
+													<View style={style.row}>
+														<Text style={style.textoEsquerdo}>
+															<Text style={style.titulo}>
+																Primeiro Atendimento{"\n"}
+															</Text>
+															{item.Data_Inicio_Atendimento}
+														</Text>
+														<Text style={style.textoEsquerdo}>
+															<Text style={style.titulo}>Valor{"\n"}</Text>
+															{formatCurrency.format(
+																item.Valor * item.Quantidade_Atendimento,
+																{
+																	code: "BRL",
+																}
+															)}
+														</Text>
+													</View>
+												</ImageBackground>
+												<View>
+													<TouchableOpacity
+														style={style.botao}
+														onPress={() => _ConsultarItensProntuario(item)}>
+														<Text style={style.textoBotao}>Visualizar</Text>
+													</TouchableOpacity>
+												</View>
+											</>
+										);
+									}}
+								/>
+							)}
+						</>
+					)}
+				</View>
+			</MenuTop>
+		</>
+	);
+};
+
+const style = StyleSheet.create({
+	titulo: {
+		fontWeight: "bold",
+		fontSize: 10,
+	},
+	flexContainer: {
+		backgroundColor: "white",
+		marginTop: 10,
+		padding: 10,
+		elevation: 3,
+		borderTopStartRadius: 5,
+		borderTopEndRadius: 5,
+	},
+	row: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		zIndex: 2,
+	},
+	textoEsquerdo: {
+		width: "70%",
+	},
+	botao: {
+		backgroundColor: primary,
+		alignItems: "center",
+		justifyContent: "center",
+		borderBottomStartRadius: 5,
+		borderBottomEndRadius: 5,
+		elevation: 3,
+	},
+	textoBotao: {
+		color: "white",
+	},
+	modalConteiner: {
+		backgroundColor: "white",
+		width: "80%",
+	},
+});

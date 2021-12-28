@@ -17,6 +17,7 @@ const Drawer = (props) => {
 			menu.items.map((item) => {
 				switch (item.key) {
 					case "RepassesFuturos":
+					case "Prontuarios":
 					case "AdministrarUsuarios":
 						break;
 					default:
@@ -32,6 +33,7 @@ const Drawer = (props) => {
 					switch (item.key) {
 						case "AdministrarUsuarios":
 						case "Procedimentos":
+						case "Prontuarios":
 							break;
 						default:
 							itens.push({ ...item });
@@ -39,15 +41,28 @@ const Drawer = (props) => {
 					}
 				});
 			} else {
-				menu.items.map((item) => {
-					switch (item.key) {
-						case "AdministrarUsuarios":
-							break;
-						default:
-							itens.push({ ...item });
-							break;
-					}
-				});
+				if (convenio.tipo_lancamento == 2) {
+					menu.items.map((item) => {
+						switch (item.key) {
+							case "AdministrarUsuarios":
+							case "Prontuarios":
+								break;
+							default:
+								itens.push({ ...item });
+								break;
+						}
+					});
+				} else {
+					menu.items.map((item) => {
+						switch (item.key) {
+							case "AdministrarUsuarios":
+								break;
+							default:
+								itens.push({ ...item });
+								break;
+						}
+					});
+				}
 			}
 			setMenu({ ...props, items: itens });
 		}
