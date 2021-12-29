@@ -1,5 +1,14 @@
 import React, { useState, useEffect, memo } from "react";
-import { View, Text, ScrollView, SafeAreaView, Image } from "react-native";
+import {
+	View,
+	Text,
+	ScrollView,
+	SafeAreaView,
+	Image,
+	TouchableOpacity,
+	Modal,
+	FlatList,
+} from "react-native";
 import { DrawerNavigatorItems } from "react-navigation-drawer";
 import styles, { primary } from "../utils/Style";
 import { expo } from "../../app.json";
@@ -7,8 +16,10 @@ import imagens from "../utils/imagens";
 import useConvenio from "../Data/Convenio";
 
 const Drawer = (props) => {
-	const [convenio] = useConvenio();
+	const [convenio, setConv] = useConvenio();
 	const [menu, setMenu] = useState(props);
+	const [modalAreas, setModalAreas] = useState(false);
+
 	let itens = [];
 
 	//verifica o tipo do usuario
@@ -70,6 +81,83 @@ const Drawer = (props) => {
 
 	return (
 		<>
+			{modalAreas && (
+				<Modal visible={modalAreas} transparent>
+					<View
+						style={{
+							height: "100%",
+							width: "100%",
+							backgroundColor: "#f1f1f1",
+							borderRadius: 5,
+							padding: 10,
+						}}>
+						<Text style={{ alignSelf: "center", marginTop: "10%" }}>
+							SELECIONE A ÁREA DE LANÇAMENTO
+						</Text>
+						<View style={{ marginBottom: "50%", paddingVertical: 5 }}>
+							<FlatList
+								data={convenio.areas}
+								keyExtractor={(item) => item.cd_da_area}
+								style={{
+									paddingVertical: 5,
+								}}
+								renderItem={({ item }) => {
+									if (item.cd_da_area != "0045")
+										return (
+											<View
+												style={{
+													margin: 5,
+
+													padding: 10,
+													alignItems: "center",
+												}}>
+												<TouchableOpacity
+													key="entrar"
+													style={[
+														styles.btnDefault,
+														{
+															padding: 10,
+															paddingHorizontal: 20,
+															backgroundColor: "#114267",
+															width: "80%",
+															height: 100,
+														},
+													]}
+													onPress={() => {
+														setConv({
+															...convenio,
+															tipo_lancamento: item.tipo_lancamento,
+															cd_da_area: item.cd_da_area,
+															nome_area: `${
+																convenio.areas.find(
+																	(i) => i.cd_da_area == item.cd_da_area
+																)["Descrição"]
+															}`,
+														});
+
+														setModalAreas(false);
+													}}>
+													<Image
+														source={{ uri: item.caminho_icone }}
+														style={{
+															width: 50,
+															height: 50,
+															resizeMode: "contain",
+															tintColor: "white",
+														}}
+													/>
+													<Text style={{ color: "white" }}>
+														{item["Descrição"]}
+													</Text>
+												</TouchableOpacity>
+											</View>
+										);
+								}}
+							/>
+						</View>
+					</View>
+				</Modal>
+			)}
 			<View
 				style={[
 					styles.row,
@@ -144,6 +232,38 @@ const Drawer = (props) => {
 								: `CPF: ${convenio.doc}`
 							: ""}
 					</Text>
+					{convenio.trocar_area ? (
+						<TouchableOpacity
+							onPress={() => {
+								setModalAreas(true);
+							}}>
+							<Text
+								style={{
+									fontSize: 10,
+									color: primary,
+									fontWeight: "bold",
+									elevation: 4,
+									zIndex: 10,
+								}}>
+								{convenio.nome_area}{" "}
+								<Image
+									source={imagens.loop}
+									style={{ width: 10, height: 10 }}
+								/>
+							</Text>
+						</TouchableOpacity>
+					) : (
+						<Text
+							style={{
+								fontSize: 10,
+								color: primary,
+								fontWeight: "bold",
+								elevation: 4,
+								zIndex: 10,
+							}}>
+							{convenio.nome_area}
+						</Text>
+					)}
 				</View>
 			</View>
 

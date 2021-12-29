@@ -89,7 +89,6 @@ export default (props) => {
 						data: { cd_da_area: convenio.cd_da_area },
 						headers: { "x-access-token": convenio.token },
 					});
-
 					conv = {
 						id_gds: data.id_gds,
 						nome_parceiro: data.nome_parceiro,
@@ -101,14 +100,20 @@ export default (props) => {
 						usuario: data.usuario,
 						nivel: data.nivel,
 						token: data.token,
+						areas: areas.data,
+						trocar_area: data.Cd_da_area == "0045" ? true : false,
 						cd_convenio: data.cd_convenio,
 						primeiro_acesso: data.primeiro_acesso,
 						tipo_lancamento: data.tipo_lancamento,
 						efetuarVenda: data.efetuarVenda,
 						cd_da_area: data.Cd_da_area,
+						nome_area: areas.data.find(
+							(item) => item.cd_da_area == data.Cd_da_area
+						)["Descrição"],
 						procedimentos: procedimentos.data,
 					};
 
+					console.log(conv);
 					if (!data.primeiro_acesso && data.Cd_da_area == "0045") {
 						setModalAreas(true);
 					}
@@ -278,6 +283,11 @@ export default (props) => {
 															...convenio,
 															tipo_lancamento: item.tipo_lancamento,
 															cd_da_area: item.cd_da_area,
+															nome_area: `${
+																areas.find(
+																	(i) => i.cd_da_area == item.cd_da_area
+																)["Descrição"]
+															}`,
 														});
 
 														setModalAreas(false);

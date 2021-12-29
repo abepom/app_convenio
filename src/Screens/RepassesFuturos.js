@@ -321,7 +321,6 @@ export default function RepassesFuturos(props) {
 									</View>
 									<View
 										style={{
-											justifyContent: "center",
 											marginLeft: 5,
 											width: "69%",
 										}}>
