@@ -29,6 +29,7 @@ export default function RepassesFuturos(props) {
 	const [mesano, setMesano] = useState(
 		`${new Date().getMonth() + 1}/${new Date().getFullYear()}`
 	);
+	const [{ Percentual_repasse }] = useConvenio();
 	const [mesanoConsulta, setMesanoConsulta] = useState(``);
 	const [carregando, setCarregando] = useLoad();
 	const mes = [
@@ -343,7 +344,7 @@ export default function RepassesFuturos(props) {
 												fontSize: 10,
 												color: primary,
 											}}>
-											Associado:{" "}
+											Associado:
 										</Text>
 										<Text> {item["NomeTitular"]}</Text>
 										<View style={{ flexDirection: "row" }}>
@@ -357,9 +358,13 @@ export default function RepassesFuturos(props) {
 													Valor:{" "}
 												</Text>
 												<Text style={{ fontSize: 18 }}>
-													{formatCurrency.format(item.subtotal, {
-														code: "BRL",
-													})}
+													{formatCurrency.format(
+														item.subtotal -
+															(item.subtotal * Percentual_repasse) / 100,
+														{
+															code: "BRL",
+														}
+													)}
 												</Text>
 											</View>
 											{item?.parcela && (
@@ -446,7 +451,12 @@ export default function RepassesFuturos(props) {
 							{repasses
 								? formatCurrency.format(
 										repasses.reduce(
-											(total, subtotal) => total + Number(subtotal.subtotal),
+											(total, subtotal) =>
+												total +
+												Number(
+													subtotal.subtotal -
+														(subtotal.subtotal * Percentual_repasse) / 100
+												),
 											0
 										),
 										{ code: "BRL" }

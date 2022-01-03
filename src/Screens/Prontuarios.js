@@ -7,6 +7,7 @@ import {
 	StyleSheet,
 	Modal,
 	ImageBackground,
+	Alert,
 } from "react-native";
 import formatCurrency from "currency-formatter";
 import { TextInput } from "react-native-paper";
@@ -97,13 +98,20 @@ export default (props) => {
 									{prontuario.desc_procedimento}
 								</Text>
 								<Text style={style.textoEsquerdo}>
-									<Text style={style.titulo}>Sessões{"\n"}</Text>{" "}
+									<Text style={style.titulo}>Subsidio{"\n"}</Text>{" "}
+									{formatCurrency.format(prontuario.Valor_Subsidio, {
+										code: "BRL",
+									})}
+								</Text>
+							</View>
+							<View style={[style.row, { justifyContent: null }]}>
+								<Text style={[style.titulo, { width: "70%" }]}>
+									Atendimentos
+								</Text>
+								<Text style={style.titulo}>
 									{prontuario.Quantidade_Atendimento}/
 									{prontuario.Previsao_Atendimento}
 								</Text>
-							</View>
-							<View style={style.row}>
-								<Text style={style.titulo}>Atendimentos</Text>
 							</View>
 							<FlatList
 								data={prontuario.itens}
@@ -218,10 +226,10 @@ export default (props) => {
 												<ImageBackground
 													source={
 														item.Finalizou_Atendimento
-															? imagens.check
-															: imagens.question
+															? imagens.folder
+															: imagens.openFolder
 													}
-													resizeMode="contain"
+													resizeMode="center"
 													key={index}
 													style={[
 														style.flexContainer,
@@ -268,12 +276,70 @@ export default (props) => {
 														</Text>
 													</View>
 												</ImageBackground>
-												<View>
+												<View
+													style={{
+														flexDirection: "row",
+														borderRadius: 5,
+														elevation: 3,
+														flex: 1,
+													}}>
 													<TouchableOpacity
-														style={style.botao}
+														style={[
+															style.botao,
+															{
+																flex: 1,
+																borderBottomEndRadius: !item.Finalizou_Atendimento
+																	? 0
+																	: 5,
+															},
+														]}
 														onPress={() => _ConsultarItensProntuario(item)}>
 														<Text style={style.textoBotao}>Visualizar</Text>
 													</TouchableOpacity>
+
+													{!item.Finalizou_Atendimento && (
+														<TouchableOpacity
+															style={[
+																style.botao,
+																{
+																	backgroundColor: danger,
+																	flex: 1,
+																	borderBottomStartRadius: 0,
+																},
+															]}
+															onPress={async () => {
+																const { data } = await api({
+																	url: "/finalizarProntuario",
+																	method: "POST",
+																	data: {
+																		prontuario: item.ID_Prontuario,
+																	},
+																	headers: { "x-access-token": token },
+																});
+
+																if (data.status) {
+																	Alert.alert(
+																		"SUCESSO",
+																		"Prontuario foi finalizado com sucesso.",
+																		[
+																			{
+																				text: "FECHAR",
+																				onPress: _ConsultarProntuario,
+																			},
+																		]
+																	);
+																} else {
+																	Alert.alert(
+																		"ATENÇÃO",
+																		"Ocorreu um erro ao finalizar o prontuario."
+																	);
+																}
+															}}>
+															<Text style={style.textoBotao}>
+																Finalizar Prontuario
+															</Text>
+														</TouchableOpacity>
+													)}
 												</View>
 											</>
 										);
@@ -316,6 +382,10 @@ const style = StyleSheet.create({
 		borderBottomStartRadius: 5,
 		borderBottomEndRadius: 5,
 		elevation: 3,
+	},
+	botaoInferior: {
+		alignItems: "center",
+		justifyContent: "center",
 	},
 	textoBotao: {
 		color: "white",

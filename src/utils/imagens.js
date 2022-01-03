@@ -39,7 +39,11 @@ import playStore from "../../assets/img/abepom_playStore.png";
 import coracao from "../../assets/img/coracao.png";
 import edit from "../../assets/img/pencil.png";
 import question from "../../assets/img/question.png";
+import folder from "../../assets/img/folder.png";
+import openFolder from "../../assets/img/open_folder.png";
 export default {
+	openFolder,
+	folder,
 	question,
 	edit,
 	coracao,

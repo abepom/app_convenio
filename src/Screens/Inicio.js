@@ -89,6 +89,7 @@ export default (props) => {
 						data: { cd_da_area: convenio.cd_da_area },
 						headers: { "x-access-token": convenio.token },
 					});
+
 					conv = {
 						id_gds: data.id_gds,
 						nome_parceiro: data.nome_parceiro,
@@ -101,6 +102,7 @@ export default (props) => {
 						nivel: data.nivel,
 						token: data.token,
 						areas: areas.data,
+						Percentual_repasse: data.Percentual_repasse,
 						trocar_area: data.Cd_da_area == "0045" ? true : false,
 						cd_convenio: data.cd_convenio,
 						primeiro_acesso: data.primeiro_acesso,
