@@ -39,7 +39,7 @@ export default function RepassesFuturos(props) {
 		setRepasses(null);
 		const { data } = await api({
 			method: "GET",
-			url: "/repassesFuturo",
+			url: "/repasses",
 			headers: { "x-access-token": token },
 		});
 		let ordenado;
@@ -135,7 +135,6 @@ export default function RepassesFuturos(props) {
 									</View>
 									<View
 										style={{
-											justifyContent: "center",
 											marginLeft: 5,
 											width: "69%",
 										}}>
