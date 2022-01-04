@@ -358,13 +358,9 @@ export default function RepassesFuturos(props) {
 													Valor:{" "}
 												</Text>
 												<Text style={{ fontSize: 18 }}>
-													{formatCurrency.format(
-														item.subtotal -
-															(item.subtotal * Percentual_repasse) / 100,
-														{
-															code: "BRL",
-														}
-													)}
+													{formatCurrency.format(item.subtotal, {
+														code: "BRL",
+													})}
 												</Text>
 											</View>
 											{item?.parcela && (
@@ -405,7 +401,7 @@ export default function RepassesFuturos(props) {
 					}}>
 					<View
 						style={{
-							width: "20%",
+							flex: 1,
 							marginRight: "2%",
 							alignItems: "center",
 							backgroundColor: primary,
@@ -415,15 +411,15 @@ export default function RepassesFuturos(props) {
 						<Text style={{ fontWeight: "bold", color: "#fff", fontSize: 10 }}>
 							VENDAS
 						</Text>
-						<Text style={{ fontWeight: "bold", color: "#fff", fontSize: 20 }}>
+						<Text style={{ fontWeight: "bold", color: "#fff", fontSize: 14 }}>
 							{repasses ? (repasses[0].Mesano ? repasses.length : "0") : "0"}
 						</Text>
 					</View>
 					<View
 						style={{
-							width: "33%",
 							marginHorizontal: "2%",
 							alignItems: "center",
+							flex: 2,
 							backgroundColor: primary,
 							borderRadius: 50,
 							marginBottom: 10,
@@ -431,15 +427,15 @@ export default function RepassesFuturos(props) {
 						<Text style={{ fontWeight: "bold", color: "#fff", fontSize: 10 }}>
 							MÊS DE REPASSE
 						</Text>
-						<Text style={{ fontWeight: "bold", color: "#fff", fontSize: 20 }}>
+						<Text style={{ fontWeight: "bold", color: "#fff", fontSize: 14 }}>
 							{mesanoConsulta}
 						</Text>
 					</View>
 					<View
 						style={{
-							width: "39%",
 							marginLeft: "2%",
 							alignItems: "center",
+							flex: 2,
 							backgroundColor: primary,
 							borderRadius: 50,
 							marginBottom: 10,
@@ -447,7 +443,31 @@ export default function RepassesFuturos(props) {
 						<Text style={{ fontWeight: "bold", color: "#fff", fontSize: 10 }}>
 							TOTAL
 						</Text>
-						<Text style={{ fontWeight: "bold", color: "#fff", fontSize: 20 }}>
+						<Text style={{ fontWeight: "bold", color: "#fff", fontSize: 14 }}>
+							{repasses
+								? formatCurrency.format(
+										repasses.reduce(
+											(total, subtotal) => total + Number(subtotal.subtotal),
+											0
+										),
+										{ code: "BRL" }
+								  )
+								: "R$ 0,00"}
+						</Text>
+					</View>
+					<View
+						style={{
+							marginLeft: "2%",
+							alignItems: "center",
+							backgroundColor: primary,
+							borderRadius: 50,
+							flex: 2,
+							marginBottom: 10,
+						}}>
+						<Text style={{ fontWeight: "bold", color: "#fff", fontSize: 10 }}>
+							TOTAL REPASSE
+						</Text>
+						<Text style={{ fontWeight: "bold", color: "#fff", fontSize: 14 }}>
 							{repasses
 								? formatCurrency.format(
 										repasses.reduce(

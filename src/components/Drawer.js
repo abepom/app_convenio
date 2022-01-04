@@ -14,6 +14,7 @@ import styles, { primary } from "../utils/Style";
 import { expo } from "../../app.json";
 import imagens from "../utils/imagens";
 import useConvenio from "../Data/Convenio";
+import api from "../api";
 
 const Drawer = (props) => {
 	const [convenio, setConv] = useConvenio();
@@ -24,6 +25,7 @@ const Drawer = (props) => {
 
 	//verifica o tipo do usuario
 	useEffect(() => {
+		console.log(convenio);
 		if (convenio.nivel != 1) {
 			menu.items.map((item) => {
 				switch (item.key) {
@@ -64,15 +66,28 @@ const Drawer = (props) => {
 						}
 					});
 				} else {
-					menu.items.map((item) => {
-						switch (item.key) {
-							case "AdministrarUsuarios":
-								break;
-							default:
-								itens.push({ ...item });
-								break;
-						}
-					});
+					if (convenio.tipo_lancamento == 1) {
+						menu.items.map((item) => {
+							switch (item.key) {
+								case "AdministrarUsuarios":
+								case "Prontuarios":
+									break;
+								default:
+									itens.push({ ...item });
+									break;
+							}
+						});
+					} else {
+						menu.items.map((item) => {
+							switch (item.key) {
+								case "AdministrarUsuarios":
+									break;
+								default:
+									itens.push({ ...item });
+									break;
+							}
+						});
+					}
 				}
 			}
 			setMenu({ ...props, items: itens });
@@ -123,7 +138,14 @@ const Drawer = (props) => {
 															height: 100,
 														},
 													]}
-													onPress={() => {
+													onPress={async () => {
+														const procedimentos = await api({
+															method: "POST",
+															url: "/procedimentos",
+															data: { cd_da_area: item.cd_da_area },
+															headers: { "x-access-token": convenio.token },
+														});
+														console.log(item.cd_da_area);
 														setConv({
 															...convenio,
 															tipo_lancamento: item.tipo_lancamento,
@@ -133,6 +155,7 @@ const Drawer = (props) => {
 																	(i) => i.cd_da_area == item.cd_da_area
 																)["Descrição"]
 															}`,
+															procedimentos: procedimentos.data,
 														});
 
 														setModalAreas(false);

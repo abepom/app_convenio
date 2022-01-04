@@ -293,7 +293,7 @@ const ConsultarVendas = (props) => {
 										width: "50%",
 										alignItems: "center",
 									}}>
-									<Text style={{ color: danger }}>Excluir</Text>
+									<Text style={{ color: danger }}>CONFIRMAR EXCLUSÃO</Text>
 								</TouchableOpacity>
 								<TouchableOpacity
 									onPress={() => setModal(false)}
@@ -792,7 +792,7 @@ const ConsultarVendas = (props) => {
 																borderBottomRightRadius: 5,
 																borderTopRightRadius: 5,
 															}}>
-															<Text style={{ color: "white" }}>Cancelar</Text>
+															<Text style={{ color: "white" }}>Excluir</Text>
 														</TouchableOpacity>
 													</>
 												) : (
@@ -814,7 +814,7 @@ const ConsultarVendas = (props) => {
 															alignItems: "center",
 															borderRadius: 5,
 														}}>
-														<Text style={{ color: "white" }}>Cancelar</Text>
+														<Text style={{ color: "white" }}>Excluir</Text>
 													</TouchableOpacity>
 												)}
 											</View>
