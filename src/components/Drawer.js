@@ -25,9 +25,8 @@ const Drawer = (props) => {
 
 	//verifica o tipo do usuario
 	useEffect(() => {
-		console.log(convenio);
 		if (convenio.nivel != 1) {
-			menu.items.map((item) => {
+			props.items.map((item) => {
 				switch (item.key) {
 					case "RepassesFuturos":
 					case "Prontuarios":
@@ -42,7 +41,7 @@ const Drawer = (props) => {
 			setMenu({ ...props, items: itens });
 		} else {
 			if (convenio.tipo_lancamento == 3) {
-				menu.items.map((item) => {
+				props.items.map((item) => {
 					switch (item.key) {
 						case "AdministrarUsuarios":
 						case "Procedimentos":
@@ -55,7 +54,7 @@ const Drawer = (props) => {
 				});
 			} else {
 				if (convenio.tipo_lancamento == 2) {
-					menu.items.map((item) => {
+					props.items.map((item) => {
 						switch (item.key) {
 							case "AdministrarUsuarios":
 							case "Prontuarios":
@@ -67,7 +66,7 @@ const Drawer = (props) => {
 					});
 				} else {
 					if (convenio.tipo_lancamento == 1) {
-						menu.items.map((item) => {
+						props.items.map((item) => {
 							switch (item.key) {
 								case "AdministrarUsuarios":
 								case "Prontuarios":
@@ -78,7 +77,7 @@ const Drawer = (props) => {
 							}
 						});
 					} else {
-						menu.items.map((item) => {
+						props.items.map((item) => {
 							switch (item.key) {
 								case "AdministrarUsuarios":
 									break;
@@ -145,7 +144,7 @@ const Drawer = (props) => {
 															data: { cd_da_area: item.cd_da_area },
 															headers: { "x-access-token": convenio.token },
 														});
-														console.log(item.cd_da_area);
+
 														setConv({
 															...convenio,
 															tipo_lancamento: item.tipo_lancamento,
@@ -159,6 +158,7 @@ const Drawer = (props) => {
 														});
 
 														setModalAreas(false);
+														props.navigation.closeDrawer();
 													}}>
 													<Image
 														source={{ uri: item.caminho_icone }}

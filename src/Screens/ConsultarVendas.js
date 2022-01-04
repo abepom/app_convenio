@@ -81,7 +81,7 @@ const ConsultarVendas = (props) => {
 	useLayoutEffect(() => {
 		if (modalVisualizar) {
 			setCarregandoItemVenda(true);
-			console.log(conteudoModal);
+
 			if (tipo_lancamento != "1") {
 				api({
 					method: "get",
@@ -149,7 +149,7 @@ const ConsultarVendas = (props) => {
 			const dados = await api({
 				method: "get",
 				url: "/ConsultarVendas",
-				params: { id_gds, data, usuario, nivel: 1, mes },
+				params: { id_gds, data, usuario, nivel: 1, mes, tipo_lancamento },
 				headers: { "x-access-token": token },
 			});
 			setvendas(dados.data);
