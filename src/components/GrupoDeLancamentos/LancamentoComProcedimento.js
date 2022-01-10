@@ -65,20 +65,10 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 
 	const Lancar = async () => {
 		let valor = quantidade * procedimento.Valor_convenio;
-		console.log({
-			tipo_lancamento,
-			cd_da_area,
-			matricula,
-			dep,
-			data: dataSel,
-			procedimento: procedimento.Value,
-			quantidade,
-			valor,
-		});
+
 		const { data } = await api({
 			url: "/LancarVenda",
 			method: "POST",
-
 			data: {
 				tipo_lancamento,
 				cd_da_area,

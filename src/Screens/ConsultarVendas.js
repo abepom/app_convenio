@@ -30,6 +30,7 @@ import imagens from "../utils/imagens";
 import Carregando from "./../components/Carregando";
 import { FlatList } from "react-native-gesture-handler";
 import { TextInputMask } from "react-native-masked-text";
+import LancamentoDetalhado from "../components/Modal/LancamentoDetalhado.modal";
 
 const meses = [];
 
@@ -61,14 +62,16 @@ const ConsultarVendas = (props) => {
 	const [vendas, setvendas] = useState([]);
 	const [load, setLoad] = useState(false);
 	const [modal, setModal] = useState(false);
+	const [mostra, setMostra] = useState(false);
 	const [modalVisualizar, setModalVisualizar] = useState(false);
 	const [msn, setMsn] = useState("");
 
-	const [conteudoModal, setConteudoModal] = useState(null);
+	const [conteudoModal, setConteudoModal] = useState({ Nr_lancamento: null });
 	const [retornoExclusao, setRetornoExclusao] = useState("");
 	const [carregando, setCarregando] = useLoad();
 	const [carregandoItemVenda, setCarregandoItemVenda] = useState(false);
 	const [ItensVenda, setItensVenda] = useState([]);
+	const [prontuario, setprontuario] = useState(false);
 
 	useEffect(() => {
 		getConsulta();
@@ -82,29 +85,18 @@ const ConsultarVendas = (props) => {
 		if (modalVisualizar) {
 			setCarregandoItemVenda(true);
 
-			if (tipo_lancamento != "1") {
-				api({
-					method: "get",
-					url: "/ConsultarItemVenda",
-					params: { ...conteudoModal },
-					headers: { "x-access-token": token },
-				}).then(({ data }) => {
-					console.log(data);
-					if (tipo_lancamento == "3" && data[0].Valor == 0) {
-						data[0].Valor = conteudoModal.Valor;
-					}
-					setItensVenda(data);
-					setCarregandoItemVenda(false);
-				});
-			} else {
-				setItensVenda([
-					{
-						Valor: conteudoModal.Valor,
-						descricao_procedimento: conteudoModal.Obs,
-					},
-				]);
+			api({
+				method: "get",
+				url: "/ConsultarItemVenda",
+				params: { ...conteudoModal, prontuario },
+				headers: { "x-access-token": token },
+			}).then(({ data }) => {
+				if (tipo_lancamento == "3" && data[0].Valor == 0) {
+					data[0].Valor = conteudoModal.Valor;
+				}
+				setItensVenda(data);
 				setCarregandoItemVenda(false);
-			}
+			});
 		}
 	}, [modalVisualizar]);
 	useEffect(() => {
@@ -185,6 +177,13 @@ const ConsultarVendas = (props) => {
 
 	return (
 		<>
+			{conteudoModal.Nr_lancamento != "" && (
+				<LancamentoDetalhado
+					visualizar={[mostra, setMostra]}
+					Nr_lancamento={conteudoModal.Nr_lancamento}
+					convenio={{ tipo_lancamento, token }}
+				/>
+			)}
 			<Modal visible={modal} transparent {...props}>
 				<View
 					style={{
@@ -389,180 +388,6 @@ const ConsultarVendas = (props) => {
 					)}
 				</View>
 			</Modal>
-			<Modal visible={modalVisualizar} transparent {...props}>
-				<View
-					style={{
-						flex: 1,
-						alignItems: "center",
-						justifyContent: "center",
-						backgroundColor: "rgba(0, 0, 0, 0.5)",
-					}}>
-					{conteudoModal && (
-						<View
-							style={{
-								borderTopRightRadius: 4,
-								borderTopLeftRadius: 4,
-								backgroundColor: `white`,
-								paddingVertical: 10,
-								paddingHorizontal: 5,
-								width: "90%",
-							}}>
-							<View
-								style={{
-									flexDirection: "row",
-									justifyContent: "space-between",
-								}}>
-								<Text
-									style={[
-										styles.textoM,
-										{ fontWeight: "bold", marginVertical: 2 },
-									]}>
-									Lançamento:{" "}
-									<Text style={{ fontWeight: "100" }}>
-										{conteudoModal.Nr_lancamento}
-									</Text>
-								</Text>
-								<Text
-									style={[
-										styles.textoM,
-										{ fontWeight: "bold", marginVertical: 2 },
-									]}>
-									Matricula:
-									<Text style={{ fontWeight: "100" }}>
-										{" "}
-										{conteudoModal.Matricula}
-									</Text>
-								</Text>
-							</View>
-							<Text
-								style={[
-									styles.textoM,
-									{ fontWeight: "bold", marginVertical: 2 },
-								]}>
-								Associado:{" "}
-								<Text style={{ fontWeight: "100" }}>
-									{conteudoModal["Nome do dependente"]}
-								</Text>
-							</Text>
-
-							<View
-								style={{
-									flexDirection: "row",
-									justifyContent: "space-between",
-								}}>
-								<Text
-									style={[
-										styles.textoM,
-										{ fontWeight: "bold", marginVertical: 2 },
-									]}>
-									Parcelamento:
-									<Text style={{ fontWeight: "100" }}>
-										{" "}
-										{conteudoModal.quantidade_parcela ?? "1"} x{" "}
-										{formatCurrency.format(
-											conteudoModal.Valor_parcela ?? conteudoModal.Valor,
-											{
-												code: "BRL",
-											}
-										)}
-									</Text>
-								</Text>
-								<Text
-									style={[
-										styles.textoM,
-										{ fontWeight: "bold", marginVertical: 2 },
-									]}>
-									Data:
-									<Text style={{ fontWeight: "100" }}>
-										{" "}
-										{conteudoModal.Data}
-									</Text>
-								</Text>
-							</View>
-							{carregandoItemVenda ? (
-								<Carregando />
-							) : (
-								<>
-									<View style={{ flexDirection: "row", marginTop: 20 }}>
-										<Text style={{ width: "75%" }}>
-											<Text
-												style={{
-													color: primary,
-													fontSize: 10,
-													fontWeight: "bold",
-												}}>
-												Procedimento
-											</Text>
-										</Text>
-										<Text>
-											<Text
-												style={{
-													color: primary,
-													fontSize: 10,
-													fontWeight: "bold",
-												}}>
-												Valor
-											</Text>
-										</Text>
-									</View>
-									<View
-										style={{
-											flex: 1,
-											marginVertical: 5,
-											borderBottomColor: primary,
-											borderBottomWidth: 2,
-										}}
-									/>
-									<FlatList
-										data={ItensVenda}
-										style={{ maxHeight: 400 }}
-										keyExtractor={({ index }) => index}
-										renderItem={({ item, index }) => {
-											return (
-												<>
-													<View key={index} style={{ flexDirection: "row" }}>
-														<Text style={{ width: "75%" }}>
-															{item.descricao_procedimento}
-														</Text>
-														<Text>
-															{formatCurrency.format(item.Valor, {
-																code: "BRL",
-															})}
-														</Text>
-													</View>
-													<View
-														style={{
-															flex: 1,
-															marginVertical: 5,
-															borderBottomColor: primary,
-															borderBottomWidth: 2,
-														}}
-													/>
-												</>
-											);
-										}}
-									/>
-								</>
-							)}
-						</View>
-					)}
-					<TouchableOpacity
-						onPress={() => {
-							setModalVisualizar(false);
-						}}
-						style={{
-							borderBottomRightRadius: 4,
-							borderBottomLeftRadius: 4,
-							backgroundColor: sucessBack,
-							padding: 10,
-							width: "90%",
-							alignItems: "center",
-						}}>
-						<Text style={{ color: sucess }}>FECHAR</Text>
-					</TouchableOpacity>
-				</View>
-			</Modal>
-
 			<MenuTop
 				drawer
 				{...props}
@@ -757,66 +582,59 @@ const ConsultarVendas = (props) => {
 													flexDirection: "row",
 													justifyContent: "space-around",
 												}}>
-												{tipo_lancamento != "4" ? (
-													<>
-														<TouchableOpacity
-															onPress={() => {
-																setModalVisualizar(true);
-																setConteudoModal(item);
-															}}
-															style={{
-																backgroundColor: primary,
-																flex: 1,
-																alignItems: "center",
-																borderBottomLeftRadius: 5,
-																borderTopLeftRadius: 5,
-															}}>
-															<Text style={{ color: "white" }}>Visualizar</Text>
-														</TouchableOpacity>
-														<TouchableOpacity
-															onPress={() => {
-																if (item.Processado_desconto) {
-																	setConteudoModal(null);
-																	setRetornoExclusao(
-																		"Essa cobrança já foi efetuada pela ABEPOM, entre em contato com nosso setor de convênios para mais informações."
-																	);
-																} else {
-																	setConteudoModal(item);
-																}
-																setModal(true);
-															}}
-															style={{
-																backgroundColor: danger,
-																flex: 1,
-																alignItems: "center",
-																borderBottomRightRadius: 5,
-																borderTopRightRadius: 5,
-															}}>
-															<Text style={{ color: "white" }}>Excluir</Text>
-														</TouchableOpacity>
-													</>
+												{item.Cupom && !item.Obs ? (
+													<TouchableOpacity
+														onPress={() => {}}
+														style={{
+															backgroundColor: primary,
+															flex: 1,
+															alignItems: "center",
+															borderBottomLeftRadius: 5,
+															borderTopLeftRadius: 5,
+														}}>
+														<Text style={{ color: "white" }}>
+															Consultar Prontuario
+														</Text>
+													</TouchableOpacity>
 												) : (
 													<TouchableOpacity
 														onPress={() => {
-															if (item.Processado_desconto) {
-																setConteudoModal(null);
-																setRetornoExclusao(
-																	"Essa cobrança já foi efetuada pela ABEPOM, entre em contato com nosso setor de convênios para mais informações."
-																);
-															} else {
-																setConteudoModal(item);
-															}
-															setModal(true);
+															setMostra(true);
+															setModalVisualizar(true);
+															setprontuario(false);
+															setConteudoModal(item);
 														}}
 														style={{
-															backgroundColor: danger,
+															backgroundColor: primary,
 															flex: 1,
 															alignItems: "center",
-															borderRadius: 5,
+															borderBottomLeftRadius: 5,
+															borderTopLeftRadius: 5,
 														}}>
-														<Text style={{ color: "white" }}>Excluir</Text>
+														<Text style={{ color: "white" }}>Visualizar</Text>
 													</TouchableOpacity>
 												)}
+												<TouchableOpacity
+													onPress={() => {
+														if (item.Processado_desconto) {
+															setConteudoModal(null);
+															setRetornoExclusao(
+																"Essa cobrança já foi efetuada pela ABEPOM, entre em contato com nosso setor de convênios para mais informações."
+															);
+														} else {
+															setConteudoModal(item);
+														}
+														setModal(true);
+													}}
+													style={{
+														backgroundColor: danger,
+														flex: 1,
+														alignItems: "center",
+														borderBottomRightRadius: 5,
+														borderTopRightRadius: 5,
+													}}>
+													<Text style={{ color: "white" }}>Excluir</Text>
+												</TouchableOpacity>
 											</View>
 										</View>
 									</View>
@@ -835,7 +653,7 @@ const ConsultarVendas = (props) => {
 							<Retorno
 								type="sucess"
 								mensagem={
-									msn ? msn : "Não há registro de venda para o seu usuário"
+									msn ? msn : "Não há registro de lançamento para o seu usuário"
 								}
 							/>
 						</ScrollView>

@@ -16,6 +16,7 @@ import Carregando from "../Carregando";
 import api from "../../api";
 import formatCurrency from "currency-formatter";
 import imagens from "../../utils/imagens";
+import useLoad from "../../Data/Load";
 
 const GrupoDeLancamentos = ({ associado, props }) => {
 	const { matricula, dep } = associado;
@@ -33,7 +34,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 	const [carregando, setCarregando] = useState(false);
 	const [parcelar, setParcelar] = useState(false);
 	const [selectedValue, setSelectedValue] = useState(1);
-
+	const [, setload] = useLoad();
 	const [proceAdd, setProceAdd] = useState([]);
 
 	const [btnvisivel, setBtnvisivel] = useState(false);
@@ -110,7 +111,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 		});
 
 		setMsnModal(data);
-
+		setload("ConsultarVendas");
 		setModal(true);
 
 		setTimeout(() => {

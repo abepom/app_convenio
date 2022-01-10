@@ -258,7 +258,6 @@ export default (props) => {
 									paddingVertical: 5,
 								}}
 								renderItem={({ item }) => {
-									console.log(item);
 									if (item.cd_da_area != "0045")
 										return (
 											<View
@@ -281,7 +280,6 @@ export default (props) => {
 														},
 													]}
 													onPress={() => {
-														console.log(item);
 														setConv({
 															...convenio,
 															tipo_lancamento: item.tipo_lancamento,

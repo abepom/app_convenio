@@ -26,6 +26,7 @@ import styles, {
 import { themeLight } from "../utils/theme";
 import Carregando from "../components/Carregando";
 import imagens from "../utils/imagens";
+import ProntuarioDetalhado from "../components/Modal/ProntuarioDetalhado.modal";
 
 export default (props) => {
 	const { state } = props.navigation;
@@ -36,6 +37,7 @@ export default (props) => {
 	const [listaProntuarios, setListaProntuarios] = useState([]);
 	const [prontuario, setProntuario] = useState({});
 	const [{ token }] = useConvenio();
+	const [NrLancamento, setNrLancamento] = useState("");
 
 	const _ConsultarProntuario = async () => {
 		setConsulta(true);
@@ -46,18 +48,24 @@ export default (props) => {
 			params: { matricula },
 			headers: { "x-access-token": token },
 		});
+		console.log(data);
 		setListaProntuarios(data);
+
 		setCarregarBotao(false);
 	};
 
 	const _ConsultarItensProntuario = async (item) => {
 		setModal(true);
-		console.log({ ...item, itens: JSON.parse(item.itens) });
+
 		setProntuario({ ...item, itens: JSON.parse(item.itens) });
 	};
 	return (
 		<>
-			<Modal visible={modal} transparent {...props}>
+			<ProntuarioDetalhado
+				visualizar={[modal, setModal]}
+				Nr_lancamento={"1234"}
+			/>
+			<Modal visible={false} transparent {...props}>
 				<View
 					style={{
 						flex: 1,

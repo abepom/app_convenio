@@ -21,14 +21,17 @@ import { TextInput } from "react-native-paper";
 import { themeLight } from "../utils/theme";
 import PickerModal from "react-native-picker-modal-view";
 import imagens from "../utils/imagens";
+import LancamentoDetalhado from "../components/Modal/LancamentoDetalhado.modal";
 export default function RepassesFuturos(props) {
 	const [refreshing, setRefreshing] = useState(false);
 	const [load, setLoad] = useState(false);
-	const [{ token }] = useConvenio();
+	const [{ token, tipo_lancamento }] = useConvenio();
 	const [repasses, setRepasses] = useState();
 	const [mesano, setMesano] = useState(
 		`${new Date().getMonth() + 1}/${new Date().getFullYear()}`
 	);
+	const [mostra, setMostra] = useState(false);
+	const [Nr_lancamento, setNrlancamento] = useState("");
 	const [{ Percentual_repasse }] = useConvenio();
 	const [mesanoConsulta, setMesanoConsulta] = useState(``);
 	const [carregando, setCarregando] = useLoad();
@@ -103,6 +106,13 @@ export default function RepassesFuturos(props) {
 	}, []);
 	return (
 		<>
+			{Nr_lancamento != "" && (
+				<LancamentoDetalhado
+					visualizar={[mostra, setMostra]}
+					Nr_lancamento={Nr_lancamento}
+					convenio={{ tipo_lancamento, token }}
+				/>
+			)}
 			<MenuTop drawer {...props} title={"Repasses"}>
 				<View style={{ flexDirection: "row", padding: 10 }}>
 					<TextInput
@@ -280,7 +290,11 @@ export default function RepassesFuturos(props) {
 						}
 
 						return (
-							<View
+							<TouchableOpacity
+								onPress={() => {
+									setNrlancamento(item.Nr_lancamento);
+									setMostra(true);
+								}}
 								style={{
 									padding: 10,
 									backgroundColor: "white",
@@ -381,7 +395,7 @@ export default function RepassesFuturos(props) {
 										</View>
 									</View>
 								</View>
-							</View>
+							</TouchableOpacity>
 						);
 					}}
 					ListEmptyComponent={(a) => {
