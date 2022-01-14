@@ -1,20 +1,27 @@
 import React, { useLayoutEffect, useState } from "react";
-import { View, Text, Modal, TouchableOpacity, FlatList } from "react-native";
+import {
+	View,
+	Text,
+	Modal,
+	TouchableOpacity,
+	FlatList,
+	SafeAreaView,
+} from "react-native";
 import styles, { primary, sucess, sucessBack } from "../../utils/Style";
 import formatCurrency from "currency-formatter";
 import api from "../../api";
 import Carregando from "../Carregando";
+import useConvenio from "../../Data/Convenio";
 
 export default function LancamentoDetalhado({
 	visualizar,
 	Nr_lancamento,
-	convenio,
 }) {
 	const [carregandoItemVenda, setCarregandoItemVenda] = useState([]);
 	const [mostrar, setMostrar] = visualizar;
 	const [ItensVenda, setItensVenda] = useState([]);
 	const [tipo, setTipo] = useState([]);
-	const { tipo_lancamento, token } = convenio;
+	const [{ tipo_lancamento, token }] = useConvenio();
 
 	useLayoutEffect(() => {
 		if (mostrar) {
@@ -27,10 +34,10 @@ export default function LancamentoDetalhado({
 				headers: { "x-access-token": token },
 			})
 				.then(({ data }) => {
+					
 					if (tipo_lancamento == "3" && data.itens[0].Valor == 0) {
-						data.itens[0].Valor = data.Valor;
+						data.itens[0].Valor = data.valor * data.parcelas;
 					}
-
 					setItensVenda(data);
 					setCarregandoItemVenda(false);
 				})
@@ -107,11 +114,14 @@ export default function LancamentoDetalhado({
 										styles.textoM,
 										{ fontWeight: "bold", marginVertical: 2 },
 									]}>
-									Parcelamento:
+									Parcelamento:{" "}
 									<Text style={{ fontWeight: "100" }}>
-										{formatCurrency.format(ItensVenda.valor, {
-											code: "BRL",
-										})}
+										{`${ItensVenda.parcelas} x ${formatCurrency.format(
+											ItensVenda.valor,
+											{
+												code: "BRL",
+											}
+										)}`}
 									</Text>
 								</Text>
 								<Text
@@ -132,7 +142,7 @@ export default function LancamentoDetalhado({
 												fontSize: 10,
 												fontWeight: "bold",
 											}}>
-											Procedimento
+											Itens
 										</Text>
 									</Text>
 									<Text>
@@ -154,35 +164,40 @@ export default function LancamentoDetalhado({
 										borderBottomWidth: 2,
 									}}
 								/>
-								<FlatList
-									data={ItensVenda.itens}
-									style={{ maxHeight: 400 }}
-									keyExtractor={({ index }) => index}
-									renderItem={({ item, index }) => {
-										return (
-											<View key={index}>
-												<View key={index} style={{ flexDirection: "row" }}>
-													<Text style={{ width: "75%" }}>
-														{item.descricao_procedimento}
-													</Text>
-													<Text>
-														{formatCurrency.format(item.Valor, {
-															code: "BRL",
-														})}
-													</Text>
+								<SafeAreaView style={{ maxHeight: 500 }}>
+									<FlatList
+										data={ItensVenda.itens}
+										style={{ maxHeight: 400 }}
+										keyExtractor={({ index }) => index}
+										renderItem={({ item, index }) => {
+											return (
+												<View key={index}>
+													<View key={index} style={{ flexDirection: "row" }}>
+														<Text style={{ width: "75%" }}>
+															{tipo_lancamento == 5? ItensVenda.Cupom?`Cupom: ${ItensVenda.Cupom}`:"Produtos Farmacêuticos": item.descricao_procedimento}
+														</Text>
+														<Text>
+															{formatCurrency.format(
+																item.Valor ?? ItensVenda.valor,
+																{
+																	code: "BRL",
+																}
+															)}
+														</Text>
+													</View>
+													<View
+														style={{
+															flex: 1,
+															marginVertical: 5,
+															borderBottomColor: primary,
+															borderBottomWidth: 2,
+														}}
+													/>
 												</View>
-												<View
-													style={{
-														flex: 1,
-														marginVertical: 5,
-														borderBottomColor: primary,
-														borderBottomWidth: 2,
-													}}
-												/>
-											</View>
-										);
-									}}
-								/>
+											);
+										}}
+									/>
+								</SafeAreaView>
 							</>
 						</>
 					)}

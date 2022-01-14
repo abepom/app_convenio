@@ -104,8 +104,6 @@ const styles = StyleSheet.create({
 		color: "#fff",
 	},
 	link: {
-		//backgroundColor: 'green',
-
 		height: 45,
 		justifyContent: "center",
 		alignItems: "center",

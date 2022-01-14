@@ -1,0 +1,75 @@
+{
+	"expo": {
+		"name": "Farmácia",
+		"slug": "abepom_farmacia",
+		"version": "1.3.36",
+		"description": "Ao concluir a atualização iremos reiniciar\n o aplicativo Automaticamente. Aguarde...",
+		"orientation": "portrait",
+		"icon": "./assets/icon.png",
+		"platforms": ["ios", "android"],
+		"backgroundColor": "#03254E",
+		"primaryColor": "#03254E",
+		"updates": {
+			"fallbackToCacheTimeout": 0
+		},
+		"assetBundlePatterns": ["**/*"],
+
+		"ios": {
+			"bundleIdentifier": "br.org.abepom.farmacia",
+			"buildNumber": "1.3.34",
+			"backgroundColor": "#f1f1f1",
+			"icon": "./assets/icon-ios.png",
+			"supportsTablet": true,
+			"splash": {
+				"image": "./assets/splash.png",
+				"backgroundColor": "#03254E",
+				"resizeMode": "cover"
+			},
+			"infoPlist": {
+				"NSCameraUsageDescription": "A permissão da câmera é necessária para capturar a imagem de perfil do usuário.",
+				"NSPhotoLibraryUsageDescription": "A permissão da galeria é necessária para acessar as imagens para o perfil do usuário."
+			}
+		},
+		"notification": {
+			"icon": "./assets/icon.png",
+			"color": "#f1f1f1",
+			"iosDisplayInForeground": true,
+			"androidMode": "default",
+			"androidCollapsedTitle": "ABEPOM"
+		},
+		"androidStatusBar": {
+			"barStyle": "light-content",
+			"backgroundColor": "#03254E",
+			"hidden": false,
+			"translucent": false
+		},
+
+		"android": {
+			"useNextNotificationsApi": true,
+			"permissions": [
+				"CAMERA",
+				"READ_EXTERNAL_STORAGE",
+				"WRITE_EXTERNAL_STORAGE",
+				"RECEIVE",
+				"READ_GSERVICES",
+				"com.google.android.c2dm.permission.RECEIVE",
+				"com.google.android.providers.gsf.permission.READ_GSERVICES"
+			],
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/adaptive-icon-Teste.png",
+				"backgroundColor": "#F1F1F1"
+			},
+			"splash": {
+				"image": "./assets/splash.png",
+				"backgroundColor": "#03254E",
+				"resizeMode": "cover"
+			},
+			"package": "br.org.abepom.farmacia.teste",
+			"versionCode": 59,
+			"backgroundColor": "#03254E"
+		},
+		"packagerOpts": {
+			"port": 8081
+		}
+	}
+}

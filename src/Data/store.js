@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const StoreContext = createContext([{}, () => {}]);
 export const useStore = () => {
 	const [state, setState] = useContext(StoreContext);

@@ -41,7 +41,9 @@ import edit from "../../assets/img/pencil.png";
 import question from "../../assets/img/question.png";
 import folder from "../../assets/img/folder.png";
 import openFolder from "../../assets/img/open_folder.png";
+import comment from "../../assets/img/comment.png";
 export default {
+	comment,
 	openFolder,
 	folder,
 	question,

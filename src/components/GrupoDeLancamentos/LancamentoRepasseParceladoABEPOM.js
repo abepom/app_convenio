@@ -92,6 +92,8 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 		});
 	};
 	const Lancar = async () => {
+		setCarregando(true);
+
 		const { data } = await api({
 			url: "/LancarVenda",
 			method: "POST",
@@ -423,7 +425,6 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 														mode="dropdown"
 														selectedValue={selectedValue}
 														onValueChange={(itemValue, itemIndex) => {
-															console.log(itemValue);
 															setSelectedValue(itemValue);
 														}}>
 														{quantidade.map((a, b) => {
