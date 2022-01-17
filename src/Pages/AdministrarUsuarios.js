@@ -8,7 +8,7 @@ import {
 	RefreshControl,
 	Modal,
 } from "react-native";
-import MenuTop from "./../Components/MenuTop";
+import MenuTop from "../Components/MenuTop";
 import useConvenio from "./../Data/Convenio";
 import api from "./../api";
 import styles, { primary, danger, sucess, sucessBack } from "./../utils/Style";

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -13,17 +13,14 @@ import api from "../../api";
 import Carregando from "../Carregando";
 import useConvenio from "../../Data/Convenio";
 
-export default function LancamentoDetalhado({
-	visualizar,
-	Nr_lancamento,
-}) {
-	const [carregandoItemVenda, setCarregandoItemVenda] = useState([]);
+export default function LancamentoDetalhado({ visualizar, Nr_lancamento }) {
+	const [carregandoItemVenda, setCarregandoItemVenda] = useState(false);
 	const [mostrar, setMostrar] = visualizar;
 	const [ItensVenda, setItensVenda] = useState([]);
 	const [tipo, setTipo] = useState([]);
 	const [{ tipo_lancamento, token }] = useConvenio();
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (mostrar) {
 			setCarregandoItemVenda(true);
 
@@ -34,16 +31,18 @@ export default function LancamentoDetalhado({
 				headers: { "x-access-token": token },
 			})
 				.then(({ data }) => {
-					
+					console.log("carregou");
 					if (tipo_lancamento == "3" && data.itens[0].Valor == 0) {
 						data.itens[0].Valor = data.valor * data.parcelas;
 					}
 					setItensVenda(data);
 					setCarregandoItemVenda(false);
 				})
-				.catch(console.log);
+				.catch(() => {
+					console.log("erro");
+				});
 		}
-	}, [mostrar]);
+	}, [visualizar]);
 	return (
 		<Modal visible={mostrar} transparent>
 			<View
@@ -174,7 +173,11 @@ export default function LancamentoDetalhado({
 												<View key={index}>
 													<View key={index} style={{ flexDirection: "row" }}>
 														<Text style={{ width: "75%" }}>
-															{tipo_lancamento == 5? ItensVenda.Cupom?`Cupom: ${ItensVenda.Cupom}`:"Produtos Farmacêuticos": item.descricao_procedimento}
+															{tipo_lancamento == 5
+																? ItensVenda.Cupom
+																	? `Cupom: ${ItensVenda.Cupom}`
+																	: "Produtos Farmacêuticos"
+																: item.descricao_procedimento}
 														</Text>
 														<Text>
 															{formatCurrency.format(

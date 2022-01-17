@@ -6,13 +6,21 @@ import api from "../api";
 import Carregando from "../Components/Carregando";
 import MenuTop from "../Components/MenuTop";
 import useConvenio from "../Data/Convenio";
+import useLoad from "../Data/Load";
 import styles, { danger, primary, sucess } from "../utils/Style";
 
 // import { Container } from './styles';
 
 const Screens = (props) => {
 	const [convenio, setConvenio] = useConvenio();
+	const [load, setLoad] = useLoad();
 
+	useEffect(() => {
+		if (load !== "Procedimentos" && load !== "todos") {
+			carregarProcedimentos();
+			setLoad("");
+		}
+	}, [load]);
 	const carregarProcedimentos = async () => {
 		const { data } = await api({
 			method: "POST",
@@ -60,7 +68,7 @@ const Screens = (props) => {
 					}}>
 					Lista de procedimentos cadastrados
 				</Text>
-				
+
 				<FlatList
 					data={convenio.procedimentos}
 					renderItem={({ item }) => {

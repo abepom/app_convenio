@@ -7,7 +7,7 @@ import {
 	RefreshControl,
 } from "react-native";
 import api from "./../api";
-import MenuTop from "./../Components/MenuTop";
+import MenuTop from "../Components/MenuTop";
 import { FlatList } from "react-native-gesture-handler";
 import useConvenio from "../Data/Convenio";
 import { primary } from "./../utils/Style";
