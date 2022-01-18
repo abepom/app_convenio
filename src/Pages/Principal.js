@@ -235,6 +235,7 @@ export default (props) => {
 			<SelecionarAreasModal
 				visible={[modalAreas, setModalAreas]}
 				areas={areas}
+				props={props}
 			/>
 
 			<View

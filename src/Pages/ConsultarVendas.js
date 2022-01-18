@@ -80,11 +80,7 @@ const ConsultarVendas = (props) => {
 	useEffect(() => {
 		getConsulta();
 	}, [retornoExclusao]);
-	useEffect(() => {
-		if (carregando !== "ConsultarVendas" && carregando !== "todos") {
-			getConsulta();
-		}
-	}, []);
+
 	useLayoutEffect(() => {
 		if (modalVisualizar) {
 			setCarregandoItemVenda(true);
@@ -99,10 +95,16 @@ const ConsultarVendas = (props) => {
 					data[0].Valor = conteudoModal.Valor;
 				}
 				setItensVenda(data);
+
 				setCarregandoItemVenda(false);
 			});
 		}
 	}, [modalVisualizar]);
+	useEffect(() => {
+		if (carregando !== "ConsultarVendas" && carregando !== "todos") {
+			getConsulta();
+		}
+	}, []);
 	useEffect(() => {
 		if (carregando == "ConsultarVendas" || carregando == "todos") {
 			getConsulta();
@@ -165,12 +167,12 @@ const ConsultarVendas = (props) => {
 		}
 	};
 
-	const excluirVenda = async (Nr_lancamento) => {
+	const excluirVenda = async (Nr_lancamento, tipo) => {
 		try {
 			const dados = await api({
 				method: "DELETE",
 				url: "/removerVendas",
-				data: { Nr_lancamento },
+				data: { Nr_lancamento, tipo },
 				headers: { "x-access-token": token },
 			});
 			setCarregando("ConsultarVendas");
@@ -185,7 +187,6 @@ const ConsultarVendas = (props) => {
 				<LancamentoDetalhado
 					visualizar={[mostra, setMostra]}
 					Nr_lancamento={conteudoModal.Nr_lancamento}
-					convenio={{ tipo_lancamento, token }}
 				/>
 			)}
 			<ProntuarioDetalhado
@@ -290,7 +291,11 @@ const ConsultarVendas = (props) => {
 								<TouchableOpacity
 									onPress={() => {
 										setModal(false);
-										excluirVenda(conteudoModal.Nr_lancamento);
+
+										excluirVenda(
+											conteudoModal.Nr_lancamento,
+											conteudoModal.parcelas
+										);
 										getConsulta(conteudoModal.Data);
 										// setConteudoModal(null);
 									}}
@@ -594,7 +599,7 @@ const ConsultarVendas = (props) => {
 														flexDirection: "row",
 														justifyContent: "space-around",
 													}}>
-													{tipo_lancamento == 4 ? (
+													{tipo_lancamento != 5 && item.Cupom ? (
 														<TouchableOpacity
 															onPress={() => {
 																setprontuario(item.Cupom);

@@ -48,7 +48,7 @@ export default (props) => {
 
 	const _ConsultarItensProntuario = async (item) => {
 		setModal(true);
-		console.log(item);
+
 		setProntuario(item.ID_Prontuario);
 	};
 	return (
@@ -119,7 +119,6 @@ export default (props) => {
 									style={{ maxHeight: 400 }}
 									keyExtractor={({ index }) => index}
 									renderItem={({ item, index }) => {
-										console.log(item);
 										return (
 											<View
 												key={index}

@@ -13,9 +13,9 @@ import styles from "../../utils/Style";
 
 // import { Container } from './styles';
 
-export default ModalAreas = (props) => {
+export default ModalAreas = (prop) => {
 	const [convenio, setConv] = useConvenio();
-	const { visible, areas } = props;
+	const { visible, areas, props } = prop;
 	const [modal, setModal] = visible;
 	const [, setLoad] = useLoad();
 
@@ -73,7 +73,7 @@ export default ModalAreas = (props) => {
 														]
 													}`,
 												});
-
+												props.navigation.closeDrawer();
 												setModal(false);
 											}}>
 											<Image

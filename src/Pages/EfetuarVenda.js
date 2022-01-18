@@ -24,6 +24,7 @@ import Carregando from "../Components/Carregando";
 export default EfetuarVendas = (props) => {
 	const refInput = useRef(null);
 	const [state] = useConvenio();
+
 	function focusInput() {
 		refInput.current.focus();
 	}
@@ -82,6 +83,7 @@ export default EfetuarVendas = (props) => {
 					method: "post",
 					data: {
 						cartao,
+						Cd_da_area: state.cd_da_area,
 					},
 					headers: { "x-access-token": state.token },
 				});

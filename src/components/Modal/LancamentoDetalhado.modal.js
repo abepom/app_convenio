@@ -31,7 +31,6 @@ export default function LancamentoDetalhado({ visualizar, Nr_lancamento }) {
 				headers: { "x-access-token": token },
 			})
 				.then(({ data }) => {
-					console.log("carregou");
 					if (tipo_lancamento == "3" && data.itens[0].Valor == 0) {
 						data.itens[0].Valor = data.valor * data.parcelas;
 					}

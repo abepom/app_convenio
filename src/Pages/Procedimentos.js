@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { TextInput } from "react-native-paper";
@@ -13,15 +13,24 @@ import styles, { danger, primary, sucess } from "../utils/Style";
 
 const Screens = (props) => {
 	const [convenio, setConvenio] = useConvenio();
+	const [carregando, setCarregando] = useState(false);
 	const [load, setLoad] = useLoad();
-
 	useEffect(() => {
 		if (load !== "Procedimentos" && load !== "todos") {
 			carregarProcedimentos();
 			setLoad("");
 		}
+	}, []);
+	useEffect(() => {
+		if (load == "Procedimentos" || load == "todos") {
+			carregarProcedimentos();
+			setLoad("");
+		}
 	}, [load]);
+
 	const carregarProcedimentos = async () => {
+		setCarregando(true);
+
 		const { data } = await api({
 			method: "POST",
 			url: "/procedimentos",
@@ -33,6 +42,7 @@ const Screens = (props) => {
 		});
 
 		setConvenio({ ...convenio, procedimentos: data });
+		setCarregando(false);
 	};
 	useEffect(() => {
 		carregarProcedimentos();
@@ -68,91 +78,96 @@ const Screens = (props) => {
 					}}>
 					Lista de procedimentos cadastrados
 				</Text>
-
-				<FlatList
-					data={convenio.procedimentos}
-					renderItem={({ item }) => {
-						return (
-							<View
-								key={item.Value}
-								style={{
-									backgroundColor: "white",
-									marginHorizontal: "10%",
-									marginTop: 20,
-									borderWidth: 1,
-									borderColor: primary,
-									borderRadius: 5,
-									padding: 10,
-								}}>
-								<TextInput
-									TextInput
-									label="NOME PROCEDIMENTO"
-									dense
-									disableFullscreenUI
-									mode="outlined"
-									value
-									render={() => <Text style={{ padding: 5 }}>{item.Name}</Text>}
-								/>
-								<View style={{ flexDirection: "row" }}>
+				{carregando ? (
+					<Carregando />
+				) : (
+					<FlatList
+						data={convenio.procedimentos}
+						renderItem={({ item }) => {
+							return (
+								<View
+									key={item.Value}
+									style={{
+										backgroundColor: "white",
+										marginHorizontal: "10%",
+										marginTop: 20,
+										borderWidth: 1,
+										borderColor: primary,
+										borderRadius: 5,
+										padding: 10,
+									}}>
 									<TextInput
 										TextInput
-										label="VALOR"
+										label="NOME PROCEDIMENTO"
 										dense
 										disableFullscreenUI
 										mode="outlined"
 										value
-										style={{ flex: 3 }}
 										render={() => (
-											<Text style={{ padding: 10 }}>
-												R$ {item.Valor_convenio.toFixed(2)}
-											</Text>
+											<Text style={{ padding: 5 }}>{item.Name}</Text>
 										)}
 									/>
-									<View
-										style={{
-											margin: 2,
-											marginLeft: 10,
-											alignItems: "center",
-											width: 50,
-										}}>
-										{item.carregando ? (
-											<Carregando tamanho={30} />
-										) : (
-											<>
-												<Text>
-													{" "}
-													{!!item.desabilitado ? "Inativo" : "Ativo"}
+									<View style={{ flexDirection: "row" }}>
+										<TextInput
+											TextInput
+											label="VALOR"
+											dense
+											disableFullscreenUI
+											mode="outlined"
+											value
+											style={{ flex: 3 }}
+											render={() => (
+												<Text style={{ padding: 10 }}>
+													R$ {item.Valor_convenio.toFixed(2)}
 												</Text>
-												<TouchableOpacity
-													onPress={() => trocarStatus(item.Value)}>
-													<Image
-														source={
-															!!item.desabilitado
-																? require("../../assets/img/unchecked.png")
-																: require("../../assets/img/check.png")
-														}
-														style={[
-															styles.imgMenu,
-															{
-																width: 25,
-																height: 25,
-																marginHorizontal: 3,
-																tintColor: !!item.desabilitado
-																	? danger
-																	: sucess,
-															},
-														]}
-													/>
-												</TouchableOpacity>
-											</>
-										)}
+											)}
+										/>
+										<View
+											style={{
+												margin: 2,
+												marginLeft: 10,
+												alignItems: "center",
+												width: 50,
+											}}>
+											{item.carregando ? (
+												<Carregando tamanho={30} />
+											) : (
+												<>
+													<Text>
+														{" "}
+														{!!item.desabilitado ? "Inativo" : "Ativo"}
+													</Text>
+													<TouchableOpacity
+														onPress={() => trocarStatus(item.Value)}>
+														<Image
+															source={
+																!!item.desabilitado
+																	? require("../../assets/img/unchecked.png")
+																	: require("../../assets/img/check.png")
+															}
+															style={[
+																styles.imgMenu,
+																{
+																	width: 25,
+																	height: 25,
+																	marginHorizontal: 3,
+																	tintColor: !!item.desabilitado
+																		? danger
+																		: sucess,
+																},
+															]}
+														/>
+													</TouchableOpacity>
+												</>
+											)}
+										</View>
 									</View>
 								</View>
-							</View>
-						);
-					}}
-					keyExtractor={(item) => item.id}
-				/>
+							);
+						}}
+						keyExtractor={(item) => item.id}
+					/>
+				)}
 			</View>
 		</MenuTop>
 	);
