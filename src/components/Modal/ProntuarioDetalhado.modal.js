@@ -65,7 +65,7 @@ const ProntuarioDetalhado = (props) => {
 										{ fontWeight: "bold", marginVertical: 2 },
 									]}>
 									Prontuario:{" "}
-									<Text style={{ fontWeight: "100" }}>
+									<Text style={{ fontWeight: "normal" }}>
 										{state.ID_Prontuario}
 									</Text>
 								</Text>
@@ -75,7 +75,7 @@ const ProntuarioDetalhado = (props) => {
 										{ fontWeight: "bold", marginVertical: 2 },
 									]}>
 									Matricula:
-									<Text style={{ fontWeight: "100" }}> {state.matricula}</Text>
+									<Text style={{ fontWeight: "normal" }}> {state.matricula}</Text>
 								</Text>
 							</View>
 							<Text
@@ -84,7 +84,7 @@ const ProntuarioDetalhado = (props) => {
 									{ fontWeight: "bold", marginVertical: 2 },
 								]}>
 								Associado:{" "}
-								<Text style={{ fontWeight: "100" }}>{state.nome}</Text>
+								<Text style={{ fontWeight: "normal" }}>{state.nome}</Text>
 							</Text>
 
 							<View
@@ -98,7 +98,7 @@ const ProntuarioDetalhado = (props) => {
 										{ fontWeight: "bold", marginVertical: 2 },
 									]}>
 									Parcelamento:{" "}
-									<Text style={{ fontWeight: "100" }}>
+									<Text style={{ fontWeight: "normal" }}>
 										{`${state.Quantidade_Atendimento} x ${formatCurrency.format(
 											state.Valor,
 											{
@@ -113,7 +113,7 @@ const ProntuarioDetalhado = (props) => {
 										{ fontWeight: "bold", marginVertical: 2 },
 									]}>
 									Data:
-									<Text style={{ fontWeight: "100" }}>
+									<Text style={{ fontWeight: "normal" }}>
 										{" "}
 										{state.Data_Inicio_Atendimento}
 									</Text>
@@ -132,7 +132,7 @@ const ProntuarioDetalhado = (props) => {
 											{ fontWeight: "bold", marginVertical: 2 },
 										]}>
 										Subsidio:{" "}
-										<Text style={{ fontWeight: "100" }}>
+										<Text style={{ fontWeight: "normal" }}>
 											{`${formatCurrency.format(state.Valor_Subsidio, {
 												code: "BRL",
 											})}`}

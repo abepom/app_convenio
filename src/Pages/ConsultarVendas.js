@@ -223,7 +223,7 @@ const ConsultarVendas = (props) => {
 											{ fontWeight: "bold", marginVertical: 2 },
 										]}>
 										Lançamento:{" "}
-										<Text style={{ fontWeight: "100" }}>
+										<Text style={{ fontWeight: "normal" }}>
 											{conteudoModal.Nr_lancamento}
 										</Text>
 									</Text>
@@ -233,7 +233,7 @@ const ConsultarVendas = (props) => {
 											{ fontWeight: "bold", marginVertical: 2 },
 										]}>
 										Matricula:
-										<Text style={{ fontWeight: "100" }}>
+										<Text style={{ fontWeight: "normal" }}>
 											{" "}
 											{conteudoModal.Matricula}
 										</Text>
@@ -245,7 +245,7 @@ const ConsultarVendas = (props) => {
 										{ fontWeight: "bold", marginVertical: 2 },
 									]}>
 									Associado:{" "}
-									<Text style={{ fontWeight: "100" }}>
+									<Text style={{ fontWeight: "normal" }}>
 										{conteudoModal["Nome do dependente"]}
 									</Text>
 								</Text>
@@ -261,7 +261,7 @@ const ConsultarVendas = (props) => {
 											{ fontWeight: "bold", marginVertical: 2 },
 										]}>
 										Valor:
-										<Text style={{ fontWeight: "100" }}>
+										<Text style={{ fontWeight: "normal" }}>
 											{" "}
 											{formatCurrency.format(conteudoModal.Valor, {
 												code: "BRL",
@@ -275,7 +275,7 @@ const ConsultarVendas = (props) => {
 											{ fontWeight: "bold", marginVertical: 2 },
 										]}>
 										Data:
-										<Text style={{ fontWeight: "100" }}>
+										<Text style={{ fontWeight: "normal" }}>
 											{" "}
 											{conteudoModal.Data}
 										</Text>
@@ -532,7 +532,7 @@ const ConsultarVendas = (props) => {
 															{ fontWeight: "bold", marginVertical: 2 },
 														]}>
 														Lançamento:{" "}
-														<Text style={{ fontWeight: "100" }}>
+														<Text style={{ fontWeight: "normal" }}>
 															{item.Nr_lancamento}
 														</Text>
 													</Text>
@@ -542,7 +542,7 @@ const ConsultarVendas = (props) => {
 															{ fontWeight: "bold", marginVertical: 2 },
 														]}>
 														Matricula:
-														<Text style={{ fontWeight: "100" }}>
+														<Text style={{ fontWeight: "normal" }}>
 															{" "}
 															{item.Matricula}
 														</Text>
@@ -558,7 +558,7 @@ const ConsultarVendas = (props) => {
 															{ fontWeight: "bold", marginVertical: 2 },
 														]}>
 														Associado:{" "}
-														<Text style={{ fontWeight: "100" }}>
+														<Text style={{ fontWeight: "normal" }}>
 															{item["Nome do dependente"]}
 														</Text>
 													</Text>
@@ -575,7 +575,7 @@ const ConsultarVendas = (props) => {
 															{ fontWeight: "bold", marginVertical: 2 },
 														]}>
 														Valor:
-														<Text style={{ fontWeight: "100" }}>
+														<Text style={{ fontWeight: "normal" }}>
 															{" "}
 															{formatCurrency.format(item.Valor, {
 																code: "BRL",
@@ -588,7 +588,7 @@ const ConsultarVendas = (props) => {
 															{ fontWeight: "bold", marginVertical: 2 },
 														]}>
 														Data:
-														<Text style={{ fontWeight: "100" }}>
+														<Text style={{ fontWeight: "normal" }}>
 															{" "}
 															{item.Data}
 														</Text>

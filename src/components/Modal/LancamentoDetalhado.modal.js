@@ -75,7 +75,7 @@ export default function LancamentoDetalhado({ visualizar, Nr_lancamento }) {
 										{ fontWeight: "bold", marginVertical: 2 },
 									]}>
 									Lançamento:{" "}
-									<Text style={{ fontWeight: "100" }}>
+									<Text style={{ fontWeight: "normal" }}>
 										{ItensVenda.Nr_lancamento}
 									</Text>
 								</Text>
@@ -85,7 +85,7 @@ export default function LancamentoDetalhado({ visualizar, Nr_lancamento }) {
 										{ fontWeight: "bold", marginVertical: 2 },
 									]}>
 									Matricula:
-									<Text style={{ fontWeight: "100" }}>
+									<Text style={{ fontWeight: "normal" }}>
 										{" "}
 										{ItensVenda.Matricula}
 									</Text>
@@ -97,7 +97,7 @@ export default function LancamentoDetalhado({ visualizar, Nr_lancamento }) {
 									{ fontWeight: "bold", marginVertical: 2 },
 								]}>
 								Associado:{" "}
-								<Text style={{ fontWeight: "100" }}>
+								<Text style={{ fontWeight: "normal" }}>
 									{ItensVenda["Nome do dependente"]}
 								</Text>
 							</Text>
@@ -113,7 +113,7 @@ export default function LancamentoDetalhado({ visualizar, Nr_lancamento }) {
 										{ fontWeight: "bold", marginVertical: 2 },
 									]}>
 									Parcelamento:{" "}
-									<Text style={{ fontWeight: "100" }}>
+									<Text style={{ fontWeight: "normal" }}>
 										{`${ItensVenda.parcelas} x ${formatCurrency.format(
 											ItensVenda.valor,
 											{
@@ -128,7 +128,7 @@ export default function LancamentoDetalhado({ visualizar, Nr_lancamento }) {
 										{ fontWeight: "bold", marginVertical: 2 },
 									]}>
 									Data:
-									<Text style={{ fontWeight: "100" }}> {ItensVenda.Data}</Text>
+									<Text style={{ fontWeight: "normal" }}> {ItensVenda.Data}</Text>
 								</Text>
 							</View>
 							<>
