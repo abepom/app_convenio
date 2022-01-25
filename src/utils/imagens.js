@@ -42,7 +42,10 @@ import question from "../../assets/img/question.png";
 import folder from "../../assets/img/folder.png";
 import openFolder from "../../assets/img/open_folder.png";
 import comment from "../../assets/img/comment.png";
+import focus from "../../assets/img/focus.png";
+
 export default {
+	focus,
 	comment,
 	openFolder,
 	folder,

@@ -53,7 +53,42 @@ export default EfetuarVendas = (props) => {
 		setImput("");
 		setCamera(true);
 	};
-
+	useEffect(() => {
+		(async () => {
+			try {
+				const { status } = await Camera.requestCameraPermissionsAsync();
+				if (status !== "granted") {
+					Alert.alert(
+						"Permissão negada!",
+						"É necessario conceder permissao para utilizar a camera",
+						[
+							{
+								text: "Solicitar permissao novamente.",
+								onPress: async () => {
+									await Camera.getCameraPermissionsAsync();
+									if (Platform.OS == "android") {
+										await Camera.getAvailableCameraTypesAsync();
+									} else {
+										await Camera.requestPermissionsAsync();
+									}
+									setCamera(false);
+								},
+							},
+							{
+								text: "Cancel",
+								onPress: () => {
+									setCamera(false);
+								},
+							},
+						]
+					);
+				}
+			} catch (error) {
+				console.log(error);
+				setCamera(false);
+			}
+		})();
+	}, []);
 	const consultarCartao = async (cartao) => {
 		if (state.tipo_lancamento != "3") {
 			let verificaProcedimento = state.procedimentos.filter((item) => {
@@ -170,7 +205,6 @@ export default EfetuarVendas = (props) => {
 								style={{
 									width: "100%",
 									flexDirection: "row",
-
 									justifyContent: "center",
 								}}>
 								<TextInputrn {...props} />
@@ -189,6 +223,8 @@ export default EfetuarVendas = (props) => {
 					<View>
 						<Modal visible={camera}>
 							<Camera
+								type={"back"}
+								ratio="16:9"
 								captureAudio={false}
 								onBarCodeScanned={(dados) => {
 									let { data } = dados;
@@ -199,7 +235,6 @@ export default EfetuarVendas = (props) => {
 											data.substr(13, 2) +
 											"-" +
 											data.substr(11, 2);
-
 										if (dataqrcode == new Date().toJSON().substr(0, 10)) {
 											//setImput(data.substr(0, 11));
 											setCamera(false);
@@ -213,7 +248,7 @@ export default EfetuarVendas = (props) => {
 													titular: info.titular,
 												};
 												setImput("");
-												props.navigation.navigate("CadastrarVenda", {
+												props.navigation.navigate("Cadastrar", {
 													...assoc,
 													id_gds: state.id_gds,
 												});
@@ -224,21 +259,24 @@ export default EfetuarVendas = (props) => {
 											});
 										} else {
 											setCamera(false);
-
 											setImput("");
-
 											Alert.alert(
 												"Código Inválido",
 												"Esse QR code não é valido, por favor solicite que o associado gere um novo QR code."
 											);
 										}
-									} else {
 									}
 								}}
 								style={{
 									flex: 1,
-									width: "100%",
-								}}></Camera>
+								}}>
+								<View style={styles.conteiner}>
+									<Image
+										source={imagens.focus}
+										style={{ width: 350, height: 350, tintColor: "white" }}
+									/>
+								</View>
+							</Camera>
 							<View
 								style={{
 									position: "absolute",
@@ -333,7 +371,7 @@ export default EfetuarVendas = (props) => {
 												);
 											} else {
 												setImput("");
-												props.navigation.navigate("CadastrarVenda", {
+												props.navigation.navigate("Cadastrar", {
 													cartao: imput,
 													matricula: item.Matricula,
 													dep: item.Cd_dependente,

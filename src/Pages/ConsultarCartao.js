@@ -7,6 +7,7 @@ import {
 	Alert,
 	Modal,
 	Platform,
+	Image,
 } from "react-native";
 import { TextInput as Imput } from "react-native-paper";
 import Menu from "../Components/MenuTop";
@@ -19,6 +20,7 @@ import useConvenio from "../Data/Convenio";
 import { Camera } from "expo-camera";
 import Carregando from "../Components/Carregando";
 import CartaoAbepom from "../Components/CartaoAbepom";
+import imagens from "../utils/imagens";
 
 const Home = (props) => {
 	const refInput = useRef(null);
@@ -369,6 +371,7 @@ const Home = (props) => {
 					<View>
 						<Modal visible={camera} style={{ backgroundColor: "blue" }}>
 							<Camera
+								ratio="16:9"
 								captureAudio={false}
 								onBarCodeScanned={(dados) => {
 									if (dados.data) {
@@ -398,8 +401,14 @@ const Home = (props) => {
 								}}
 								style={{
 									flex: 1,
-								}}
-							/>
+								}}>
+								<View style={styles.conteiner}>
+									<Image
+										source={imagens.focus}
+										style={{ width: 350, height: 350, tintColor: "white" }}
+									/>
+								</View>
+							</Camera>
 
 							<View
 								style={{

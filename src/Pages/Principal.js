@@ -71,6 +71,7 @@ export default (props) => {
 					convenios: true,
 				});
 				let conv;
+				console.log(data);
 				if (!data.erro) {
 					const areas = await api({
 						method: "POST",
@@ -115,14 +116,23 @@ export default (props) => {
 					await setConv(conv);
 				}
 			} catch (error) {
-				props.navigation.navigate("Sair");
+				props.navigation.reset({
+					index: 0,
+					routes: [{ name: "AcessoConvenio" }],
+				});
+				props.navigation.navigate("AcessoConvenio", { deslogar: true });
 				Alert.alert(
 					"ATENÇÃO",
 					"Usuário ou Senha incorretos.\n EFETUE NOVAMENTE O LOGIN!!"
 				);
 			}
 		} else {
-			props.navigation.navigate("Sair");
+			props.navigation.reset({
+				index: 0,
+				routes: [{ name: "AcessoConvenio" }],
+			});
+			props.navigation.navigate("AcessoConvenio", { deslogar: true });
+
 			Alert.alert(
 				"ATENÇÃO",
 				"Usuário ou Senha incorretos.\n EFETUE NOVAMENTE O LOGIN!!"
