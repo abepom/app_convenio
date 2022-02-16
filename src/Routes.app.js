@@ -67,7 +67,7 @@ export default function () {
 				<Drawer.Screen
 					name="Prontuarios"
 					component={Prontuarios}
-					options={Item(imagens.open_folder, "Prontuarios")}
+					options={Item(imagens.openFolder, "Prontuarios")}
 				/>
 			)}
 			<Drawer.Screen

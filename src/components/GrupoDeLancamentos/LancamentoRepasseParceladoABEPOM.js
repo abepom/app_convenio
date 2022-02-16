@@ -286,7 +286,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 												marginHorizontal: 20,
 												borderBottomWidth: 1,
 											}}>
-											<Text style={{ fontSize: 18, width: "70%" }}>
+											<Text style={{ fontSize: 18, width: "60%" }}>
 												{item.Name}
 											</Text>
 											<Text

@@ -129,37 +129,26 @@ const Screens = (props) => {
 												alignItems: "center",
 												width: 50,
 											}}>
-											{item.carregando ? (
-												<Carregando tamanho={30} />
-											) : (
-												<>
-													<Text>
-														{" "}
-														{!!item.desabilitado ? "Inativo" : "Ativo"}
-													</Text>
-													<TouchableOpacity
-														onPress={() => trocarStatus(item.Value)}>
-														<Image
-															source={
-																!!item.desabilitado
-																	? require("../../assets/img/unchecked.png")
-																	: require("../../assets/img/check.png")
-															}
-															style={[
-																styles.imgMenu,
-																{
-																	width: 25,
-																	height: 25,
-																	marginHorizontal: 3,
-																	tintColor: !!item.desabilitado
-																		? danger
-																		: sucess,
-																},
-															]}
-														/>
-													</TouchableOpacity>
-												</>
-											)}
+											<Text> {!!item.desabilitado ? "Inativo" : "Ativo"}</Text>
+											<TouchableOpacity
+												onPress={() => trocarStatus(item.Value)}>
+												<Image
+													source={
+														!!item.desabilitado
+															? require("../../assets/img/unchecked.png")
+															: require("../../assets/img/check.png")
+													}
+													style={[
+														styles.imgMenu,
+														{
+															width: 25,
+															height: 25,
+															marginHorizontal: 3,
+															tintColor: !!item.desabilitado ? danger : sucess,
+														},
+													]}
+												/>
+											</TouchableOpacity>
 										</View>
 									</View>
 								</View>
