@@ -128,7 +128,10 @@ export default function LancamentoDetalhado({ visualizar, Nr_lancamento }) {
 										{ fontWeight: "bold", marginVertical: 2 },
 									]}>
 									Data:
-									<Text style={{ fontWeight: "normal" }}> {ItensVenda.Data}</Text>
+									<Text style={{ fontWeight: "normal" }}>
+										{" "}
+										{ItensVenda.Data}
+									</Text>
 								</Text>
 							</View>
 							<>

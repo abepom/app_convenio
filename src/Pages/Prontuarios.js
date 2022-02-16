@@ -156,7 +156,7 @@ export default (props) => {
 					</TouchableOpacity>
 				</View>
 			</Modal>
-			<MenuTop title={"prontuario"} drawer {...props}>
+			<MenuTop title={"Prontuários"} drawer {...props}>
 				<Text style={{ marginTop: 10, fontSize: 18, color: primary }}>
 					Informe a matrícula do associado.
 				</Text>

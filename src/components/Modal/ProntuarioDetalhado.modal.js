@@ -75,7 +75,10 @@ const ProntuarioDetalhado = (props) => {
 										{ fontWeight: "bold", marginVertical: 2 },
 									]}>
 									Matricula:
-									<Text style={{ fontWeight: "normal" }}> {state.matricula}</Text>
+									<Text style={{ fontWeight: "normal" }}>
+										{" "}
+										{state.matricula}
+									</Text>
 								</Text>
 							</View>
 							<Text
@@ -162,6 +165,7 @@ const ProntuarioDetalhado = (props) => {
 									style={{ maxHeight: 400 }}
 									keyExtractor={({ index }) => index}
 									renderItem={({ item, index }) => {
+										console.log(item);
 										return (
 											<View key={index}>
 												<View key={index} style={{ flexDirection: "row" }}>

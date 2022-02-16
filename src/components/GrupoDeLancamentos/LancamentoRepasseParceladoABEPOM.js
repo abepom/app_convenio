@@ -322,6 +322,11 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 				</View>
 				<View style={{ width: "100%", paddingHorizontal: "10%" }}>
 					<>
+						{proceAdd.length > 0 && (
+							<Text style={{ fontSize: 14, alignSelf: "center" }}>
+								PROCEDIMENTOS ADICIONADOS
+							</Text>
+						)}
 						{proceAdd.map((proced, i) => (
 							<View key={i}>
 								<View
@@ -335,7 +340,6 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 										flexDirection: "row",
 									}}>
 									<View style={{ width: "70%" }}>
-										<Text style={{ fontSize: 10 }}>PROCEDIMENTOS: </Text>
 										<Text
 											style={{
 												fontSize: 10,

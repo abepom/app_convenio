@@ -23,7 +23,6 @@ import {
 } from "@expo-google-fonts/dancing-script";
 const Load = (props) => {
 	const [usuario] = useUsuario();
-
 	const { navigation } = props;
 	const [mostrarSlogan1, setMostrarSlogan1] = useState(false);
 	const [mostrarSlogan2, setMostrarSlogan2] = useState(false);
@@ -146,7 +145,6 @@ const Load = (props) => {
 				style={{
 					flex: 1,
 					resizeMode: "repeat",
-
 					marginTop: Platform.OS === "ios" ? Constants.statusBarHeight : 0,
 					height: Dimensions.get("window").height,
 					width: Dimensions.get("window").width,

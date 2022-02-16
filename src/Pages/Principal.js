@@ -71,7 +71,6 @@ export default (props) => {
 					convenios: true,
 				});
 				let conv;
-				console.log(data);
 				if (!data.erro) {
 					const areas = await api({
 						method: "POST",
