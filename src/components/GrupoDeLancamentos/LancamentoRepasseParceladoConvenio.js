@@ -9,12 +9,15 @@ import Carregando from "../Carregando";
 import api from "../../api";
 import formatCurrency from "currency-formatter";
 import useLoad from "../../Data/Load";
+import ModalValidarLancamento from "../Modal/ValidarLancamento.modal";
 const GrupoDeLancamentos = ({ associado, props }) => {
 	const { matricula, dep } = associado;
 	const [descricao, setDescricao] = useState("");
 	const [quantidade, setQuantidade] = useState(1);
-	const [valor, setValor] = useState(0);
+	const [valor, setValor] = useState("0");
 	const [modal, setModal] = useState(false);
+	const [modalPermissao, setModalPermissao] = useState(false);
+
 	const [msnModal, setMsnModal] = useState({
 		erro: true,
 		mensagem: "",
@@ -69,6 +72,18 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 
 	return (
 		<>
+			<ModalValidarLancamento
+				modal={modalPermissao}
+				setModal={setModalPermissao}
+				fun={Lancar}
+				matricula={matricula}
+				dep={dep}
+				valor={valor
+					.replace(/[.]/g, "")
+					.replace(/[,]/g, ".")
+					.replace("R$ ", "")}
+				parcela={quantidade}
+			/>
 			<Modal visible={modal} {...props} transparent collapsable>
 				<View
 					style={{
@@ -237,7 +252,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 								styles.btnDefault,
 								{ marginTop: 30, opacity: !btnvisivel ? 0.5 : 1 },
 							]}
-							onPress={Lancar}>
+							onPress={() => setModalPermissao(true)}>
 							<Text style={{ color: "white" }}>CADASTRAR LANÇAMENTO</Text>
 						</TouchableOpacity>
 					) : (

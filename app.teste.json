@@ -1,21 +1,19 @@
 {
 	"expo": {
-		"name": "Farmácia",
-		"slug": "abepom_farmacia",
-		"version": "1.3.36",
-		"description": "Ao concluir a atualização iremos reiniciar\n o aplicativo Automaticamente. Aguarde...",
+		"name": "ABEPOM\nConvênio",
+		"slug": "abepom_convenios",
+		"version": "0.0.1",
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
-		"platforms": ["ios", "android"],
+		"platforms": ["ios", "android", "web"],
 		"backgroundColor": "#03254E",
 		"primaryColor": "#03254E",
 		"updates": {
 			"fallbackToCacheTimeout": 0
 		},
 		"assetBundlePatterns": ["**/*"],
-
 		"ios": {
-			"bundleIdentifier": "br.org.abepom.farmacia",
+			"bundleIdentifier": "br.org.abepom.convenio",
 			"buildNumber": "1.3.34",
 			"backgroundColor": "#f1f1f1",
 			"icon": "./assets/icon-ios.png",
@@ -64,8 +62,8 @@
 				"backgroundColor": "#03254E",
 				"resizeMode": "cover"
 			},
-			"package": "br.org.abepom.farmacia.teste",
-			"versionCode": 59,
+			"package": "br.org.abepom.convenio.teste",
+			"versionCode": 1,
 			"backgroundColor": "#03254E"
 		},
 		"packagerOpts": {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -37,14 +37,17 @@ export default (props) => {
 		const { data } = await api({
 			method: "get",
 			url: "/prontuarios",
-			params: { matricula },
+			params: { matricula: "123" },
 			headers: { "x-access-token": token },
 		});
-
+		console.lo;
 		setListaProntuarios(data);
 
 		setCarregarBotao(false);
 	};
+	useEffect(() => {
+		_ConsultarProntuario();
+	}, []);
 
 	const _ConsultarItensProntuario = async (item) => {
 		setModal(true);
@@ -157,39 +160,6 @@ export default (props) => {
 				</View>
 			</Modal>
 			<MenuTop title={"Prontuários"} drawer {...props}>
-				<Text style={{ marginTop: 10, fontSize: 18, color: primary }}>
-					Informe a matrícula do associado.
-				</Text>
-				<View
-					style={{
-						width: "80%",
-						justifyContent: "center",
-						flexDirection: "row",
-						marginVertical: 10,
-					}}>
-					<TextInput
-						accessibilityLabel="Matrícula"
-						key="Matrícula"
-						label="Matrícula"
-						dense
-						onChangeText={setMatricula}
-						maxLength={6}
-						mode="outlined"
-						style={{ width: "60%" }}
-						theme={themeLight}
-						keyboardType={"numeric"}
-						value={matricula}
-					/>
-					{carregarBotao ? (
-						<Carregando tamanho={40} />
-					) : (
-						<TouchableOpacity
-							style={[styles.btnDefault, { margin: 5 }]}
-							onPress={_ConsultarProntuario}>
-							<Text style={styles.btnDefaultText}> BUSCAR</Text>
-						</TouchableOpacity>
-					)}
-				</View>
 				<View
 					style={{
 						width: "80%",

@@ -17,6 +17,7 @@ import api from "../../api";
 import formatCurrency from "currency-formatter";
 import imagens from "../../utils/imagens";
 import useLoad from "../../Data/Load";
+import ModalValidarLancamento from "../Modal/ValidarLancamento.modal";
 
 const GrupoDeLancamentos = ({ associado, props }) => {
 	const { matricula, dep } = associado;
@@ -36,6 +37,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 	const [selectedValue, setSelectedValue] = useState(1);
 	const [, setload] = useLoad();
 	const [proceAdd, setProceAdd] = useState([]);
+	const [modalPermissao, setModalPermissao] = useState(false);
 
 	const [btnvisivel, setBtnvisivel] = useState(false);
 	const [convenio, setConvenio] = useConvenio();
@@ -123,6 +125,18 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 
 	return (
 		<>
+			<ModalValidarLancamento
+				modal={modalPermissao}
+				setModal={setModalPermissao}
+				fun={Lancar}
+				matricula={matricula}
+				dep={dep}
+				valor={
+					proceAdd.reduce((total, item) => total + item.Valor_convenio, 0) /
+					selectedValue
+				}
+				parcela={selectedValue}
+			/>
 			<Modal visible={modal} {...props} transparent collapsable>
 				<View
 					style={{
@@ -429,6 +443,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 														mode="dropdown"
 														selectedValue={selectedValue}
 														onValueChange={(itemValue, itemIndex) => {
+															console.log(itemValue);
 															setSelectedValue(itemValue);
 														}}>
 														{quantidade.map((a, b) => {
@@ -447,7 +462,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 										{!carregando ? (
 											<TouchableOpacity
 												style={[styles.btnDefault, { marginTop: 10 }]}
-												onPress={Lancar}>
+												onPress={() => setModalPermissao(true)}>
 												<Text style={{ color: "white" }}>
 													CADASTRAR LANÇAMENTO
 												</Text>

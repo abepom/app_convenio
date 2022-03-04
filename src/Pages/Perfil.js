@@ -231,19 +231,22 @@ export default function TabViewExample(props) {
 									<TouchableOpacity onPress={enviarImagem}>
 										<Image
 											source={{
+												cache: "default",
 												uri: convenio.caminho_logomarca,
-												cache: "reload",
 											}}
-											style={[styles.logoPP, { width: 60, height: 60 }]}
+											style={{
+												width: 60,
+												height: 60,
+												resizeMode: "contain",
+												borderRadius: 30,
+											}}
 										/>
-
 										<Image
 											source={imagens.plus}
 											style={{
 												width: 20,
 												height: 20,
 												resizeMode: "cover",
-
 												bottom: 20,
 												right: -35,
 											}}
@@ -253,9 +256,14 @@ export default function TabViewExample(props) {
 							) : (
 								<Image
 									source={{
-										uri: convenio.caminho_logomarca,
+										uri: `${convenio.caminho_logomarca}`,
 									}}
-									style={[styles.logoPP]}
+									style={{
+										width: 60,
+										height: 60,
+										resizeMode: "contain",
+										borderRadius: 30,
+									}}
 								/>
 							)
 						) : convenio.nivel < 2 ? (
@@ -270,7 +278,6 @@ export default function TabViewExample(props) {
 								<Image
 									source={imagens.camera}
 									style={[
-										styles.logoPP,
 										{
 											resizeMode: "contain",
 											height: 50,

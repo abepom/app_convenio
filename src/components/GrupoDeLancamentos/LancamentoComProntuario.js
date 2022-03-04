@@ -18,6 +18,7 @@ import Carregando from "../Carregando";
 import api from "../../api";
 import formatCurrency from "currency-formatter";
 import useLoad from "../../Data/Load";
+import ModalValidarLancamento from "../Modal/ValidarLancamento.modal";
 const LancamentoComProntuario = (prop) => {
 	const { associado, props } = prop;
 	const { matricula, dep } = associado;
@@ -31,6 +32,8 @@ const LancamentoComProntuario = (prop) => {
 	const [modal, setModal] = useState(false);
 	const [modalProntuario, setModalProntuario] = useState(false);
 	const [, setload] = useLoad();
+	const [modalPermissao, setModalPermissao] = useState(false);
+
 	const [msnModal, setMsnModal] = useState({
 		erro: true,
 		mensagem: "",
@@ -140,6 +143,15 @@ const LancamentoComProntuario = (prop) => {
 
 	return (
 		<>
+			<ModalValidarLancamento
+				modal={modalPermissao}
+				setModal={setModalPermissao}
+				fun={Lancar}
+				matricula={matricula}
+				dep={dep}
+				valor={procedimento.Value}
+				parcela={quantidade}
+			/>
 			<Modal visible={modalProntuario} {...props} transparent collapsable>
 				<View
 					style={{
@@ -507,7 +519,7 @@ const LancamentoComProntuario = (prop) => {
 									styles.btnDefault,
 									{ marginVertical: 15, opacity: !btnvisivel ? 0.5 : 1 },
 								]}
-								onPress={Lancar}>
+								onPress={() => setModalPermissao(true)}>
 								<Text style={{ color: "white" }}>
 									{mostrarItens ? "ADICIONAR AO PRONTUARIO" : "PROSSEGUIR"}
 								</Text>
