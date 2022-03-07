@@ -162,7 +162,7 @@ export default (props) => {
 			<MenuTop title={"Prontuários"} drawer {...props}>
 				<View
 					style={{
-						width: "80%",
+						width: "90%",
 						justifyContent: "center",
 						flexDirection: "row",
 						marginVertical: 10,
@@ -175,7 +175,7 @@ export default (props) => {
 								<SafeAreaView style={{ flex: 1 }}>
 									<FlatList
 										data={listaProntuarios}
-										style={{ maxHeight: 600 }}
+										style={{ flex: 1 }}
 										keyExtractor={({ index }) => index}
 										ListEmptyComponent={() => {
 											return (

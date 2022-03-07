@@ -111,7 +111,6 @@ const LancamentoComProntuario = (prop) => {
 		} else {
 			await ContinuarLancamento();
 		}
-		console.log(props);
 	};
 	async function ContinuarLancamento() {
 		const { data } = await api({
@@ -149,7 +148,7 @@ const LancamentoComProntuario = (prop) => {
 				fun={Lancar}
 				matricula={matricula}
 				dep={dep}
-				valor={procedimento.Value}
+				valor={procedimento.Valor_convenio}
 				parcela={quantidade}
 			/>
 			<Modal visible={modalProntuario} {...props} transparent collapsable>
@@ -356,12 +355,8 @@ const LancamentoComProntuario = (prop) => {
 								setModal(false);
 
 								if (msnModal.retorno == 1) {
-									console.log(true);
-
 									props.navigation.goBack();
 								} else {
-									console.log(false);
-
 									setCarregando(false);
 								}
 							}}>
@@ -496,7 +491,6 @@ const LancamentoComProntuario = (prop) => {
 								(quantidade * procedimento.Valor_convenio).toFixed(2).toString()
 							}
 							render={(props) => {
-								console.log(props);
 								return (
 									<Text
 										style={{

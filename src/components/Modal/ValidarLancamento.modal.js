@@ -42,13 +42,11 @@ const ModalValidarLancamento = (props) => {
 			});
 
 			setCod(data.token);
-			console.log(data);
+
 			setTimeout(() => {
 				setCarregando(false);
 			}, 1000);
-		} catch (error) {
-			console.log(error);
-		}
+		} catch (error) {}
 	};
 	useEffect(() => {
 		if (modal) {

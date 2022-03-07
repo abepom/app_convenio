@@ -283,8 +283,6 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 								);
 							}}
 							onSelected={(a) => setProcedimento({ ...a })}
-							onClosed={console.log}
-							onBackButtonPressed={console.log}
 							items={procedimentos}
 							showToTopButton={true}
 							selected={procedimento}

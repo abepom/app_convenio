@@ -443,7 +443,6 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 														mode="dropdown"
 														selectedValue={selectedValue}
 														onValueChange={(itemValue, itemIndex) => {
-															console.log(itemValue);
 															setSelectedValue(itemValue);
 														}}>
 														{quantidade.map((a, b) => {
