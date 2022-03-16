@@ -56,12 +56,12 @@ export default function () {
 			<Drawer.Screen
 				name="Lancar"
 				component={RoutesLancamento}
-				options={Item(imagens.money, "Lançar")}
+				options={Item(imagens.money, "Efetuar Lançamento")}
 			/>
 			<Drawer.Screen
 				name="ConsultarVendas"
 				component={ConsultarVendas}
-				options={Item(imagens.bill, "Consultar Lançamento")}
+				options={Item(imagens.bill, "Relatório de Lançamentos")}
 			/>
 			{convenio.tipo_lancamento == 4 && (
 				<Drawer.Screen
@@ -83,7 +83,7 @@ export default function () {
 			<Drawer.Screen
 				name="RepassesFuturos"
 				component={RepassesFuturos}
-				options={Item(imagens.statistics, "Repasses")}
+				options={Item(imagens.statistics, "Repatório de Repasses")}
 			/>
 			<Drawer.Screen
 				name="Notificacoes"

@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, ScrollView, Linking } from "react-native";
+import {
+	Text,
+	View,
+	ScrollView,
+	Linking,
+	TouchableOpacity,
+	Image,
+} from "react-native";
 
 import { white, primary } from "../utils/Style";
 
@@ -8,6 +15,7 @@ import api from "../api";
 import Retorno from "../Components/Retorno";
 
 import useConvenio from "../Data/Convenio";
+import imagens from "../utils/imagens";
 const Enderecos = (props) => {
 	const [mostrar, setMostrar] = useState(false);
 	const [enderecosCadastrados, setEnderecosCadastrados] = useState([]);
@@ -116,13 +124,29 @@ const Enderecos = (props) => {
 				</View>
 			</ScrollView>
 			<View style={{ padding: 20 }}>
-				<Text>Problema com seu(s) endereço(s)?</Text>
-				<Text
-					onPress={() => {
-						Linking.openURL(`tel:+554821070200`);
-					}}>
-					Entre em contato com nosso setor de CONVÊNIOS pelo (48) 2107-0200
+				<Text>
+					Seu endereço mudou? Precisa incluir mais um local de atendimento?
 				</Text>
+				<Text>Entre em contato com o Setor de Convênios:</Text>
+				<TouchableOpacity
+					onPress={() => {
+						Linking.openURL(`https://wa.me/5548991440708`);
+					}}>
+					<View
+						style={{
+							flexDirection: "row",
+							alignItems: "center",
+							justifyContent: "center",
+							margin: 10,
+						}}>
+						<Image
+							source={imagens.whatsapp}
+							style={{ height: 30, width: 30 }}
+						/>
+						<Text>(48) 99144-0708</Text>
+					</View>
+				</TouchableOpacity>
+				<Text>Mantenha seu cadastro atualizado.</Text>
 			</View>
 		</>
 	);

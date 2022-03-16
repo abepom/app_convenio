@@ -271,18 +271,6 @@ export default (props) => {
 					</TouchableOpacity>
 				</View>
 				<ScrollView>
-					<View style={styles.linhaMenu}>
-						<TouchableOpacity
-							style={styles.itemMenu}
-							onPress={() => props.navigation.navigate("ConsultarCartao")}>
-							<Image
-								source={require("../../assets/img/pay.png")}
-								style={styless.imgMenu}
-							/>
-							<Text style={styles.textMenu}>Consultar Cartão</Text>
-						</TouchableOpacity>
-					</View>
-
 					{convenio.efetuarVenda && (
 						<View style={styles.linhaMenu}>
 							<TouchableOpacity
@@ -292,24 +280,41 @@ export default (props) => {
 									source={require("../../assets/img/money.png")}
 									style={styless.imgMenu}
 								/>
-								<Text style={[styles.textMenu]}>LANÇAR</Text>
-							</TouchableOpacity>
-							<TouchableOpacity
-								style={[styles.itemMenu]}
-								onPress={() =>
-									props.navigation.navigate("ConsultarVendas", {
-										load: new Date(),
-									})
-								}>
-								<Image
-									source={require("../../assets/img/bill.png")}
-									style={styless.imgMenu}
-								/>
-								<Text style={[styles.textMenu]}>CONSULTAR</Text>
+								<Text style={[styles.textMenu]}>EFETUAR LANÇAMENTO</Text>
 							</TouchableOpacity>
 						</View>
 					)}
+
 					<View style={styles.linhaMenu}>
+						<TouchableOpacity
+							style={[styles.itemMenu]}
+							onPress={() =>
+								props.navigation.navigate("ConsultarVendas", {
+									load: new Date(),
+								})
+							}>
+							<Image
+								source={require("../../assets/img/bill.png")}
+								style={styless.imgMenu}
+							/>
+							<Text style={[styles.textMenu]}>
+								RELATÓRIO DE {`\n`}LANÇAMENTOS
+							</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.itemMenu}
+							onPress={() =>
+								props.navigation.navigate("RepassesFuturos", convenio)
+							}>
+							<Image
+								source={require("../../assets/img/statistics.png")}
+								style={styless.imgMenu}
+							/>
+							<Text style={styles.textMenu}>RELATÓRIO DE {`\n`}REPASSES</Text>
+						</TouchableOpacity>
+					</View>
+
+					{/* <View style={styles.linhaMenu}>
 						<TouchableOpacity
 							style={styles.itemMenu}
 							onPress={() => {
@@ -335,25 +340,22 @@ export default (props) => {
 							/>
 							<Text style={styles.textMenu}>AVALIAÇÕES</Text>
 						</TouchableOpacity>
+					</View> */}
+
+					<View style={[styles.linhaMenu, { marginBottom: 100 }]}>
+						<TouchableOpacity
+							style={styles.itemMenu}
+							onPress={() => props.navigation.navigate("ConsultarCartao")}>
+							<Image
+								source={require("../../assets/img/pay.png")}
+								style={styless.imgMenu}
+							/>
+							<Text style={styles.textMenu}>Consultar Cartão</Text>
+						</TouchableOpacity>
+						{convenio.tipo_lancamento == 1 && <BtnProcedimentos />}
+						{convenio.tipo_lancamento == 2 && <BtnProcedimentos />}
+						{convenio.tipo_lancamento == 4 && <BtnProcedimentos />}
 					</View>
-					{convenio.nivel == 1 && (
-						<View style={[styles.linhaMenu, { marginBottom: 100 }]}>
-							<TouchableOpacity
-								style={styles.itemMenu}
-								onPress={() =>
-									props.navigation.navigate("RepassesFuturos", convenio)
-								}>
-								<Image
-									source={require("../../assets/img/statistics.png")}
-									style={styless.imgMenu}
-								/>
-								<Text style={styles.textMenu}>Repasses</Text>
-							</TouchableOpacity>
-							{convenio.tipo_lancamento == 1 && <BtnProcedimentos />}
-							{convenio.tipo_lancamento == 2 && <BtnProcedimentos />}
-							{convenio.tipo_lancamento == 4 && <BtnProcedimentos />}
-						</View>
-					)}
 				</ScrollView>
 				<Text style={{ textAlign: "center" }}>Versão: {app.expo.version}</Text>
 			</View>

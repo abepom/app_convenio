@@ -122,7 +122,7 @@ export default function RepassesFuturos(props) {
 				visualizar={[modalProntuario, setModalProntuario]}
 				Nr_lancamento={prontuario}
 			/>
-			<MenuTop drawer {...props} title={"Repasses"}>
+			<MenuTop drawer {...props} title={"Relatório de Repasses"}>
 				<View style={{ flexDirection: "row", padding: 10 }}>
 					<TextInput
 						label="MÊS"

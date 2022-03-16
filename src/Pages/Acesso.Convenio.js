@@ -152,6 +152,7 @@ const Login = (props) => {
 					};
 
 					await setConv(convenio);
+					props.navigation.reset({ index: 0, routes: [{ name: "Aplicacao" }] });
 					props.navigation.navigate("Aplicacao");
 					setState({
 						erro: false,

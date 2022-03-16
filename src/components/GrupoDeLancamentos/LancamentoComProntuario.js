@@ -100,16 +100,13 @@ const LancamentoComProntuario = (prop) => {
 				if (prontuarios) {
 					setModalProntuario(true);
 				} else {
-					await ContinuarLancamento();
+					setModalPermissao(true);
 				}
 			} else {
-				await ContinuarLancamento();
-				Alert.alert("SUCESSO", "O prontuario foi criado com sucesso.");
-
-				props.navigation.goBack();
+				setModalPermissao(true);
 			}
 		} else {
-			await ContinuarLancamento();
+			setModalPermissao(true);
 		}
 	};
 	async function ContinuarLancamento() {
@@ -145,7 +142,7 @@ const LancamentoComProntuario = (prop) => {
 			<ModalValidarLancamento
 				modal={modalPermissao}
 				setModal={setModalPermissao}
-				fun={Lancar}
+				fun={ContinuarLancamento}
 				matricula={matricula}
 				dep={dep}
 				valor={procedimento.Valor_convenio}
@@ -182,13 +179,25 @@ const LancamentoComProntuario = (prop) => {
 								alignItems: "center",
 								width: "90%",
 							}}>
-							<Text style={{ padding: 10, fontSize: 16, width: "100%" }}>
-								Já existe um prontuario para esse associado, para continuar
-								confirme no botão abaixo.
+							<Text
+								style={{
+									padding: 10,
+									fontSize: 16,
+									width: "100%",
+									textAlign: "justify",
+								}}>
+								Já existe um prontuário aberto para esse associado, para
+								continuar visualize o prontuário no botão abaixo.
 							</Text>
-							<Text style={{ padding: 10, fontSize: 16, width: "100%" }}>
-								Para criar um novo e necessário finalizar o prontuario em
-								aberto.
+							<Text
+								style={{
+									padding: 10,
+									fontSize: 16,
+									width: "100%",
+									textAlign: "justify",
+								}}>
+								Para criar um novo prontuário e necessário finalizar o
+								prontuário em aberto.
 							</Text>
 						</View>
 						<View
@@ -227,7 +236,7 @@ const LancamentoComProntuario = (prop) => {
 								bottom: 5,
 								paddingHorizontal: 5,
 							}}>
-							<TouchableOpacity
+							{/* <TouchableOpacity
 								style={{
 									margin: 5,
 									flex: 1,
@@ -241,7 +250,7 @@ const LancamentoComProntuario = (prop) => {
 									await ContinuarLancamento();
 								}}>
 								<Text style={{ color: "white" }}>LANÇAR </Text>
-							</TouchableOpacity>
+							</TouchableOpacity> */}
 							<TouchableOpacity
 								onPress={() => {
 									setModalProntuario(false);
@@ -372,6 +381,7 @@ const LancamentoComProntuario = (prop) => {
 					<TextInput
 						label="Procedimentos"
 						dense
+						disabled={mostrarItens}
 						mode="outlined"
 						keyboardType="numeric"
 						theme={theme}
@@ -380,9 +390,10 @@ const LancamentoComProntuario = (prop) => {
 						render={(props) => (
 							<PickerModal
 								renderSelectView={(disabled, selected, showModal) => {
+									console.log(disabled);
 									return (
 										<TouchableOpacity
-											disabled={disabled}
+											disabled={mostrarItens}
 											style={{
 												width: "100%",
 												height: 45,
@@ -513,7 +524,7 @@ const LancamentoComProntuario = (prop) => {
 									styles.btnDefault,
 									{ marginVertical: 15, opacity: !btnvisivel ? 0.5 : 1 },
 								]}
-								onPress={() => setModalPermissao(true)}>
+								onPress={Lancar}>
 								<Text style={{ color: "white" }}>
 									{mostrarItens ? "ADICIONAR AO PRONTUARIO" : "PROSSEGUIR"}
 								</Text>

@@ -175,6 +175,7 @@ const ConsultarVendas = (props) => {
 				data: { Nr_lancamento, tipo },
 				headers: { "x-access-token": token },
 			});
+			console.log(dados);
 			setCarregando("ConsultarVendas");
 			setRetornoExclusao(dados.data.mensagem.replace("abepom", "ABEPOM"));
 		} finally {
@@ -405,7 +406,7 @@ const ConsultarVendas = (props) => {
 			<MenuTop
 				drawer
 				{...props}
-				title={"Consultar Lançamentos"}
+				title={"Relatório de Lançamentos"}
 				header={
 					<View>
 						<View
@@ -636,6 +637,7 @@ const ConsultarVendas = (props) => {
 													)}
 													<TouchableOpacity
 														onPress={() => {
+															console.log(item);
 															if (item.Processado_desconto) {
 																setConteudoModal(null);
 																setRetornoExclusao(
