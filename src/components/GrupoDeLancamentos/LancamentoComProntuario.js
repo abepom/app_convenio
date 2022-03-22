@@ -91,6 +91,10 @@ const LancamentoComProntuario = (prop) => {
 	};
 
 	const Lancar = async () => {
+		if (descricao.indexOf(`\n`) == 0) {
+			setDescricao(descricao.replace(`\n`, "  "));
+		}
+
 		if (!mostrarItens) {
 			let prontuarios = await carregarProntuarios();
 
@@ -236,21 +240,6 @@ const LancamentoComProntuario = (prop) => {
 								bottom: 5,
 								paddingHorizontal: 5,
 							}}>
-							{/* <TouchableOpacity
-								style={{
-									margin: 5,
-									flex: 1,
-									paddingVertical: 15,
-									paddingHorizontal: 40,
-									backgroundColor: sucess,
-									borderRadius: 5,
-									alignItems: "center",
-								}}
-								onPress={async () => {
-									await ContinuarLancamento();
-								}}>
-								<Text style={{ color: "white" }}>LANÇAR </Text>
-							</TouchableOpacity> */}
 							<TouchableOpacity
 								onPress={() => {
 									setModalProntuario(false);
@@ -390,7 +379,6 @@ const LancamentoComProntuario = (prop) => {
 						render={(props) => (
 							<PickerModal
 								renderSelectView={(disabled, selected, showModal) => {
-									console.log(disabled);
 									return (
 										<TouchableOpacity
 											disabled={mostrarItens}

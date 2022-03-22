@@ -511,6 +511,7 @@ const ConsultarVendas = (props) => {
 								data={vendas}
 								keyExtractor={({ index }) => index}
 								renderItem={({ item, index }) => {
+									console.log(item);
 									return (
 										<View key={index}>
 											<View

@@ -21,13 +21,13 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 		mensagem: "",
 	});
 	const [valor, setValor] = useState(0);
-	const [cupom, setCupom] = useState('');
+	const [cupom, setCupom] = useState("");
 	const [carregando, setCarregando] = useState(false);
 	const [dataSel, setData] = useState(new Date());
 	const [show, setShow] = useState(false);
 
 	const [convenio] = useConvenio();
-	const { tipo_lancamento,  token } = convenio;
+	const { tipo_lancamento, token } = convenio;
 
 	const onChange = (event, selectedDate) => {
 		const currentDate = selectedDate || data;

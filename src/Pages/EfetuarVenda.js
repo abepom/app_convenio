@@ -176,7 +176,7 @@ export default EfetuarVendas = (props) => {
 					color: primary,
 					marginVertical: 30,
 				}}>
-				Informe a matrícula ou o cartão do associado para iniciar o lancamento.
+				Informe a matrícula ou o cartão do associado para iniciar o lançamento.
 			</Text>
 
 			<View style={{ width: "100%", flexDirection: "row" }}>

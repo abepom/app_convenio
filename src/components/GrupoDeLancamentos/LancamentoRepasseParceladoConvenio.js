@@ -252,7 +252,22 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 								styles.btnDefault,
 								{ marginTop: 30, opacity: !btnvisivel ? 0.5 : 1 },
 							]}
-							onPress={() => setModalPermissao(true)}>
+							onPress={() => {
+								let total = valor
+									.replace(/[.]/g, "")
+									.replace(/[,]/g, ".")
+									.replace("R$ ", "");
+								if (total == 0) {
+									setMsnModal({
+										erro: true,
+										mensagem:
+											"O valor do lançamento não pode ser igual a zero.",
+									});
+									setModal(true);
+								} else {
+									setModalPermissao(true);
+								}
+							}}>
 							<Text style={{ color: "white" }}>CADASTRAR LANÇAMENTO</Text>
 						</TouchableOpacity>
 					) : (

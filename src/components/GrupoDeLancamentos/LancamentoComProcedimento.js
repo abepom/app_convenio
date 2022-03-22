@@ -316,6 +316,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 					dense
 					mode="outlined"
 					keyboardType="numeric"
+					disabled
 					theme={theme}
 					style={[styles.imput]}
 					value={quantidade.toString()}

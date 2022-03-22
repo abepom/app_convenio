@@ -83,7 +83,7 @@ const ModalValidarLancamento = (props) => {
 							Solicite ao associado o código de autorição do lançamento.
 						</Text>
 						<Text style={{ width: "100%" }}>
-							Esse codigo sera enviado atravez do email, whastapp e notificação
+							Esse código será enviado atravéz do email, whastsapp e notificação
 							do app ABEPOM Mobile
 						</Text>
 						<View

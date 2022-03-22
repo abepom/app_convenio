@@ -37,7 +37,7 @@ export default (props) => {
 		const { data } = await api({
 			method: "get",
 			url: "/prontuarios",
-			params: { matricula: "123" },
+			params: { matricula: "000" },
 			headers: { "x-access-token": token },
 		});
 		console.lo;
