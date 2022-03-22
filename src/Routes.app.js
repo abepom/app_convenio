@@ -83,7 +83,7 @@ export default function () {
 			<Drawer.Screen
 				name="RepassesFuturos"
 				component={RepassesFuturos}
-				options={Item(imagens.statistics, "Repatório de Repasses")}
+				options={Item(imagens.statistics, "Relatório de Repasses")}
 			/>
 			<Drawer.Screen
 				name="Notificacoes"
