@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
 	Text,
 	Animated,
@@ -11,7 +11,7 @@ import {
 import styles, { primary } from "./../utils/Style";
 import backgroundAnimado from "../../assets/splash.png";
 import useUsuario from "../Data/Usuario";
-import useConvenio from "../Data/Convenio";
+
 import Carregando from "../Components/Carregando";
 import app from "../../app.json";
 import Constants from "expo-constants";

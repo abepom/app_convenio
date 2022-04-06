@@ -71,18 +71,19 @@ export default (props) => {
 					convenios: true,
 				});
 				let conv;
+
 				if (!data.erro) {
 					const areas = await api({
 						method: "POST",
 						url: "/areas",
-						headers: { "x-access-token": convenio.token },
+						headers: { "x-access-token": data.token },
 					});
 					setAreas(areas.data);
 					const procedimentos = await api({
 						method: "POST",
 						url: "/procedimentos",
-						data: { cd_da_area: convenio.cd_da_area },
-						headers: { "x-access-token": convenio.token },
+						data: { cd_da_area: data.cd_da_area },
+						headers: { "x-access-token": data.token },
 					});
 					conv = {
 						id_gds: data.id_gds,

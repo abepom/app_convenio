@@ -11,7 +11,6 @@ import {
 	Modal,
 	Linking,
 	SafeAreaView,
-	Alert,
 } from "react-native";
 import MenuTop from "../Components/MenuTop";
 import styles, {
@@ -175,7 +174,7 @@ const ConsultarVendas = (props) => {
 				data: { Nr_lancamento, tipo },
 				headers: { "x-access-token": token },
 			});
-			console.log(dados);
+
 			setCarregando("ConsultarVendas");
 			setRetornoExclusao(dados.data.mensagem.replace("abepom", "ABEPOM"));
 		} finally {
@@ -511,7 +510,6 @@ const ConsultarVendas = (props) => {
 								data={vendas}
 								keyExtractor={({ index }) => index}
 								renderItem={({ item, index }) => {
-									console.log(item);
 									return (
 										<View key={index}>
 											<View
@@ -579,9 +577,14 @@ const ConsultarVendas = (props) => {
 														Valor:
 														<Text style={{ fontWeight: "normal" }}>
 															{" "}
-															{formatCurrency.format(item.Valor, {
-																code: "BRL",
-															})}
+															{formatCurrency.format(
+																item.parcelas == 0
+																	? item.Valor
+																	: item.Valor * item.parcelas,
+																{
+																	code: "BRL",
+																}
+															)}
 														</Text>
 													</Text>
 													<Text
@@ -638,7 +641,6 @@ const ConsultarVendas = (props) => {
 													)}
 													<TouchableOpacity
 														onPress={() => {
-															console.log(item);
 															if (item.Processado_desconto) {
 																setConteudoModal(null);
 																setRetornoExclusao(

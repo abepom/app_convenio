@@ -6,6 +6,7 @@ import {
 	FlatList,
 	StyleSheet,
 	Modal,
+	Image,
 	ImageBackground,
 	Alert,
 	SafeAreaView,
@@ -54,6 +55,7 @@ export default (props) => {
 
 		setProntuario(item.ID_Prontuario);
 	};
+
 	return (
 		<>
 			<ProntuarioDetalhado
@@ -159,7 +161,17 @@ export default (props) => {
 					</TouchableOpacity>
 				</View>
 			</Modal>
-			<MenuTop title={"Prontuários"} drawer {...props}>
+			<MenuTop
+				title={"Prontuários"}
+				drawer
+				{...props}
+				btnEsquerdo={
+					<Image
+						source={imagens.loop}
+						style={{ width: 30, height: 30, tintColor: "white" }}
+					/>
+				}
+				funcConfig={_ConsultarProntuario}>
 				<View
 					style={{
 						width: "90%",

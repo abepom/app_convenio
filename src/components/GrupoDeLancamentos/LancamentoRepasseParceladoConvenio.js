@@ -59,10 +59,10 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 			},
 			headers: { "x-access-token": token },
 		});
+		console.log(data);
 
-		if (data.retorno == 1) {
-			setMsnModal(data);
-		}
+		setMsnModal(data);
+
 		setModal(true);
 		setload("ConsultarVendas");
 		setTimeout(() => {
@@ -96,7 +96,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 						style={{
 							backgroundColor: "#fff",
 							width: "90%",
-							height: msnModal.limite ? 270 : msnModal.data ? 250 : "30%",
+							height: msnModal.limite ? 170 : msnModal.data ? 250 : "30%",
 							alignItems: "center",
 
 							borderRadius: 5,
@@ -107,7 +107,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 								fontSize: 18,
 								color: primary,
 								paddingHorizontal: 20,
-								marginTop: 10,
+								marginTop: 20,
 
 								textAlign: "center",
 							}}>

@@ -20,7 +20,6 @@ const ProntuarioDetalhado = (props) => {
 	const [{ token }] = useConvenio();
 	const [state, setstate] = useState({ ID_Prontuario: null });
 	useEffect(() => {
-		console.log(Nr_lancamento);
 		api({
 			method: "get",
 			url: "/prontuarios",
@@ -165,7 +164,6 @@ const ProntuarioDetalhado = (props) => {
 									style={{ maxHeight: 400 }}
 									keyExtractor={({ index }) => index}
 									renderItem={({ item, index }) => {
-										console.log(item);
 										return (
 											<View key={index}>
 												<View key={index} style={{ flexDirection: "row" }}>

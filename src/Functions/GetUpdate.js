@@ -3,7 +3,6 @@ import Constants from "expo-constants";
 import * as Updates from "expo-updates";
 
 export default () => {
-	console.log("opa");
 	if (Constants.isDevice && Platform.OS != "web") {
 		Updates.checkForUpdateAsync().then(({ isAvailable }) => {
 			if (isAvailable) {
