@@ -31,9 +31,7 @@ export default function Notificacoes(props) {
 				method: "GET",
 			});
 			setNotificacoes(data);
-		} catch (error) {
-			console.log(error);
-		}
+		} catch (error) {}
 	}
 
 	useEffect(() => {

@@ -37,9 +37,7 @@ export default function LancamentoDetalhado({ visualizar, Nr_lancamento }) {
 					setItensVenda(data);
 					setCarregandoItemVenda(false);
 				})
-				.catch(() => {
-					console.log("erro");
-				});
+				.catch(() => {});
 		}
 	}, [visualizar]);
 	return (

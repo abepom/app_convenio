@@ -59,7 +59,6 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 			},
 			headers: { "x-access-token": token },
 		});
-		console.log(data);
 
 		setMsnModal(data);
 

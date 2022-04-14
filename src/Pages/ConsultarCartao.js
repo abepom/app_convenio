@@ -70,7 +70,6 @@ const Home = (props) => {
 					);
 				}
 			} catch (error) {
-				console.log(error);
 				setCamera(false);
 			}
 		})();

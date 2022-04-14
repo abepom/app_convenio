@@ -84,7 +84,6 @@ export default EfetuarVendas = (props) => {
 					);
 				}
 			} catch (error) {
-				console.log(error);
 				setCamera(false);
 			}
 		})();

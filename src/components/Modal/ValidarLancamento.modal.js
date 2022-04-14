@@ -52,7 +52,6 @@ const ModalValidarLancamento = (props) => {
 
 		setCarregando(true);
 		try {
-			console.log({ matricula, dep, valor, parcela, Celular });
 			const { data } = await api({
 				url: "/enviarAutorizacao",
 				method: "POST",
@@ -127,8 +126,9 @@ const ModalValidarLancamento = (props) => {
 								padding: 20,
 							}}>
 							<Text>
-								Verifique se o celular do associado esta correto para encaminha
-								o codigo de autorização.
+								{!!CelularBanco
+									? "Verifique se o celular do associado esta correto para encaminha o codigo de autorização."
+									: "Solicite o celular do associado para encaminharmos o codigo de autorização."}
 							</Text>
 							<View style={{ flexDirection: "row" }}>
 								{!!CelularBanco ? (
@@ -184,12 +184,14 @@ const ModalValidarLancamento = (props) => {
 										/>
 										<TouchableOpacity
 											onPress={() => {
-												setCelularOK(true);
-
 												if (Celular.length === 15) {
+													setCelularOK(true);
 													enviarCodigo();
 												} else {
-													Alert.alert("Atenção", "Informe um Celular válido");
+													Alert.alert(
+														"Atenção",
+														`Informe um Celular válido.\nVerifique se o número informado possui o nono digito.`
+													);
 												}
 											}}
 											style={{
@@ -198,7 +200,6 @@ const ModalValidarLancamento = (props) => {
 												marginLeft: 5,
 												padding: 10,
 												alignItems: "center",
-
 												borderRadius: 5,
 											}}>
 											<Image

@@ -5,7 +5,7 @@
 		"version": "0.0.1",
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
-		"platforms": ["ios", "android", "web"],
+		"platforms": ["ios", "android"],
 		"backgroundColor": "#03254E",
 		"primaryColor": "#03254E",
 		"updates": {
@@ -54,7 +54,7 @@
 				"com.google.android.providers.gsf.permission.READ_GSERVICES"
 			],
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/adaptive-icon-Teste.png",
+				"foregroundImage": "./assets/adaptive-icon.png",
 				"backgroundColor": "#F1F1F1"
 			},
 			"splash": {
@@ -62,7 +62,7 @@
 				"backgroundColor": "#03254E",
 				"resizeMode": "cover"
 			},
-			"package": "br.org.abepom.convenio.teste",
+			"package": "br.org.abepom.convenio",
 			"versionCode": 1,
 			"backgroundColor": "#03254E"
 		},
