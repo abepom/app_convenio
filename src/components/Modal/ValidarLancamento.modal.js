@@ -127,7 +127,7 @@ const ModalValidarLancamento = (props) => {
 							}}>
 							<Text>
 								{!!CelularBanco
-									? "Verifique se o celular do associado esta correto para encaminha o codigo de autorização."
+									? "Verifique se o celular do associado esta correto para encaminharmos o codigo de autorização."
 									: "Solicite o celular do associado para encaminharmos o codigo de autorização."}
 							</Text>
 							<View style={{ flexDirection: "row" }}>
