@@ -151,14 +151,6 @@ const ConsultarVendas = (props) => {
 			});
 			setvendas(dados.data);
 
-			// const [contatoConvenio] = await api({
-			// 	method: "get",
-			// 	url: "/contato",
-			// 	params: { setor: "15" },
-			// 	headers: { "x-access-token": token },
-			// });
-
-			// setContato(contatoConvenio);
 		} catch (error) {
 			setvendas([]);
 		} finally {
@@ -577,10 +569,11 @@ const ConsultarVendas = (props) => {
 														Valor:
 														<Text style={{ fontWeight: "normal" }}>
 															{" "}
+															{console.log(item.parcelas)}
 															{formatCurrency.format(
-																item.parcelas == 0
+																item.parcelas == 0 
 																	? item.Valor
-																	: item.Valor * item.parcelas,
+																	: item.parcelas== undefined? item.Valor:item.Valor * item.parcelas,
 																{
 																	code: "BRL",
 																}
