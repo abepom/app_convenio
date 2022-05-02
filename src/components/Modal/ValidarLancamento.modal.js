@@ -273,11 +273,7 @@ const ModalValidarLancamento = (props) => {
 								padding: 20,
 							}}>
 							<Text style={{ width: "100%" }}>
-								Solicite ao associado o código de autorição do lançamento.
-							</Text>
-							<Text style={{ width: "100%" }}>
-								Esse código será enviado atravéz do email, whastsapp e
-								notificação do app ABEPOM Mobile
+								Solicite ao associado o código de autorização que foi enviado no WhatsApp.
 							</Text>
 							<View
 								style={{
