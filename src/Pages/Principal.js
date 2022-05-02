@@ -31,26 +31,26 @@ export default (props) => {
 	const [areas, setAreas] = useState([]);
 	useEffect(() => {
 		conectar(user);
-		if (Constants.isDevice && Platform.OS != "web") {
-			Updates.checkForUpdateAsync().then(({ isAvailable }) => {
-				if (isAvailable) {
-					Updates.fetchUpdateAsync();
-					Alert.alert(
-						"ATUALIZAÇÃO",
-						"O aplicativo ABEPOM Convênios foi atualizado com sucesso.\n\n Recomendamos que reiniciando o aplicativo.",
-						[
-							{
-								text: "CONFIRMAR",
-								onPress: () => Updates.reloadAsync(),
-							},
-							{
-								text: "MANTER ABERTO",
-							},
-						]
-					);
-				}
-			});
-		}
+		// if (Constants.isDevice && Platform.OS != "web") {
+		// 	Updates.checkForUpdateAsync().then(({ isAvailable }) => {
+		// 		if (isAvailable) {
+		// 			Updates.fetchUpdateAsync();
+		// 			Alert.alert(
+		// 				"ATUALIZAÇÃO",
+		// 				"O aplicativo ABEPOM Convênios foi atualizado com sucesso.\n\n Recomendamos que reiniciando o aplicativo.",
+		// 				[
+		// 					{
+		// 						text: "CONFIRMAR",
+		// 						onPress: () => Updates.reloadAsync(),
+		// 					},
+		// 					{
+		// 						text: "MANTER ABERTO",
+		// 					},
+		// 				]
+		// 			);
+		// 		}
+		// 	});
+		// }
 		if (!!convenio?.primeiro_acesso) {
 			setModal(true);
 			api.get("/termoAdesao", null).then(({ data }) => {

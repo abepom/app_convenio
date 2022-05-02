@@ -286,7 +286,7 @@ const ConsultarVendas = (props) => {
 
 										excluirVenda(
 											conteudoModal.Nr_lancamento,
-											conteudoModal.parcelas
+											conteudoModal.parcelas==undefined?0:conteudoModal.parcelas
 										);
 										getConsulta(conteudoModal.Data);
 										// setConteudoModal(null);
