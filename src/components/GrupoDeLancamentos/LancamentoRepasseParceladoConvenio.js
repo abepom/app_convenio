@@ -10,7 +10,7 @@ import api from "../../api";
 import formatCurrency from "currency-formatter";
 import useLoad from "../../Data/Load";
 import ModalValidarLancamento from "../Modal/ValidarLancamento.modal";
-const GrupoDeLancamentos = ({ associado, props }) => {
+const GrupoDeLancamentos = ({ associado, props, limite }) => {
 	const { matricula, dep } = associado;
 	const [descricao, setDescricao] = useState("");
 	const [quantidade, setQuantidade] = useState(1);
@@ -95,7 +95,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 						style={{
 							backgroundColor: "#fff",
 							width: "90%",
-							height: msnModal.limite ? 170 : msnModal.data ? 250 : "30%",
+							// height: msnModal.limite ? 170 : msnModal.data ? 250 : "30%",
 							alignItems: "center",
 
 							borderRadius: 5,
@@ -113,11 +113,11 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 							{msnModal.mensagem}
 							{msnModal.limite
 								? ` \n Limite atual é de ${formatCurrency.format(
-										msnModal.limite,
-										{
-											code: "BRL",
-										}
-								  )}`
+									msnModal.limite,
+									{
+										code: "BRL",
+									}
+								)}`
 								: null}
 						</Text>
 						{msnModal.data && (
@@ -125,7 +125,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 								style={{
 									backgroundColor: "#f5f4b3",
 									width: "90%",
-
+									margin: 10,
 									padding: 10,
 								}}>
 								<Text
@@ -161,7 +161,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 						)}
 						<TouchableOpacity
 							style={{
-								position: "absolute",
+
 								bottom: 0,
 								height: 45,
 								width: "100%",
@@ -256,7 +256,15 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 									.replace(/[.]/g, "")
 									.replace(/[,]/g, ".")
 									.replace("R$ ", "");
-								if (total == 0) {
+								console.log(total <= limite);
+								if (total > limite) {
+									setMsnModal({
+										erro: true,
+										mensagem:
+											"O limite do associado é insuficiente.\n",
+									});
+									setModal(true);
+								} else if (total == 0) {
 									setMsnModal({
 										erro: true,
 										mensagem:

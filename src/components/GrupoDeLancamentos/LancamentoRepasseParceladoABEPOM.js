@@ -19,7 +19,7 @@ import imagens from "../../utils/imagens";
 import useLoad from "../../Data/Load";
 import ModalValidarLancamento from "../Modal/ValidarLancamento.modal";
 
-const GrupoDeLancamentos = ({ associado, props }) => {
+const GrupoDeLancamentos = ({ associado, props, limite }) => {
 	const { matricula, dep } = associado;
 	const [quantidade, setQuantidade] = useState([]);
 	const [procedimento, setProcedimento] = useState({
@@ -149,7 +149,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 						style={{
 							backgroundColor: "#fff",
 							width: "90%",
-							height: msnModal.limite ? 130 : msnModal.data ? 250 : "30%",
+							// height: msnModal.limite ? 130 : msnModal.data ? 250 : "30%",
 							alignItems: "center",
 
 							borderRadius: 5,
@@ -167,11 +167,11 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 							{msnModal.mensagem}
 							{msnModal.limite
 								? ` \n Limite atual é de ${formatCurrency.format(
-										msnModal.limite,
-										{
-											code: "BRL",
-										}
-								  )}`
+									msnModal.limite,
+									{
+										code: "BRL",
+									}
+								)}`
 								: null}
 						</Text>
 						{msnModal.data && (
@@ -215,7 +215,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 						)}
 						<TouchableOpacity
 							style={{
-								position: "absolute",
+
 								bottom: 0,
 								height: 45,
 								width: "100%",
@@ -270,8 +270,8 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 													: procedimento.Name}{" "}
 												{procedimento.Name
 													? "(R$ " +
-													  procedimento.Valor_convenio.toFixed(2).toString() +
-													  ")"
+													procedimento.Valor_convenio.toFixed(2).toString() +
+													")"
 													: ""}
 											</Text>
 										</TouchableOpacity>
@@ -461,7 +461,17 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 										{!carregando ? (
 											<TouchableOpacity
 												style={[styles.btnDefault, { marginTop: 10 }]}
-												onPress={() => setModalPermissao(true)}>
+												onPress={() => {
+													if (proceAdd.reduce((total, item) => total + item.Valor_convenio, 0) /
+														selectedValue > limite) {
+														setMsnModal({
+															erro: true,
+															mensagem:
+																"O limite do associado é insuficiente.\n",
+														});
+														setModal(true);
+													} else { setModalPermissao(true) }
+												}}>
 												<Text style={{ color: "white" }}>
 													CADASTRAR LANÇAMENTO
 												</Text>

@@ -40,9 +40,9 @@ const ModalValidarLancamento = (props) => {
 			}, 4000);
 		} else {
 			Alert.alert(
-				"Código incorreto!",
-				"Solicite novamente o código ao associado caso o problema persistir cancele e pressione CADASTRAR LANÇAMENTO novamente.",
-				[{ text: "CANCELAR", onPress: () => setCarregando(false) }]
+				"",
+				`CÓDIGO DE VALIDAÇÃO INCORRETO.\n\nTENTE NOVAMENTE.`,
+				[{ text: "OK", onPress: () => setCarregando(false) }]
 			);
 			setCodigoAssociado("");
 		}

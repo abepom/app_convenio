@@ -16,7 +16,7 @@ const CadastrarVenda = (props) => {
 	const { matricula, dep, nome, titular } = props.route.params;
 	const [{ token, tipo_lancamento }] = useConvenio();
 
-	const [limiteAtual, setLimiteAtual] = useState("");
+	const [limiteAtual, setLimiteAtual] = useState(0);
 
 	const consultarLimite = async () => {
 		let { data } = await api({
@@ -73,6 +73,7 @@ const CadastrarVenda = (props) => {
 					<LancamentoComProcedimentos
 						associado={{ matricula, dep }}
 						props={props}
+						limite={limiteAtual}
 					/>
 				)}
 				{tipo_lancamento == "2" && (
@@ -81,6 +82,7 @@ const CadastrarVenda = (props) => {
 							associado={{ matricula, dep }}
 							props={props}
 							style={{ backgroundColor: "blue" }}
+							limite={limiteAtual}
 						/>
 					</>
 				)}
@@ -89,6 +91,7 @@ const CadastrarVenda = (props) => {
 						associado={{ matricula, dep }}
 						props={props}
 						style={{ backgroundColor: "blue" }}
+						limite={limiteAtual}
 					/>
 				)}
 				{tipo_lancamento == "4" && (
@@ -96,6 +99,7 @@ const CadastrarVenda = (props) => {
 						associado={{ matricula, dep }}
 						props={props}
 						style={{ backgroundColor: "blue" }}
+						limite={limiteAtual}
 					/>
 				)}
 
@@ -104,6 +108,7 @@ const CadastrarVenda = (props) => {
 						associado={{ matricula, dep }}
 						props={props}
 						style={{ backgroundColor: "blue" }}
+						limite={limiteAtual}
 					/>
 				)}
 			</MenuTop>

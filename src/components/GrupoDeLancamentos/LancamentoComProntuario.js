@@ -20,7 +20,7 @@ import formatCurrency from "currency-formatter";
 import useLoad from "../../Data/Load";
 import ModalValidarLancamento from "../Modal/ValidarLancamento.modal";
 const LancamentoComProntuario = (prop) => {
-	const { associado, props } = prop;
+	const { associado, props, limite } = prop;
 	const { matricula, dep } = associado;
 	const [quantidade, setQuantidade] = useState(1);
 	const [procedimento, setProcedimento] = useState({
@@ -272,7 +272,7 @@ const LancamentoComProntuario = (prop) => {
 						style={{
 							backgroundColor: "#fff",
 							width: "90%",
-							height: msnModal.limite ? 150 : msnModal.data ? 250 : "30%",
+
 							alignItems: "center",
 
 							borderRadius: 5,
@@ -290,11 +290,11 @@ const LancamentoComProntuario = (prop) => {
 							{msnModal.mensagem}
 							{msnModal.limite
 								? ` \n\n Limite atual é de ${formatCurrency.format(
-										msnModal.limite,
-										{
-											code: "BRL",
-										}
-								  )}`
+									msnModal.limite,
+									{
+										code: "BRL",
+									}
+								)}`
 								: null}
 						</Text>
 						{msnModal.data && (
@@ -302,7 +302,7 @@ const LancamentoComProntuario = (prop) => {
 								style={{
 									backgroundColor: "#f5f4b3",
 									width: "90%",
-
+									margin: 10,
 									padding: 10,
 								}}>
 								<Text
@@ -338,7 +338,7 @@ const LancamentoComProntuario = (prop) => {
 						)}
 						<TouchableOpacity
 							style={{
-								position: "absolute",
+
 								bottom: 0,
 								height: 45,
 								width: "100%",
@@ -512,7 +512,16 @@ const LancamentoComProntuario = (prop) => {
 									styles.btnDefault,
 									{ marginVertical: 15, opacity: !btnvisivel ? 0.5 : 1 },
 								]}
-								onPress={Lancar}>
+								onPress={() => {
+									if (procedimento.Valor_convenio > limite) {
+										setMsnModal({
+											erro: true,
+											mensagem:
+												"O limite do associado é insuficiente.\n",
+										});
+										setModal(true);
+									} else { Lancar() }
+								}}>
 								<Text style={{ color: "white" }}>
 									{mostrarItens ? "ADICIONAR AO PRONTUARIO" : "PROSSEGUIR"}
 								</Text>
@@ -639,7 +648,7 @@ const LancamentoComProntuario = (prop) => {
 											},
 											{
 												text: "CANCELAR",
-												onPress: () => {},
+												onPress: () => { },
 												style: "cancel",
 											},
 										]

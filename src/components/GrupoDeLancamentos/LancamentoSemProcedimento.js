@@ -12,7 +12,7 @@ import api from "../../api";
 import formatCurrency from "currency-formatter";
 import useLoad from "../../Data/Load";
 
-const GrupoDeLancamentos = ({ associado, props }) => {
+const GrupoDeLancamentos = ({ associado, props, limite }) => {
 	const { matricula, dep } = associado;
 	const [, setload] = useLoad();
 	const [modal, setModal] = useState(false);
@@ -75,7 +75,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 						style={{
 							backgroundColor: "#fff",
 							width: "90%",
-							height: msnModal.limite ? 130 : msnModal.data ? 250 : "30%",
+							// height: msnModal.limite ? 130 : msnModal.data ? 250 : "30%",
 							alignItems: "center",
 
 							borderRadius: 5,
@@ -93,11 +93,11 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 							{msnModal.mensagem}
 							{msnModal.limite
 								? ` \n Limite atual é de ${formatCurrency.format(
-										msnModal.limite,
-										{
-											code: "BRL",
-										}
-								  )}`
+									msnModal.limite,
+									{
+										code: "BRL",
+									}
+								)}`
 								: null}
 						</Text>
 						{msnModal.data && (
@@ -105,7 +105,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 								style={{
 									backgroundColor: "#f5f4b3",
 									width: "90%",
-
+									margin: 10,
 									padding: 10,
 								}}>
 								<Text
@@ -141,7 +141,7 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 						)}
 						<TouchableOpacity
 							style={{
-								position: "absolute",
+
 								bottom: 0,
 								height: 45,
 								width: "100%",
@@ -244,7 +244,17 @@ const GrupoDeLancamentos = ({ associado, props }) => {
 					{!carregando ? (
 						<TouchableOpacity
 							style={[styles.btnDefault, { marginTop: 30 }]}
-							onPress={Lancar}>
+							onPress={() => {
+								console.log(valor)
+								if (valor.replace("R$ ", '').replace(',', '.') > limite) {
+									setMsnModal({
+										erro: true,
+										mensagem:
+											"O limite do associado é insuficiente.\n",
+									});
+									setModal(true);
+								} else { Lancar() }
+							}}>
 							<Text style={{ color: "white" }}>CADASTRAR LANÇAMENTO</Text>
 						</TouchableOpacity>
 					) : (
