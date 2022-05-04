@@ -12,37 +12,52 @@ import {
 	SafeAreaView,
 } from "react-native";
 import formatCurrency from "currency-formatter";
-import { TextInput } from "react-native-paper";
+
 import api from "../api";
 import MenuTop from "../Components/MenuTop";
 import useConvenio from "../Data/Convenio";
-import styles, { danger, primary, sucessBack } from "../utils/Style";
-import { themeLight } from "../utils/theme";
+import { danger, primary, sucessBack } from "../utils/Style";
+
 import Carregando from "../Components/Carregando";
 import imagens from "../utils/imagens";
 import ProntuarioDetalhado from "../Components/Modal/ProntuarioDetalhado.modal";
 
 export default (props) => {
-	const [matricula, setMatricula] = useState("");
+
 	const [carregarBotao, setCarregarBotao] = useState(false);
 	const [consulta, setConsulta] = useState(false);
-	const [modal, setModal] = useState(false);
 	const [listaProntuarios, setListaProntuarios] = useState([]);
-	const [prontuario, setProntuario] = useState({});
-	const [{ token }] = useConvenio();
-	const [NrLancamento, setNrLancamento] = useState("");
+	const [modal, setModal] = useState(false);
+	const [pagina, setPagina] = useState(-1);
+	const [prontuario, setProntuario] = useState([]);
+	const [{ token }] = useConvenio([]);
+
 
 	const _ConsultarProntuario = async () => {
-		setConsulta(true);
-		setCarregarBotao(true);
+		if (pagina === -1) {
+			setConsulta(true);
+			setCarregarBotao(true);
+		}
 		const { data } = await api({
 			method: "get",
 			url: "/prontuarios",
-			params: { matricula: "000" },
+			params: { matricula: "000", pagina: pagina + 1 },
 			headers: { "x-access-token": token },
 		});
-		console.lo;
-		setListaProntuarios(data);
+		setPagina(pagina + 1);
+		data.map(item => {
+			prontuario.push(item);
+
+		});
+		setListaProntuarios(prontuario.sort((a, b) => {
+			if (a.ID_Prontuario > b.ID_Prontuario) {
+				return -1;
+			}
+			if (a.ID_Prontuario < b.ID_Prontuario) {
+				return 1;
+			}
+			return 0;
+		}))
 
 		setCarregarBotao(false);
 	};
@@ -52,7 +67,6 @@ export default (props) => {
 
 	const _ConsultarItensProntuario = async (item) => {
 		setModal(true);
-
 		setProntuario(item.ID_Prontuario);
 	};
 
@@ -171,7 +185,10 @@ export default (props) => {
 						style={{ width: 30, height: 30, tintColor: "white" }}
 					/>
 				}
-				funcConfig={_ConsultarProntuario}>
+				funcConfig={() => {
+					setPagina(-1);
+					_ConsultarProntuario()
+				}}>
 				<View
 					style={{
 						width: "90%",
@@ -186,6 +203,8 @@ export default (props) => {
 							{consulta && (
 								<SafeAreaView style={{ flex: 1 }}>
 									<FlatList
+										onEndReached={_ConsultarProntuario}
+										onEndReachedThreshold={0.05}
 										data={listaProntuarios}
 										style={{ flex: 1 }}
 										keyExtractor={({ index }) => index}

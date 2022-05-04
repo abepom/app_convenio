@@ -20,6 +20,7 @@ import api from "../api";
 import Retorno from "../Components/Retorno";
 import useConvenio from "../Data/Convenio";
 import Carregando from "../Components/Carregando";
+import ProntuarioDetalhado from "../Components/Modal/ProntuarioDetalhado.modal";
 
 export default EfetuarVendas = (props) => {
 	const refInput = useRef(null);
@@ -37,8 +38,20 @@ export default EfetuarVendas = (props) => {
 		dep: "",
 	};
 
-	const retornopadrao = { retorno: false, mensagem: "" };
+	useEffect(() => {
+		console.log(props?.route?.params?.prontuario);
+		if (props?.route?.params?.prontuario) {
+			console.log(props.route.params.prontuario);
+			setProntuario(props.route.params.prontuario);
+			setModal(true)
 
+		}
+
+	}, [props?.route?.params?.prontuario]);
+
+	const retornopadrao = { retorno: false, mensagem: "" };
+	const [modal, setModal] = useState(false);
+	const [prontuario, setProntuario] = useState({});
 	const [associado, setassociado] = useState(vaziu);
 	const [imput, setImput] = useState("");
 	const [dependentes, setDependentes] = useState([]);
@@ -166,6 +179,10 @@ export default EfetuarVendas = (props) => {
 	};
 	return (
 		<MenuTop {...props} drawer title="Lançar">
+			<ProntuarioDetalhado
+				visualizar={[modal, setModal]}
+				Nr_lancamento={prontuario}
+			/>
 			<Text
 				style={{
 					fontWeight: "bold",

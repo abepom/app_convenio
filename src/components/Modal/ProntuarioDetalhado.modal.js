@@ -26,6 +26,7 @@ const ProntuarioDetalhado = (props) => {
 			params: { prontuario: Nr_lancamento },
 			headers: { "x-access-token": token },
 		}).then(({ data }) => {
+			console.log(JSON.parse(data[0].itens))
 			setstate({ ...data[0], itens: JSON.parse(data[0].itens) });
 		});
 	}, [Nr_lancamento]);
@@ -99,21 +100,6 @@ const ProntuarioDetalhado = (props) => {
 										styles.textoM,
 										{ fontWeight: "bold", marginVertical: 2 },
 									]}>
-									Parcelamento:{" "}
-									<Text style={{ fontWeight: "normal" }}>
-										{`${state.Quantidade_Atendimento} x ${formatCurrency.format(
-											state.Valor,
-											{
-												code: "BRL",
-											}
-										)}`}
-									</Text>
-								</Text>
-								<Text
-									style={[
-										styles.textoM,
-										{ fontWeight: "bold", marginVertical: 2 },
-									]}>
 									Data:
 									<Text style={{ fontWeight: "normal" }}>
 										{" "}
@@ -144,8 +130,11 @@ const ProntuarioDetalhado = (props) => {
 							)}
 							<View>
 								<View style={{ flexDirection: "row", marginTop: 10 }}>
-									<Text style={{ width: "75%", fontWeight: "bold" }}>
+									<Text style={{ width: "45%", fontWeight: "bold" }}>
 										Itens
+									</Text>
+									<Text style={{ width: "35%", fontWeight: "bold" }}>
+										Data
 									</Text>
 									<Text style={{ fontWeight: "bold" }}>Valor</Text>
 								</View>
@@ -164,12 +153,17 @@ const ProntuarioDetalhado = (props) => {
 									style={{ maxHeight: 400 }}
 									keyExtractor={({ index }) => index}
 									renderItem={({ item, index }) => {
+										console.log(item)
 										return (
 											<View key={index}>
 												<View key={index} style={{ flexDirection: "row" }}>
-													<Text style={{ width: "75%" }}>
-														{state.desc_procedimento} {"\n"}
-														{item.Descricao}
+													<Text style={{ width: "45%" }}>
+														{state.desc_procedimento}
+
+													</Text>
+													<Text style={{ width: "35%" }}>
+
+														{item.data_atendimento}
 													</Text>
 													<Text>
 														{formatCurrency.format(
@@ -178,6 +172,11 @@ const ProntuarioDetalhado = (props) => {
 																code: "BRL",
 															}
 														)}
+													</Text>
+												</View>
+												<View key={index} style={{ flexDirection: "row" }}>
+													<Text style={{ width: "100%" }}>
+														{item.Descricao}
 													</Text>
 												</View>
 												<View

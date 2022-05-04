@@ -51,14 +51,12 @@ const ConsultarVendas = (props) => {
 	const [mes, setMes] = useState(false);
 	const [dataOld, setDataOld] = useState("");
 	const [data, setData] = useState(
-		`${
-			new Date().getDate() < 9
-				? `0${new Date().getDate()}`
-				: `${new Date().getDate()}`
-		}/${
-			new Date().getMonth() < 9
-				? `0${new Date().getMonth() + 1}`
-				: `${new Date().getMonth() + 1}`
+		`${new Date().getDate() < 9
+			? `0${new Date().getDate()}`
+			: `${new Date().getDate()}`
+		}/${new Date().getMonth() < 9
+			? `0${new Date().getMonth() + 1}`
+			: `${new Date().getMonth() + 1}`
 		}/${new Date().getFullYear()}`
 	);
 	const [vendas, setvendas] = useState([]);
@@ -286,7 +284,7 @@ const ConsultarVendas = (props) => {
 
 										excluirVenda(
 											conteudoModal.Nr_lancamento,
-											conteudoModal.parcelas==undefined?0:conteudoModal.parcelas
+											conteudoModal.parcelas == undefined ? 0 : conteudoModal.parcelas
 										);
 										getConsulta(conteudoModal.Data);
 										// setConteudoModal(null);
@@ -355,25 +353,25 @@ const ConsultarVendas = (props) => {
 								{retornoExclusao.indexOf(
 									"Essa cobrança já foi efetuada pela ABEPOM,"
 								) >= 0 && (
-									<TouchableOpacity
-										onPress={() => {
-											Linking.openURL(`https://wa.me/5548991440708`);
-										}}>
-										<View
-											style={{
-												flexDirection: "row",
-												alignItems: "center",
-												justifyContent: "center",
-												margin: 10,
+										<TouchableOpacity
+											onPress={() => {
+												Linking.openURL(`https://wa.me/5548991440708`);
 											}}>
-											<Image
-												source={imagens.whatsapp}
-												style={{ height: 30, width: 30 }}
-											/>
-											<Text>(48) 99144-0708</Text>
-										</View>
-									</TouchableOpacity>
-								)}
+											<View
+												style={{
+													flexDirection: "row",
+													alignItems: "center",
+													justifyContent: "center",
+													margin: 10,
+												}}>
+												<Image
+													source={imagens.whatsapp}
+													style={{ height: 30, width: 30 }}
+												/>
+												<Text>(48) 99144-0708</Text>
+											</View>
+										</TouchableOpacity>
+									)}
 							</View>
 							<TouchableOpacity
 								onPress={() => {
@@ -571,9 +569,9 @@ const ConsultarVendas = (props) => {
 															{" "}
 															{console.log(item.parcelas)}
 															{formatCurrency.format(
-																item.parcelas == 0 
+																item.parcelas == 0
 																	? item.Valor
-																	: item.parcelas== undefined? item.Valor:item.Valor * item.parcelas,
+																	: item.parcelas == undefined ? item.Valor : item.Valor * item.parcelas,
 																{
 																	code: "BRL",
 																}
@@ -634,8 +632,9 @@ const ConsultarVendas = (props) => {
 													)}
 													<TouchableOpacity
 														onPress={() => {
+
 															if (item.Processado_desconto) {
-																setConteudoModal(null);
+																setConteudoModal(false);
 																setRetornoExclusao(
 																	"Essa cobrança já foi efetuada pela ABEPOM, entre em contato com nosso setor de convênios para mais informações."
 																);
@@ -715,14 +714,15 @@ const ConsultarVendas = (props) => {
 						TOTAL
 					</Text>
 					<Text style={{ fontWeight: "bold", color: "#fff", fontSize: 20 }}>
+
 						{vendas
 							? formatCurrency.format(
-									vendas.reduce(
-										(total, Valor) => total + Number(Valor.Valor),
-										0
-									),
-									{ code: "BRL" }
-							  )
+								vendas.reduce(
+									(total, Valor) => total + Number(Valor.Valor * (Valor.parcelas ? Valor.parcelas : 1)),
+									0
+								),
+								{ code: "BRL" }
+							)
 							: "R$ 0,00"}
 					</Text>
 				</View>

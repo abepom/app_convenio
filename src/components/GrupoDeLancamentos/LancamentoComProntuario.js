@@ -96,19 +96,19 @@ const LancamentoComProntuario = (prop) => {
 		}
 
 		if (!mostrarItens) {
-			let prontuarios = await carregarProntuarios();
+			// let prontuarios = await carregarProntuarios();
 
-			if (prontuarios.status == 1) {
-				setProntuarioAnterior(prontuarios);
-
-				if (prontuarios) {
-					setModalProntuario(true);
-				} else {
-					setModalPermissao(true);
-				}
-			} else {
-				setModalPermissao(true);
-			}
+			// if (prontuarios.status == 1) {
+			// 	setProntuarioAnterior(prontuarios);
+			// 	setMostrarItens(true);
+			// 	if (prontuarios) {
+			// 		setModalProntuario(true);
+			// 	} else {
+			// 		setModalPermissao(true);
+			// 	}
+			// } else {
+			// }
+			setModalPermissao(true);
 		} else {
 			setModalPermissao(true);
 		}
@@ -135,7 +135,6 @@ const LancamentoComProntuario = (prop) => {
 		} else {
 			setMsnModal({ ...data, mensagem: "Erro ao efetuar desconto" });
 		}
-
 		setTimeout(() => {
 			setCarregando(false);
 		}, 2000);
@@ -353,7 +352,11 @@ const LancamentoComProntuario = (prop) => {
 								setModal(false);
 
 								if (msnModal.retorno == 1) {
-									props.navigation.goBack();
+									props.navigation.reset({
+										index: 0,
+										routes: [{ name: "Lancamento", params: { prontuario: msnModal.prontuario } }],
+									});
+
 								} else {
 									setCarregando(false);
 								}

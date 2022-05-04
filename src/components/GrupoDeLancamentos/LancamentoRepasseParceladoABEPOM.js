@@ -179,7 +179,7 @@ const GrupoDeLancamentos = ({ associado, props, limite }) => {
 								style={{
 									backgroundColor: "#f5f4b3",
 									width: "90%",
-
+									margin: 10,
 									padding: 10,
 								}}>
 								<Text
