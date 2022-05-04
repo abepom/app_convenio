@@ -39,7 +39,7 @@ export default EfetuarVendas = (props) => {
 	};
 
 	useEffect(() => {
-		console.log(props?.route?.params?.prontuario);
+
 		if (props?.route?.params?.prontuario) {
 			console.log(props.route.params.prontuario);
 			setProntuario(props.route.params.prontuario);

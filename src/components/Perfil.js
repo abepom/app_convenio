@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
 import {
 	DrawerContentScrollView,
 	DrawerItemList,
@@ -10,6 +10,7 @@ import imagens from "../utils/imagens";
 import SelecionarAreasModal from "./Modal/SelecionarAreas.modal";
 import { useStore } from "../Data/store";
 import * as Updates from "expo-updates";
+
 
 // import { Container } from './styles';
 
@@ -83,26 +84,25 @@ const Perfil = (props) => {
 								: `CPF: ${convenio.doc}`
 							: ""}
 					</Text>
+					<Text
+						style={{
+							fontSize: 10,
+							color: primary,
+							fontWeight: "bold",
+							elevation: 4,
+							zIndex: 10,
+						}}>
+						{convenio.nome_area}{" "}
+
+					</Text>
 					{convenio.trocar_area ? (
 						<TouchableOpacity
+							style={{ backgroundColor: primary, borderRadius: 5, padding: 5, marginTop: 10, alignItems: "center" }}
 							onPress={() => {
 								//Updates.reloadAsync();
 								setModalAreas(true);
 							}}>
-							<Text
-								style={{
-									fontSize: 10,
-									color: primary,
-									fontWeight: "bold",
-									elevation: 4,
-									zIndex: 10,
-								}}>
-								{convenio.nome_area}{" "}
-								<Image
-									source={imagens.loop}
-									style={{ width: 10, height: 10 }}
-								/>
-							</Text>
+							<Text style={{ color: 'white', paddingHorizontal: 10 }}>Alterar Área</Text>
 						</TouchableOpacity>
 					) : (
 						<Text
@@ -123,11 +123,27 @@ const Perfil = (props) => {
 			</DrawerContentScrollView>
 			<TouchableOpacity
 				onPress={() => {
-					props.navigation.reset({
-						index: 0,
-						routes: [{ name: "AcessoConvenio" }],
-					});
-					props.navigation.navigate("AcessoConvenio", { deslogar: true });
+					Alert.alert(
+						"Sair",
+						"Deseja realmente sair do sistema?",
+						[
+							{
+								text: "Não",
+								onPress: () => { },
+							},
+							{
+								text: "Sim",
+								onPress: () => {
+									props.navigation.reset({
+										index: 0,
+										routes: [{ name: "AcessoConvenio" }],
+									});
+									props.navigation.navigate("AcessoConvenio", { deslogar: true });
+								},
+							},
+						])
+
+
 				}}
 				style={{
 					height: 50,

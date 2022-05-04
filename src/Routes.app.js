@@ -101,12 +101,12 @@ export default function () {
 			{(convenio.tipo_lancamento == "1" ||
 				convenio.tipo_lancamento == "2" ||
 				convenio.tipo_lancamento == "4") && (
-				<Drawer.Screen
-					name="Procedimentos"
-					component={Procedimentos}
-					options={Item(imagens.list, "Procedimentos")}
-				/>
-			)}
+					<Drawer.Screen
+						name="Procedimentos"
+						component={Procedimentos}
+						options={Item(imagens.list, "Procedimentos")}
+					/>
+				)}
 			<Drawer.Screen
 				name="TermoAdasao"
 				component={TermoAdasao}
