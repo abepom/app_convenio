@@ -72,14 +72,13 @@ export default function TabViewExample(props) {
 	const salvarImagem = async (imagem) => {
 		setModal(true);
 		let nome = {
-			name: `logomarca-${convenio.id_gds}.${
-				imagem.uri.split(".")[imagem.uri.split(".").length - 1]
-			}`,
+			name: `logomarca-${convenio.id_gds}.${imagem.uri.split(".")[imagem.uri.split(".").length - 1]
+				}`,
 		};
+
 		const { uri } = imagem;
-		const type = `image/${
-			imagem.uri.split(".")[imagem.uri.split(".").length - 1]
-		}`;
+		const type = `image/${imagem.uri.split(".")[imagem.uri.split(".").length - 1]
+			}`;
 		const data = new FormData();
 		data.append("id_gds", `${convenio.id_gds}`);
 		data.append("file", { uri, type, ...nome });
@@ -92,6 +91,7 @@ export default function TabViewExample(props) {
 				},
 			})
 			.then((a) => {
+				console.log(a.data);
 				setConvenio({
 					...convenio,
 					caminho_logomarca: a.data.caminho_logomarca,
@@ -226,37 +226,11 @@ export default function TabViewExample(props) {
 					]}>
 					{!carregandoIMG ? (
 						convenio.caminho_logomarca ? (
-							convenio.nivel < 2 ? (
-								<>
-									<TouchableOpacity onPress={enviarImagem}>
-										<Image
-											source={{
-												cache: "default",
-												uri: convenio.caminho_logomarca,
-											}}
-											style={{
-												width: 60,
-												height: 60,
-												resizeMode: "contain",
-												borderRadius: 30,
-											}}
-										/>
-										<Image
-											source={imagens.plus}
-											style={{
-												width: 20,
-												height: 20,
-												resizeMode: "cover",
-												bottom: 20,
-												right: -35,
-											}}
-										/>
-									</TouchableOpacity>
-								</>
-							) : (
+							<TouchableOpacity onPress={enviarImagem}>
 								<Image
 									source={{
-										uri: `${convenio.caminho_logomarca}`,
+										cache: "default",
+										uri: convenio.caminho_logomarca,
 									}}
 									style={{
 										width: 60,
@@ -265,7 +239,18 @@ export default function TabViewExample(props) {
 										borderRadius: 30,
 									}}
 								/>
-							)
+								<Image
+									source={imagens.plus}
+									style={{
+										width: 20,
+										height: 20,
+										resizeMode: "cover",
+										bottom: 20,
+										right: -35,
+									}}
+								/>
+							</TouchableOpacity>
+
 						) : convenio.nivel < 2 ? (
 							<TouchableOpacity
 								onPress={enviarImagem}

@@ -243,7 +243,7 @@ const GrupoDeLancamentos = ({ associado, props, limite }) => {
 										flex: 1,
 										marginLeft: 10,
 									}}>
-									{`${dataSel.getDate()}`}/
+									{(`0${dataSel.getDate()}`).substr(-2)}/
 									{dataSel.getMonth() < 9
 										? `0${dataSel.getMonth() + 1}`
 										: `${dataSel.getMonth() + 1}`}
