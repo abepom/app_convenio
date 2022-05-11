@@ -2,7 +2,7 @@
 	"expo": {
 		"name": "ABEPOM\nConvênio",
 		"slug": "abepom_convenios",
-		"version": "0.0.1",
+		"version": "1.0.0",
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
 		"platforms": ["ios", "android"],
@@ -14,7 +14,7 @@
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
 			"bundleIdentifier": "br.org.abepom.convenio",
-			"buildNumber": "0.0.1",
+			"buildNumber": "1.0.0",
 			"backgroundColor": "#f1f1f1",
 			"icon": "./assets/icon-ios.png",
 			"supportsTablet": true,
@@ -63,7 +63,7 @@
 				"resizeMode": "cover"
 			},
 			"package": "br.org.abepom.convenio",
-			"versionCode": 1,
+			"versionCode": 2,
 			"backgroundColor": "#03254E"
 		},
 		"packagerOpts": {
